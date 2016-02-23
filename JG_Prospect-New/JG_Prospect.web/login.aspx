@@ -194,8 +194,10 @@
                                             <td style="padding-right: 0px;">
                                                 <label style="width:42% !important;">Customer Sign Up &nbsp;&nbsp;&nbsp;   User Type<span>*</span></label>
                                                 <asp:RadioButton ID="rdoCustomer" GroupName="Signup" runat="server" Style="width:10% !important;"  Checked="true"/>
-                                                <label style="width:13% !important;">Customer</label>
+                                                
+                                                <label style="width:13% !important;">Customer</label><div style="display:none !important">
                                                 <asp:RadioButton ID="rdoEmp" GroupName="Signup"  runat="server" Text="Employee" Style="width:15% !important;" />
+                                                    </div>
                                             </td>
                                         </tr>
                                         <tr>

@@ -41,9 +41,14 @@ namespace JG_Prospect
             FaceBookConnect.API_Key = "1617979618482118";
             FaceBookConnect.API_Secret = "1b8ede82b0adbebb2282934247773490";
             //google plus login
-            GoogleConnect.ClientId = "356184594367-5iu5qlbe4ddgtst0p6teae8r2s0b5a6n.apps.googleusercontent.com";
-            GoogleConnect.ClientSecret = "rVkwAed1NzC_-F3Z6yUFiFQ_";
+            //GoogleConnect.ClientId = "356184594367-5iu5qlbe4ddgtst0p6teae8r2s0b5a6n.apps.googleusercontent.com";
+            //GoogleConnect.ClientSecret = "rVkwAed1NzC_-F3Z6yUFiFQ_";
+            //GoogleConnect.RedirectUri = Request.Url.AbsoluteUri.Split('?')[0];
+            GoogleConnect.ClientId = "230635153352-67pgqgc8n4ao9dhnnr3plb1sbnvga1tu.apps.googleusercontent.com";
+            GoogleConnect.ClientSecret = "4t6zZfPMfgLVxSRSItsWeOGo";
             GoogleConnect.RedirectUri = Request.Url.AbsoluteUri.Split('?')[0];
+            
+
             //Login with Twitter
            // TwitterConnect.API_Key = " hlFND0IQOjA7hMPVmVvKKVlzI";
            // TwitterConnect.API_Secret = "NNL9H5GCNSvNH0XJv4ax2wh9iWbqmqTxO9ydR7ewcX1l7XMY5o";
@@ -53,7 +58,7 @@ namespace JG_Prospect
             //txtDateOfBith.Attributes.Add("readonly", "readonly");
             if (!IsPostBack)
             {
-                rdSalesIns.Checked = true;
+                rdCustomer.Checked = true;
                 Session["DesigNew"] = "";
                 pnlSignup.Visible = true;
                 btnSignUp.Visible = true;

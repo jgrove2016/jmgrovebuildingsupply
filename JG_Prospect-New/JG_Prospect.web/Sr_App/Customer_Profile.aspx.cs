@@ -1631,6 +1631,7 @@ namespace JG_Prospect.Sr_App
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
+                Label lblSoldJobDate = (Label)e.Row.FindControl("lblSoldJobDate");
                 //LinkButton lnkwrkContract = (LinkButton)e.Row.FindControl("lnkwrkContract");
                 //LinkButton lnkwrkordfer = (LinkButton)e.Row.FindControl("lnkwrkordfer");
                 //HiddenField HiddenFieldWorkOrder = (HiddenField)e.Row.FindControl("HiddenFieldWorkOrder");
@@ -1644,7 +1645,9 @@ namespace JG_Prospect.Sr_App
                 //{
                 //    lnkwrkordfer.Text = "WorkOrder.pdf";
                 //}
-                if (ColorFlag == JGConstant.ZERO)
+                
+                ///#- Commented By Shabbir - For coloring Sold Job Quote Date Red
+                /*if (ColorFlag == JGConstant.ZERO)
                 {
                     e.Row.ForeColor = System.Drawing.Color.Red;
                     ColorFlag = JGConstant.ONE;
@@ -1653,7 +1656,16 @@ namespace JG_Prospect.Sr_App
                 {
                     e.Row.ForeColor = System.Drawing.Color.Black;
                     ColorFlag = JGConstant.ZERO;
+                }*/
+                ///#- Comment End By Shabbir - For coloring Sold Job Quote Date Red
+
+                DataRowView lDrRowData = (DataRowView)e.Row.DataItem;
+                lblSoldJobDate.Text = Convert.ToDateTime( lDrRowData["DateSold"].ToString()).ToString("dd-MM-yyyy");
+                if (lDrRowData["SoldJobID"].ToString().Contains("SJ"))
+                {
+                    lblSoldJobDate.ForeColor = System.Drawing.Color.Red;
                 }
+
                 DropDownList ddlfollowup3 = (DropDownList)e.Row.FindControl("ddlfollowup3");
                 // * DEc18 test            
 

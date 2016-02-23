@@ -1491,12 +1491,16 @@
                                         <Columns>
                                             <asp:TemplateField HeaderText="Quote or Sold Job#" HeaderStyle-Width="15%" ItemStyle-Width="50px">
                                                 <ItemTemplate>
-                                                    <asp:LinkButton ID="lnkSoldJobDetails" OnClick="lnkSoldJobDetails_Click" runat="server" Text='<%#Eval("SoldJobId") %>'></asp:LinkButton>
+                                                    <asp:LinkButton ID="lnkSoldJobDetails" OnClick="lnkSoldJobDetails_Click" runat="server" Text='<%# Eval("SoldJobId").ToString().Substring( Eval("SoldJobId").ToString().IndexOf("-")+1)  %>'></asp:LinkButton>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <%--<asp:BoundField ItemStyle-Width="50px" HeaderText="Quote or Sold Job#" DataField="SoldJobId" />--%>
-                                            <asp:BoundField ItemStyle-Width="50px" HeaderText="Date Quoted or Sold" DataField="DateSold" DataFormatString="{0:d}" />
-
+                                            
+                                             <asp:TemplateField HeaderText="Date Quoted or Sold"  ItemStyle-Width="50px">
+                                                <ItemTemplate>
+                                                    <asp:Label runat="server" ID="lblSoldJobDate" Text='<%# Convert.ToDateTime( Eval("DateSold")).ToString("dd-MM-yyyy") %>'></asp:Label>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
 
                                             <asp:TemplateField ItemStyle-Width="50px" HeaderStyle-Width="17%" HeaderText="Status">
                                                 <ItemTemplate>

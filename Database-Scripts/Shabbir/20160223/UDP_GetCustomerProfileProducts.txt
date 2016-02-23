@@ -1,0 +1,149 @@
+
+/****** Object:  StoredProcedure [dbo].[UDP_GetCustomerProfileProducts]    Script Date: 02/23/2016 19:00:56 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER Proc [dbo].[UDP_GetCustomerProfileProducts]                     
+@CustomerId int          
+AS                       
+BEGIN            
+--# Shabbir: Added DateQuote column in all the four queries. Quote Sequence query has GETDATE() in DateQuote column, I have to put this so that union can work, it does not hold any significance.          
+select * from (          
+-- SELECT  c.Id          
+-- ,'~/CustomerDocs/LocationPics/'+c.MainImage as [LocationPicture]          
+-- ,c.CustomerId          
+-- ,cast(4 AS int)as ProductTypeId          
+-- ,c.ProductTypeIdFrom           
+-- ,js.SoldJobId          
+-- ,js.CreatedOn as [DateSold]          
+-- ,c.Attachment           
+-- ,js.Id as JobSeqId          
+-- ,js.StatusId    
+-- ,new_customer.BestTimetocontact    
+-- ,tblProductMaster.ProductName As ProductLine      
+-- FROM tblCustom c          
+-- INNER JOIN new_customer ON c.CustomerId = new_customer.id           
+-- INNER JOIN tblJobSequence js on js.CustomerId=@CustomerId and js.EstimateId=c.Id and js.ProductId!='1'     
+-- INNER JOIN tblProductMaster On js.ProductId = tblProductMaster.ProductId        
+-- WHERE c.CustomerId = @CustomerId                
+-- AND (c.[Status] in(select StatusName from tblStatusMaster where StatusId not in(1,2,3,4,5,6,7,10,16)) or c.[Status] in('Material Confirmed','Procurring Quotes','Ordered'))          
+       
+--UNION ALL          
+          
+--SELECT  s.Id          
+-- ,' ' as [LocationPicture]          
+-- ,s.CustomerId          
+-- ,cast(1 AS int)as ProductTypeId          
+-- ,1 as ProductTypeIdFrom           
+-- ,js.SoldJobId          
+-- ,js.CreatedOn as [DateSold]          
+-- ,'' as Attachment           
+-- ,js.Id as JobSeqId       
+-- ,js.StatusId    
+-- ,new_customer.BestTimetocontact     
+-- ,tblProductMaster.ProductName As ProductLine        
+-- FROM tblShuttersEstimate s          
+-- INNER JOIN new_customer ON s.CustomerId = new_customer.id           
+-- INNER JOIN tblJobSequence js on js.CustomerId=@CustomerId and js.EstimateId=s.Id and js.ProductId='1'      
+-- INNER JOIN tblProductMaster On js.ProductId = tblProductMaster.ProductId            
+-- WHERE s.CustomerId = @CustomerId                
+-- AND (s.[Status] in(select StatusName from tblStatusMaster where StatusId not in(1,2,3,4,5,6,7,10,16)) or s.[Status] in('Material Confirmed','Procurring Quotes','Ordered'))          
+       
+ SELECT  c.Id          
+ ,'~/CustomerDocs/LocationPics/'+c.MainImage as [LocationPicture]          
+ ,c.CustomerId          
+ ,cast(4 AS int)as ProductTypeId          
+ ,c.ProductTypeIdFrom           
+ ,js.SoldJobId          
+ ,js.CreatedOn as [DateSold]   
+ ,q.CreatedOn as [DateQuote]        
+ ,c.Attachment           
+ ,js.Id as JobSeqId          
+ ,isnull(js.StatusId,0) as Statusid    
+ ,new_customer.BestTimetocontact    
+ ,tblProductMaster.ProductName As ProductLine      
+ FROM tblCustom c          
+ INNER JOIN new_customer ON c.CustomerId = new_customer.id           
+ INNER JOIN tblJobSequence js on js.CustomerId=@CustomerId and js.EstimateId=c.Id and js.ProductId!='1'   
+ inner join tblQuoteSequence q on q.customerid=@CustomerId and  q.EstimateId=c.Id and q.ProductId !='1'      
+ INNER JOIN tblProductMaster On js.ProductId = tblProductMaster.ProductId        
+ WHERE c.CustomerId = @CustomerId                
+ AND (c.[Status] in(select StatusName from tblStatusMaster where StatusId not in(1,2,3,4,5,6,7,10,16))     
+ or c.[Status] in('Material Confirmed','Procurring Quotes','Ordered'))          
+       
+UNION ALL          
+          
+SELECT  s.Id          
+ ,' ' as [LocationPicture]          
+ ,s.CustomerId          
+ ,cast(1 AS int)as ProductTypeId          
+ ,1 as ProductTypeIdFrom           
+ ,js.SoldJobId          
+ ,js.CreatedOn as [DateSold]       
+ ,q.CreatedOn as [DateQuote]   
+ ,'' as Attachment           
+ ,js.Id as JobSeqId       
+ ,isnull(js.StatusId,0) as StatusId    
+ ,new_customer.BestTimetocontact     
+ ,tblProductMaster.ProductName As ProductLine        
+ FROM tblShuttersEstimate s          
+ INNER JOIN new_customer ON s.CustomerId = new_customer.id           
+ INNER JOIN tblJobSequence js on js.CustomerId=@CustomerId and js.EstimateId=s.Id and js.ProductId='1'  
+ inner join tblQuoteSequence q on q.customerid=@CustomerId and  q.EstimateId=s.Id and q.ProductId ='1'        
+ INNER JOIN tblProductMaster On js.ProductId = tblProductMaster.ProductId            
+ WHERE s.CustomerId = @CustomerId                
+ AND (s.[Status] in(select StatusName from tblStatusMaster where StatusId not in(1,2,3,4,5,6,7,10,16))    
+  or s.[Status] in('Material Confirmed','Procurring Quotes','Ordered'))          
+     
+ UNION ALL      
+    
+    
+SELECT  s.Id          
+ ,' ' as [LocationPicture]          
+ ,s.CustomerId          
+ ,q.productid as ProductTypeId          
+ ,s.ProductTypeIdFrom as ProductTypeIdFrom           
+ ,q.quoteNumber as SoldJobId          
+ ,q.CreatedOn as [DateSold]   
+ , GETDATE() as [DateQuote]       
+ ,'' as Attachment           
+ ,q.Id as JobSeqId       
+ ,isnull((select StatusId from tblStatusMaster where StatusName=q.Status),0) as StatusId    
+ ,new_customer.BestTimetocontact     
+ ,tblProductMaster.ProductName As ProductLine        
+ FROM tblCustom s          
+ INNER JOIN new_customer ON s.CustomerId = new_customer.id           
+ --INNER JOIN tblJobSequence js on js.CustomerId=@CustomerId and js.EstimateId=s.Id and js.ProductId='1'      
+ inner join tblQuoteSequence q on q.customerid=@CustomerId and  q.EstimateId=s.Id and q.ProductId !='1'    
+ INNER JOIN tblProductMaster On q.ProductId = tblProductMaster.ProductId            
+ WHERE s.CustomerId = @CustomerId              
+ --AND (s.[Status] in(select StatusName from tblStatusMaster where StatusId not in(1,2,3,4,5,6,7,10,16))     
+ --or s.[Status]  in('Material Confirmed','Procurring Quotes','Ordered'))        
+    
+    
+ Union all    
+ SELECT  s.Id          
+ ,' ' as [LocationPicture]          
+ ,s.CustomerId          
+ ,q.productid as ProductTypeId          
+ ,1as ProductTypeIdFrom           
+ ,q.quoteNumber as SoldJobId          
+ ,q.CreatedOn as [DateSold]     
+ , GETDATE() as [DateQuote]            
+ ,'' as Attachment           
+ ,q.Id as JobSeqId       
+ ,isnull((select StatusId from tblStatusMaster where StatusName=q.Status),0) as StatusId    
+ ,new_customer.BestTimetocontact     
+ ,tblProductMaster.ProductName As ProductLine        
+ FROM tblShuttersEstimate s          
+ INNER JOIN new_customer ON s.CustomerId = new_customer.id           
+ --INNER JOIN tblJobSequence js on js.CustomerId=@CustomerId and js.EstimateId=s.Id and js.ProductId='1'      
+ inner join tblQuoteSequence q on q.customerid=@CustomerId and  q.EstimateId=s.Id and q.ProductId ='1'    
+ INNER JOIN tblProductMaster On q.ProductId = tblProductMaster.ProductId            
+ WHERE s.CustomerId = @CustomerId            
+ --AND (s.[Status] in(select StatusName from tblStatusMaster where StatusId not in(1,2,3,4,5,6,7,10,16))     
+ --or s.[Status]  in('Material Confirmed','Procurring Quotes','Ordered'))    
+  )cpp          
+  order by cpp.JobSeqId          
+  END 

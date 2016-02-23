@@ -543,8 +543,23 @@ namespace JG_Prospect.Sr_App
            // string Editor_contentFooter = FooterEditor.Content;
             // Editor_contentFooter = Editor_contentFooter.Replace(@"width=""1000""", @"width=""100%""");
             #region Hide Header and Footer Template
-            string Editor_contentHeader ="";
-            string Editor_contentFooter = "";
+            DataSet ds = new DataSet();
+            ds = AdminBLL.Instance.FetchContractTemplate(1);
+           // ds= AdminBLL.Instance.FetchContractTemplate(id);
+            string header="";
+            string footer = "";
+            if (ds != null)
+            {
+                header = ds.Tables[0].Rows[0][0].ToString();
+                header = header.Replace(@"width=""100%""", @"width=""1000""");
+               // HeaderEditor.Content = header;
+
+                footer = ds.Tables[0].Rows[0][2].ToString();
+                footer = footer.Replace(@"width=""100%""", @"width=""1000""");
+                //FooterEditor.Content = footer;
+            }
+            string Editor_contentHeader = header;
+            string Editor_contentFooter = footer;
             #endregion
             string Editor_contentBody = BodyEditor.Content;
             string Editor_contentBody2 = BodyEditor2.Content;
