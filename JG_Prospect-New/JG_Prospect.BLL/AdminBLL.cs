@@ -292,6 +292,10 @@ namespace JG_Prospect.BLL
         //    da.Fill(ds);
         //    return ds;
         //}
+        public DataSet FetchingContractTemplateDetail(string templateName)
+        {
+            return AdminDAL.Instance.FetchingContractTemplateDetails(templateName);
+        }
 
         public bool UpdateStatus(int custid, string status, string followupdate)
         {

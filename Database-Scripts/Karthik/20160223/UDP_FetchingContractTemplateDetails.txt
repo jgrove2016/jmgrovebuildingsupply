@@ -1,0 +1,18 @@
+CREATE Proc [dbo].[UDP_FetchingContractTemplateDetails]  
+
+(
+
+	@TemplateName nvarchar(500)
+
+)
+
+AS  
+
+BEGIN  
+ if @TemplateName is not null 
+ begin
+		SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLBody2,HTMLBodyA from tblHTMLTemplates  
+		WHERE Html_Name =  @TemplateName
+		end 
+		
+END

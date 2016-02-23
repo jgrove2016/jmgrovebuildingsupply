@@ -113,7 +113,26 @@ namespace JG_Prospect.DAL
                 return null;
             }
         }
-
+        public DataSet FetchingContractTemplateDetails(string templateName)
+        {
+            DataSet result = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("UDP_FetchingContractTemplateDetails");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@TemplateName", DbType.String, templateName);
+                    result = database.ExecuteDataSet(command);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+                return null;
+            }
+        }
         public DataSet DisableCustomer(int id,string Reason)
         {
             DataSet result = new DataSet();

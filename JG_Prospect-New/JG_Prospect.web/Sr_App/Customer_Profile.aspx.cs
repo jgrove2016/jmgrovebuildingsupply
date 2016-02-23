@@ -1663,6 +1663,7 @@ namespace JG_Prospect.Sr_App
                 lblSoldJobDate.Text = Convert.ToDateTime( lDrRowData["DateSold"].ToString()).ToString("dd-MM-yyyy");
                 if (lDrRowData["SoldJobID"].ToString().Contains("SJ"))
                 {
+                    lblSoldJobDate.Text = Convert.ToDateTime(lDrRowData["DateSold"].ToString()).ToString("dd-MM-yyyy") + "-" + "<span style='color:#ff0000'>"+ Convert.ToDateTime(lDrRowData["DateSold"].ToString()).ToString("dd-MM-yyyy");
                     lblSoldJobDate.ForeColor = System.Drawing.Color.Red;
                 }
 
