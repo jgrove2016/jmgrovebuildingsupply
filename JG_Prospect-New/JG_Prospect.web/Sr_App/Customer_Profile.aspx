@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Sr_App/SR_app.Master" AutoEventWireup="true"
+﻿﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Sr_App/SR_app.Master" AutoEventWireup="true"
     CodeBehind="Customer_Profile.aspx.cs" CodeFile="Customer_Profile.aspx.cs" Inherits="JG_Prospect.Sr_App.Customer_Profile" %>
 
 

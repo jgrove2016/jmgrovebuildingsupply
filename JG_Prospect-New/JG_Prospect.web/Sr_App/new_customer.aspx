@@ -4,7 +4,7 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <%@ Register Src="~/UserControl/UCAddress.ascx" TagPrefix="uc1" TagName="UCAddress" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-     <%---------start script for Datetime Picker----------%>
+    <%---------start script for Datetime Picker----------%>
     <link href="../datetime/css/jquery-ui-1.7.1.custom.css" rel="stylesheet" type="text/css" />
     <link href="../datetime/css/stylesheet.css" rel="stylesheet" type="text/css" />
     <style type="text/css">
@@ -23,17 +23,18 @@
         .GridView1 {
             border-collapse: collapse;
         }
-         #container {
+
+        #container {
             width: 95%;
             height: 600px;
             margin: 10px;
         }
 
-            .GridView1 > tbody > tr > td {
-                border: 1px solid #CCCCCC;
-                margin: 0;
-                padding: 0;
-            }
+        .GridView1 > tbody > tr > td {
+            border: 1px solid #CCCCCC;
+            margin: 0;
+            padding: 0;
+        }
 
         .clsPhoneTable {
             /*border: 2px solid chocolate;*/
@@ -50,11 +51,13 @@
             padding: 2px;
             height: 0px;
         }
-         #map_canvas {
+
+        #map_canvas {
             float: left;
             width: 100%;
             height: 100%;
         }
+
         #tblPhoneNo th {
             /*border: 1px solid chocolate;*/
             border: 1px solid #FFFFFF;
@@ -157,45 +160,43 @@
         #btnHideSubmit {
             display: none;
         }
+
         #ContentPlaceHolder1_UpdatePanel4 {
             position: absolute;
             left: 250px;
         }
 
-        .tblBestTimeToContact tr td{
+        .tblBestTimeToContact tr td {
             width: 25%;
             background: transparent !important;
-
         }
 
-        .nopadding{
-            padding:0px!important;
+        .nopadding {
+            padding: 0px!important;
         }
-        .size34
-        {
-            width:34%;
-            float:left;
+
+        .size34 {
+            width: 34%;
+            float: left;
         }
-        .size34 label
-        {
-            width:100%!important;
+
+            .size34 label {
+                width: 100%!important;
+            }
+
+        .size66 {
+            width: 66%;
+            float: right;
         }
-       
-        .size66
-        {
-            width:66%;
-            float:right;
-        }
-        
-        .tblBestTimeToContact > tbody tr td
-        {  
-            height:0px!important;
+
+        .tblBestTimeToContact > tbody tr td {
+            height: 0px!important;
             /*padding: 5px 0px!important;*/
             padding: 0px 0px!important;
         }
     </style>
     <script src="../Scripts/jquery.maskedinput.min.js" type="text/javascript"></script>
-   <%-- <script>
+    <%-- <script>
         var myCenter = new google.maps.LatLng(40.748492, -73.985496);
 
         function initialize() {
@@ -230,7 +231,7 @@
         google.maps.event.addDomListener(window, 'load', initialize);
 </script>--%>
 
-    <script>
+    <script language="javascript" type="text/javascript">
         var directionsDisplay;
         var directionsService = new google.maps.DirectionsService();
 
@@ -239,24 +240,27 @@
             var latlng = new google.maps.LatLng(40.748492, -73.985496);
             var myOptions =
             {
-                zoom: 12,
+                zoom: 10,
                 center: latlng,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
-            var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+            var map = new google.maps.Map(document.getElementById("map"), myOptions);
 
             directionsDisplay.setMap(map);
-            directionsDisplay.setPanel(document.getElementById('Panel5'));
+            directionsDisplay.setPanel(document.getElementById('directionpanel'));
 
             var control = document.getElementById('control');
             control.style.display = 'block';
 
 
         }
+
+
+
         function calcRoute() {
 
-            var start = document.getElementById('txtStartAddress').value;
-            var end = document.getElementById('txtEndAddress').value;
+            var start = document.getElementById('startvalue').value;
+            var end = document.getElementById('endvalue').value;
             var request = {
                 origin: start,
                 destination: end,
@@ -270,13 +274,14 @@
 
         }
 
-        function Button9_onclick() {
+
+
+        function Button1_onclick() {
             calcRoute();
         }
 
         window.onload = InitializeMap;
     </script>
-
 
     <script language="JavaScript" type="text/javascript">
         var PrimaryRadio = 0;
@@ -758,251 +763,252 @@
     <%---------end script for Datetime Picker----------%>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-      <div class="right_panel">
-        <!-- Tabs starts -->
-        <!-- appointment tabs section start -->
-        <ul class="appointment_tab">
-            <li><a href="home.aspx">Personal Appointment</a></li>
-            <li><a href="MasterAppointment.aspx">Master Appointment</a></li>
-            <li><a href="#">Construction Calendar</a></li>
-            <li><a href="CallSheet.aspx">Call Sheet</a></li>
-        </ul>
-        <!-- appointment tabs section end -->
-        <h1>Add Customer</h1>
-        <div class="form_panel_custom">
-            <span>*Check Primary Contact 
-            </span>
-            <span>
-                <asp:Label ID="lblmsg" runat="server" Visible="false"></asp:Label>
-            </span>
-            <div style="width: 100%" id="divPrimaryContact">
-                <ul>
-                    <li style="width: 100%;">
-                        <div class="tblPrimaryContact" style="margin-top: 10px; width: 100%">
-                            <div style="width: 40%; float: left;">
-                                <table>
+    <asp:Panel ID="pan1" runat="server" ScrollBars="Auto">
+        <div class="right_panel">
+            <!-- Tabs starts -->
+            <!-- appointment tabs section start -->
+            <ul class="appointment_tab">
+                <li><a href="home.aspx">Personal Appointment</a></li>
+                <li><a href="MasterAppointment.aspx">Master Appointment</a></li>
+                <li><a href="#">Construction Calendar</a></li>
+                <li><a href="CallSheet.aspx">Call Sheet</a></li>
+            </ul>
+            <!-- appointment tabs section end -->
+            <h1>Add Customer</h1>
+            <div class="form_panel_custom">
+                <span>*Check Primary Contact 
+                </span>
+                <span>
+                    <asp:Label ID="lblmsg" runat="server" Visible="false"></asp:Label>
+                </span>
+                <div style="width: 100%" id="divPrimaryContact">
+                    <ul>
+                        <li style="width: 100%;">
+                            <div class="tblPrimaryContact" style="margin-top: 10px; width: 100%">
+                                <div style="width: 40%; float: left;">
+                                    <table>
 
-                                    <tr>
-                                        <td>
-                                            <input type="checkbox" id="chkContactType1" name="chkContactType1"/>
-                                        </td>
-                                        <td>
-                                            <select id="selContactType1" clientidmode="Static" runat="server" tabindex="4" name="selContactType1" class="drop_down">
-                                                <option value="0">Select</option>
-                                                <option value="DM">DM</option>
-                                                <option value="Spouse">Spouse</option>
-                                                <option value="Partner">Partner</option>
-                                                <option value="Others">Others</option>
-                                            </select>
-                                            <label></label>
-                                        </td>
-                                        <td>
-                                            <input type="text" id="txtFName1" runat="server" tabindex="7" placeholder="First Name" />
-                                        </td>
-                                        <td>
-                                            <input type="text" id="txtLName1" runat="server" tabindex="7" placeholder="Last Name" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="paddingtd">
-                                            <input type="button" id="Button8" style="visibility: hidden" value="Add" class="clsFullWidth cls_btn_plus" tabindex="31" />
-                                        </td>
-                                    </tr>
-                                </table>
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" id="chkContactType1" name="chkContactType1" />
+                                            </td>
+                                            <td>
+                                                <select id="selContactType1" clientidmode="Static" runat="server" tabindex="4" name="selContactType1" class="drop_down">
+                                                    <option value="0">Select</option>
+                                                    <option value="DM">DM</option>
+                                                    <option value="Spouse">Spouse</option>
+                                                    <option value="Partner">Partner</option>
+                                                    <option value="Others">Others</option>
+                                                </select>
+                                                <label></label>
+                                            </td>
+                                            <td>
+                                                <input type="text" id="txtFName1" runat="server" tabindex="7" placeholder="First Name" />
+                                            </td>
+                                            <td>
+                                                <input type="text" id="txtLName1" runat="server" tabindex="7" placeholder="Last Name" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="paddingtd">
+                                                <input type="button" id="Button8" style="visibility: hidden" value="Add" class="clsFullWidth cls_btn_plus" tabindex="31" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div style="width: 40%; float: left;">
+                                    <table>
+                                        <tr>
+                                            <td class="paddingtd"></td>
+                                            <td>
+                                                <input type="text" id="txtPhone1" runat="server" class='clsMaskPhone' clientidmode="Static" data-type="1" tabindex="7" placeholder="___-___-____" />
+                                            </td>
+                                            <td>
+                                                <label class="clsFullWidth">Phone Type</label>
+                                            </td>
+                                            <td>
+                                                <select id="selPhoneType1" class="clsFullWidth" clientidmode="Static" data-type="1" runat="server" tabindex="4" name="selPhoneType1">
+                                                    <option value="0">Select</option>
+                                                    <option value="CellPhone">Cell Phone #</option>
+                                                    <option value="HousePhone">House Phone #</option>
+                                                    <option value="WorkPhone">Work Phone #</option>
+                                                    <option value="AltPhone">Alt. Phone #</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="paddingtd">
+                                                <input type="button" id="Button4" runat="server" value="Add" data-type="1" class="clsFullWidth cls_btn_plus" tabindex="31"
+                                                    onclick="Phone(this)" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div style="width: 20%; float: left;">
+                                    <table>
+                                        <tr>
+                                            <td class="paddingtd"></td>
+                                            <td>
+                                                <input type="text" id="txtEMail1" runat="server" tabindex="7" placeholder="EMail" clientidmode="Static" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="paddingtd">
+                                                <input type="button" id="Button7" runat="server" value="Add" data-type="1" class="clsFullWidth cls_btn_plus" tabindex="31"
+                                                    onclick="Email(this)" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
                             </div>
-                            <div style="width: 40%; float: left;">
-                                <table>
-                                    <tr>
-                                        <td class="paddingtd"></td>
-                                        <td>
-                                            <input type="text" id="txtPhone1" runat="server" class='clsMaskPhone' clientidmode="Static" data-type="1" tabindex="7" placeholder="___-___-____" />
-                                        </td>
-                                        <td>
-                                            <label class="clsFullWidth">Phone Type</label>
-                                        </td>
-                                        <td>
-                                            <select id="selPhoneType1" class="clsFullWidth" clientidmode="Static" data-type="1" runat="server" tabindex="4" name="selPhoneType1">
-                                                <option value="0">Select</option>
-                                                <option value="CellPhone">Cell Phone #</option>
-                                                <option value="HousePhone">House Phone #</option>
-                                                <option value="WorkPhone">Work Phone #</option>
-                                                <option value="AltPhone">Alt. Phone #</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="paddingtd">
-                                            <input type="button" id="Button4" runat="server" value="Add" data-type="1" class="clsFullWidth cls_btn_plus" tabindex="31"
-                                                onclick="Phone(this)" />
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div style="width: 20%; float: left;">
-                                <table>
-                                    <tr>
-                                        <td class="paddingtd"></td>
-                                        <td>
-                                            <input type="text" id="txtEMail1" runat="server" tabindex="7" placeholder="EMail" clientidmode="Static" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="paddingtd">
-                                            <input type="button" id="Button7" runat="server" value="Add" data-type="1" class="clsFullWidth cls_btn_plus" tabindex="31"
-                                                onclick="Email(this)" />
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </div>
-                    </li>
+                        </li>
 
-                    <li style="width: 100%;">
-                        <div class="tblPrimaryContact" style="margin-top: 10px; width: 100%">
-                            <div style="width: 40%; float: left;">
-                                <table>
-                                    <tr>
-                                        <td>
-                                            <input type="checkbox" id="chkContactType2" name="namechkContactType2" />
-                                        </td>
-                                        <td>
-                                            <select id="selContactType2" clientidmode="Static" runat="server" tabindex="4" name="selContactType2" class="drop_down">
-                                                <option value="0">Select</option>
-                                                <option value="DM">DM</option>
-                                                <option value="Spouse">Spouse</option>
-                                                <option value="Partner">Partner</option>
-                                                <option value="Others">Others</option>
-                                            </select>
-                                            <label></label>
-                                        </td>
-                                        <td>
-                                            <input type="text" id="txtFName2" runat="server" tabindex="7" placeholder="First Name" />
-                                        </td>
-                                        <td>
-                                            <input type="text" id="txtLName2" runat="server" tabindex="7" placeholder="Last Name" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="paddingtd">
-                                            <input type="button" id="Button1" runat="server" value="Add" class="clsFullWidth cls_btn_plus" tabindex="31"
-                                                onclick="AddTemplate(this)" />
-                                        </td>
-                                    </tr>
-                                </table>
+                        <li style="width: 100%;">
+                            <div class="tblPrimaryContact" style="margin-top: 10px; width: 100%">
+                                <div style="width: 40%; float: left;">
+                                    <table>
+                                        <tr>
+                                            <td>
+                                                <input type="checkbox" id="chkContactType2" name="namechkContactType2" />
+                                            </td>
+                                            <td>
+                                                <select id="selContactType2" clientidmode="Static" runat="server" tabindex="4" name="selContactType2" class="drop_down">
+                                                    <option value="0">Select</option>
+                                                    <option value="DM">DM</option>
+                                                    <option value="Spouse">Spouse</option>
+                                                    <option value="Partner">Partner</option>
+                                                    <option value="Others">Others</option>
+                                                </select>
+                                                <label></label>
+                                            </td>
+                                            <td>
+                                                <input type="text" id="txtFName2" runat="server" tabindex="7" placeholder="First Name" />
+                                            </td>
+                                            <td>
+                                                <input type="text" id="txtLName2" runat="server" tabindex="7" placeholder="Last Name" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="paddingtd">
+                                                <input type="button" id="Button1" runat="server" value="Add" class="clsFullWidth cls_btn_plus" tabindex="31"
+                                                    onclick="AddTemplate(this)" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div style="width: 40%; float: left;">
+                                    <table>
+                                        <tr>
+                                            <td class="paddingtd"></td>
+                                            <td>
+                                                <input type="text" id="txtPhone2" runat="server" tabindex="7" data-type="2" class='clsMaskPhone' clientidmode="Static" placeholder="___-___-____" />
+                                            </td>
+                                            <td>
+                                                <label class="clsFullWidth">Phone Type</label>
+                                            </td>
+                                            <td>
+                                                <select id="selPhoneType2" class="clsFullWidth" clientidmode="Static" runat="server" tabindex="4" data-type="2">
+                                                    <option value="0">Select</option>
+                                                    <option value="CellPhone">Cell Phone #</option>
+                                                    <option value="HousePhone">House Phone #</option>
+                                                    <option value="WorkPhone">Work Phone #</option>
+                                                    <option value="AltPhone">Alt. Phone #</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="paddingtd">
+                                                <input type="button" id="Button2" runat="server" value="Add" class="clsFullWidth cls_btn_plus" tabindex="31" data-type="2"
+                                                    onclick="Phone(this)" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div style="width: 20%; float: left;">
+                                    <table>
+                                        <tr>
+                                            <td class="paddingtd"></td>
+                                            <td>
+                                                <input type="text" id="txtEMail2" runat="server" tabindex="7" placeholder="EMail" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="paddingtd">
+                                                <input type="button" id="Button3" runat="server" value="Add" class="clsFullWidth cls_btn_plus" tabindex="31" data-type="2"
+                                                    onclick="Email(this)" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
                             </div>
-                            <div style="width: 40%; float: left;">
-                                <table>
-                                    <tr>
-                                        <td class="paddingtd"></td>
-                                        <td>
-                                            <input type="text" id="txtPhone2" runat="server" tabindex="7" data-type="2" class='clsMaskPhone' clientidmode="Static" placeholder="___-___-____" />
-                                        </td>
-                                        <td>
-                                            <label class="clsFullWidth">Phone Type</label>
-                                        </td>
-                                        <td>
-                                            <select id="selPhoneType2" class="clsFullWidth" clientidmode="Static" runat="server" tabindex="4" data-type="2">
-                                                <option value="0">Select</option>
-                                                <option value="CellPhone">Cell Phone #</option>
-                                                <option value="HousePhone">House Phone #</option>
-                                                <option value="WorkPhone">Work Phone #</option>
-                                                <option value="AltPhone">Alt. Phone #</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="paddingtd">
-                                            <input type="button" id="Button2" runat="server" value="Add" class="clsFullWidth cls_btn_plus" tabindex="31" data-type="2"
-                                                onclick="Phone(this)" />
-                                        </td>
-                                    </tr>
-                                </table>
+                        </li>
+                    </ul>
+                </div>
+                <div class="grid_h">
+                    <label id="lblTPLHeading" runat="server">
+                        Touch Point Log</label>
+                </div>
+
+                <div class="grid">
+                    <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
+                        <ContentTemplate>
+                            <%--<asp:Panel ID="pnlAddress" runat="server"></asp:Panel>--%>
+                            <asp:PlaceHolder runat="server" ID="PlaceHolder2"></asp:PlaceHolder>
+                            <asp:GridView ID="grdTouchPointLog" EmptyDataText="No Data Found" runat="server" Width="100%" AutoGenerateColumns="false"
+                                OnRowDataBound="grdTouchPointLog_RowDataBound">
+                                <Columns>
+                                    <asp:BoundField HeaderText="User Id" DataField="Email" />
+                                    <asp:BoundField HeaderText="SoldJobId" DataField="SoldJobId" />
+                                    <asp:BoundField HeaderText="Date & Time" DataField="Date" />
+                                    <asp:BoundField HeaderText="Note / Status" DataField="Status" />
+                                </Columns>
+                            </asp:GridView>
+                        </ContentTemplate>
+                        <Triggers>
+                            <asp:AsyncPostBackTrigger ControlID="btnAddNotes" />
+                        </Triggers>
+                        <%--   <asp:Button ID="btnAddNotes" runat="server" Text="Add Notes" OnClick="btnAddNotes_Click" ClientIDMode="Static" />--%>
+                    </asp:UpdatePanel>
+                </div>
+                <br />
+                <table cellspacing="0" cellpadding="0" width="950px" border="1" style="width: 100%; border-collapse: collapse;">
+                    <tr>
+                        <td>
+                            <div class="btn_sec">
+                                <asp:Button ID="btnAddNotes" runat="server" Text="Add Notes" OnClick="btnAddNotes_Click" />
                             </div>
-                            <div style="width: 20%; float: left;">
-                                <table>
-                                    <tr>
-                                        <td class="paddingtd"></td>
-                                        <td>
-                                            <input type="text" id="txtEMail2" runat="server" tabindex="7" placeholder="EMail" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="paddingtd">
-                                            <input type="button" id="Button3" runat="server" value="Add" class="clsFullWidth cls_btn_plus" tabindex="31" data-type="2"
-                                                onclick="Email(this)" />
-                                        </td>
-                                    </tr>
-                                </table>
+                        </td>
+                        <td>
+                            <div class="">
+                                <asp:UpdatePanel ID="UpdatePanel5" runat="server" UpdateMode="Conditional">
+                                    <ContentTemplate>
+                                        <asp:PlaceHolder runat="server" ID="PlaceHolder3"></asp:PlaceHolder>
+                                        <asp:TextBox ID="txtAddNotes" runat="server" TextMode="MultiLine" Height="33px" Width="407px"></asp:TextBox>
+                                    </ContentTemplate>
+                                    <Triggers>
+                                        <asp:AsyncPostBackTrigger ControlID="btnAddNotes" />
+                                    </Triggers>
+
+                                </asp:UpdatePanel>
+
                             </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="grid_h">
-                <label id="lblTPLHeading" runat="server">
-                    Touch Point Log</label>
-            </div>
 
-            <div class="grid">
-                <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional">
-                    <ContentTemplate>
-                        <%--<asp:Panel ID="pnlAddress" runat="server"></asp:Panel>--%>
-                        <asp:PlaceHolder runat="server" ID="PlaceHolder2"></asp:PlaceHolder>
-                        <asp:GridView ID="grdTouchPointLog" EmptyDataText="No Data Found" runat="server" Width="100%" AutoGenerateColumns="false"
-                            OnRowDataBound="grdTouchPointLog_RowDataBound">
-                            <Columns>
-                                <asp:BoundField HeaderText="User Id" DataField="Email" />
-                                <asp:BoundField HeaderText="SoldJobId" DataField="SoldJobId" />
-                                <asp:BoundField HeaderText="Date & Time" DataField="Date" />
-                                <asp:BoundField HeaderText="Note / Status" DataField="Status" />
-                            </Columns>
-                        </asp:GridView>
-                    </ContentTemplate>
-                    <Triggers>
-                        <asp:AsyncPostBackTrigger ControlID="btnAddNotes" />
-                    </Triggers>
-                    <%--   <asp:Button ID="btnAddNotes" runat="server" Text="Add Notes" OnClick="btnAddNotes_Click" ClientIDMode="Static" />--%>
-                </asp:UpdatePanel>
-            </div>
-            <br />
-            <table cellspacing="0" cellpadding="0" width="950px" border="1" style="width: 100%; border-collapse: collapse;">
-                <tr>
-                    <td>
-                        <div class="btn_sec">
-                            <asp:Button ID="btnAddNotes" runat="server" Text="Add Notes" OnClick="btnAddNotes_Click" />
-                        </div>
-                    </td>
-                    <td>
-                        <div class="">
-                            <asp:UpdatePanel ID="UpdatePanel5" runat="server" UpdateMode="Conditional">
-                                <ContentTemplate>
-                                    <asp:PlaceHolder runat="server" ID="PlaceHolder3"></asp:PlaceHolder>
-                                    <asp:TextBox ID="txtAddNotes" runat="server" TextMode="MultiLine" Height="33px" Width="407px"></asp:TextBox>
-                                </ContentTemplate>
-                                <Triggers>
-                                    <asp:AsyncPostBackTrigger ControlID="btnAddNotes" />
-                                </Triggers>
-
-                            </asp:UpdatePanel>
-
-                        </div>
-
-                    </td>
-                    <td>
-                        <span id="spanS3">
-                            <%--<label>Status</label></span>--%>
-                            <%--<asp:DropDownList ID="ddlfollowup3" AutoPostBack="false" ClientIDMode="Static" runat="server" TabIndex="4">
+                        </td>
+                        <td>
+                            <span id="spanS3">
+                                <%--<label>Status</label></span>--%>
+                                <%--<asp:DropDownList ID="ddlfollowup3" AutoPostBack="false" ClientIDMode="Static" runat="server" TabIndex="4">
                         </asp:DropDownList>--%>
-                    </td>
-                </tr>
-            </table>
-            <div class="grid_h">
-                <strong>Customer Quality</strong>
-            </div>
-            <ul>
-                <li style="width: 49%;">
-                    <table border="0" cellspacing="0" cellpadding="0">
-                        <%-- <tr>
+                        </td>
+                    </tr>
+                </table>
+                <div class="grid_h">
+                    <strong>Customer Quality</strong>
+                </div>
+                <ul>
+                    <li style="width: 49%;">
+                        <table border="0" cellspacing="0" cellpadding="0">
+                            <%-- <tr>
                             <td>
                                 <label>
                                     Service or EST<span></span></label>
@@ -1015,194 +1021,194 @@
                                 </label>
                             </td>
                         </tr>--%>
-                        <tr>
-                            <td>
-                                <label>
-                                    Primary Product of Interest (3 months)</label>
-                                <asp:DropDownList ID="drpProductOfInterest1" runat="server" onchange="PrimaryProduct(this)" TabIndex="29">
-                                </asp:DropDownList>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label>
-                                    <%-- <span>*</span> Contact Preference</label>--%>
+                            <tr>
+                                <td>
+                                    <label>
+                                        Primary Product of Interest (3 months)</label>
+                                    <asp:DropDownList ID="drpProductOfInterest1" runat="server" onchange="PrimaryProduct(this)" TabIndex="29">
+                                    </asp:DropDownList>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>
+                                        <%-- <span>*</span> Contact Preference</label>--%>
                                      Contact Preference</label>
-                                <asp:CheckBox ID="chbemail" runat="server" Width="14%" Text="Email " TabIndex="17"
-                                    onclick="fnCheckOne(this)" />
-                                <asp:CheckBox ID="chbcall" runat="server" Text="Call" Checked="false" Width="14%"
-                                    TabIndex="18" onclick="fnCheckOne(this)" />
-                                <asp:CheckBox ID="chbtext" runat="server" Width="14%" Text="Text " TabIndex="17"
-                                    onclick="fnCheckOne(this)" />
-                                <asp:CheckBox ID="chbmail" runat="server" Text="Mail" Width="14%"
-                                    TabIndex="18" onclick="fnCheckOne(this)" />
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label>
-                                    Estimate Date</label>
-                                <asp:TextBox ID="txtestimate_date" CssClass="date" TabIndex="5" runat="server" onkeypress="return false"></asp:TextBox>
-                                <%--<input type="text" name="textfield" id="textfield" />--%>
-                                <label>
-                                </label>
-                            </td>
-                        </tr>
+                                    <asp:CheckBox ID="chbemail" runat="server" Width="14%" Text="Email " TabIndex="17"
+                                        onclick="fnCheckOne(this)" />
+                                    <asp:CheckBox ID="chbcall" runat="server" Text="Call" Checked="false" Width="14%"
+                                        TabIndex="18" onclick="fnCheckOne(this)" />
+                                    <asp:CheckBox ID="chbtext" runat="server" Width="14%" Text="Text " TabIndex="17"
+                                        onclick="fnCheckOne(this)" />
+                                    <asp:CheckBox ID="chbmail" runat="server" Text="Mail" Width="14%"
+                                        TabIndex="18" onclick="fnCheckOne(this)" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>
+                                        Estimate Date</label>
+                                    <asp:TextBox ID="txtestimate_date" CssClass="date" TabIndex="5" runat="server" onkeypress="return false"></asp:TextBox>
+                                    <%--<input type="text" name="textfield" id="textfield" />--%>
+                                    <label>
+                                    </label>
+                                </td>
+                            </tr>
 
-                        <uc1:UCAddress runat="server" id="UCAddress" />
+                            <uc1:UCAddress runat="server" ID="UCAddress" />
 
-                        <asp:UpdatePanel ID="panel4" runat="server">
-                            <ContentTemplate>
-                                <%--<asp:Panel ID="pnlAddress" runat="server"></asp:Panel>--%>
-                                <asp:PlaceHolder runat="server" ID="myPlaceHolder"></asp:PlaceHolder>
-                            </ContentTemplate>
-                            <Triggers>
-                                <asp:AsyncPostBackTrigger ControlID="btnHideSubmit" />
-                            </Triggers>
-                        </asp:UpdatePanel>
-                        <%--<tr>
+                            <asp:UpdatePanel ID="panel4" runat="server">
+                                <ContentTemplate>
+                                    <%--<asp:Panel ID="pnlAddress" runat="server"></asp:Panel>--%>
+                                    <asp:PlaceHolder runat="server" ID="myPlaceHolder"></asp:PlaceHolder>
+                                </ContentTemplate>
+                                <Triggers>
+                                    <asp:AsyncPostBackTrigger ControlID="btnHideSubmit" />
+                                </Triggers>
+                            </asp:UpdatePanel>
+                            <%--<tr>
                             <td>
                                 <uc1:UCAddress runat="server" id="UCAddress1" />
                             </td>
                         </tr>--%>
 
-                        <%--<tr>
+                            <%--<tr>
                             <td>
                                 
                             </td>
                         </tr>--%>
-                    </table>
-                </li>
-                <li class="last" style="width: 49%;">
-                    <table border="0" cellspacing="0" cellpadding="0">
-                        <tr>
-                            <td>
-                                <label>
-                                    Secondary Product of Interest (6 months - 1 year)</label>
-                                <asp:DropDownList ID="drpProductOfInterest2" runat="server" onchange="SecondaryProduct(this)" TabIndex="30">
-                                </asp:DropDownList>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <label>Competitor Bids<span></span></label>
-                                <asp:TextBox ID="txtCompetitorBids" runat="server" TabIndex="6">
-                                   </asp:TextBox>
-                                <label>
-                                </label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="size34">
-                                <label>
-                                    Best Time To Contact</label>
-                                </div>
-                                <div class="size66">
-                                <%--<asp:DropDownList ID="ddlbesttime" runat="server" TabIndex="27">
+                        </table>
+                    </li>
+                    <li class="last" style="width: 49%;">
+                        <table border="0" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td>
+                                    <label>
+                                        Secondary Product of Interest (6 months - 1 year)</label>
+                                    <asp:DropDownList ID="drpProductOfInterest2" runat="server" onchange="SecondaryProduct(this)" TabIndex="30">
+                                    </asp:DropDownList>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>Competitor Bids<span></span></label>
+                                    <asp:TextBox ID="txtCompetitorBids" runat="server" TabIndex="6">
+                                    </asp:TextBox>
+                                    <label>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="size34">
+                                        <label>
+                                            Best Time To Contact</label>
+                                    </div>
+                                    <div class="size66">
+                                        <%--<asp:DropDownList ID="ddlbesttime" runat="server" TabIndex="27">
                                     <asp:ListItem Value="0">Select</asp:ListItem>
                                     <asp:ListItem>Morning</asp:ListItem>
                                     <asp:ListItem>Afternoon</asp:ListItem>
                                     <asp:ListItem>Evening</asp:ListItem>
                                 </asp:DropDownList>--%>
-                                <%--<asp:TextBox ID="txtBestTimetoContact" runat="server" TabIndex="6" ClientIDMode="Static"
+                                        <%--<asp:TextBox ID="txtBestTimetoContact" runat="server" TabIndex="6" ClientIDMode="Static"
                                     onkeypress="return false"></asp:TextBox>
                                 <label>
                                 </label>--%>
-                                <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" ErrorMessage="Please Select Best Time To Contact."
+                                        <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" ErrorMessage="Please Select Best Time To Contact."
                                     ForeColor="Red" ValidationGroup="addcust" InitialValue="0" ControlToValidate="ddlbesttime"></asp:RequiredFieldValidator>--%>
-                                <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Please Select Best Time To Contact."
+                                        <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Please Select Best Time To Contact."
                                     ForeColor="Red" ValidationGroup="addcust" InitialValue="0" ControlToValidate="txtBestTimetoContact"></asp:RequiredFieldValidator>--%>
 
-                                <table class="tblBestTimeToContact" id="tblBestTime" runat="server" clientidmode="Static">
-                                    <tr>
-                                        <td class="nopadding" style="width:160px;padding-right:10px!important;">
-                                            <asp:TextBox ID="txtBestDayToContact" runat="server" TabIndex="6" ClientIDMode="Static"
-                                    onkeypress="return false" Width="90%" ></asp:TextBox>
-                                        </td>
-                                        <td class="nopadding" style="width:95px;">
-                                            <asp:TextBox ID="txtBestStartTime" runat="server" TabIndex="6" ClientIDMode="Static"
-                                    onkeypress="return false"></asp:TextBox>
-                                        </td>
-                                        <td class="nopadding"  style="width:95px;">
-                                            <asp:TextBox ID="txtBestEndTime" runat="server" TabIndex="6" ClientIDMode="Static"
-                                    onkeypress="return false"></asp:TextBox>
-                                        </td>
-                                        <td class="nopadding">
-                                            <input type="button" id="btnAddTime" runat="server" value="Add" class="clsFullWidth cls_btn_plus" tabindex="31"
-                                                onclick="AddDayTime(this)" />
-                                        </td>
-                                    </tr>
-                                </table>
+                                        <table class="tblBestTimeToContact" id="tblBestTime" runat="server" clientidmode="Static">
+                                            <tr>
+                                                <td class="nopadding" style="width: 160px; padding-right: 10px!important;">
+                                                    <asp:TextBox ID="txtBestDayToContact" runat="server" TabIndex="6" ClientIDMode="Static"
+                                                        onkeypress="return false" Width="90%"></asp:TextBox>
+                                                </td>
+                                                <td class="nopadding" style="width: 95px;">
+                                                    <asp:TextBox ID="txtBestStartTime" runat="server" TabIndex="6" ClientIDMode="Static"
+                                                        onkeypress="return false"></asp:TextBox>
+                                                </td>
+                                                <td class="nopadding" style="width: 95px;">
+                                                    <asp:TextBox ID="txtBestEndTime" runat="server" TabIndex="6" ClientIDMode="Static"
+                                                        onkeypress="return false"></asp:TextBox>
+                                                </td>
+                                                <td class="nopadding">
+                                                    <input type="button" id="btnAddTime" runat="server" value="Add" class="clsFullWidth cls_btn_plus" tabindex="31"
+                                                        onclick="AddDayTime(this)" />
+                                                </td>
+                                            </tr>
+                                        </table>
                                     </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <%--  <label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <%--  <label>
                                     Estimate Time<span>*</span></label>--%>
-                                <label>
-                                    Estimate Time</label>
-                                <asp:TextBox ID="txtestimate_time" CssClass="time" runat="server" TabIndex="6"
-                                    onkeypress="return false"></asp:TextBox>
-                                <label>
-                                </label>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div>
-                                    <input type="checkbox" id="chkbillingaddress" style="width: 5%" tabindex="20" checked="checked" onchange="BillingAddress(this)" />
-                                </div>
-                                <%--   <label><span>*</span>Billing Address Same</label>--%>
-                                <label>Billing Address Same</label>
-                                <textarea cols="" id="txtbill_address" name="BillAddress" style="width: 50%" rows="6" tabindex="21"></textarea>
-                                <label></label>
-                                <span id=""></span>
-                                <br />
-                                <%--  <label>Address Type<span>*</span></label>--%>
-                                <label>Address Type</label>
-                                <select id="selAddressType" name="AddressType">
-                                    <option value="Select">Select</option>
-                                    <option value="Primary Residence">Primary Residence</option>
-                                    <option value="Business">Business</option>
-                                    <option value="Vacation House">Vacation House</option>
-                                    <option value="Rental">Rental</option>
-                                    <option value="Condo">Condo</option>
-                                    <option value="Apartment">Apartment</option>
-                                    <option value="Mobile Home">Mobile Home</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <%--<input type="button" id="Button6" runat="server" value="Add Address" style="width: 110px;" class="cls_btn_plus" tabindex="31"
+                                    <label>
+                                        Estimate Time</label>
+                                    <asp:TextBox ID="txtestimate_time" CssClass="time" runat="server" TabIndex="6"
+                                        onkeypress="return false"></asp:TextBox>
+                                    <label>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div>
+                                        <input type="checkbox" id="chkbillingaddress" style="width: 5%" tabindex="20" checked="checked" onchange="BillingAddress(this)" />
+                                    </div>
+                                    <%--   <label><span>*</span>Billing Address Same</label>--%>
+                                    <label>Billing Address Same</label>
+                                    <textarea cols="" id="txtbill_address" name="BillAddress" style="width: 50%" rows="6" tabindex="21"></textarea>
+                                    <label></label>
+                                    <span id=""></span>
+                                    <br />
+                                    <%--  <label>Address Type<span>*</span></label>--%>
+                                    <label>Address Type</label>
+                                    <select id="selAddressType" name="AddressType">
+                                        <option value="Select">Select</option>
+                                        <option value="Primary Residence">Primary Residence</option>
+                                        <option value="Business">Business</option>
+                                        <option value="Vacation House">Vacation House</option>
+                                        <option value="Rental">Rental</option>
+                                        <option value="Condo">Condo</option>
+                                        <option value="Apartment">Apartment</option>
+                                        <option value="Mobile Home">Mobile Home</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <%--<input type="button" id="Button6" runat="server" value="Add Address" style="width: 110px;" class="cls_btn_plus" tabindex="31"
                                     onclick="AddAddress(this)" />--%>
 
-                                <asp:UpdatePanel ID="UpdatePanel2" runat="server">
-                                    <ContentTemplate>
-                                        <asp:Button ID="btnAddAddress" runat="server" Text="Add Address" Width="110px" CssClass="cls_btn_plus" TabIndex="31"
-                                            OnClick="btnAddAddress_Click" />
-                                    </ContentTemplate>
-                                </asp:UpdatePanel>
-                            </td>
-                        </tr>
-                        <%--  <tr>
+                                    <asp:UpdatePanel ID="UpdatePanel2" runat="server">
+                                        <ContentTemplate>
+                                            <asp:Button ID="btnAddAddress" runat="server" Text="Add Address" Width="110px" CssClass="cls_btn_plus" TabIndex="31"
+                                                OnClick="btnAddAddress_Click" />
+                                        </ContentTemplate>
+                                    </asp:UpdatePanel>
+                                </td>
+                            </tr>
+                            <%--  <tr>
                             <td>
                                 <label>
                                     Project Manager</label>
                                 <asp:TextBox ID="txtProjectManager" Text=""  TabIndex="22" runat="server"></asp:TextBox>
                             </td>
                         </tr>--%>
-                        <%--  <tr>
+                            <%--  <tr>
                             <td>
                                 <label>
                                     Jr Project Manager</label>
                                 <asp:TextBox ID="txtJrProjectManager" Text=""  TabIndex="22" runat="server"></asp:TextBox>
                             </td>
                         </tr>--%>
-                        <%-- <tr>
+                            <%-- <tr>
                             <td>
                                 <label id="F3Lbl">
                                     Follow Up</label>
@@ -1211,7 +1217,7 @@
                                 <br />
                             </td>
                         </tr>--%>
-                        <%-- <tr id="SpanReason">
+                            <%-- <tr id="SpanReason">
                             <td>
                                 <label>
                                     Reason of Closed:</label>
@@ -1220,66 +1226,66 @@
                                 </label>
                             </td>
                         </tr>--%>
-                    </table>
-                </li>
-            </ul>
-            <asp:HiddenField ID="hdnBestTimeToContact" runat="server" ClientIDMode="Static"/>
-            <div class="btn_sec">
+                        </table>
+                    </li>
+                </ul>
+                <asp:HiddenField ID="hdnBestTimeToContact" runat="server" ClientIDMode="Static" />
+                <div class="btn_sec">
 
-                <%--<asp:Button ID="btnUpdate" runat="server" Text="Update" ValidationGroup="addcust" TabIndex="31" OnClientClick="CheckForDuplication()" />--%>
-                <input type="button" id="btnSubmit" value="Submit" tabindex="31" onclick="CheckForDuplication()" />
-                <asp:HiddenField runat="server" ID="hdnStatus" ClientIDMode="Static"/>
-                <asp:Button ID="btnHideSubmit" runat="server" ClientIDMode="Static" Text="Submit" ValidationGroup="addcust"
-                    TabIndex="26" OnClick="btnSubmit_Click" />
+                    <%--<asp:Button ID="btnUpdate" runat="server" Text="Update" ValidationGroup="addcust" TabIndex="31" OnClientClick="CheckForDuplication()" />--%>
+                    <input type="button" id="btnSubmit" value="Submit" tabindex="31" onclick="CheckForDuplication()" />
+                    <asp:HiddenField runat="server" ID="hdnStatus" ClientIDMode="Static" />
+                    <asp:Button ID="btnHideSubmit" runat="server" ClientIDMode="Static" Text="Submit" ValidationGroup="addcust"
+                        TabIndex="26" OnClick="btnSubmit_Click" />
 
-                
-                <%-- <asp:Button ID="btnSubmit" runat="server" ClientIDMode="Static" Text="Submit" ValidationGroup="addcust"
+
+                    <%-- <asp:Button ID="btnSubmit" runat="server" ClientIDMode="Static" Text="Submit" ValidationGroup="addcust"
                     TabIndex="26" OnClick="btnSubmit_Click" />--%>
-                <asp:Button ID="btnCancel" runat="server" Text="Reset" OnClick="btnCancel_Click"
-                    TabIndex="27" />
-                <%-- <input name="input2" type="submit" value="Submit" />
+                    <asp:Button ID="btnCancel" runat="server" Text="Reset" OnClick="btnCancel_Click"
+                        TabIndex="27" />
+                    <%-- <input name="input2" type="submit" value="Submit" />
               <input type="submit" value="Cancel" />--%>
-            </div>
-             <table width="100%" cellpadding="0" cellspacing="0" align="center">
-                <tr>
-                    <td style="width: 50%" valign="top">
-                        <table>
-                            <%--<tr>
+                </div>
+                <table width="100%" cellpadding="0" cellspacing="0" align="center">
+                    <tr>
+                        <td style="width: 50%; display: none;" valign="top">
+                            <table>
+                                <%--<tr>
                                 <td colspan="3" style="width: 50%">
                                     <asp:Label ID="lblDefault" runat="server" Font-Size="15px" Font-Bold="true">:</asp:Label>
                                 </td>
                             </tr>--%>
-                            <tr>
-                                <td colspan="3" style="width: 50%"></td>
-                            </tr>
-                            <tr>
-                                <td style="width: 42%">
-                                    <asp:Label ID="lblSatartAddress" runat="server" Font-Size="15px" Font-Bold="true">Start:</asp:Label>
-                                    <textarea cols="3" id="txtStartAddress" runat="server" style="width: 230px; font-size: 15px;"></textarea>
-                                </td>
-                                <td style="width: 42%">
-                                    <asp:Label ID="lblEndAddress" runat="server" Font-Size="15px" Font-Bold="true">End:</asp:Label>
-                                   <%-- <asp:DropDownList ID="ddlEndAddress" Width="150px" Height="25px" runat="server" onchange="ChangeAddress()">
+                                <tr>
+                                    <td colspan="3" style="width: 50%"></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 42%">
+                                        <asp:Label ID="lblSatartAddress" runat="server" Font-Size="15px" Font-Bold="true">Start:</asp:Label>
+                                        <textarea cols="3" id="txtStartAddress" runat="server" style="width: 230px; font-size: 15px;"></textarea>
+                                    </td>
+                                    <td style="width: 42%">
+                                        <asp:Label ID="lblEndAddress" runat="server" Font-Size="15px" Font-Bold="true">End:</asp:Label>
+                                        <%-- <asp:DropDownList ID="ddlEndAddress" Width="150px" Height="25px" runat="server" onchange="ChangeAddress()">
                                         <asp:ListItem Value="-1">Select</asp:ListItem>
                                     </asp:DropDownList>--%>
-                                    <asp:TextBox ID="txtEndAddress" runat="server" Width="205px" Height="25px" onblur="return BindMap()"></asp:TextBox>
+                                        <asp:TextBox ID="txtEndAddress" runat="server" Width="205px" Height="25px" onblur="return BindMap()"></asp:TextBox>
 
-                                     <ajaxToolkit:AutoCompleteExtender ID="ddlCompany1" runat="server" TargetControlID="txtEndAddress" Enabled="True"
-                                                        MinimumPrefixLength="1" EnableCaching="true" CompletionSetCount="1" CompletionInterval="1000" ServicePath=""
-                                                        ServiceMethod="LoadAddress" DelimiterCharacters="" OnClientItemSelected="OnSelectAddress">
-                                                    </ajaxToolkit:AutoCompleteExtender>
-                                    <%--<asp:TextBox ID="txtAdditionalEndAddress" runat="server" Style="margin-left: 30px; margin-top: 10px; height: 25px" onchange="ChangeTest();"></asp:TextBox>--%>
-                                    <asp:Button ID="Button9" runat="server" Text="Button" />
-                                </td>
-                                <%--<td style="width: 42%">
+                                        <ajaxToolkit:AutoCompleteExtender ID="ddlCompany1" runat="server" TargetControlID="txtEndAddress" Enabled="True"
+                                            MinimumPrefixLength="1" EnableCaching="true" CompletionSetCount="1" CompletionInterval="1000" ServicePath=""
+                                            ServiceMethod="LoadAddress" DelimiterCharacters="" OnClientItemSelected="OnSelectAddress">
+                                        </ajaxToolkit:AutoCompleteExtender>
+                                        <%--<asp:TextBox ID="txtAdditionalEndAddress" runat="server" Style="margin-left: 30px; margin-top: 10px; height: 25px" onchange="ChangeTest();"></asp:TextBox>--%>
+                                        <%--<asp:Button ID="Button9" runat="server" Text="Button"/> --%>
+                                    </td>
+                                    <%--<td style="width: 42%">
                                     <asp:LinkButton ID="lnkStreetView" runat="server" Font-Bold="true" Style="margin-right: 10px;" OnClientClick="return BindMap()" Text="StreetView?"></asp:LinkButton>
                                 </td>--%>
-                            </tr>
-                        </table>
-                    </td>
-                    <td style="width: 50%" valign="top">
-                        <table>
-                           <%-- <tr>
+                                </tr>
+                            </table>
+                        </td>
+                        <td style="width: 50%; display: none;" valign="top">
+                            <table>
+                                <%-- <tr>
                                
                                 <td style="width: 42%">
 
@@ -1288,44 +1294,78 @@
                                 </td>
                               
                             </tr>--%>
-                             <tr>
-                                <td style="width:50%">
-                                    <asp:Label ID="lblSoldJobId" runat="server" Font-Size="15px" Font-Italic="true"></asp:Label>
-                                </td>
-                                <td style="width:42%">
-                                     <asp:Label ID="iblBeforeImg" runat="server" Font-Size="15px" Font-Bold="true" Font-Underline="true">Before</asp:Label>
-                                </td>
-                                 <td style="width:44%">
-                                     <asp:Label ID="lblAfterImg" runat="server" Font-Size="15px" Font-Bold="true" Font-Underline="true">After</asp:Label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <asp:DropDownList ID="ddlSoldJobId" Width="150px" Height="25px" runat="server" onchange="LocationImage(this)">
-                                        <asp:ListItem Value="">Select</asp:ListItem>
-                                    </asp:DropDownList>
-                                </td>
-                                 <%--<td>
+                                <tr>
+                                    <td style="width: 50%">
+                                        <asp:Label ID="lblSoldJobId" runat="server" Font-Size="15px" Font-Italic="true"></asp:Label>
+                                    </td>
+                                    <td style="width: 42%">
+                                        <asp:Label ID="iblBeforeImg" runat="server" Font-Size="15px" Font-Bold="true" Font-Underline="true">Before</asp:Label>
+                                    </td>
+                                    <td style="width: 44%">
+                                        <asp:Label ID="lblAfterImg" runat="server" Font-Size="15px" Font-Bold="true" Font-Underline="true">After</asp:Label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <asp:DropDownList ID="ddlSoldJobId" Width="150px" Height="25px" runat="server" onchange="LocationImage(this)">
+                                            <asp:ListItem Value="">Select</asp:ListItem>
+                                        </asp:DropDownList>
+                                    </td>
+                                    <%--<td>
                                    <asp:Image ID="imgBefore" Width="40%" Height="40px" runat="server" />
                                 </td>--%>
-                                <td>
-                                    <span></span>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="width: 50%" valign="top">
-                        <div id="container" class="shadow">
-                            <div id="map_canvas">
+                                    <td>
+                                        <span></span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 100%" valign="top">
+                            <div id="container" class="shadow">
+                                <%--
                                 <asp:Panel ID="Panel5" runat="server">
                                 </asp:Panel>
+                                --%>
+
+                                <div id="map_canvas">
+                                    <table id="control" style="width: 100%">
+                                        <tr>
+                                            <td>
+                                                <table>
+                                                    <tr>
+                                                        <td>Start: </td>
+                                                        <td>
+                                                            <input id="startvalue" type="text" style="width: 305px" /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>End: </td>
+                                                        <td>
+                                                            <input id="endvalue" type="text" style="width: 301px" /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="right">
+                                                            <input id="Button5" type="button" value="GetDirections" onclick="return Button1_onclick()" /></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="top">
+                                                <div id="map" style="height: 390px; width: 489px"></div>
+                                            </td>
+                                            <td valign="top">
+                                                <div id="directionpanel" style="height: 390px; overflow: auto"></div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+
                             </div>
-                        </div>
-                    </td>
-                    <td style="width: 50%;position: relative;" valign="top">
-                        <div style="width: 550px" id="ImageDisplay">
+                        </td>
+                        <td style="width: 50%; position: relative;" valign="top">
+                            <!--<div style="width: 550px" id="ImageDisplay">
                                         <%--<ul class="pgwSlideshow">
                                             <li>
                                                 <asp:Image ImageUrl="~/CustomerDocs/LocationPics/0000b936-d5cc-4430-a16c-c8c6f39d2c55-twitter.jpg"  runat="server" data-description="Slide1" />
@@ -1345,13 +1385,14 @@
                                             <li>
                                                 <asp:Image ImageUrl="~/img/slider_img/f.jpg" runat="server" alt="" data-description="Slide8" /></li>
                                         </ul>--%>
-                                    </div>
-                    </td>
-                </tr>
+                                    </div> -->
+                        </td>
+                    </tr>
 
-            </table>
+                </table>
 
+            </div>
+            <!-- Tabs endss -->
         </div>
-        <!-- Tabs endss -->
-    </div>
+    </asp:Panel>
 </asp:Content>
