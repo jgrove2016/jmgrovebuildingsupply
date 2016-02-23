@@ -1,0 +1,28 @@
+ string[] Emails;
+            int count = 0;
+            DataSet ds = shuttersBLL.Instance.GetEmails(Convert.ToInt32(Session["CustomerId"].ToString()));
+            if (Convert.ToString(ds.Tables[0].Rows[0][1]) != "")
+            {
+                txtEmailId.Text = Convert.ToString(ds.Tables[0].Rows[0][1]);
+            }
+            if (Convert.ToString(ds.Tables[0].Rows[0][2]) != "")
+            {
+                txtDOB.Text = Convert.ToString(ds.Tables[0].Rows[0][2]);
+            }
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                if (Convert.ToString(ds.Tables[0].Rows[0][0]) != "")
+                {
+                    Emails = Convert.ToString(ds.Tables[0].Rows[0][0]).Split(',');
+                    count = Emails.Count();
+                    for (int i = 0; i < count; i++)
+                    {
+                        TextBox NewTextBox = new TextBox();
+                        NewTextBox.ID = "TextBoxE" + i.ToString();
+                        NewTextBox.Text = Emails[i];
+                        //form1 is a form in my .aspx file with runat=server attribute
+                        pnlControls.Controls.Add(NewTextBox);
+                    }
+                }
+            }
+            mp_sold.Show();
