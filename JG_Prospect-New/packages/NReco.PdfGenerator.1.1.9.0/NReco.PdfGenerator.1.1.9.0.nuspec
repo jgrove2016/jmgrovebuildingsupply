@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>NReco.PdfGenerator</id>
+    <version>1.1.9.0</version>
+    <title>NReco.PdfGenerator</title>
+    <authors>Vitalii Fedorchenko</authors>
+    <owners>Vitalii Fedorchenko</owners>
+    <licenseUrl>http://www.nrecosite.com/pdf_generator_net.aspx</licenseUrl>
+    <projectUrl>http://www.nrecosite.com/pdf_generator_net.aspx</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>HTML-to-PDF converter component for C# (.NET) based on WkHtmlToPdf utility. Generates pretty-looking PDF documents from .NET application by HTML-layout.</description>
+    <releaseNotes>v.1.1.9 changes:
+- hotfix for wkhtmltopdf "temp files not removed" issue: when stdin/stdout is used wkhtmltopdf creates temp files anyway and it doesn't remove output PDF temp file. To workaround this issue PdfGenerator will use own temp files for this case.
+
+v.1.1.8 changes:
+- added batch mode (BeginBatch/EndBatch): reuse the same wkhtmltopdf.exe process for processing several HTML templates (20%-30% faster). This feature requires commercial license key.
+- some code refactoring for better maintainability
+- added workaround for "Exit with code 1 due to network error" wkhtmltopdf issue: when "--load-error-handling" or "--load-media-error-handling" set to "ignore" (or "skip") wkhtmltopdf generates PDF output but process is exited with code = 1 and as result WkHtmlToPdfException is thrown. Now this case is handled correctly (exception is not thrown if PDF is generated).
+- now NReco.PdfGenerator.dll is a signed (strongly named) assembly
+
+v.1.1.7 changes:
+- added GeneratePdfFromFiles overload that accepts several HTML files for generating one resulting PDF
+- added TempFilesPath property that allows to set custom location for temp files (useful in cases if TEMP folder is not accessible for write by ASP.NET process).
+
+v.1.1.6 changes:
+- fixed header/footer issue (ignored) when TOC/Cover options are enabled
+- WkHtmlToPdf tool upgraded to version 0.12.2.1 (released January 19, 2015). NOTE: this version of wkhtmltopdf requires Visual C++ 2013 runtime libraries installed (Redistributable package for VS 2013 - x86 version).</releaseNotes>
+    <copyright>Copyright 2013-2015 Vitalii Fedorchenko</copyright>
+    <language />
+    <tags>PDF Html WkHtmlToPdf c# html-to-pdf html2pdf Converter PdfGenerator</tags>
+  </metadata>
+</package>
