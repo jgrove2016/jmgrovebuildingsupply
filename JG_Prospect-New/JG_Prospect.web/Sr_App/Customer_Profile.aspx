@@ -1550,8 +1550,10 @@
 
                                             <%--   <as  p:BoundField ItemStyle-Width="50px" HeaderText="Customer Service score" DataField="CustomerServiceScore" />--%>
                                         </Columns>
+                                        
                                         <PagerStyle HorizontalAlign="Right" />
                                     </asp:GridView>
+                                    <script type='text/javascript'>$('.popover').webuiPopover({ constrains: 'horizontal', multi: false, placement: 'bottom', width: 200 });</script>
                                     <asp:Button runat="server" ID="btnModalPopUp" Style="display: none" />
                                     <ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender1" runat="server" TargetControlID="btnModalPopUp" PopupControlID="pnlpopup"
                                         BackgroundCssClass="modalBackground" CancelControlID="btnCancel1" Enabled="true">
@@ -1985,7 +1987,16 @@
                 width: 200
             });
 
-
+            function jsFunctions() {
+                $('.popover').webuiPopover({
+                    constrains: 'horizontal',
+                    //trigger: 'click',
+                    multi: false,
+                    placement: 'bottom',
+                    width: 200
+                });
+            }
+            Sys.WebForms.PageRequestManager.getInstance().add_endRequest(jsFunctions);
 
 
         </script>

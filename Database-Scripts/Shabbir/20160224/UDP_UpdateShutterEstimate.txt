@@ -1,0 +1,177 @@
+
+/****** Object:  StoredProcedure [dbo].[UDP_UpdateShutterEstimate]    Script Date: 2/24/2016 1:58:16 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROC [dbo].[UDP_UpdateShutterEstimate]    
+@status varchar(20),    
+--@estimateId int, 
+@estimateIdAndProductType varchar(500),
+@userId int, 
+--@productId int ,
+@customerId int,
+@PaymentMode varchar(20),
+@Amount money,
+@CheckNo varchar(20),
+@CreditCardNo varchar(20),
+@InvoicePath varchar(MAX) = '',
+@jobId  varchar(100) out 
+AS    
+BEGIN   
+   
+	Declare  @TotalCustomPrice numeric(18,2),@TotalPrice numeric(18,2) , @statusId int ,@generalStatus   varchar(50), @SoldJobId varchar(100),@meetingDate datetime
+	declare @NewRefrenceId varchar(100), @estimateCounter int=1,@estimateId int=0,@productId int=0
+	declare @temp1 table(id int identity(1,1),estimateIdAndProductType varchar(max))
+	--declare @temp2 table(id int identity(1,1),estimateIdAndProductType varchar(max))
+	declare @temp3 table(id int identity(1,1),estimateId varchar(max),productType varchar(max))
+	
+	--code start to separate EstimateId and ProductId and store them in table
+	DECLARE @SplitHyphen char(1),@SplitComma char(1), @X xml,@counter int=1,@eidAndPid varchar(max),@Y xml,@i int =1
+
+	SELECT @SplitComma = ',',@SplitHyphen='-'	
+
+	SELECT @X = CONVERT(xml,'<root><s>' + REPLACE(@estimateIdAndProductType,@SplitComma,'</s><s>') + '</s></root>')
+
+	insert into @temp1(estimateIdAndProductType)  SELECT [Value] = T.c.value('.','varchar(20)')
+	FROM @X.nodes('/root/s') T(c)
+
+	while(@counter<=(select MAX(id) from @temp1))
+	begin
+		select @eidAndPid=estimateIdAndProductType from @temp1 where id=@counter
+	
+		SELECT @Y = CONVERT(xml,'<root><s>' + REPLACE(@eidAndPid,@SplitHyphen,'</s><s>') + '</s></root>')
+		
+		create table #temp2(id int identity(1,1),estimateIdAndProductType varchar(max))
+		insert into #temp2(estimateIdAndProductType)  SELECT [Value] = T.c.value('.','varchar(20)')
+		FROM @Y.nodes('/root/s') T(c)
+	
+		insert into @temp3(estimateId) select estimateIdAndProductType from #temp2 where id=1
+		update @temp3 set productType= (select estimateIdAndProductType from #temp2 where id=2)
+		where id=(select MAX(id) from @temp3)
+	
+		truncate table #temp2
+		drop table #temp2
+		set @counter+=1
+	end
+	
+	--code ends to separate EstimateId and ProductId and store them in table
+	
+	exec UDP_CalculateSoldJobId @customerId,@SoldJobId out
+	
+	set @jobId=@SoldJobId
+	--SET @custid = (SELECT CustomerId from tblShuttersEstimate where Id=@estimateId)    
+	SET @TotalPrice = (SELECT TotalPrice from tblShuttersEstimate where Id=@estimateId)    
+	--set @ProductId = (select ProductId  from tblProductMaster where ProductName =@productType )
+    set @NewRefrenceId = (select dbo.UDF_GetNewReferenceIds())
+    
+    while(@estimateCounter<=(select MAX(id) from @temp3))
+    begin
+		select @estimateId=convert(int,(select estimateId from @temp3 where id=@estimateCounter))
+		select @productId=convert(int,(select productType from @temp3 where id=@estimateCounter))
+		IF(@status = 'Sold-in Progress')    
+		BEGIN    
+			IF(@productId = (select ProductId from tblProductMaster where LOWER(ProductName) = LOWER('Shutters') ) )
+			BEGIN  
+				UPDATE tblShuttersEstimate     
+				SET Modifieddate=GETDATE(),    
+					[Status] = case when (TotalPrice< 1000) then 'sold<$1000' else 'sold>$1000' end,
+					UserId=@userId     
+				WHERE Id = @estimateId    
+      
+				UPDATE new_customer     
+				SET [Status] = case when (@TotalPrice > 1000) then 'sold<$1000' else 'sold>$1000' end    
+				where id = @customerId   
+			
+				select @generalStatus =[Status]  from tblShuttersEstimate  WHERE Id = @estimateId 
+			
+				exec UDP_AddSoldProductDetails @customerId, @productId, @estimateId,@PaymentMode,@Amount,@CheckNo,@CreditCardNo
+			
+				if not exists(select *  from tblJobSequence where CustomerId=@customerId and ProductId=@productId and EstimateId=@estimateId)
+				begin
+					select @statusId=StatusId from tblStatusMaster where RTRIM(LTRIM(LOWER(StatusName))) =RTRIM(LTRIM(LOWER(@generalStatus )))
+			
+					select @meetingDate=GETDATE() 
+					exec UDP_EntryInCustomer_followup @CustomerId,@meetingDate,@generalStatus,@UserId,1,@estimateId,0,0,@InvoicePath
+			
+				if(@InvoicePath<>'')
+					BEGIN
+					INSERT INTO tblJobSequence([CustomerId],[ProductId],[EstimateId],[SoldJobId],[StatusId],[ReferenceId],InvoicePath)
+					VALUES(@customerId ,@productId ,@estimateId ,@SoldJobId,@statusId,@NewRefrenceId,@InvoicePath)
+					END
+					ELSE
+					BEGIN
+					INSERT INTO tblJobSequence([CustomerId],[ProductId],[EstimateId],[SoldJobId],[StatusId],[ReferenceId])
+					VALUES(@customerId ,@productId ,@estimateId ,@SoldJobId,@statusId,@NewRefrenceId)
+					END
+				end
+			 
+			END  
+			ELSE --IF(@productId = (select ProductId from tblProductMaster where LOWER(ProductName) =LOWER('Custom') ))
+			BEGIN  
+   				UPDATE tblCustom     
+				SET Modifieddate = GETDATE(),    
+					[Status] = case when (ProposalCost < 1000) then 'sold<$1000' else 'sold>$1000' end ,
+					UserId=@userId    
+				WHERE Id = @estimateId 
+			
+				select @generalStatus =[Status]  from tblCustom  WHERE Id = @estimateId 
+			
+				exec UDP_AddSoldProductDetails @customerId, @productId, @estimateId,@PaymentMode,@Amount,@CheckNo,@CreditCardNo
+				if not exists(select *  from tblJobSequence where CustomerId=@customerId and ProductId=@productId and EstimateId=@estimateId)
+				begin
+					select @statusId=StatusId from tblStatusMaster where RTRIM(LTRIM(LOWER(StatusName))) =RTRIM(LTRIM(LOWER(@generalStatus )))
+						
+					select @meetingDate=GETDATE() 
+					exec UDP_EntryInCustomer_followup @CustomerId,@meetingDate,@generalStatus,@userId,@ProductId,@estimateId,0,0,@InvoicePath
+			
+				--exec UDP_CalculateSoldJobId @customerId, @ProductId, @estimateId,@SoldJobId out
+				if(@InvoicePath<>'')
+					BEGIN
+					INSERT INTO tblJobSequence([CustomerId],[ProductId],[EstimateId],[SoldJobId],[StatusId],[ReferenceId],InvoicePath)
+					VALUES(@customerId ,@productId ,@estimateId ,@SoldJobId,@statusId,@NewRefrenceId,@InvoicePath)
+					END
+					ELSE
+					BEGIN
+					INSERT INTO tblJobSequence([CustomerId],[ProductId],[EstimateId],[SoldJobId],[StatusId],[ReferenceId])
+					VALUES(@customerId ,@productId ,@estimateId ,@SoldJobId,@statusId,@NewRefrenceId)
+					END
+				end  
+			END  
+		END     
+    
+		ELSE  
+	  
+		BEGIN    
+			IF(@productId = (select ProductId from tblProductMaster where LOWER(ProductName) = LOWER('Shutters')  )  )
+			BEGIN  
+				UPDATE tblShuttersEstimate     
+				SET Modifieddate=GETDATE(),    
+					[Status] = case when (TotalPrice< 1000) then 'est<$1000' else 'est>$1000' end
+					,UserId=@userId     
+				WHERE Id = @estimateId    
+      
+				UPDATE new_customer     
+				set [Status] = case when (@TotalPrice > 1000) then 'est>$1000' else 'est<$1000' end    
+				where id = @customerId    
+			
+				select @generalStatus =[Status]  from tblShuttersEstimate  WHERE Id = @estimateId 
+			END  
+			ELSE --IF(@productId = (select ProductId from tblProductMaster where LOWER(ProductName) =LOWER('Custom') ))
+			BEGIN  
+				UPDATE tblCustom     
+				SET Modifieddate=GETDATE(),    
+					[Status] = case when (ProposalCost < 1000) then 'est<$1000' else 'est>$1000' end 
+					,UserId=@userId    
+				WHERE Id = @estimateId    
+      
+				select @generalStatus =[Status]  from tblCustom  WHERE Id = @estimateId   
+			END  
+    
+		END  
+		set @estimateCounter+=1	  
+	end
+END  
+
+
+--exec  [dbo].[UDP_UpdateShutterEstimate]    'Sold-in Progress','108-1 , 166-7 ',2,208,'Cash',2222.74,'',''
