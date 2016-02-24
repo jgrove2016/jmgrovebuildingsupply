@@ -1,12 +1,7 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Sr_App/SR_app.Master" AutoEventWireup="true"
     CodeBehind="Customer_Profile.aspx.cs" Inherits="JG_Prospect.Sr_App.Customer_Profile" %>
-
-
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <%@ Register Src="~/UserControl/UCAddress.ascx" TagPrefix="uc1" TagName="UCAddress" %>
-
-
-
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <%---------start script for Datetime Picker----------%>
     <link href="../datetime/css/jquery-ui-1.7.1.custom.css" rel="stylesheet" type="text/css" />
@@ -1147,38 +1142,46 @@
                                 if (JobImage.indexOf('.') == 0) {
                                     //var imgurl = JobImage.replace('..', '~');
                                     var ValidImage = JobImage;
-                                    var Success = imageExists(ValidImage);
-                                    if (Success == true) {
+                                    
+                                    strBindImage = "<li><img onerror='javascript:this.src=\"../img/no_pic.png\"' src='" + ValidImage + "' alt=''/></li>";
+
+                                    /*var Success = imageExists(ValidImage); #-Commented by Shabbir: This is extremely stupid code
+                                    if (Success == true) { 
                                         strBindImage = "<li><img src='" + ValidImage + "' alt=''/></li>";
                                     }
                                     else {
                                         strBindImage = "<li><img src='../img/no_pic.png' alt=''/></li>";
-                                    }
+                                    }*/
                                 }
                             }
                             else if (JobImage.indexOf('/') == 1) {
                                 if (JobImage.indexOf('~') == 0) {
                                     //var imgurl =JobImage.replace('..', '~');
                                     var ValidImage = JobImage;
+                                    strBindImage = "<li><img src='" + ValidImage + "' alt=''/></li>";
+
+                                    /*var ValidImage = JobImage;
                                     var Success = imageExists(ValidImage);
                                     if (Success == true) {
                                         strBindImage = "<li><img src='" + ValidImage + "' alt=''/></li>";
                                     }
                                     else {
                                         strBindImage = "<li><img src='../img/no_pic.png' alt=''/></li>";
-                                    }
+                                    }*/
                                 }
                             }
                             else {
                                 var ValidImage = "../CustomerDocs/LocationPics/" + JobImage;
-                                //var ValidImage = "../CustomerDocs/LocationPics/0000b936-d5cc-4430-a16c-c8c6f39d2c55-twitter.jpg";
+                                strBindImage = "<li><img src='../CustomerDocs/LocationPics/" + JobImage + "' alt=''/></li>";
+
+                                /*var ValidImage = "../CustomerDocs/LocationPics/0000b936-d5cc-4430-a16c-c8c6f39d2c55-twitter.jpg";
                                 var Success = imageExists(ValidImage);
                                 if (Success == true) {
                                     strBindImage = "<li><img src='../CustomerDocs/LocationPics/" + JobImage + "' alt=''/></li>";
                                 }
                                 else {
                                     strBindImage = "<li><img src='../img/no_pic.png' alt=''/></li>";
-                                }
+                                }*/
 
                             }
                             $("#ImageDisplay").append(a);
@@ -1895,7 +1898,7 @@
             <br />
             <table width="100%" cellpadding="0" cellspacing="0" align="center">
                 <tr>
-                    <td style="width: 50%;display:none;" valign="top">
+                    <td style="width: 50%;display:" valign="top">
                         <table>
                             <%--<tr>
                                 <td colspan="3" style="width: 50%">
@@ -1928,7 +1931,7 @@
                             </tr>
                         </table>
                     </td>
-                    <td style="width: 50%;display:none;" valign="top">
+                    <td style="width: 50%;display:;" valign="top">
                         <table>
                             <%-- <tr>
                                
@@ -1967,7 +1970,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="width: 100%" valign="top">
+                    <td style="width: 50%" valign="top">
                         <div id="container" class="shadow">
                             <div id="map_canvas">
                             <table id ="control" style="width:100%">
@@ -2002,28 +2005,9 @@
                              </div>
                         </div>
                     </td>
-                    <td style="width: 50%; position: relative;" valign="top">
-                       <!-- <div style="width: 550px" id="ImageDisplay">
-                            <%--<ul class="pgwSlideshow">
-                                            <li>
-                                                <asp:Image ImageUrl="~/CustomerDocs/LocationPics/0000b936-d5cc-4430-a16c-c8c6f39d2c55-twitter.jpg"  runat="server" data-description="Slide1" />
-                                             </li>
-                                            <li>
-                                                 <asp:Image ImageUrl="~/CustomerDocs/LocationPics/001f0aba-c251-4224-a986-67375b5acfe2-twitter.jpg" runat="server" alt="" data-description="Slide2" /></li>
-                                            <li>
-                                                <asp:Image ImageUrl="~/CustomerDocs/LocationPics/017bc8c3-6cff-4f2d-92fc-ade4af354595-JG-Logo-white (1).gif"  runat="server" alt="" data-description="Slide3" /></li>
-                                            <li>
-                                                  <asp:Image ImageUrl="~/CustomerDocs/LocationPics/0502083b-a649-401b-b4d2-af6fa666d403-facebook.jpg"  runat="server" alt="" data-description="Slide4" /></li>
-                                            <li>
-                                                 <asp:Image ImageUrl="~/CustomerDocs/LocationPics/05903a55-1ee2-46bc-8755-c187604231ae-twitter.jpg"  runat="server" alt="" data-description="Slide5" /></li>
-                                            <li>
-                                                 <asp:Image ImageUrl="~/CustomerDocs/LocationPics/0619e7db-845c-4ba7-9881-e927a28a2c81-JG-Logo-white (1).gif" runat="server" alt="" data-description="Slide6" /></li>
-                                            <li>
-                                                  <asp:Image ImageUrl="~/CustomerDocs/LocationPics/06fc05bf-aa19-452d-a10a-88c89d59d7f8-twitter.jpg"  runat="server" alt="" data-description="Slide7" /></li>
-                                            <li>
-                                                <asp:Image ImageUrl="~/img/slider_img/f.jpg" runat="server" alt="" data-description="Slide8" /></li>
-                                        </ul>--%>
-                        </div>-->
+                    <td style="width: 50%;" valign="top">
+                        <div style="width: 100%" id="ImageDisplay">
+                        </div>
                     </td>
                 </tr>
 

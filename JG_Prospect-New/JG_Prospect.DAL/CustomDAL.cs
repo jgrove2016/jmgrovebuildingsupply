@@ -117,6 +117,24 @@ namespace JG_Prospect.DAL
             return result > JGConstant.RETURN_ZERO ? JGConstant.RETURN_TRUE : JGConstant.RETURN_FALSE;
         }
 
+        public void DeleteCustomMaterialList(int pID) //, int productTypeId, int estimateId)
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("UDP_DeleteCustomMaterial");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@ID", DbType.String, pID);
+                    database.ExecuteNonQuery(command);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public bool DeleteCustomMaterialList(string id)//, int productTypeId, int estimateId)
         {
             int result = JGConstant.RETURN_ZERO;

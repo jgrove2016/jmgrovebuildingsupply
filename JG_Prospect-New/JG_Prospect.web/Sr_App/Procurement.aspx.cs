@@ -267,8 +267,8 @@ namespace JG_Prospect.Sr_App
 
         
                 Session[SessionKey.Key.JobId.ToString()] = soldjobId;
-                Response.Redirect("Custom_MaterialList.aspx");
-            //Response.Redirect("/Sr_App/Custom_MaterialList.aspx?" + QueryStringKey.Key.ProductId.ToString() + "=" + productId + "&" + QueryStringKey.Key.CustomerId.ToString() + "=" + customerId + "&" + QueryStringKey.Key.ProductTypeId.ToString() + "=" + Convert.ToInt16(lblProductType.Text.ToString()));
+                //Response.Redirect("Custom_MaterialList.aspx");
+                Response.Redirect("Custom_MaterialList.aspx?" + QueryStringKey.Key.ProductId.ToString() + "=" + productId + "&" + QueryStringKey.Key.CustomerId.ToString() + "=" + customerId + "&" + QueryStringKey.Key.ProductTypeId.ToString() + "=" + Convert.ToInt16(lblProductType.Text.ToString()));
                    // }
                    // else
                    // {
