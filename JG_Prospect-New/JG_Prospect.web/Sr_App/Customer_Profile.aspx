@@ -1,11 +1,7 @@
-﻿﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Sr_App/SR_app.Master" AutoEventWireup="true"
-    CodeBehind="Customer_Profile.aspx.cs" CodeFile="Customer_Profile.aspx.cs" Inherits="JG_Prospect.Sr_App.Customer_Profile" %>
-
-
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Sr_App/SR_app.Master" AutoEventWireup="true"
+    CodeBehind="Customer_Profile.aspx.cs" Inherits="JG_Prospect.Sr_App.Customer_Profile" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <%@ Register Src="~/UserControl/UCAddress.ascx" TagPrefix="uc1" TagName="UCAddress" %>
-
-
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <%---------start script for Datetime Picker----------%>
