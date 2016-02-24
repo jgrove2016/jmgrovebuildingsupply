@@ -1,5 +1,5 @@
-﻿﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Sr_App/SR_app.Master" AutoEventWireup="true"
-    CodeBehind="Customer_Profile.aspx.cs" CodeFile="Customer_Profile.aspx.cs" Inherits="JG_Prospect.Sr_App.Customer_Profile" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Sr_App/SR_app.Master" AutoEventWireup="true"
+    CodeFile="Customer_Profile.aspx.cs" Inherits="JG_Prospect.Sr_App.Customer_Profile" %>
 
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
@@ -54,9 +54,9 @@
         }
 
         .shadow {
-            -moz-box-shadow: 1px 1px 3px 1px #424345;
+            /*-moz-box-shadow: 1px 1px 3px 1px #424345;
             -webkit-box-shadow: 1px 1px 3px 1px #424345;
-            box-shadow: 1px 1px 3px 1px #424345;
+            box-shadow: 1px 1px 3px 1px #424345;*/
         }
 
         .row {
@@ -1278,7 +1278,7 @@
    <%-- <script src="http://maps.googleapis.com/maps/api/js"></script>--%>
 
 
-     <script>
+     <%--<script>
          var myCenter = new google.maps.LatLng(40.748492, -73.985496);
 
          function initialize() {
@@ -1311,10 +1311,8 @@
              });
          }
          google.maps.event.addDomListener(window, 'load', initialize);
-</script>
-
-
-   <%-- <script>
+</script>--%>
+<%-- <script>
         function initialize() {
             var mapProp = {
                 center: new google.maps.LatLng(40.748492, -73.985496),
@@ -1491,16 +1489,12 @@
                                         <Columns>
                                             <asp:TemplateField HeaderText="Quote or Sold Job#" HeaderStyle-Width="15%" ItemStyle-Width="50px">
                                                 <ItemTemplate>
-                                                    <asp:LinkButton ID="lnkSoldJobDetails" OnClick="lnkSoldJobDetails_Click" runat="server" Text='<%# Eval("SoldJobId").ToString().Substring( Eval("SoldJobId").ToString().IndexOf("-")+1)  %>'></asp:LinkButton>
+                                                    <asp:LinkButton ID="lnkSoldJobDetails" OnClick="lnkSoldJobDetails_Click" runat="server" Text='<%#Eval("SoldJobId") %>'></asp:LinkButton>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <%--<asp:BoundField ItemStyle-Width="50px" HeaderText="Quote or Sold Job#" DataField="SoldJobId" />--%>
-                                            
-                                             <asp:TemplateField HeaderText="Date Quoted or Sold"  ItemStyle-Width="50px">
-                                                <ItemTemplate>
-                                                    <asp:Label runat="server" ID="lblSoldJobDate" Text='<%# Convert.ToDateTime( Eval("DateSold")).ToString("dd-MM-yyyy") %>'></asp:Label>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
+                                            <asp:BoundField ItemStyle-Width="50px" HeaderText="Date Quoted or Sold" DataField="DateSold" DataFormatString="{0:d}" />
+
 
                                             <asp:TemplateField ItemStyle-Width="50px" HeaderStyle-Width="17%" HeaderText="Status">
                                                 <ItemTemplate>
@@ -1825,7 +1819,7 @@
             <br />
             <table width="100%" cellpadding="0" cellspacing="0" align="center">
                 <tr>
-                    <td style="width: 50%" valign="top">
+                    <td style="width: 50%;display:none;" valign="top">
                         <table>
                             <%--<tr>
                                 <td colspan="3" style="width: 50%">
@@ -1858,7 +1852,7 @@
                             </tr>
                         </table>
                     </td>
-                    <td style="width: 50%" valign="top">
+                    <td style="width: 50%;display:none;" valign="top">
                         <table>
                             <%-- <tr>
                                
@@ -1897,13 +1891,43 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="width: 50%" valign="top">
+                    <td style="width: 100%" valign="top">
                         <div id="container" class="shadow">
-                            <div id="map_canvas"></div>
+                            <div id="map_canvas">
+                            <table id ="control" style="width:100%">
+                            <tr>
+                            <td>
+                            <table>
+                            <tr>
+                            <td>Start: </td>
+                            <td>
+                                <input id="startvalue" type="text" style="width: 305px" /></td>
+                            </tr>
+                            <tr>
+                            <td>End: </td>
+                            <td><input id="endvalue" type="text" style="width: 301px" /></td>
+                            </tr>
+                            <tr>
+                            <td align ="right">
+                                <input id="Button5" type="button" value="GetDirections" onclick="return Button1_onclick()"/></td>
+                            </tr>
+                            </table>
+                            </td>
+                            </tr>
+                            <tr>
+                            <td valign ="top">
+                            <div id ="map" style="height: 390px; width: 489px"></div>
+                            </td>
+                            <td valign ="top">
+                            <div id ="directionpanel"  style="height: 390px;overflow: auto" ></div>
+                            </td>
+                            </tr>
+                            </table>
+                             </div>
                         </div>
                     </td>
                     <td style="width: 50%; position: relative;" valign="top">
-                        <div style="width: 550px" id="ImageDisplay">
+                       <!-- <div style="width: 550px" id="ImageDisplay">
                             <%--<ul class="pgwSlideshow">
                                             <li>
                                                 <asp:Image ImageUrl="~/CustomerDocs/LocationPics/0000b936-d5cc-4430-a16c-c8c6f39d2c55-twitter.jpg"  runat="server" data-description="Slide1" />
@@ -1923,7 +1947,7 @@
                                             <li>
                                                 <asp:Image ImageUrl="~/img/slider_img/f.jpg" runat="server" alt="" data-description="Slide8" /></li>
                                         </ul>--%>
-                        </div>
+                        </div>-->
                     </td>
                 </tr>
 
@@ -1967,7 +1991,7 @@
 
 
     <asp:HiddenField runat="server" ID="hfWasConfirmed" />
-    <asp:Panel runat="server">
+    <asp:Panel ID="Panel1" runat="server">
         <script>
             function getConfirmationValue() {
                 if (confirm('Contacts are duplicated. Are you sure want to update the existing record?')) {
@@ -1988,11 +2012,55 @@
                 placement: 'bottom',
                 width: 200
             });
-
-
-
-
         </script>
+
+
+        <script language="javascript" type="text/javascript">
+            var directionsDisplay;
+            var directionsService = new google.maps.DirectionsService();
+
+            function InitializeMap() {
+                directionsDisplay = new google.maps.DirectionsRenderer();
+                var latlng = new google.maps.LatLng(40.748492, -73.985496);
+                var myOptions =
+                {
+                    zoom: 10,
+                    center: latlng,
+                    mapTypeId: google.maps.MapTypeId.ROADMAP
+                };
+                var map = new google.maps.Map(document.getElementById("map"), myOptions);
+
+                directionsDisplay.setMap(map);
+                directionsDisplay.setPanel(document.getElementById('directionpanel'));
+
+                var control = document.getElementById('control');
+                //control.style.display = 'block';
+            }
+            function calcRoute() {
+
+                var start = document.getElementById('startvalue').value;
+                var end = document.getElementById('endvalue').value;
+                var request = {
+                    origin: start,
+                    destination: end,
+                    travelMode: google.maps.DirectionsTravelMode.DRIVING
+                };
+                directionsService.route(request, function (response, status) {
+                    if (status == google.maps.DirectionsStatus.OK) {
+                        directionsDisplay.setDirections(response);
+                    }
+                });
+
+            }
+            function Button1_onclick() {
+                calcRoute();
+            }
+
+            $(document).ready(function () {
+                InitializeMap();
+            })
+</script>
+
     </asp:Panel>
 
 </asp:Content>
