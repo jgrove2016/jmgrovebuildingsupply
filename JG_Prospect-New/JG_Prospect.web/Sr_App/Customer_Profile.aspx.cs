@@ -1620,10 +1620,13 @@ namespace JG_Prospect.Sr_App
         {
             if (sender != null)
             {
-                GridView grdoldjobs = sender as GridView;
-                grdoldjobs.PageIndex = e.NewPageIndex;
-                grdoldjobs.DataSource = (DataSet)ViewState["soldjobs"];
-                grdoldjobs.DataBind();
+                //GridView grdoldjobs = sender as GridView;
+                //grdoldjobs.PageIndex = e.NewPageIndex;
+                //grdoldjobs.DataSource = (DataSet)ViewState["soldjobs"];
+                //grdoldjobs.DataBind();
+                GridViewSoldJobs.PageIndex = e.NewPageIndex;
+                GridViewSoldJobs.DataSource = (DataSet)ViewState["soldjobs"];
+                GridViewSoldJobs.DataBind();
             }
         }
 
@@ -1663,8 +1666,7 @@ namespace JG_Prospect.Sr_App
                 lblSoldJobDate.Text = Convert.ToDateTime( lDrRowData["DateSold"].ToString()).ToString("dd-MM-yyyy");
                 if (lDrRowData["SoldJobID"].ToString().Contains("SJ"))
                 {
-                    lblSoldJobDate.Text = Convert.ToDateTime(lDrRowData["DateSold"].ToString()).ToString("dd-MM-yyyy") + "-" + "<span style='color:#ff0000'>"+ Convert.ToDateTime(lDrRowData["DateSold"].ToString()).ToString("dd-MM-yyyy");
-                    lblSoldJobDate.ForeColor = System.Drawing.Color.Red;
+                    lblSoldJobDate.Text = Convert.ToDateTime(lDrRowData["DateSold"].ToString()).ToString("dd-MM-yyyy") + "-<br/>" + "<span style='color:#ff0000'>"+ Convert.ToDateTime(lDrRowData["DateSold"].ToString()).ToString("dd-MM-yyyy");
                 }
 
                 DropDownList ddlfollowup3 = (DropDownList)e.Row.FindControl("ddlfollowup3");
@@ -1719,12 +1721,13 @@ namespace JG_Prospect.Sr_App
                 LinkButton lnkSoldJobId = (LinkButton)e.Row.FindControl("lnkSoldJobDetails");
                 string strDiv = "";
                 DataSet dsTeamMembers = new DataSet();
-                dsTeamMembers = new_customerBLL.Instance.GetJobTeamMembers(Convert.ToInt32(Session["CustomerId"]), lnkSoldJobId.Text);
+                dsTeamMembers = new_customerBLL.Instance.GetJobTeamMembers(Convert.ToInt32(Session["CustomerId"]), lDrRowData["SoldJobId"].ToString());
                 if (dsTeamMembers != null)
                 {
                     for (int i = 0; i < dsTeamMembers.Tables[0].Rows.Count; i++)
                     {
                         strDiv += "<li><span class='clsCustomerIdLink'><a href='Customer_Profile.aspx?CustomerId=" + dsTeamMembers.Tables[0].Rows[i]["userid"] + "'>" + dsTeamMembers.Tables[0].Rows[i]["userid"] + "</a></span><span> - " + dsTeamMembers.Tables[0].Rows[i]["Username"] + " </span></li>";
+                      //  strDiv += "<option value='"+ dsTeamMembers.Tables[0].Rows[i]["userid"] + "'>" + dsTeamMembers.Tables[0].Rows[i]["userid"] + " - " + dsTeamMembers.Tables[0].Rows[i]["Username"] + " </option>";
                     }
                 }
 
