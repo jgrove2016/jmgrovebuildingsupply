@@ -1482,7 +1482,7 @@
                         <td>
                             <asp:UpdatePanel ID="UpdatePanel3" runat="server">
                                 <ContentTemplate>
- <asp:GridView ID="GridView1" runat="server" Width="100%" AutoGenerateColumns="false" EmptyDataText="No Records Found"
+ <asp:GridView ID="GridViewSoldJobs" runat="server" Width="100%" AutoGenerateColumns="false" EmptyDataText="No Records Found"
                                         ShowHeaderWhenEmpty="True" CssClass="GridView1" RowStyle-HorizontalAlign="Center" HeaderStyle-HorizontalAlign="Center"
                                         RowStyle-VerticalAlign="Top" AllowPaging="true" PageSize="5" OnPageIndexChanging="GridViewSoldJobs_PageIndexChanging"
                                         OnRowDataBound="GridViewSoldJobs_RowDataBound">
