@@ -1,0 +1,800 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.3.0.0.0.Fakes</name>
+    </assembly>
+    <members>
+        <member name="T:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeConnectionPool">
+            <summary>Shim type of Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.SqlCeConnectionPool</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeConnectionPool.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeConnectionPool.#ctor(Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.SqlCeConnectionPool)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeConnectionPool.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeConnectionPool.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeConnectionPool.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeConnectionPool.CloseSharedConnectionDatabase">
+            <summary>Sets the shim of SqlCeConnectionPool.CloseSharedConnection(Database database)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeConnectionPool.CloseSharedConnections">
+            <summary>Sets the shim of SqlCeConnectionPool.CloseSharedConnections()</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeConnectionPool.Constructor">
+            <summary>Sets the shim of SqlCeConnectionPool.SqlCeConnectionPool()</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeConnectionPool.CreateConnectionSqlCeDatabase">
+            <summary>Sets the shim of SqlCeConnectionPool.CreateConnection(SqlCeDatabase db)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeConnectionPool.CreateConnectionSqlCeDatabaseBoolean">
+            <summary>Sets the shim of SqlCeConnectionPool.CreateConnection(SqlCeDatabase db, Boolean usePooledConnection)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeConnectionPool.StaticConstructor">
+            <summary>Sets the shim of SqlCeConnectionPool.SqlCeConnectionPool()</summary>
+        </member>
+        <member name="T:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeConnectionPool.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="T:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase">
+            <summary>Shim type of Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.SqlCeDatabase</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.#ctor(Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.SqlCeDatabase)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.AddParametersDbCommandDbParameterArray">
+            <summary>Sets the shim of SqlCeDatabase.AddParameters(DbCommand command, DbParameter[] parameters)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.BuildParameterNameString">
+            <summary>Sets the shim of SqlCeDatabase.BuildParameterName(String name)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.CloseSharedConnection">
+            <summary>Sets the shim of SqlCeDatabase.CloseSharedConnection()</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.ConstructorString">
+            <summary>Sets the shim of SqlCeDatabase.SqlCeDatabase(String connectionString)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.ConstructorStringIDataInstrumentationProvider">
+            <summary>Sets the shim of SqlCeDatabase.SqlCeDatabase(String connectionString, IDataInstrumentationProvider instrumentationProvider)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.CreateConnection">
+            <summary>Sets the shim of SqlCeDatabase.CreateConnection()</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.CreateFile">
+            <summary>Sets the shim of SqlCeDatabase.CreateFile()</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.CreateParameterStringDbTypeInt32Object">
+            <summary>Sets the shim of SqlCeDatabase.CreateParameter(String name, DbType type, Int32 size, Object value)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.DeriveParametersDbCommand">
+            <summary>Sets the shim of SqlCeDatabase.DeriveParameters(DbCommand discoveryCommand)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.DoExecuteResultSetSqlCeCommandResultSetOptions">
+            <summary>Sets the shim of SqlCeDatabase.DoExecuteResultSet(SqlCeCommand command, ResultSetOptions options)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.ExecuteDataSetSqlStringDbParameterArray">
+            <summary>Sets the shim of SqlCeDatabase.ExecuteDataSetSql(String sqlCommand, DbParameter[] parameters)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.ExecuteDataSetStringObjectArray">
+            <summary>Sets the shim of SqlCeDatabase.ExecuteDataSet(String storedProcedureName, Object[] parameterValues)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.ExecuteNonQuerySqlStringDbParameterArray">
+            <summary>Sets the shim of SqlCeDatabase.ExecuteNonQuerySql(String sqlCommand, DbParameter[] parameters)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.ExecuteNonQueryStringObjectArray">
+            <summary>Sets the shim of SqlCeDatabase.ExecuteNonQuery(String storedProcedureName, Object[] parameterValues)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.ExecuteReaderSqlStringDbParameterArray">
+            <summary>Sets the shim of SqlCeDatabase.ExecuteReaderSql(String sqlCommand, DbParameter[] parameters)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.ExecuteResultSetDbCommandDbParameterArray">
+            <summary>Sets the shim of SqlCeDatabase.ExecuteResultSet(DbCommand command, DbParameter[] parameters)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.ExecuteResultSetDbCommandDbTransactionDbParameterArray">
+            <summary>Sets the shim of SqlCeDatabase.ExecuteResultSet(DbCommand command, DbTransaction transaction, DbParameter[] parameters)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.ExecuteResultSetDbCommandDbTransactionResultSetOptionsDbParameterArray">
+            <summary>Sets the shim of SqlCeDatabase.ExecuteResultSet(DbCommand command, DbTransaction transaction, ResultSetOptions options, DbParameter[] parameters)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.ExecuteResultSetDbCommandResultSetOptionsDbParameterArray">
+            <summary>Sets the shim of SqlCeDatabase.ExecuteResultSet(DbCommand command, ResultSetOptions options, DbParameter[] parameters)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.ExecuteScalarSqlStringDbParameterArray">
+            <summary>Sets the shim of SqlCeDatabase.ExecuteScalarSql(String sqlCommand, DbParameter[] parameters)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.ExecuteScalarStringObjectArray">
+            <summary>Sets the shim of SqlCeDatabase.ExecuteScalar(String storedProcedureName, Object[] parameterValues)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.GetLastIdDbConnection">
+            <summary>Sets the shim of SqlCeDatabase.GetLastId(DbConnection connection)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.GetStoredProcCommandString">
+            <summary>Sets the shim of SqlCeDatabase.GetStoredProcCommand(String storedProcedureName)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.GetStoredProcCommandStringObjectArray">
+            <summary>Sets the shim of SqlCeDatabase.GetStoredProcCommand(String storedProcedureName, Object[] parameterValues)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.GetWrappedConnection">
+            <summary>Sets the shim of SqlCeDatabase.GetWrappedConnection()</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.LoadDataSetStringDataSetStringArrayObjectArray">
+            <summary>Sets the shim of SqlCeDatabase.LoadDataSet(String storedProcedureName, DataSet dataSet, String[] tableNames, Object[] parameterValues)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.OnSqlRowUpdatedObjectSqlCeRowUpdatedEventArgs">
+            <summary>Sets the shim of SqlCeDatabase.OnSqlRowUpdated(Object sender, SqlCeRowUpdatedEventArgs rowThatCouldNotBeWritten)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.ParameterTokenGet">
+            <summary>Sets the shim of SqlCeDatabase.get_ParameterToken()</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.SetConnectionStringDbConnection">
+            <summary>Sets the shim of SqlCeDatabase.SetConnectionString(DbConnection connection)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.SetUpRowUpdatedEventDbDataAdapter">
+            <summary>Sets the shim of SqlCeDatabase.SetUpRowUpdatedEvent(DbDataAdapter adapter)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.TableExistsString">
+            <summary>Sets the shim of SqlCeDatabase.TableExists(String tableName)</summary>
+        </member>
+        <member name="T:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.AllInstances.AddParametersDbCommandDbParameterArray">
+            <summary>Sets the shim of SqlCeDatabase.AddParameters(DbCommand command, DbParameter[] parameters)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.AllInstances.BuildParameterNameString">
+            <summary>Sets the shim of SqlCeDatabase.BuildParameterName(String name)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.AllInstances.CloseSharedConnection">
+            <summary>Sets the shim of SqlCeDatabase.CloseSharedConnection()</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.AllInstances.CreateConnection">
+            <summary>Sets the shim of SqlCeDatabase.CreateConnection()</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.AllInstances.CreateFile">
+            <summary>Sets the shim of SqlCeDatabase.CreateFile()</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.AllInstances.CreateParameterStringDbTypeInt32Object">
+            <summary>Sets the shim of SqlCeDatabase.CreateParameter(String name, DbType type, Int32 size, Object value)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.AllInstances.DeriveParametersDbCommand">
+            <summary>Sets the shim of SqlCeDatabase.DeriveParameters(DbCommand discoveryCommand)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.AllInstances.DoExecuteResultSetSqlCeCommandResultSetOptions">
+            <summary>Sets the shim of SqlCeDatabase.DoExecuteResultSet(SqlCeCommand command, ResultSetOptions options)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.AllInstances.ExecuteDataSetSqlStringDbParameterArray">
+            <summary>Sets the shim of SqlCeDatabase.ExecuteDataSetSql(String sqlCommand, DbParameter[] parameters)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.AllInstances.ExecuteDataSetStringObjectArray">
+            <summary>Sets the shim of SqlCeDatabase.ExecuteDataSet(String storedProcedureName, Object[] parameterValues)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.AllInstances.ExecuteNonQuerySqlStringDbParameterArray">
+            <summary>Sets the shim of SqlCeDatabase.ExecuteNonQuerySql(String sqlCommand, DbParameter[] parameters)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.AllInstances.ExecuteNonQueryStringObjectArray">
+            <summary>Sets the shim of SqlCeDatabase.ExecuteNonQuery(String storedProcedureName, Object[] parameterValues)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.AllInstances.ExecuteReaderSqlStringDbParameterArray">
+            <summary>Sets the shim of SqlCeDatabase.ExecuteReaderSql(String sqlCommand, DbParameter[] parameters)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.AllInstances.ExecuteResultSetDbCommandDbParameterArray">
+            <summary>Sets the shim of SqlCeDatabase.ExecuteResultSet(DbCommand command, DbParameter[] parameters)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.AllInstances.ExecuteResultSetDbCommandDbTransactionDbParameterArray">
+            <summary>Sets the shim of SqlCeDatabase.ExecuteResultSet(DbCommand command, DbTransaction transaction, DbParameter[] parameters)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.AllInstances.ExecuteResultSetDbCommandDbTransactionResultSetOptionsDbParameterArray">
+            <summary>Sets the shim of SqlCeDatabase.ExecuteResultSet(DbCommand command, DbTransaction transaction, ResultSetOptions options, DbParameter[] parameters)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.AllInstances.ExecuteResultSetDbCommandResultSetOptionsDbParameterArray">
+            <summary>Sets the shim of SqlCeDatabase.ExecuteResultSet(DbCommand command, ResultSetOptions options, DbParameter[] parameters)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.AllInstances.ExecuteScalarSqlStringDbParameterArray">
+            <summary>Sets the shim of SqlCeDatabase.ExecuteScalarSql(String sqlCommand, DbParameter[] parameters)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.AllInstances.ExecuteScalarStringObjectArray">
+            <summary>Sets the shim of SqlCeDatabase.ExecuteScalar(String storedProcedureName, Object[] parameterValues)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.AllInstances.GetLastIdDbConnection">
+            <summary>Sets the shim of SqlCeDatabase.GetLastId(DbConnection connection)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.AllInstances.GetStoredProcCommandString">
+            <summary>Sets the shim of SqlCeDatabase.GetStoredProcCommand(String storedProcedureName)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.AllInstances.GetStoredProcCommandStringObjectArray">
+            <summary>Sets the shim of SqlCeDatabase.GetStoredProcCommand(String storedProcedureName, Object[] parameterValues)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.AllInstances.GetWrappedConnection">
+            <summary>Sets the shim of SqlCeDatabase.GetWrappedConnection()</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.AllInstances.LoadDataSetStringDataSetStringArrayObjectArray">
+            <summary>Sets the shim of SqlCeDatabase.LoadDataSet(String storedProcedureName, DataSet dataSet, String[] tableNames, Object[] parameterValues)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.AllInstances.OnSqlRowUpdatedObjectSqlCeRowUpdatedEventArgs">
+            <summary>Sets the shim of SqlCeDatabase.OnSqlRowUpdated(Object sender, SqlCeRowUpdatedEventArgs rowThatCouldNotBeWritten)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.AllInstances.ParameterTokenGet">
+            <summary>Sets the shim of SqlCeDatabase.get_ParameterToken()</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.AllInstances.SetConnectionStringDbConnection">
+            <summary>Sets the shim of SqlCeDatabase.SetConnectionString(DbConnection connection)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.AllInstances.SetUpRowUpdatedEventDbDataAdapter">
+            <summary>Sets the shim of SqlCeDatabase.SetUpRowUpdatedEvent(DbDataAdapter adapter)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabase.AllInstances.TableExistsString">
+            <summary>Sets the shim of SqlCeDatabase.TableExists(String tableName)</summary>
+        </member>
+        <member name="T:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabaseData">
+            <summary>Shim type of Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.SqlCeDatabaseData</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabaseData.#ctor">
+            <summary>Initializes a new shim instance</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabaseData.#ctor(Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.SqlCeDatabaseData)">
+            <summary>Initializes a new shim for the given instance</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabaseData.BehaveAsCurrent">
+            <summary>Assigns the &apos;Current&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabaseData.BehaveAsNotImplemented">
+            <summary>Assigns the &apos;NotImplemented&apos; behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabaseData.Behavior">
+            <summary>Assigns the behavior for all methods of the shimmed type</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabaseData.ConstructorConnectionStringSettingsIConfigurationSource">
+            <summary>Sets the shim of SqlCeDatabaseData.SqlCeDatabaseData(ConnectionStringSettings connectionStringSettings, IConfigurationSource configurationSource)</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabaseData.GetRegistrations">
+            <summary>Sets the shim of SqlCeDatabaseData.GetRegistrations()</summary>
+        </member>
+        <member name="T:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabaseData.AllInstances">
+            <summary>Define shims for all instances members</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.ShimSqlCeDatabaseData.AllInstances.GetRegistrations">
+            <summary>Sets the shim of SqlCeDatabaseData.GetRegistrations()</summary>
+        </member>
+        <member name="T:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeConnectionPool">
+            <summary>Stub type of Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.SqlCeConnectionPool</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeConnectionPool.#ctor">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeConnectionPool.InitializeStub">
+            <summary>Initializes a new instance of type StubSqlCeConnectionPool</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeConnectionPool.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeConnectionPool.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeConnectionPool.InstanceObserver">
+            <summary>Gets or sets the instance observer.</summary>
+        </member>
+        <member name="T:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase">
+            <summary>Stub type of Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.SqlCeDatabase</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.#ctor(System.String)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.#ctor(System.String,Microsoft.Practices.EnterpriseLibrary.Data.Instrumentation.IDataInstrumentationProvider)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.AddParameter(System.Data.Common.DbCommand,System.String,System.Data.DbType,System.Int32,System.Data.ParameterDirection,System.Boolean,System.Byte,System.Byte,System.String,System.Data.DataRowVersion,System.Object)">
+            <summary>Sets the stub of Database.AddParameter(DbCommand command, String name, DbType dbType, Int32 size, ParameterDirection direction, Boolean nullable, Byte precision, Byte scale, String sourceColumn, DataRowVersion sourceVersion, Object value)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.AddParameterDbCommandStringDbTypeInt32ParameterDirectionBooleanByteByteStringDataRowVersionObject">
+            <summary>Sets the stub of Database.AddParameter(DbCommand command, String name, DbType dbType, Int32 size, ParameterDirection direction, Boolean nullable, Byte precision, Byte scale, String sourceColumn, DataRowVersion sourceVersion, Object value)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.AssignParameters(System.Data.Common.DbCommand,System.Object[])">
+            <summary>Sets the stub of Database.AssignParameters(DbCommand command, Object[] parameterValues)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.AssignParametersDbCommandObjectArray">
+            <summary>Sets the stub of Database.AssignParameters(DbCommand command, Object[] parameterValues)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteNonQuery(System.Data.Common.DbCommand,System.AsyncCallback,System.Object)">
+            <summary>Sets the stub of Database.BeginExecuteNonQuery(DbCommand command, AsyncCallback callback, Object state)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteNonQuery(System.Data.Common.DbCommand,System.Data.Common.DbTransaction,System.AsyncCallback,System.Object)">
+            <summary>Sets the stub of Database.BeginExecuteNonQuery(DbCommand command, DbTransaction transaction, AsyncCallback callback, Object state)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteNonQuery(System.String,System.AsyncCallback,System.Object,System.Object[])">
+            <summary>Sets the stub of Database.BeginExecuteNonQuery(String storedProcedureName, AsyncCallback callback, Object state, Object[] parameterValues)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteNonQuery(System.Data.CommandType,System.String,System.AsyncCallback,System.Object)">
+            <summary>Sets the stub of Database.BeginExecuteNonQuery(CommandType commandType, String commandText, AsyncCallback callback, Object state)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteNonQuery(System.Data.Common.DbTransaction,System.Data.CommandType,System.String,System.AsyncCallback,System.Object)">
+            <summary>Sets the stub of Database.BeginExecuteNonQuery(DbTransaction transaction, CommandType commandType, String commandText, AsyncCallback callback, Object state)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteNonQuery(System.Data.Common.DbTransaction,System.String,System.AsyncCallback,System.Object,System.Object[])">
+            <summary>Sets the stub of Database.BeginExecuteNonQuery(DbTransaction transaction, String storedProcedureName, AsyncCallback callback, Object state, Object[] parameterValues)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteNonQueryCommandTypeStringAsyncCallbackObject">
+            <summary>Sets the stub of Database.BeginExecuteNonQuery(CommandType commandType, String commandText, AsyncCallback callback, Object state)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteNonQueryDbCommandAsyncCallbackObject">
+            <summary>Sets the stub of Database.BeginExecuteNonQuery(DbCommand command, AsyncCallback callback, Object state)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteNonQueryDbCommandDbTransactionAsyncCallbackObject">
+            <summary>Sets the stub of Database.BeginExecuteNonQuery(DbCommand command, DbTransaction transaction, AsyncCallback callback, Object state)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteNonQueryDbTransactionCommandTypeStringAsyncCallbackObject">
+            <summary>Sets the stub of Database.BeginExecuteNonQuery(DbTransaction transaction, CommandType commandType, String commandText, AsyncCallback callback, Object state)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteNonQueryDbTransactionStringAsyncCallbackObjectObjectArray">
+            <summary>Sets the stub of Database.BeginExecuteNonQuery(DbTransaction transaction, String storedProcedureName, AsyncCallback callback, Object state, Object[] parameterValues)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteNonQueryStringAsyncCallbackObjectObjectArray">
+            <summary>Sets the stub of Database.BeginExecuteNonQuery(String storedProcedureName, AsyncCallback callback, Object state, Object[] parameterValues)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteReader(System.Data.Common.DbCommand,System.AsyncCallback,System.Object)">
+            <summary>Sets the stub of Database.BeginExecuteReader(DbCommand command, AsyncCallback callback, Object state)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteReader(System.Data.CommandType,System.String,System.AsyncCallback,System.Object)">
+            <summary>Sets the stub of Database.BeginExecuteReader(CommandType commandType, String commandText, AsyncCallback callback, Object state)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteReader(System.Data.Common.DbCommand,System.Data.Common.DbTransaction,System.AsyncCallback,System.Object)">
+            <summary>Sets the stub of Database.BeginExecuteReader(DbCommand command, DbTransaction transaction, AsyncCallback callback, Object state)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteReader(System.String,System.AsyncCallback,System.Object,System.Object[])">
+            <summary>Sets the stub of Database.BeginExecuteReader(String storedProcedureName, AsyncCallback callback, Object state, Object[] parameterValues)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteReader(System.Data.Common.DbTransaction,System.String,System.AsyncCallback,System.Object,System.Object[])">
+            <summary>Sets the stub of Database.BeginExecuteReader(DbTransaction transaction, String storedProcedureName, AsyncCallback callback, Object state, Object[] parameterValues)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteReader(System.Data.Common.DbTransaction,System.Data.CommandType,System.String,System.AsyncCallback,System.Object)">
+            <summary>Sets the stub of Database.BeginExecuteReader(DbTransaction transaction, CommandType commandType, String commandText, AsyncCallback callback, Object state)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteReaderCommandTypeStringAsyncCallbackObject">
+            <summary>Sets the stub of Database.BeginExecuteReader(CommandType commandType, String commandText, AsyncCallback callback, Object state)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteReaderDbCommandAsyncCallbackObject">
+            <summary>Sets the stub of Database.BeginExecuteReader(DbCommand command, AsyncCallback callback, Object state)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteReaderDbCommandDbTransactionAsyncCallbackObject">
+            <summary>Sets the stub of Database.BeginExecuteReader(DbCommand command, DbTransaction transaction, AsyncCallback callback, Object state)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteReaderDbTransactionCommandTypeStringAsyncCallbackObject">
+            <summary>Sets the stub of Database.BeginExecuteReader(DbTransaction transaction, CommandType commandType, String commandText, AsyncCallback callback, Object state)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteReaderDbTransactionStringAsyncCallbackObjectObjectArray">
+            <summary>Sets the stub of Database.BeginExecuteReader(DbTransaction transaction, String storedProcedureName, AsyncCallback callback, Object state, Object[] parameterValues)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteReaderStringAsyncCallbackObjectObjectArray">
+            <summary>Sets the stub of Database.BeginExecuteReader(String storedProcedureName, AsyncCallback callback, Object state, Object[] parameterValues)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteScalar(System.Data.Common.DbCommand,System.AsyncCallback,System.Object)">
+            <summary>Sets the stub of Database.BeginExecuteScalar(DbCommand command, AsyncCallback callback, Object state)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteScalar(System.Data.Common.DbCommand,System.Data.Common.DbTransaction,System.AsyncCallback,System.Object)">
+            <summary>Sets the stub of Database.BeginExecuteScalar(DbCommand command, DbTransaction transaction, AsyncCallback callback, Object state)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteScalar(System.String,System.AsyncCallback,System.Object,System.Object[])">
+            <summary>Sets the stub of Database.BeginExecuteScalar(String storedProcedureName, AsyncCallback callback, Object state, Object[] parameterValues)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteScalar(System.Data.CommandType,System.String,System.AsyncCallback,System.Object)">
+            <summary>Sets the stub of Database.BeginExecuteScalar(CommandType commandType, String commandText, AsyncCallback callback, Object state)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteScalar(System.Data.Common.DbTransaction,System.Data.CommandType,System.String,System.AsyncCallback,System.Object)">
+            <summary>Sets the stub of Database.BeginExecuteScalar(DbTransaction transaction, CommandType commandType, String commandText, AsyncCallback callback, Object state)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteScalar(System.Data.Common.DbTransaction,System.String,System.AsyncCallback,System.Object,System.Object[])">
+            <summary>Sets the stub of Database.BeginExecuteScalar(DbTransaction transaction, String storedProcedureName, AsyncCallback callback, Object state, Object[] parameterValues)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteScalarCommandTypeStringAsyncCallbackObject">
+            <summary>Sets the stub of Database.BeginExecuteScalar(CommandType commandType, String commandText, AsyncCallback callback, Object state)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteScalarDbCommandAsyncCallbackObject">
+            <summary>Sets the stub of Database.BeginExecuteScalar(DbCommand command, AsyncCallback callback, Object state)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteScalarDbCommandDbTransactionAsyncCallbackObject">
+            <summary>Sets the stub of Database.BeginExecuteScalar(DbCommand command, DbTransaction transaction, AsyncCallback callback, Object state)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteScalarDbTransactionCommandTypeStringAsyncCallbackObject">
+            <summary>Sets the stub of Database.BeginExecuteScalar(DbTransaction transaction, CommandType commandType, String commandText, AsyncCallback callback, Object state)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteScalarDbTransactionStringAsyncCallbackObjectObjectArray">
+            <summary>Sets the stub of Database.BeginExecuteScalar(DbTransaction transaction, String storedProcedureName, AsyncCallback callback, Object state, Object[] parameterValues)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BeginExecuteScalarStringAsyncCallbackObjectObjectArray">
+            <summary>Sets the stub of Database.BeginExecuteScalar(String storedProcedureName, AsyncCallback callback, Object state, Object[] parameterValues)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BuildParameterName(System.String)">
+            <summary>Sets the stub of SqlCeDatabase.BuildParameterName(String name)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.BuildParameterNameString">
+            <summary>Sets the stub of SqlCeDatabase.BuildParameterName(String name)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ConfigureParameter(System.Data.Common.DbParameter,System.String,System.Data.DbType,System.Int32,System.Data.ParameterDirection,System.Boolean,System.Byte,System.Byte,System.String,System.Data.DataRowVersion,System.Object)">
+            <summary>Sets the stub of Database.ConfigureParameter(DbParameter param, String name, DbType dbType, Int32 size, ParameterDirection direction, Boolean nullable, Byte precision, Byte scale, String sourceColumn, DataRowVersion sourceVersion, Object value)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ConfigureParameterDbParameterStringDbTypeInt32ParameterDirectionBooleanByteByteStringDataRowVersionObject">
+            <summary>Sets the stub of Database.ConfigureParameter(DbParameter param, String name, DbType dbType, Int32 size, ParameterDirection direction, Boolean nullable, Byte precision, Byte scale, String sourceColumn, DataRowVersion sourceVersion, Object value)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.CreateConnection">
+            <summary>Sets the stub of SqlCeDatabase.CreateConnection()</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.CreateConnection01">
+            <summary>Sets the stub of SqlCeDatabase.CreateConnection()</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.CreateParameter(System.String,System.Data.DbType,System.Int32,System.Object)">
+            <summary>Sets the stub of SqlCeDatabase.CreateParameter(String name, DbType type, Int32 size, Object value)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.CreateParameterStringDbTypeInt32Object">
+            <summary>Sets the stub of SqlCeDatabase.CreateParameter(String name, DbType type, Int32 size, Object value)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.CreateWrappedReader(Microsoft.Practices.EnterpriseLibrary.Data.DatabaseConnectionWrapper,System.Data.IDataReader)">
+            <summary>Sets the stub of Database.CreateWrappedReader(DatabaseConnectionWrapper connection, IDataReader innerReader)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.CreateWrappedReaderDatabaseConnectionWrapperIDataReader">
+            <summary>Sets the stub of Database.CreateWrappedReader(DatabaseConnectionWrapper connection, IDataReader innerReader)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.DeriveParameters(System.Data.Common.DbCommand)">
+            <summary>Sets the stub of SqlCeDatabase.DeriveParameters(DbCommand discoveryCommand)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.DeriveParametersDbCommand">
+            <summary>Sets the stub of SqlCeDatabase.DeriveParameters(DbCommand discoveryCommand)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.EndExecuteNonQuery(System.IAsyncResult)">
+            <summary>Sets the stub of Database.EndExecuteNonQuery(IAsyncResult asyncResult)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.EndExecuteNonQueryIAsyncResult">
+            <summary>Sets the stub of Database.EndExecuteNonQuery(IAsyncResult asyncResult)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.EndExecuteReader(System.IAsyncResult)">
+            <summary>Sets the stub of Database.EndExecuteReader(IAsyncResult asyncResult)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.EndExecuteReaderIAsyncResult">
+            <summary>Sets the stub of Database.EndExecuteReader(IAsyncResult asyncResult)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.EndExecuteScalar(System.IAsyncResult)">
+            <summary>Sets the stub of Database.EndExecuteScalar(IAsyncResult asyncResult)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.EndExecuteScalarIAsyncResult">
+            <summary>Sets the stub of Database.EndExecuteScalar(IAsyncResult asyncResult)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteDataSet(System.Data.Common.DbCommand)">
+            <summary>Sets the stub of Database.ExecuteDataSet(DbCommand command)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteDataSet(System.Data.Common.DbCommand,System.Data.Common.DbTransaction)">
+            <summary>Sets the stub of Database.ExecuteDataSet(DbCommand command, DbTransaction transaction)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteDataSet(System.String,System.Object[])">
+            <summary>Sets the stub of SqlCeDatabase.ExecuteDataSet(String storedProcedureName, Object[] parameterValues)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteDataSet(System.Data.CommandType,System.String)">
+            <summary>Sets the stub of Database.ExecuteDataSet(CommandType commandType, String commandText)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteDataSet(System.Data.Common.DbTransaction,System.String,System.Object[])">
+            <summary>Sets the stub of Database.ExecuteDataSet(DbTransaction transaction, String storedProcedureName, Object[] parameterValues)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteDataSet(System.Data.Common.DbTransaction,System.Data.CommandType,System.String)">
+            <summary>Sets the stub of Database.ExecuteDataSet(DbTransaction transaction, CommandType commandType, String commandText)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteDataSetCommandTypeString">
+            <summary>Sets the stub of Database.ExecuteDataSet(CommandType commandType, String commandText)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteDataSetDbCommand">
+            <summary>Sets the stub of Database.ExecuteDataSet(DbCommand command)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteDataSetDbCommandDbTransaction">
+            <summary>Sets the stub of Database.ExecuteDataSet(DbCommand command, DbTransaction transaction)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteDataSetDbTransactionCommandTypeString">
+            <summary>Sets the stub of Database.ExecuteDataSet(DbTransaction transaction, CommandType commandType, String commandText)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteDataSetDbTransactionStringObjectArray">
+            <summary>Sets the stub of Database.ExecuteDataSet(DbTransaction transaction, String storedProcedureName, Object[] parameterValues)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteDataSetSql(System.String,System.Data.Common.DbParameter[])">
+            <summary>Sets the stub of SqlCeDatabase.ExecuteDataSetSql(String sqlCommand, DbParameter[] parameters)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteDataSetSqlStringDbParameterArray">
+            <summary>Sets the stub of SqlCeDatabase.ExecuteDataSetSql(String sqlCommand, DbParameter[] parameters)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteDataSetStringObjectArray">
+            <summary>Sets the stub of SqlCeDatabase.ExecuteDataSet(String storedProcedureName, Object[] parameterValues)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteNonQuery(System.Data.Common.DbCommand)">
+            <summary>Sets the stub of Database.ExecuteNonQuery(DbCommand command)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteNonQuery(System.Data.CommandType,System.String)">
+            <summary>Sets the stub of Database.ExecuteNonQuery(CommandType commandType, String commandText)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteNonQuery(System.Data.Common.DbCommand,System.Data.Common.DbTransaction)">
+            <summary>Sets the stub of Database.ExecuteNonQuery(DbCommand command, DbTransaction transaction)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteNonQuery(System.String,System.Object[])">
+            <summary>Sets the stub of SqlCeDatabase.ExecuteNonQuery(String storedProcedureName, Object[] parameterValues)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteNonQuery(System.Data.Common.DbTransaction,System.Data.CommandType,System.String)">
+            <summary>Sets the stub of Database.ExecuteNonQuery(DbTransaction transaction, CommandType commandType, String commandText)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteNonQuery(System.Data.Common.DbTransaction,System.String,System.Object[])">
+            <summary>Sets the stub of Database.ExecuteNonQuery(DbTransaction transaction, String storedProcedureName, Object[] parameterValues)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteNonQueryCommandTypeString">
+            <summary>Sets the stub of Database.ExecuteNonQuery(CommandType commandType, String commandText)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteNonQueryDbCommand">
+            <summary>Sets the stub of Database.ExecuteNonQuery(DbCommand command)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteNonQueryDbCommandDbTransaction">
+            <summary>Sets the stub of Database.ExecuteNonQuery(DbCommand command, DbTransaction transaction)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteNonQueryDbTransactionCommandTypeString">
+            <summary>Sets the stub of Database.ExecuteNonQuery(DbTransaction transaction, CommandType commandType, String commandText)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteNonQueryDbTransactionStringObjectArray">
+            <summary>Sets the stub of Database.ExecuteNonQuery(DbTransaction transaction, String storedProcedureName, Object[] parameterValues)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteNonQuerySql(System.String,System.Data.Common.DbParameter[])">
+            <summary>Sets the stub of SqlCeDatabase.ExecuteNonQuerySql(String sqlCommand, DbParameter[] parameters)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteNonQuerySql(System.String,System.Int32@,System.Data.Common.DbParameter[])">
+            <summary>Sets the stub of SqlCeDatabase.ExecuteNonQuerySql(String sqlCommand, Int32&amp; lastAddedId, DbParameter[] parameters)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteNonQuerySqlStringDbParameterArray">
+            <summary>Sets the stub of SqlCeDatabase.ExecuteNonQuerySql(String sqlCommand, DbParameter[] parameters)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteNonQuerySqlStringInt32OutDbParameterArray">
+            <summary>Sets the stub of SqlCeDatabase.ExecuteNonQuerySql(String sqlCommand, Int32&amp; lastAddedId, DbParameter[] parameters)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteNonQueryStringObjectArray">
+            <summary>Sets the stub of SqlCeDatabase.ExecuteNonQuery(String storedProcedureName, Object[] parameterValues)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteReader(System.Data.Common.DbCommand)">
+            <summary>Sets the stub of Database.ExecuteReader(DbCommand command)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteReader(System.Data.Common.DbCommand,System.Data.Common.DbTransaction)">
+            <summary>Sets the stub of Database.ExecuteReader(DbCommand command, DbTransaction transaction)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteReaderDbCommand">
+            <summary>Sets the stub of Database.ExecuteReader(DbCommand command)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteReaderDbCommandDbTransaction">
+            <summary>Sets the stub of Database.ExecuteReader(DbCommand command, DbTransaction transaction)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteReaderSql(System.String,System.Data.Common.DbParameter[])">
+            <summary>Sets the stub of SqlCeDatabase.ExecuteReaderSql(String sqlCommand, DbParameter[] parameters)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteReaderSqlStringDbParameterArray">
+            <summary>Sets the stub of SqlCeDatabase.ExecuteReaderSql(String sqlCommand, DbParameter[] parameters)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteResultSet(System.Data.Common.DbCommand,System.Data.Common.DbParameter[])">
+            <summary>Sets the stub of SqlCeDatabase.ExecuteResultSet(DbCommand command, DbParameter[] parameters)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteResultSet(System.Data.Common.DbCommand,System.Data.Common.DbTransaction,System.Data.Common.DbParameter[])">
+            <summary>Sets the stub of SqlCeDatabase.ExecuteResultSet(DbCommand command, DbTransaction transaction, DbParameter[] parameters)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteResultSet(System.Data.Common.DbCommand,System.Data.SqlServerCe.ResultSetOptions,System.Data.Common.DbParameter[])">
+            <summary>Sets the stub of SqlCeDatabase.ExecuteResultSet(DbCommand command, ResultSetOptions options, DbParameter[] parameters)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteResultSet(System.Data.Common.DbCommand,System.Data.Common.DbTransaction,System.Data.SqlServerCe.ResultSetOptions,System.Data.Common.DbParameter[])">
+            <summary>Sets the stub of SqlCeDatabase.ExecuteResultSet(DbCommand command, DbTransaction transaction, ResultSetOptions options, DbParameter[] parameters)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteResultSetDbCommandDbParameterArray">
+            <summary>Sets the stub of SqlCeDatabase.ExecuteResultSet(DbCommand command, DbParameter[] parameters)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteResultSetDbCommandDbTransactionDbParameterArray">
+            <summary>Sets the stub of SqlCeDatabase.ExecuteResultSet(DbCommand command, DbTransaction transaction, DbParameter[] parameters)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteResultSetDbCommandDbTransactionResultSetOptionsDbParameterArray">
+            <summary>Sets the stub of SqlCeDatabase.ExecuteResultSet(DbCommand command, DbTransaction transaction, ResultSetOptions options, DbParameter[] parameters)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteResultSetDbCommandResultSetOptionsDbParameterArray">
+            <summary>Sets the stub of SqlCeDatabase.ExecuteResultSet(DbCommand command, ResultSetOptions options, DbParameter[] parameters)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteScalar(System.Data.Common.DbCommand)">
+            <summary>Sets the stub of Database.ExecuteScalar(DbCommand command)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteScalar(System.Data.CommandType,System.String)">
+            <summary>Sets the stub of Database.ExecuteScalar(CommandType commandType, String commandText)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteScalar(System.Data.Common.DbCommand,System.Data.Common.DbTransaction)">
+            <summary>Sets the stub of Database.ExecuteScalar(DbCommand command, DbTransaction transaction)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteScalar(System.String,System.Object[])">
+            <summary>Sets the stub of SqlCeDatabase.ExecuteScalar(String storedProcedureName, Object[] parameterValues)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteScalar(System.Data.Common.DbTransaction,System.Data.CommandType,System.String)">
+            <summary>Sets the stub of Database.ExecuteScalar(DbTransaction transaction, CommandType commandType, String commandText)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteScalar(System.Data.Common.DbTransaction,System.String,System.Object[])">
+            <summary>Sets the stub of Database.ExecuteScalar(DbTransaction transaction, String storedProcedureName, Object[] parameterValues)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteScalarCommandTypeString">
+            <summary>Sets the stub of Database.ExecuteScalar(CommandType commandType, String commandText)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteScalarDbCommand">
+            <summary>Sets the stub of Database.ExecuteScalar(DbCommand command)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteScalarDbCommandDbTransaction">
+            <summary>Sets the stub of Database.ExecuteScalar(DbCommand command, DbTransaction transaction)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteScalarDbTransactionCommandTypeString">
+            <summary>Sets the stub of Database.ExecuteScalar(DbTransaction transaction, CommandType commandType, String commandText)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteScalarDbTransactionStringObjectArray">
+            <summary>Sets the stub of Database.ExecuteScalar(DbTransaction transaction, String storedProcedureName, Object[] parameterValues)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteScalarSql(System.String,System.Data.Common.DbParameter[])">
+            <summary>Sets the stub of SqlCeDatabase.ExecuteScalarSql(String sqlCommand, DbParameter[] parameters)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteScalarSqlStringDbParameterArray">
+            <summary>Sets the stub of SqlCeDatabase.ExecuteScalarSql(String sqlCommand, DbParameter[] parameters)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.ExecuteScalarStringObjectArray">
+            <summary>Sets the stub of SqlCeDatabase.ExecuteScalar(String storedProcedureName, Object[] parameterValues)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.GetParameterValue(System.Data.Common.DbCommand,System.String)">
+            <summary>Sets the stub of Database.GetParameterValue(DbCommand command, String name)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.GetParameterValueDbCommandString">
+            <summary>Sets the stub of Database.GetParameterValue(DbCommand command, String name)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.GetStoredProcCommand(System.String)">
+            <summary>Sets the stub of SqlCeDatabase.GetStoredProcCommand(String storedProcedureName)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.GetStoredProcCommand(System.String,System.Object[])">
+            <summary>Sets the stub of SqlCeDatabase.GetStoredProcCommand(String storedProcedureName, Object[] parameterValues)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.GetStoredProcCommandString">
+            <summary>Sets the stub of SqlCeDatabase.GetStoredProcCommand(String storedProcedureName)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.GetStoredProcCommandStringObjectArray">
+            <summary>Sets the stub of SqlCeDatabase.GetStoredProcCommand(String storedProcedureName, Object[] parameterValues)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.GetWrappedConnection">
+            <summary>Sets the stub of SqlCeDatabase.GetWrappedConnection()</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.GetWrappedConnection01">
+            <summary>Sets the stub of SqlCeDatabase.GetWrappedConnection()</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.InitializeStub">
+            <summary>Initializes a new instance of type StubSqlCeDatabase</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.LoadDataSet(System.Data.Common.DbCommand,System.Data.DataSet,System.String[])">
+            <summary>Sets the stub of Database.LoadDataSet(DbCommand command, DataSet dataSet, String[] tableNames)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.LoadDataSet(System.Data.Common.DbCommand,System.Data.DataSet,System.String)">
+            <summary>Sets the stub of Database.LoadDataSet(DbCommand command, DataSet dataSet, String tableName)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.LoadDataSet(System.Data.Common.DbCommand,System.Data.DataSet,System.String[],System.Data.Common.DbTransaction)">
+            <summary>Sets the stub of Database.LoadDataSet(DbCommand command, DataSet dataSet, String[] tableNames, DbTransaction transaction)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.LoadDataSet(System.Data.Common.DbCommand,System.Data.DataSet,System.String,System.Data.Common.DbTransaction)">
+            <summary>Sets the stub of Database.LoadDataSet(DbCommand command, DataSet dataSet, String tableName, DbTransaction transaction)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.LoadDataSet(System.Data.CommandType,System.String,System.Data.DataSet,System.String[])">
+            <summary>Sets the stub of Database.LoadDataSet(CommandType commandType, String commandText, DataSet dataSet, String[] tableNames)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.LoadDataSet(System.String,System.Data.DataSet,System.String[],System.Object[])">
+            <summary>Sets the stub of SqlCeDatabase.LoadDataSet(String storedProcedureName, DataSet dataSet, String[] tableNames, Object[] parameterValues)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.LoadDataSet(System.Data.Common.DbTransaction,System.String,System.Data.DataSet,System.String[],System.Object[])">
+            <summary>Sets the stub of Database.LoadDataSet(DbTransaction transaction, String storedProcedureName, DataSet dataSet, String[] tableNames, Object[] parameterValues)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.LoadDataSetCommandTypeStringDataSetStringArray">
+            <summary>Sets the stub of Database.LoadDataSet(CommandType commandType, String commandText, DataSet dataSet, String[] tableNames)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.LoadDataSetDbCommandDataSetString">
+            <summary>Sets the stub of Database.LoadDataSet(DbCommand command, DataSet dataSet, String tableName)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.LoadDataSetDbCommandDataSetStringArray">
+            <summary>Sets the stub of Database.LoadDataSet(DbCommand command, DataSet dataSet, String[] tableNames)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.LoadDataSetDbCommandDataSetStringArrayDbTransaction">
+            <summary>Sets the stub of Database.LoadDataSet(DbCommand command, DataSet dataSet, String[] tableNames, DbTransaction transaction)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.LoadDataSetDbCommandDataSetStringDbTransaction">
+            <summary>Sets the stub of Database.LoadDataSet(DbCommand command, DataSet dataSet, String tableName, DbTransaction transaction)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.LoadDataSetDbTransactionStringDataSetStringArrayObjectArray">
+            <summary>Sets the stub of Database.LoadDataSet(DbTransaction transaction, String storedProcedureName, DataSet dataSet, String[] tableNames, Object[] parameterValues)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.LoadDataSetStringDataSetStringArrayObjectArray">
+            <summary>Sets the stub of SqlCeDatabase.LoadDataSet(String storedProcedureName, DataSet dataSet, String[] tableNames, Object[] parameterValues)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.SameNumberOfParametersAndValues(System.Data.Common.DbCommand,System.Object[])">
+            <summary>Sets the stub of Database.SameNumberOfParametersAndValues(DbCommand command, Object[] values)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.SameNumberOfParametersAndValuesDbCommandObjectArray">
+            <summary>Sets the stub of Database.SameNumberOfParametersAndValues(DbCommand command, Object[] values)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.SetParameterValue(System.Data.Common.DbCommand,System.String,System.Object)">
+            <summary>Sets the stub of Database.SetParameterValue(DbCommand command, String parameterName, Object value)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.SetParameterValueDbCommandStringObject">
+            <summary>Sets the stub of Database.SetParameterValue(DbCommand command, String parameterName, Object value)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.SetUpRowUpdatedEvent(System.Data.Common.DbDataAdapter)">
+            <summary>Sets the stub of SqlCeDatabase.SetUpRowUpdatedEvent(DbDataAdapter adapter)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.SetUpRowUpdatedEventDbDataAdapter">
+            <summary>Sets the stub of SqlCeDatabase.SetUpRowUpdatedEvent(DbDataAdapter adapter)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.SupportsAsyncGet">
+            <summary>Sets the stub of Database.get_SupportsAsync()</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.SupportsParemeterDiscoveryGet">
+            <summary>Sets the stub of Database.get_SupportsParemeterDiscovery()</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.TableExists(System.String)">
+            <summary>Sets the stub of SqlCeDatabase.TableExists(String tableName)</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.TableExistsString">
+            <summary>Sets the stub of SqlCeDatabase.TableExists(String tableName)</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.UserParametersStartIndex">
+            <summary>Sets the stub of Database.UserParametersStartIndex()</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.UserParametersStartIndex01">
+            <summary>Sets the stub of Database.UserParametersStartIndex()</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.InstanceObserver">
+            <summary>Gets or sets the instance observer.</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.SupportsAsync">
+            <summary>Sets the stub of Database.get_SupportsAsync()</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabase.SupportsParemeterDiscovery">
+            <summary>Sets the stub of Database.get_SupportsParemeterDiscovery()</summary>
+        </member>
+        <member name="T:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabaseData">
+            <summary>Stub type of Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.SqlCeDatabaseData</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabaseData.#ctor(System.Configuration.ConnectionStringSettings,Microsoft.Practices.EnterpriseLibrary.Common.Configuration.IConfigurationSource)">
+            <summary>Initializes a new instance</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabaseData.GetRegistrations">
+            <summary>Sets the stub of SqlCeDatabaseData.GetRegistrations()</summary>
+        </member>
+        <member name="F:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabaseData.GetRegistrations01">
+            <summary>Sets the stub of SqlCeDatabaseData.GetRegistrations()</summary>
+        </member>
+        <member name="M:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabaseData.InitializeStub">
+            <summary>Initializes a new instance of type StubSqlCeDatabaseData</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabaseData.CallBase">
+            <summary>Gets or sets a value that indicates if the base method should be called instead of the fallback behavior</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabaseData.InstanceBehavior">
+            <summary>Gets or sets the instance behavior.</summary>
+        </member>
+        <member name="P:Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.Fakes.StubSqlCeDatabaseData.InstanceObserver">
+            <summary>Gets or sets the instance observer.</summary>
+        </member>
+        <member name="T:Microsoft.QualityTools.Testing.Fakes.Delegates.MicrosoftPracticesEnterpriseLibraryDataSqlCeDelegates">
+            <summary>Contains custom delegates used for the stubs and shims of Microsoft.Practices.EnterpriseLibrary.Data.SqlCe</summary>
+        </member>
+    </members>
+</doc>

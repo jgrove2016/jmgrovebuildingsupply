@@ -1,0 +1,95 @@
+E:\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\JG_Prospect.Common.dll
+E:\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\JG_Prospect.Common.pdb
+E:\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Caching.Database.dll
+E:\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Caching.dll
+E:\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+E:\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.dll
+E:\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll
+E:\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging.dll
+E:\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.Database.dll
+E:\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll
+E:\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+E:\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.Unity.dll
+E:\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.Unity.Interception.dll
+E:\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\mscorlib.dll
+E:\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\normidna.nlp
+E:\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\normnfc.nlp
+E:\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\normnfd.nlp
+E:\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\normnfkc.nlp
+E:\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\normnfkd.nlp
+E:\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.dll
+E:\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.pdb
+E:\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+E:\SandeepJGP\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\JG_Prospect.Common.dll
+E:\SandeepJGP\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\JG_Prospect.Common.pdb
+E:\SandeepJGP\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Caching.Database.dll
+E:\SandeepJGP\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Caching.dll
+E:\SandeepJGP\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+E:\SandeepJGP\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+E:\SandeepJGP\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.dll
+E:\SandeepJGP\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll
+E:\SandeepJGP\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging.dll
+E:\SandeepJGP\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.Database.dll
+E:\SandeepJGP\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll
+E:\SandeepJGP\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+E:\SandeepJGP\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.Unity.dll
+E:\SandeepJGP\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.Unity.Interception.dll
+E:\SandeepJGP\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\mscorlib.dll
+E:\SandeepJGP\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\normidna.nlp
+E:\SandeepJGP\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\normnfc.nlp
+E:\SandeepJGP\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\normnfd.nlp
+E:\SandeepJGP\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\normnfkc.nlp
+E:\SandeepJGP\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\bin\Debug\normnfkd.nlp
+E:\SandeepJGP\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.dll
+E:\SandeepJGP\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.pdb
+E:\SandeepJGP\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.csprojResolveAssemblyReference.cache
+E:\JGP\JG_Prospect\JG_Prospect.Common\bin\Debug\JG_Prospect.Common.dll
+E:\JGP\JG_Prospect\JG_Prospect.Common\bin\Debug\JG_Prospect.Common.pdb
+E:\JGP\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Caching.Database.dll
+E:\JGP\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Caching.dll
+E:\JGP\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+E:\JGP\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+E:\JGP\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.dll
+E:\JGP\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll
+E:\JGP\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging.dll
+E:\JGP\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.Database.dll
+E:\JGP\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll
+E:\JGP\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+E:\JGP\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.Unity.dll
+E:\JGP\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.Unity.Interception.dll
+E:\JGP\JG_Prospect\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.dll
+E:\JGP\JG_Prospect\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.pdb
+E:\JGP\JG_Prospect\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.csprojResolveAssemblyReference.cache
+D:\Harshit Shared\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\bin\Debug\JG_Prospect.Common.dll
+D:\Harshit Shared\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\bin\Debug\JG_Prospect.Common.pdb
+D:\Harshit Shared\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Caching.Database.dll
+D:\Harshit Shared\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Caching.dll
+D:\Harshit Shared\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\Harshit Shared\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\Harshit Shared\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.dll
+D:\Harshit Shared\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll
+D:\Harshit Shared\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging.dll
+D:\Harshit Shared\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.Database.dll
+D:\Harshit Shared\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll
+D:\Harshit Shared\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+D:\Harshit Shared\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.Unity.dll
+D:\Harshit Shared\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.Unity.Interception.dll
+D:\Harshit Shared\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.dll
+D:\Harshit Shared\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.pdb
+D:\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\bin\Debug\JG_Prospect.Common.dll
+D:\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\bin\Debug\JG_Prospect.Common.pdb
+D:\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Caching.Database.dll
+D:\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Caching.dll
+D:\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.dll
+D:\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll
+D:\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging.dll
+D:\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.Database.dll
+D:\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll
+D:\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+D:\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.Unity.dll
+D:\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\bin\Debug\Microsoft.Practices.Unity.Interception.dll
+D:\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.csprojResolveAssemblyReference.cache
+D:\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.dll
+D:\JG_Prospect-2016-02-16\JG_Prospect\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.pdb
