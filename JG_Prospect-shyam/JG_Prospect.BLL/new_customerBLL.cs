@@ -116,6 +116,10 @@ namespace JG_Prospect.BLL
         {
             return new_customerDAL.Instance.UpdateStatusOfCustomer(soldJobId, statusId);//, productTypeId, estimateId);
         }
+        public DataSet GetTouchPointLogData(int CustomerId, int userid)
+        {
+            return new_customerDAL.Instance.GetTouchPointLogData(CustomerId, userid);
+        }
         public DataSet GetTouchPointLogData(int CustomerId)
         {
             return new_customerDAL.Instance.GetTouchPointLogData(CustomerId);

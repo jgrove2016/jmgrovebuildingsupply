@@ -808,6 +808,28 @@ namespace JG_Prospect.DAL
             }
             return returndata;
         }
+        public DataSet GetTouchPointLogData(int CustomerId, int userid)
+        {
+            returndata = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("UDP_FetchTouchPointLogData");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@customerId", DbType.Int32, CustomerId);
+                    database.AddInParameter(command, "@userid", DbType.Int32, userid);
+                    returndata = database.ExecuteDataSet(command);
+                    return returndata;
+                }
+            }
+
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+            }
+            return returndata;
+        }
 
         public DataSet GetCustomerDocsDetails(int customerId,int productId,int productTypeId)
         {

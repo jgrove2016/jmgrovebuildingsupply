@@ -198,9 +198,14 @@ namespace JG_Prospect.Sr_App
         //}
         protected void bindGrid()
         {
-            DataSet ds = new_customerBLL.Instance.GetTouchPointLogData(Convert.ToInt32(Session["CustomerId"].ToString()));
+            //DataSet ds = new_customerBLL.Instance.GetTouchPointLogData(Convert.ToInt32(Session["CustomerId"].ToString()));
+            //grdTouchPointLog.DataSource = ds;
+            //grdTouchPointLog.DataBind();
+            int CustomerId = Convert.ToInt32(HttpContext.Current.Session["CustomerId"].ToString());
+            DataSet ds = new_customerBLL.Instance.GetTouchPointLogData(CustomerId, UserId);
             grdTouchPointLog.DataSource = ds;
             grdTouchPointLog.DataBind();
+            txtAddNotes.Text = "";
         }
 
         protected void grdTouchPointLog_RowDataBound(object sender, GridViewRowEventArgs e)

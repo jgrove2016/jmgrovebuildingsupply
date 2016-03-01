@@ -18,6 +18,7 @@ using iTextSharp.text;
 using iTextSharp.text.html.simpleparser;
 using JG_Prospect.Common.Logger;
 using System.Drawing;
+using System.Web.Script.Serialization;
 
 namespace JG_Prospect.Sr_App
 {
@@ -28,6 +29,7 @@ namespace JG_Prospect.Sr_App
         int estimateId = 0, customerId = 0, productTypeId = 0;
         protected void Page_Load(object sender, EventArgs e)
         {
+            Session["VendorId"] = "1";
             setPermissions();
             if (!IsPostBack)
             {
@@ -179,9 +181,9 @@ namespace JG_Prospect.Sr_App
             else
             {
                 string ManufacturerType = GetManufacturerType();
-                FilterVendors("", "ManufacturerType", ManufacturerType, "");            
+                FilterVendors("", "ManufacturerType", ManufacturerType, "");
             }
-            
+
         }
 
         public void BindVendorByProdCat(string ProductId)
@@ -262,6 +264,287 @@ namespace JG_Prospect.Sr_App
             grdVendorList.DataBind();
         }
 
+        public class NameValue
+        {
+            //Address
+            public string key { get; set; }
+            public string value { get; set; }
+        }
+        public class AddressClass
+        {
+            public string Address { get; set; }
+            public string City { get; set; }
+            public string Zip { get; set; }
+        }
+        public class EmailClass
+        {
+            public string Email { get; set; }
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public List<ContactClass> Contact { get; set; }
+        }
+        public class ContactClass
+        {
+            public string Extension { get; set; }
+            public string Number { get; set; }
+        }
+        // New Code
+        [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
+        public static string GetVendorDetails(string vendorid,List<AddressClass> Address, List<EmailClass> PrimaryEmail, List<EmailClass> SecEmail, List<EmailClass> AltEmail)
+        {
+            //JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
+            //string deserializedJson = jsSerializer.Serialize(formVars);
+            //DataTable dtContact4 = new DataTable();
+            //dtContact4 = GetAllContact4Values(formVars);
+            //HttpContext.Current.Session["dtContact4"] = dtContact4 as DataTable;
+            return "";
+        }
+
+        [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
+        public static void GetEmails(List<NameValue> formVars)
+        {
+            JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
+            string deserializedJson = jsSerializer.Serialize(formVars);
+            DataTable dtEmails = new DataTable();
+            dtEmails = GetAllEmailValues(formVars);
+            HttpContext.Current.Session["dtEmail2"] = dtEmails as DataTable;
+        }
+
+
+        [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
+        private static DataTable GetAllEmailValues(List<NameValue> formVars)
+        {
+            int intListLength = formVars.Count;
+            DataTable dtEmail = new DataTable();
+            dtEmail.Columns.Add("VendorId");
+            dtEmail.Columns.Add("Email2");
+            if (intListLength > 0)
+            {
+                DataRow dRowNew = dtEmail.NewRow();
+                for (int i = 1; i < intListLength; i++)
+                {
+                    if (formVars[i].key.Contains("nametxtEMail1" + (i - 1)))
+                    {
+                        dRowNew["VendorId"] = HttpContext.Current.Session["VendorId"].ToString();
+                        dRowNew["Email2"] = formVars[i].value;
+                        dtEmail.Rows.Add(dRowNew);
+                        dRowNew = dtEmail.NewRow();
+                    }
+                }
+            }
+            return dtEmail;
+        }
+
+        [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
+        public static void GetSecEmails(List<NameValue> formVars)
+        {
+            JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
+            string deserializedJson = jsSerializer.Serialize(formVars);
+            DataTable dtEmails = new DataTable();
+            dtEmails = GetAllSecEmailValues(formVars);
+            HttpContext.Current.Session["dtSecEmail"] = dtEmails as DataTable;
+        }
+
+
+        [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
+        private static DataTable GetAllSecEmailValues(List<NameValue> formVars)
+        {
+            int intListLength = formVars.Count;
+            DataTable dtEmail = new DataTable();
+            dtEmail.Columns.Add("VendorId");
+            dtEmail.Columns.Add("SecContactEmail");
+            if (intListLength > 0)
+            {
+                DataRow dRowNew = dtEmail.NewRow();
+                for (int i = 1; i < intListLength; i++)
+                {
+                    if (formVars[i].key.Contains("nametxtEMail3" + (i - 1)))
+                    {
+                        dRowNew["VendorId"] = HttpContext.Current.Session["VendorId"].ToString();
+                        dRowNew["SecContactEmail"] = formVars[i].value;
+                        dtEmail.Rows.Add(dRowNew);
+                        dRowNew = dtEmail.NewRow();
+                    }
+                }
+            }
+            return dtEmail;
+        }
+
+        [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
+        public static void GetAltEmails(List<NameValue> formVars)
+        {
+            JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
+            string deserializedJson = jsSerializer.Serialize(formVars);
+            DataTable dtEmails = new DataTable();
+            dtEmails = GetAllAltEmailValues(formVars);
+            HttpContext.Current.Session["dtAltEmail"] = dtEmails as DataTable;
+        }
+
+
+        [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
+        private static DataTable GetAllAltEmailValues(List<NameValue> formVars)
+        {
+            int intListLength = formVars.Count;
+            DataTable dtEmail = new DataTable();
+            dtEmail.Columns.Add("VendorId");
+            dtEmail.Columns.Add("AltContactEmail");
+            if (intListLength > 0)
+            {
+                DataRow dRowNew = dtEmail.NewRow();
+                for (int i = 1; i < intListLength; i++)
+                {
+                    if (formVars[i].key.Contains("nametxtEMail5" + (i - 1)))
+                    {
+                        dRowNew["VendorId"] = HttpContext.Current.Session["VendorId"].ToString();
+                        dRowNew["AltContactEmail"] = formVars[i].value;
+                        dtEmail.Rows.Add(dRowNew);
+                        dRowNew = dtEmail.NewRow();
+                    }
+                }
+            }
+            return dtEmail;
+        }
+
+        // Get Contact 2
+
+        [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
+        public static void GetContact2(List<NameValue> formVars)
+        {
+            JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
+            string deserializedJson = jsSerializer.Serialize(formVars);
+            DataTable dtContact2 = new DataTable();
+            dtContact2 = GetAllContact2Values(formVars);
+            HttpContext.Current.Session["dtContact2"] = dtContact2 as DataTable;
+        }
+
+
+        [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
+        private static DataTable GetAllContact2Values(List<NameValue> formVars)
+        {
+            int intListLength = formVars.Count;
+            DataTable dtContact2 = new DataTable();
+            dtContact2.Columns.Add("VendorId");
+            dtContact2.Columns.Add("ContactExten2");
+            dtContact2.Columns.Add("ContactNo2");
+            if (intListLength > 0)
+            {
+                DataRow dRowNew = dtContact2.NewRow();
+                int d = 2;
+                for (int i = 2; i < intListLength; i++)
+                {
+
+                    if (formVars[i].key.Contains("nametxtContactExten1" + (i - d)))
+                    {
+                        dRowNew["ContactExten2"] = formVars[i].value;
+                        i++;
+                    }
+                    if (formVars[i].key.Contains("nametxtcontact1" + (i - (d + 1))))
+                    {
+                        dRowNew["ContactNo2"] = formVars[i].value;
+                    }
+                    d++;
+                    dRowNew["VendorId"] = HttpContext.Current.Session["VendorId"].ToString();
+                    dtContact2.Rows.Add(dRowNew);
+                    dRowNew = dtContact2.NewRow();
+                }
+
+            }
+            return dtContact2;
+        }
+
+        // Get Contact 3
+
+        [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
+        public static void GetContact3(List<NameValue> formVars)
+        {
+            JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
+            string deserializedJson = jsSerializer.Serialize(formVars);
+            DataTable dtContact3 = new DataTable();
+            dtContact3 = GetAllContact3Values(formVars);
+            HttpContext.Current.Session["dtContact3"] = dtContact3 as DataTable;
+        }
+
+
+        [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
+        private static DataTable GetAllContact3Values(List<NameValue> formVars)
+        {
+            int intListLength = formVars.Count;
+            DataTable dtContact3 = new DataTable();
+            dtContact3.Columns.Add("VendorId");
+            dtContact3.Columns.Add("ContactExten3");
+            dtContact3.Columns.Add("ContactNo3");
+            if (intListLength > 0)
+            {
+                DataRow dRowNew = dtContact3.NewRow();
+                int d = 2;
+                for (int i = 2; i < intListLength; i++)
+                {
+
+                    if (formVars[i].key.Contains("nametxtContactExten3" + (i - d)))
+                    {
+                        dRowNew["ContactExten3"] = formVars[i].value;
+                        i++;
+                    }
+                    if (formVars[i].key.Contains("nametxtcontact3" + (i - (d + 1))))
+                    {
+                        dRowNew["ContactNo3"] = formVars[i].value;
+                    }
+                    d++;
+                    dRowNew["VendorId"] = HttpContext.Current.Session["VendorId"].ToString();
+                    dtContact3.Rows.Add(dRowNew);
+                    dRowNew = dtContact3.NewRow();
+                }
+
+            }
+            return dtContact3;
+        }
+
+        // Get Contact 4
+
+        [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
+        public static void GetContact4(List<NameValue> formVars)
+        {
+            JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
+            string deserializedJson = jsSerializer.Serialize(formVars);
+            DataTable dtContact4 = new DataTable();
+            dtContact4 = GetAllContact4Values(formVars);
+            HttpContext.Current.Session["dtContact4"] = dtContact4 as DataTable;
+        }
+
+        [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
+        private static DataTable GetAllContact4Values(List<NameValue> formVars)
+        {
+            int intListLength = formVars.Count;
+            DataTable dtContact4 = new DataTable();
+            dtContact4.Columns.Add("VendorId");
+            dtContact4.Columns.Add("ContactExten4");
+            dtContact4.Columns.Add("ContactNo4");
+            if (intListLength > 0)
+            {
+                DataRow dRowNew = dtContact4.NewRow();
+                int d = 2;
+                for (int i = 2; i < intListLength; i++)
+                {
+
+                    if (formVars[i].key.Contains("nametxtContactExten5" + (i - d)))
+                    {
+                        dRowNew["ContactExten4"] = formVars[i].value;
+                        i++;
+                    }
+                    if (formVars[i].key.Contains("nametxtcontact5" + (i - (d + 1))))
+                    {
+                        dRowNew["ContactNo4"] = formVars[i].value;
+                    }
+                    d++;
+                    dRowNew["VendorId"] = HttpContext.Current.Session["VendorId"].ToString();
+                    dtContact4.Rows.Add(dRowNew);
+                    dRowNew = dtContact4.NewRow();
+                }
+
+            }
+            return dtContact4;
+        }
+        
         protected void lnkVendorName_Click(object sender, EventArgs e)
         {
             LinkButton lnkbtnVendorName = sender as LinkButton;
@@ -393,20 +676,21 @@ namespace JG_Prospect.Sr_App
         protected void SaveAllData()
         {
             Vendor objvendor = new Vendor();
-            if (ddlVendorCategory.SelectedValue == "Select")
+            if (ddlVndrCategory.SelectedValue == "Select")
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('please select Vendor Category');", true);
                 return;
             }
 
-            if (ddlVendorName.SelectedValue != "")
-                objvendor.vendor_id = Convert.ToInt32(ddlVendorName.SelectedValue);
-            else
-                objvendor.vendor_id = Convert.ToInt32(txtVendorId.Text);
+            //if (ddlVendorName.SelectedValue != "")
+            //    objvendor.vendor_id = Convert.ToInt32(ddlVendorName.SelectedValue);
+            //else
+            objvendor.vendor_id = Convert.ToInt32(txtVendorId.Text);
+
             objvendor.vendor_name = txtVendorNm.Text;
 
-            objvendor.vendor_category_id = Convert.ToInt32(ddlVendorCategory.SelectedValue);
-            objvendor.contract_person = txtcontactperson.Text;
+            objvendor.vendor_category_id = Convert.ToInt32(ddlVndrCategory.SelectedValue);
+            objvendor.contract_person = txtFName.Text + " " + txtLName.Text;
             objvendor.contract_number = txtcontactnumber.Text;
             objvendor.fax = txtfax.Text;
             objvendor.mail = txtmail.Text;
@@ -440,6 +724,8 @@ namespace JG_Prospect.Sr_App
             flag = "";
             SaveAllData();
             clearcontrols();
+            int id = 1;
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "script1", "GetVendorDetails("+id+");", true);
         }
 
         //protected void btndelete_Click(object sender, EventArgs e)
