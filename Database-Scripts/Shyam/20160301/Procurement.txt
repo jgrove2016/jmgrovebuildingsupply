@@ -165,3 +165,89 @@ delete from tblProductVendor where VendorCategoryId=@vendorcategory_id
 
 GO
 
+USE [jgrove_JGP]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_GetVendorList]    Script Date: 03/01/2016 17:30:08 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE proc [dbo].[USP_GetVendorList]
+@FilterParams nvarchar(Max)=null,
+@FilterBy nvarchar(50)=null,
+@ManufacturerType nvarchar(20)=null,
+@VendorCategoryId nvarchar(10)=null
+as
+BEGIN
+	Declare @BaseQuery nvarchar(max) ='select VendorName , VendorId from tblVendors',
+			@WhereClause nvarchar(max)=' Where 1=1';
+	 if(@FilterBy='VendorSubCategory')
+		begin
+			If (@ManufacturerType IS NOT NULL and @ManufacturerType <> '')
+				Begin
+					Set @WhereClause= @WhereClause +' AND VendorSubCategoryId=@FilterParams and VendorCategoryId=@VendorCategoryId and ManufacturerType=@ManufacturerType'
+				End
+			Else
+				Begin
+					Set @WhereClause= @WhereClause +' AND VendorSubCategoryId=@FilterParams and VendorCategoryId=@VendorCategoryId'
+				End
+		end
+	 else if(@FilterBy='VendorCategory')
+		begin
+			If (@ManufacturerType IS NOT NULL and @ManufacturerType <> '')
+				Begin
+			 		Set @WhereClause= @WhereClause +' AND VendorCategoryId=@FilterParams and ManufacturerType=@ManufacturerType';
+				End
+			Else
+				Begin
+					set @WhereClause= @WhereClause +' AND VendorCategoryId=@FilterParams';
+				End
+		end
+	 else if(@FilterBy='ProductCategory')
+		begin
+			If (@ManufacturerType IS NOT NULL and @ManufacturerType <> '')
+				Begin
+					set @WhereClause= @WhereClause +' And VendorCategoryId in (select * from dbo.split(@FilterParams,'','')) and ManufacturerType=@ManufacturerType';
+				End
+			Else
+				Begin
+					set @WhereClause= @WhereClause +' And VendorCategoryId in (select * from dbo.split(@FilterParams,'',''))';
+				End
+		end
+	else if(@FilterBy='ManufacturerType')
+		begin
+		
+					set @WhereClause= @WhereClause +' And ManufacturerType=@ManufacturerType';
+			
+		end
+	set @BaseQuery = @BaseQuery+@WhereClause;
+	--print @BaseQuery
+	EXECUTE sp_executesql @BaseQuery,N'@FilterParams nvarchar(max),@FilterBy nvarchar(50),@ManufacturerType nvarchar(20),@VendorCategoryId nvarchar(10)',
+							@FilterParams,@FilterBy,@ManufacturerType,@VendorCategoryId
+END
+
+--exec [USP_GetVendorList] @FilterParams='41',@FilterBy='ProductCategory',@ManufacturerType=''
+GO
+
+USE [jgrove_JGP]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_GetVendorSubCategory]    Script Date: 03/01/2016 17:30:35 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER proc [dbo].[USP_GetVendorSubCategory]
+@VendorCategoryId int=null
+as
+begin
+	select * from tblVendorSubCategory where VendorCategoryId=@VendorCategoryId
+end
+GO
+
+
