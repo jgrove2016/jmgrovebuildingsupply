@@ -258,6 +258,14 @@
                     </asp:Panel>
                 </td>
             </tr>
+            <tr id="trUpdatedRow" style='display:<%=(StaffID!=0?"":"none") %>'>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td colspan="3">
+                    <b>Staff Internal ID:</b> <%=StaffID %> <br />
+                    <b>Staff Name:</b>  <%=StaffName %>  <br />
+                </td>
+            </tr>
         </table>
         <asp:HiddenField ID="hdnAdmin" runat="server" />
         <asp:HiddenField ID="hdnForeman" runat="server" />

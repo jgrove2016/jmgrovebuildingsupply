@@ -54,9 +54,9 @@ namespace JG_Prospect.BLL
         {
             return CustomDAL.Instance.UpdateForemanPermissionOfCustomMaterialList2(jobid, permissionStatus, FormanEmail);//, productTypeId, estimateId);
         }
-        public int UpdateForemanPermissionOfCustomMaterialList(string jobid, char permissionStatus)//, int productTypeId, int estimateId)
+        public int UpdateForemanPermissionOfCustomMaterialList(string jobid, char permissionStatus, int updatedby)//, int productTypeId, int estimateId)
         {
-            return CustomDAL.Instance.UpdateForemanPermissionOfCustomMaterialList(jobid, permissionStatus);//, productTypeId, estimateId);
+            return CustomDAL.Instance.UpdateForemanPermissionOfCustomMaterialList(jobid, permissionStatus, updatedby);//, productTypeId, estimateId);
         }
 
         public DataSet GetFormanEmail(string jobId)//, int productTypeId, int estimateId)
@@ -111,9 +111,9 @@ namespace JG_Prospect.BLL
         {
             return CustomDAL.Instance.CheckPermissionsForVendors(jobid);//, productTypeId, estimateId);
         }
-        public int UpdateSrSalesmanPermissionOfCustomMaterialList(string jobid, char permissionStatus)//, int productTypeId, int estimateId)
+        public int UpdateSrSalesmanPermissionOfCustomMaterialList(string jobid, char permissionStatus, int updatedby)//, int productTypeId, int estimateId)
         {
-            return CustomDAL.Instance.UpdateSrSalesmanPermissionOfCustomMaterialList(jobid, permissionStatus);//, productTypeId, estimateId);
+            return CustomDAL.Instance.UpdateSrSalesmanPermissionOfCustomMaterialList(jobid, permissionStatus, updatedby);//, productTypeId, estimateId);
         }
         public int UpdateSrSalesmanPermissionOfCustomMaterialList(string jobid, char permissionStatus,string SrSalesEmail)//, int productTypeId, int estimateId)
         {
@@ -156,13 +156,13 @@ namespace JG_Prospect.BLL
             }
             return emailStatus;
         }
-        public int UpdateSrSalesmanPermissionOfCustomMaterialListF(string jobid, char permissionStatus)//, int productTypeId, int estimateId)
+        public int UpdateSrSalesmanPermissionOfCustomMaterialListF(string jobid, char permissionStatus, int updatedby)//, int productTypeId, int estimateId)
         {
-            return CustomDAL.Instance.UpdateSrSalesmanPermissionOfCustomMaterialListF(jobid, permissionStatus);//, productTypeId, estimateId);
+            return CustomDAL.Instance.UpdateSrSalesmanPermissionOfCustomMaterialListF(jobid, permissionStatus, updatedby);//, productTypeId, estimateId);
         }
-        public int UpdateAdminPermissionOfCustomMaterialList(string jobid, char permissionStatus)//, int productTypeId, int estimateId)
+        public int UpdateAdminPermissionOfCustomMaterialList(string jobid, char permissionStatus, int updatedby)//, int productTypeId, int estimateId)
         {
-            return CustomDAL.Instance.UpdateAdminPermissionOfCustomMaterialList(jobid, permissionStatus);//, productTypeId, estimateId);
+            return CustomDAL.Instance.UpdateAdminPermissionOfCustomMaterialList(jobid, permissionStatus,updatedby);//, productTypeId, estimateId);
         }
        
     }

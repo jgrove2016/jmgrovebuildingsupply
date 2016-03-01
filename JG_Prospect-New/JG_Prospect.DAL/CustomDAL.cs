@@ -292,7 +292,7 @@ namespace JG_Prospect.DAL
 
             return result;
         }
-        public int UpdateForemanPermissionOfCustomMaterialList(string jobid, char permissionStatus)//, int productTypeId, int estimateId)
+        public int UpdateForemanPermissionOfCustomMaterialList(string jobid, char permissionStatus, int updatedby)//, int productTypeId, int estimateId)
         {
             int result = JGConstant.RETURN_ZERO;
             try
@@ -304,7 +304,10 @@ namespace JG_Prospect.DAL
 
                     database.AddInParameter(command, "@soldJobId", DbType.String, jobid);
                     database.AddInParameter(command, "@permissionStatus", DbType.String, permissionStatus);
+                    database.AddInParameter(command, "@UpdatedBy", DbType.Int32, updatedby);
                     database.AddOutParameter(command, "@result", DbType.Int16, result);
+                    
+                    
                     //database.AddInParameter(command, "@productId", DbType.Int16, productTypeId);
                     //database.AddInParameter(command, "@estimateId", DbType.Int16, estimateId);
 
@@ -763,7 +766,7 @@ namespace JG_Prospect.DAL
                 throw ex;
             }
         }
-        public int UpdateSrSalesmanPermissionOfCustomMaterialListF(string jobid, char permissionStatus)//, int productTypeId, int estimateId)
+        public int UpdateSrSalesmanPermissionOfCustomMaterialListF(string jobid, char permissionStatus, int updatedby)//, int productTypeId, int estimateId)
         {
             int result = JGConstant.RETURN_ZERO;
             try
@@ -775,7 +778,9 @@ namespace JG_Prospect.DAL
 
                     database.AddInParameter(command, "@soldJobId", DbType.String, jobid);
                     database.AddInParameter(command, "@permissionStatus", DbType.String, permissionStatus);
+                    database.AddInParameter(command, "@UpdatedBy", DbType.Int32, updatedby);
                     database.AddOutParameter(command, "@result", DbType.Int16, result);
+                    
                     //database.AddInParameter(command, "@productId", DbType.Int16, productTypeId);
                     //database.AddInParameter(command, "@estimateId", DbType.Int16, estimateId);
 
@@ -790,7 +795,7 @@ namespace JG_Prospect.DAL
 
             return result;
         }
-        public int UpdateAdminPermissionOfCustomMaterialList(string jobid, char permissionStatus)//, int productTypeId, int estimateId)
+        public int UpdateAdminPermissionOfCustomMaterialList(string jobid, char permissionStatus, int updatedby)//, int productTypeId, int estimateId)
         {
             int result = JGConstant.RETURN_ZERO;
             try
@@ -802,6 +807,7 @@ namespace JG_Prospect.DAL
 
                     database.AddInParameter(command, "@soldJobId", DbType.String, jobid);
                     database.AddInParameter(command, "@permissionStatus", DbType.String, permissionStatus);
+                    database.AddInParameter(command, "@UpdatedBy", DbType.String, updatedby);
                     database.AddOutParameter(command, "@result", DbType.Int16, result);
                     //database.AddInParameter(command, "@productId", DbType.Int16, productTypeId);
                     //database.AddInParameter(command, "@estimateId", DbType.Int16, estimateId);
@@ -817,7 +823,7 @@ namespace JG_Prospect.DAL
 
             return result;
         }
-        public int UpdateSrSalesmanPermissionOfCustomMaterialList(string jobid, char permissionStatus)//, int productTypeId, int estimateId)
+        public int UpdateSrSalesmanPermissionOfCustomMaterialList(string jobid, char permissionStatus, int updatedby)//, int productTypeId, int estimateId)
         {
             int result = JGConstant.RETURN_ZERO;
             try
@@ -829,6 +835,7 @@ namespace JG_Prospect.DAL
 
                     database.AddInParameter(command, "@soldJobId", DbType.String, jobid);
                     database.AddInParameter(command, "@permissionStatus", DbType.String, permissionStatus);
+                    database.AddInParameter(command, "@UpdatedBy", DbType.String, updatedby);
                     database.AddOutParameter(command, "@result", DbType.Int16, result);
                     //database.AddInParameter(command, "@productId", DbType.Int16, productTypeId);
                     //database.AddInParameter(command, "@estimateId", DbType.Int16, estimateId);

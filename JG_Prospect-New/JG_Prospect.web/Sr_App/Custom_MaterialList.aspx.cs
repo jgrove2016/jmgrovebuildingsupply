@@ -29,7 +29,9 @@ namespace JG_Prospect.Sr_App
     {
         protected static string jobId = string.Empty;
         protected static string salesmanCode = "";
-         
+        protected static int LoggedinUserID = 0;
+        public int StaffID;
+        public string StaffName;
         private Boolean IsPageRefresh = false;
         int estimateId = 0, customerId = 0, productTypeId = 0;
 
@@ -43,6 +45,7 @@ namespace JG_Prospect.Sr_App
         protected void Page_Load(object sender, EventArgs e)
         {
             jobId = Session[SessionKey.Key.JobId.ToString()].ToString();
+            LoggedinUserID = Convert.ToInt32(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]);
             salesmanCode = Session["loginpassword"].ToString();
             if (Request.QueryString[QueryStringKey.Key.ProductId.ToString()] != null)
             {
@@ -326,6 +329,8 @@ namespace JG_Prospect.Sr_App
                     cm.IsSrSalemanPermissionA = dr["IsSrSalemanPermissionA"].ToString();
                     cm.Status = JGConstant.CustomMaterialListStatus.Unchanged;
                     cmList.Add(cm);
+                    StaffID = Convert.ToInt32(dr["UserID"].ToString());
+                    StaffName = dr["firstname"].ToString() != "" ? (dr["firstName"] + " " + dr["lastname"]) : dr["username"].ToString();
                 }
                 CustomMaterialList cm1 = new CustomMaterialList();
                 cm1.Id = 0;
@@ -849,7 +854,7 @@ namespace JG_Prospect.Sr_App
                     }
                     else
                     {
-                        int result = CustomBLL.Instance.UpdateForemanPermissionOfCustomMaterialList(jobId.ToString(), JGConstant.PERMISSION_STATUS_GRANTED);//, productTypeId, estimateId);
+                        int result = CustomBLL.Instance.UpdateForemanPermissionOfCustomMaterialList(jobId.ToString(), JGConstant.PERMISSION_STATUS_GRANTED, LoggedinUserID);//, productTypeId, estimateId);
                         if (result == 0)
                         {
                             ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('First save Material List');", true);
@@ -899,7 +904,7 @@ namespace JG_Prospect.Sr_App
                     }
                     else
                     {
-                        int result = CustomBLL.Instance.UpdateSrSalesmanPermissionOfCustomMaterialListF(jobId.ToString(), JGConstant.PERMISSION_STATUS_GRANTED);//, productTypeId, estimateId);
+                        int result = CustomBLL.Instance.UpdateSrSalesmanPermissionOfCustomMaterialListF(jobId.ToString(), JGConstant.PERMISSION_STATUS_GRANTED,LoggedinUserID);//, productTypeId, estimateId);
                         if (result == 0)
                         {
                             ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('First save Material List');", true);
@@ -949,7 +954,7 @@ namespace JG_Prospect.Sr_App
                     }
                     else
                     {
-                        int result = CustomBLL.Instance.UpdateAdminPermissionOfCustomMaterialList(jobId.ToString(), JGConstant.PERMISSION_STATUS_GRANTED);//, productTypeId, estimateId);
+                        int result = CustomBLL.Instance.UpdateAdminPermissionOfCustomMaterialList(jobId.ToString(), JGConstant.PERMISSION_STATUS_GRANTED,LoggedinUserID);//, productTypeId, estimateId);
                         if (result == 0)
                         {
                             ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('First save Material List');", true);
@@ -1000,7 +1005,7 @@ namespace JG_Prospect.Sr_App
                     }
                     else
                     {
-                        int result = CustomBLL.Instance.UpdateSrSalesmanPermissionOfCustomMaterialList(jobId.ToString(), JGConstant.PERMISSION_STATUS_GRANTED);//, productTypeId, estimateId);
+                        int result = CustomBLL.Instance.UpdateSrSalesmanPermissionOfCustomMaterialList(jobId.ToString(), JGConstant.PERMISSION_STATUS_GRANTED,LoggedinUserID);//, productTypeId, estimateId);
                         if (result == 0)
                         {
                             ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('First save Material List');", true);
@@ -1884,7 +1889,7 @@ namespace JG_Prospect.Sr_App
                     }
                     else
                     {
-                        int result = CustomBLL.Instance.UpdateForemanPermissionOfCustomMaterialList(jobId.ToString(), JGConstant.PERMISSION_STATUS_GRANTED);//, productTypeId, estimateId);
+                        int result = CustomBLL.Instance.UpdateForemanPermissionOfCustomMaterialList(jobId.ToString(), JGConstant.PERMISSION_STATUS_GRANTED, LoggedinUserID);//, productTypeId, estimateId);
                         if (result == 0)
                         {
                             lReturnValue = "First save Material List";
@@ -1919,7 +1924,7 @@ namespace JG_Prospect.Sr_App
                     }
                     else
                     {
-                        int result = CustomBLL.Instance.UpdateSrSalesmanPermissionOfCustomMaterialListF(jobId.ToString(), JGConstant.PERMISSION_STATUS_GRANTED);//, productTypeId, estimateId);
+                        int result = CustomBLL.Instance.UpdateSrSalesmanPermissionOfCustomMaterialListF(jobId.ToString(), JGConstant.PERMISSION_STATUS_GRANTED,LoggedinUserID);//, productTypeId, estimateId);
                         if (result == 0)
                         {
                             lResult = "First save Material List";
@@ -1958,7 +1963,7 @@ namespace JG_Prospect.Sr_App
                     }
                     else
                     {
-                        int result = CustomBLL.Instance.UpdateAdminPermissionOfCustomMaterialList(jobId.ToString(), JGConstant.PERMISSION_STATUS_GRANTED);//, productTypeId, estimateId);
+                        int result = CustomBLL.Instance.UpdateAdminPermissionOfCustomMaterialList(jobId.ToString(), JGConstant.PERMISSION_STATUS_GRANTED,LoggedinUserID);//, productTypeId, estimateId);
                         if (result == 0)
                         {
                            lResult = "First save Material List";
@@ -1995,7 +2000,7 @@ namespace JG_Prospect.Sr_App
                     }
                     else
                     {
-                        int result = CustomBLL.Instance.UpdateSrSalesmanPermissionOfCustomMaterialList(jobId.ToString(), JGConstant.PERMISSION_STATUS_GRANTED);//, productTypeId, estimateId);
+                        int result = CustomBLL.Instance.UpdateSrSalesmanPermissionOfCustomMaterialList(jobId.ToString(), JGConstant.PERMISSION_STATUS_GRANTED,LoggedinUserID);//, productTypeId, estimateId);
                         if (result == 0)
                         {
                            lResult = "First save Material List";
