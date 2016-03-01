@@ -2185,8 +2185,8 @@ namespace JG_Prospect.Sr_App
                     //int soldJobId = Convert.ToInt16(lnksoldjobid.Text.Trim().Substring(2));
 
                     string soldjobId = lnkmateriallist.Text.Trim().Split('M')[0].Trim();
-                    //e.Row.Attributes["onclick"] = Page.ClientScript.GetPostBackClientHyperlink(grdsoldjobs, "Select$" + e.Row.RowIndex);
-                    //e.Row.ToolTip = "Click to select this row.";
+                    e.Row.Attributes["onclick"] = Page.ClientScript.GetPostBackClientHyperlink(grdsoldjobs, "Select$" + e.Row.RowIndex);
+                    e.Row.ToolTip = "Click to select this row.";
                     //bindgrid(customerId, soldjobId, grdAttachQuotes, lblProductType.Text);
                 }
                 else
@@ -3150,32 +3150,32 @@ namespace JG_Prospect.Sr_App
 
         }
 
-        //protected void grdsoldjobs_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    GridViewRow rowData = grdsoldjobs.Rows[grdsoldjobs.SelectedIndex];
-        //    foreach (GridViewRow row in grdsoldjobs.Rows)
-        //    {
-        //        if (row.RowIndex == grdsoldjobs.SelectedIndex)
-        //        {
-        //            if (row.BackColor == ColorTranslator.FromHtml("#FF0000"))
-        //            {
-        //                Session["DisableCustid"] = "";
-        //                ScriptManager.RegisterStartupScript(this, this.GetType(), "Alert", "alert('Disabled row cannot be selected.')", true);
-        //                return;
-        //            }
-        //            else
-        //            {
-        //                // row.BackColor = ColorTranslator.FromHtml("#FF0000");
-        //                row.ToolTip = string.Empty;
-        //                string str_Custid = Convert.ToString(grdsoldjobs.DataKeys[rowData.RowIndex].Values[0]);
-        //                str_Custid = str_Custid.Replace("C", "");
-        //                int Custid = Convert.ToInt32(str_Custid);
-        //                Session["DisableCustid"] = "";
-        //                Session["DisableCustid"] = Custid;
-        //            }
-        //        }
-        //    }
-        //}
+        protected void grdsoldjobs_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GridViewRow rowData = grdsoldjobs.Rows[grdsoldjobs.SelectedIndex];
+            foreach (GridViewRow row in grdsoldjobs.Rows)
+            {
+                if (row.RowIndex == grdsoldjobs.SelectedIndex)
+                {
+                    if (row.BackColor == ColorTranslator.FromHtml("#FF0000"))
+                    {
+                        Session["DisableCustid"] = "";
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "Alert", "alert('Disabled row cannot be selected.')", true);
+                        return;
+                    }
+                    else
+                    {
+                        // row.BackColor = ColorTranslator.FromHtml("#FF0000");
+                        row.ToolTip = string.Empty;
+                        string str_Custid = Convert.ToString(grdsoldjobs.DataKeys[rowData.RowIndex].Values[0]);
+                        str_Custid = str_Custid.Replace("C", "");
+                        int Custid = Convert.ToInt32(str_Custid);
+                        Session["DisableCustid"] = "";
+                        Session["DisableCustid"] = Custid;
+                    }
+                }
+            }
+        }
 
         protected void btnSaveDisable_Click(object sender, EventArgs e)
         {
