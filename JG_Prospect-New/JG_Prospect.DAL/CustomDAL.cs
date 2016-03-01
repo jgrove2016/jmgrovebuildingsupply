@@ -102,6 +102,7 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@JobSeqId", DbType.Int32, cm.JobSeqId);
                     database.AddInParameter(command, "@VendorIds", DbType.String, cm.VendorIds);
                     database.AddInParameter(command, "@Visible", DbType.String, cm.DisplaDLL);
+                    database.AddInParameter(command, "@ID", DbType.String, cm.Id);
 
 
                     //database.AddInParameter(command, "@productId", DbType.Int16, productTypeId);
