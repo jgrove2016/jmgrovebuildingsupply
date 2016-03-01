@@ -350,5 +350,18 @@ namespace JG_Prospect.BLL
         {
             return AdminDAL.Instance.UpdateEmailVendorCategoryTemplate(EmailTemplateHeader, EmailTemplateFooter);
         }
+
+        public DataSet GetProductCategory()
+        {
+            return AdminDAL.Instance.GetProductCategory();
+        }
+        public DataSet GetVendorCategory(string ProductCategoryId)
+        {
+            return AdminDAL.Instance.GetVendorCategory(ProductCategoryId);
+        }
+        public DataSet GetVendorSubCategory(string VendorCategoryId)
+        {
+            return AdminDAL.Instance.GetVendorSubCategory(VendorCategoryId);
+        }
     }
 }

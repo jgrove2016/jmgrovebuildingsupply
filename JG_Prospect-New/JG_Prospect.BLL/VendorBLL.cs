@@ -112,5 +112,32 @@ namespace JG_Prospect.BLL
             return VendorDAL.Instance.GetAllvendorDetails();
         }
 
+
+        public DataSet GetVendorList(string FilterParams, string FilterBy, string ManufacturerType, string VendorCategoryId)
+        {
+            return VendorDAL.Instance.GetVendorList(FilterParams, FilterBy, ManufacturerType, VendorCategoryId);
+        }
+
+        public string SaveNewVendorCategory(NewVendorCategory objNewVendorCat)
+        {
+            return VendorDAL.Instance.SaveNewVendorCategory(objNewVendorCat);
+        }
+
+        public bool SaveNewVendorProduct(NewVendorCategory objNewVendorCat)
+        {
+            return VendorDAL.Instance.SaveNewVendorProduct(objNewVendorCat);
+        }
+        public bool SaveNewVendorSubCat(VendorSubCategory objVendorsubCat)
+        {
+            return VendorDAL.Instance.SaveNewVendorSubCat(objVendorsubCat);
+        }
+        public bool DeleteVendorSubCat(VendorSubCategory objVendorsubCat)
+        {
+            return VendorDAL.Instance.DeleteVendorSubCat(objVendorsubCat);
+        }
+        public DataSet GetVendorSubCategory()
+        {
+            return VendorDAL.Instance.GetVendorSubCategory();
+        }
     }
 }

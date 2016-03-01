@@ -99,6 +99,7 @@
     <Compile Include="modal\CustomerLocationPics.cs" />
     <Compile Include="modal\CustomerStatus.cs" />
     <Compile Include="modal\Customs.cs" />
+    <Compile Include="modal\NewVendorCategory.cs" />
     <Compile Include="modal\period.cs" />
     <Compile Include="modal\ProductSoldDetails.cs" />
     <Compile Include="modal\prospect.cs" />
@@ -109,6 +110,7 @@
     <Compile Include="modal\user.cs" />
     <Compile Include="modal\Vendor.cs" />
     <Compile Include="modal\VendorCategory.cs" />
+    <Compile Include="modal\VendorSubCategory.cs" />
     <Compile Include="modal\Vendor_Catalog.cs" />
     <Compile Include="modal\Video.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
