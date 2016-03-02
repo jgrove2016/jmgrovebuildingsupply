@@ -105,7 +105,7 @@
                                             "<td><textarea id='txtAddress" + dataTypeValue + subCount + "' name='nametxtAddress" + dataTypeValue + subCount + "' placeholder='Address' rows='2' cols='20' clientidmode='Static' /></td>" +
                                             "<td><input type='text' id='txtCity" + dataTypeValue + subCount + "' name='nametxtCity" + dataTypeValue + subCount + "' placeholder='City' clientidmode='Static' /></td>" +
                                             "<td><input type='text' id='txtZip" + dataTypeValue + subCount + "' name='nametxtZip" + dataTypeValue + subCount + "' placeholder='Zip' clientidmode='Static' /></td>" +
-                                            "</tr>");
+                                            "<td></td></tr>");
         }
 
         function AddEmail(e) {
@@ -227,7 +227,7 @@
                 url: "Procurement.aspx/GetVendorDetails",
                 contentType: "application/json; charset=utf-8",
                 dataType: "JSON",
-                data: JSON.stringify({ vendorid:vid,Address: AddressData, PrimaryEmail: PrimaryEmailData, SecEmail: SecEmailData, AltEmail: AltEmailData }),
+                data: JSON.stringify({ vendorid: vid, Address: AddressData, PrimaryEmail: PrimaryEmailData, SecEmail: SecEmailData, AltEmail: AltEmailData }),
                 success: function (data) {
                     console.log(data);
                 }
@@ -342,7 +342,8 @@
                     <div class="grid">
                         <div>
                             <asp:GridView ID="grdsoldjobs" runat="server" AutoGenerateColumns="false" CssClass="tableClass" DataKeyNames="CustomerId"
-                                Width="100%" OnRowDataBound="grdsoldjobs_RowDataBound" > <%--OnSelectedIndexChanged="grdsoldjobs_SelectedIndexChanged"--%>
+                                Width="100%" OnRowDataBound="grdsoldjobs_RowDataBound">
+                                <%--OnSelectedIndexChanged="grdsoldjobs_SelectedIndexChanged"--%>
                                 <Columns>
 
                                     <asp:BoundField HeaderText="Date Sold" DataField="SoldDate" DataFormatString="{0:d}"
@@ -781,10 +782,11 @@
 
                                             </tr>
                                             <tr>
-                                                <td colspan="3">
-                                                    <fieldset>
-                                                        <legend>Vendor Address
-                                                            <table>
+                                                <td colspan="4" style="padding: 0px;">
+                                                    <fieldset style="margin: 0px !important;">
+                                                        <legend style="width: 100%;">
+                                                            <span style="font-weight: bold; font-size: 15px; font-style: normal; padding: 15px 15px 5px; display: block;">Vendor Address</span>
+                                                            <table class="vendor_table">
                                                                 <tr>
                                                                     <td>
                                                                         <label><span>* </span>Primary Address:</label><br />
@@ -802,6 +804,7 @@
                                                                         <asp:TextBox ID="txtPrimaryZip" runat="server" TabIndex="7"></asp:TextBox>
 
                                                                     </td>
+                                                                    <td></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
@@ -820,6 +823,7 @@
                                                                         <asp:TextBox ID="txtSeczip" runat="server" TabIndex="7"></asp:TextBox>
 
                                                                     </td>
+                                                                    <td></td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>
@@ -838,6 +842,7 @@
                                                                         <asp:TextBox ID="txtBillingZip" runat="server" TabIndex="7"></asp:TextBox>
 
                                                                     </td>
+                                                                    <td></td>
                                                                 </tr>
                                                             </table>
                                                             <table id="tblVendorLocation">
@@ -850,8 +855,6 @@
                                                         </legend>
                                                     </fieldset>
                                                 </td>
-
-                                                <td></td>
 
                                             </tr>
 
@@ -876,10 +879,10 @@
                                                         Primary Contact Email</label><br />
                                                     <asp:TextBox ID="txtprimaryemail" runat="server" MaxLength="50"></asp:TextBox>
                                                     <br />
-                                                    <asp:RegularExpressionValidator ID="revemail" runat="server" ForeColor="Red" ControlToValidate="txtprimaryemail" ValidationGroup="addvendor"
+                                                    <asp:RegularExpressionValidator ID="revemail" Display="Dynamic" runat="server" ForeColor="Red" ControlToValidate="txtprimaryemail" ValidationGroup="addvendor"
                                                         ErrorMessage="Please enter correct email address" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"></asp:RegularExpressionValidator>
                                                     <br />
-                                                    <asp:RequiredFieldValidator ID="Requiredmail" runat="server" ControlToValidate="txtprimaryemail"
+                                                    <asp:RequiredFieldValidator ID="Requiredmail" runat="server" Display="Dynamic" ControlToValidate="txtprimaryemail"
                                                         ValidationGroup="addvendor" ErrorMessage="Please Enter Email." ForeColor="Red"></asp:RequiredFieldValidator>
 
                                                 </td>
@@ -911,7 +914,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td colspan="4">
+                                                <td colspan="4" style="padding: 0px;">
                                                     <table id="tblPrimaryEmail" style="margin: 0px;">
                                                         <tr>
                                                             <td>
@@ -951,8 +954,8 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td colspan="4">
-                                                    <table id="tblSecEmail" style="margin: 0px;">
+                                                <td colspan="4" style="padding: 0px;">
+                                                    <table id="tblSecEmail" style="margin: 0px; padding: 0px;">
                                                         <tr>
                                                             <td>
                                                                 <label>
@@ -992,8 +995,8 @@
 
                                             </tr>
                                             <tr>
-                                                <td colspan="4">
-                                                    <table id="tblAltEmail" style="margin: 0px;">
+                                                <td colspan="4" style="padding: 0px;">
+                                                    <table id="tblAltEmail" style="margin: 0px; padding: 0px;">
                                                         <tr>
                                                             <td>
                                                                 <label>
@@ -1288,7 +1291,7 @@
                                     <li style="width: 100%"></li>
                                 </ul>
                                 <div class="btn_sec">
-                                    <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click"  TabIndex="8" />
+                                    <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click" TabIndex="8" />
                                     <%--<asp:Button ID="btnDelete" runat="server" Text="Delete" OnClick="btnDelete_Click" TabIndex="9" />ValidationGroup="addvendor"OnClientClick="GetVendorDetails();"--%>
                                 </div>
                             </div>

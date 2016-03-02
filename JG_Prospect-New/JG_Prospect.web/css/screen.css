@@ -1332,3 +1332,32 @@ ul.left_nav li ul li a:hover
 .vendorForm ul li table tr td {
     width: 25%;
 }
+.vendor_table, #tblVendorLocation {
+    width:100% !important;
+    margin:0px !important;
+    border-collapse: collapse;
+}
+
+    .vendor_table tr {
+            width: 100% !important;
+    margin: 0px !important;
+    }
+    .vendor_table tr td{
+    }
+
+    #tblVendorLocation td {
+        background:none !important;
+    }
+.newAddressrow td{
+    border-bottom:1px solid #ddd;
+}
+#tblSecEmail, #tblPrimaryEmail, #tblAltEmail {
+    width:100% !important;
+    margin:0px !important;
+    border-collapse: collapse;
+}
+    #tblSecEmail td, #tblPrimaryEmail td, #tblAltEmail td{
+        background:none !important;
+    }
+   
+
