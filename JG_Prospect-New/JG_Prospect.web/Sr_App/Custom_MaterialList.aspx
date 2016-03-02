@@ -262,7 +262,7 @@
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
                 <td>
-                    <fieldset style="/*border-style:solid;border-width:1px;padding:5px;*/">
+                    <fieldset style="border-style:solid;border-width:1px;padding:5px;">
                         <legend>Job Details</legend>
                         <b>Job ID: </b> <%=jobId %><br />
                         <b>Customer ID:</b><%=customerId %><br />
