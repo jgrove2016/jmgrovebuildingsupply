@@ -2185,8 +2185,8 @@ namespace JG_Prospect.Sr_App
                     //int soldJobId = Convert.ToInt16(lnksoldjobid.Text.Trim().Substring(2));
 
                     string soldjobId = lnkmateriallist.Text.Trim().Split('M')[0].Trim();
-                    e.Row.Attributes["onclick"] = Page.ClientScript.GetPostBackClientHyperlink(grdsoldjobs, "Select$" + e.Row.RowIndex);
-                    e.Row.ToolTip = "Click to select this row.";
+                    //e.Row.Attributes["onclick"] = Page.ClientScript.GetPostBackClientHyperlink(grdsoldjobs, "Select$" + e.Row.RowIndex);
+                    //e.Row.ToolTip = "Click to select this row.";
                     //bindgrid(customerId, soldjobId, grdAttachQuotes, lblProductType.Text);
                 }
                 else

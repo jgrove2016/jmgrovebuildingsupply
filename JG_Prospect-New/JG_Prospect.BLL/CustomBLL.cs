@@ -141,10 +141,24 @@ namespace JG_Prospect.BLL
             DataSet ds = null;
             return ds = CustomDAL.Instance.GetAllPermissionOfCustomMaterialList(jobId);//, productTypeId, estimateId);
         }
-        public DataSet GetCustom_MaterialList(string jobId)//, int productTypeId, int estimateId)
+        /// <summary>
+        /// Shabbir Kanchwala: Called another method from this method. Earlier it was calling the DAL library function.
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <returns></returns>
+        public DataSet GetCustom_MaterialList(string jobId)
         {
-            DataSet ds = null;
-            return ds = CustomDAL.Instance.GetCustom_MaterialList(jobId);//,productTypeId,estimateId);
+            return GetCustom_MaterialList(jobId, 0);
+        }
+        /// <summary>
+        /// Shabbir Kanchwala: Did parameter overloading to achieve customer details
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <param name="pCustomerID"></param>
+        /// <returns></returns>
+        public DataSet GetCustom_MaterialList(string pJobID, int pCustomerID)
+        {
+            return CustomDAL.Instance.GetCustom_MaterialList(pJobID, pCustomerID);
         }
         public string GetEmailStatusOfCustomMaterialList(string jobId)//, int productTypeId, int estimateId)
         {
