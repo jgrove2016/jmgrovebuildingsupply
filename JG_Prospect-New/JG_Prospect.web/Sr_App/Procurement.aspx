@@ -342,12 +342,8 @@
                     <div class="grid">
                         <div>
                             <asp:GridView ID="grdsoldjobs" runat="server" AutoGenerateColumns="false" CssClass="tableClass" DataKeyNames="CustomerId"
-<<<<<<< HEAD
-                                Width="100%" OnRowDataBound="grdsoldjobs_RowDataBound">
-                                <%--OnSelectedIndexChanged="grdsoldjobs_SelectedIndexChanged"--%>
-=======
-                                Width="100%" OnRowDataBound="grdsoldjobs_RowDataBound" OnSelectedIndexChanged="grdsoldjobs_SelectedIndexChanged">
->>>>>>> 663804fe51ede537a070d946eb228cd06318b2df
+                                                              Width="100%" OnRowDataBound="grdsoldjobs_RowDataBound" OnSelectedIndexChanged="grdsoldjobs_SelectedIndexChanged">
+
                                 <Columns>
 
                                     <asp:BoundField HeaderText="Date Sold" DataField="SoldDate" DataFormatString="{0:d}"
