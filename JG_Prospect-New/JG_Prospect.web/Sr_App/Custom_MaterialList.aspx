@@ -258,12 +258,24 @@
                     </asp:Panel>
                 </td>
             </tr>
-            <tr id="trUpdatedRow" style='display:<%=(StaffID!=0?"":"none") %>'>
+            <tr id="trUpdatedRow" >
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
-                <td colspan="3">
-                    <b>Staff Internal ID:</b> <%=StaffID %> <br />
-                    <b>Staff Name:</b>  <%=StaffName %>  <br />
+                <td>
+                    <fieldset style="border-style:solid;border-width:1px;padding:5px;">
+                        <legend>Job Details</legend>
+                        <b>Job ID: </b> <%=jobId %><br />
+                        <b>Customer ID:</b><%=customerId %><br />
+                        <b>Customer Name:</b><%=CustomerName %><br />
+                    </fieldset>
+                </td>
+                <td>&nbsp;</td>
+                <td >
+                    <fieldset style='border-style:solid;border-width:1px;padding:5px;display:<%=(StaffID!=0?"":"none") %>'>
+                        <legend>Last Edited By</legend>
+                        <b>Staff Internal ID:</b> <%=StaffID %> <br />
+                        <b>Staff Name:</b>  <%=StaffName %>  <br />
+                    </fieldset>
                 </td>
             </tr>
         </table>
@@ -480,6 +492,11 @@
                                     <asp:DropDownList ID="ddlVendorName" OnSelectedIndexChanged="ddlVendorName_SelectedIndexChanged"
                                         ClientIDMode="Static" runat="server" Width="150px" Enabled="false" AutoPostBack="true">
                                     </asp:DropDownList>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Attach Quote">
+                                <ItemTemplate>
+                                    <asp:LinkButton ID="lnkAttachQuote" runat="server" Text='Attach Quote' CommandArgument='<%#Eval("TempName") %>' CommandName="Attach Quote" ></asp:LinkButton>
                                 </ItemTemplate>
                             </asp:TemplateField>
                              <asp:TemplateField HeaderText="Quote">

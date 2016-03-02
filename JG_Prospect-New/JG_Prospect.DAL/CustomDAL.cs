@@ -665,7 +665,7 @@ namespace JG_Prospect.DAL
 
         //    return result > JGConstant.RETURN_ZERO ? JGConstant.RETURN_TRUE : JGConstant.RETURN_FALSE;
         //}
-        public DataSet GetCustom_MaterialList(string jobId)//, int productTypeId, int estimateId)
+        public DataSet GetCustom_MaterialList(string jobId, int pCustomerID)//, int productTypeId, int estimateId)
         {
             DataSet returndata = null;
             try
@@ -676,11 +676,8 @@ namespace JG_Prospect.DAL
                     DbCommand command = database.GetStoredProcCommand("UDP_GetCustom_MaterialList");
                     command.CommandType = CommandType.StoredProcedure;
                     database.AddInParameter(command, "@soldJobId", DbType.String, jobId);
-                    //database.AddInParameter(command, "@productId", DbType.Int16, productTypeId);
-                    //database.AddInParameter(command, "@estimateId", DbType.Int16, estimateId);
-
+                    database.AddInParameter(command, "@customerID", DbType.String, pCustomerID);
                     returndata = database.ExecuteDataSet(command);
-
                     return returndata;
                 }
             }
