@@ -1,0 +1,1 @@
+ALTER TABLE dbo.tblVendors ADD VendorSubCategoryId int null
