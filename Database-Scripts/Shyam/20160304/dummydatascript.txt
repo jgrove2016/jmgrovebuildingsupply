@@ -1,0 +1,160 @@
+
+
+/****** Object:  UserDefinedFunction [dbo].[Split]    Script Date: 03/04/2016 16:40:28 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Split]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[Split]
+GO
+
+
+
+/****** Object:  UserDefinedFunction [dbo].[Split]    Script Date: 03/04/2016 16:40:28 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+create FUNCTION [dbo].[Split] (
+      @InputString                  VARCHAR(8000),
+      @Delimiter                    VARCHAR(50)
+)
+
+RETURNS @Items TABLE (
+      Item                          VARCHAR(8000)
+)
+
+AS
+BEGIN
+      IF @Delimiter = ' '
+      BEGIN
+            SET @Delimiter = ','
+            SET @InputString = REPLACE(@InputString, ' ', @Delimiter)
+      END
+
+      IF (@Delimiter IS NULL OR @Delimiter = '')
+            SET @Delimiter = ','
+
+--INSERT INTO @Items VALUES (@Delimiter) -- Diagnostic
+--INSERT INTO @Items VALUES (@InputString) -- Diagnostic
+
+      DECLARE @Item                 VARCHAR(8000)
+      DECLARE @ItemList       VARCHAR(8000)
+      DECLARE @DelimIndex     INT
+
+      SET @ItemList = @InputString
+      SET @DelimIndex = CHARINDEX(@Delimiter, @ItemList, 0)
+      WHILE (@DelimIndex != 0)
+      BEGIN
+            SET @Item = SUBSTRING(@ItemList, 0, @DelimIndex)
+            INSERT INTO @Items VALUES (@Item)
+
+            -- Set @ItemList = @ItemList minus one less item
+            SET @ItemList = SUBSTRING(@ItemList, @DelimIndex+1, LEN(@ItemList)-@DelimIndex)
+            SET @DelimIndex = CHARINDEX(@Delimiter, @ItemList, 0)
+      END -- End WHILE
+
+      IF @Item IS NOT NULL -- At least one delimiter was encountered in @InputString
+      BEGIN
+            SET @Item = @ItemList
+            INSERT INTO @Items VALUES (@Item)
+      END
+
+      -- No delimiters were encountered in @InputString, so just return @InputString
+      ELSE INSERT INTO @Items VALUES (@InputString)
+
+      RETURN
+
+END -- End Function
+
+
+
+GO
+
+
+
+/****** Object:  StoredProcedure [dbo].[USP_GetProductVendor]    Script Date: 03/04/2016 13:55:29 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_GetProductVendor]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_GetProductVendor]
+GO
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_GetProductVendor]    Script Date: 03/04/2016 13:55:29 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE proc [dbo].[USP_GetProductVendor]
+@ProductCategoryId int=null,
+@VendorCategoryId int=null
+
+as
+
+begin
+set nocount on;
+SELECT pv.ProductCategoryId,pv.VendorCategoryId,tc.VendorCategoryNm as VendorCategoryName
+	  FROM [dbo].[tblProductVendor] pv
+	  inner join [tblVendorCategory] tc
+	  on pv.VendorCategoryId=tc.[VendorCategpryId]
+	  where ProductCategoryId=@ProductCategoryId
+end
+
+
+GO
+
+
+INSERT INTO [dbo].[tblProductVendor]  ([ProductCategoryId] ,[ProductCategoryName] ,[VendorCategoryId] ,[VendorcategoryName])
+     VALUES  (3 , '',21 ,'')
+GO
+INSERT INTO [dbo].[tblProductVendor]  ([ProductCategoryId] ,[ProductCategoryName] ,[VendorCategoryId] ,[VendorcategoryName])
+     VALUES  (3 , '',127 ,'')
+go
+INSERT INTO [dbo].[tblVendorSubCategory]([VendorSubCategoryName],[VendorCategoryId])
+     VALUES('Test Paint Manufacturer' ,127)
+GO
+
+INSERT INTO [dbo].[tblVendorSubCategory]([VendorSubCategoryName],[VendorCategoryId])
+     VALUES('Test Paint Supplies' ,21)
+GO
+
+INSERT INTO [dbo].[tblVendorSubCategory]([VendorSubCategoryName],[VendorCategoryId])
+     VALUES('Test Paint Supplies second' ,21)
+     GO
+
+INSERT INTO [dbo].[tblVendorSubCategory]([VendorSubCategoryName],[VendorCategoryId])
+     VALUES('Test Paint Manufactures second' ,127)
+
+  update tblVendors
+  set ManufacturerType='Wholesale'
+  where VendorId between 795 and 800
+
+
+  update tblVendors
+  set ManufacturerType='Retail'
+  where VendorId between 801 and 809
+
+  update tblVendors
+  set ManufacturerType='Retail'
+  where VendorId in(17,18,53,54,56,57,271,272)
+
+  update tblVendors
+  set ManufacturerType='Wholesale'
+  where VendorId in(345,990,1027,1028,1029,1030,1031,1032)
+
+  update tblVendors
+  set VendorSubCategoryId=3
+  where VendorId in(1029,1030,1031,1032,56,57,271,272)
+
+  update tblVendors
+  set VendorSubCategoryId=2
+  where VendorId in(345,990,1027,1028,17,18,53,54)
+  update tblVendors
+  set VendorSubCategoryId=4
+  where VendorId in(798,799,800,806,807,808,809)
+  update tblVendors
+  set VendorSubCategoryId=1
+  where VendorId in(795,796,797,801,802,804,805)
