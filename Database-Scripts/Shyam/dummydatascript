@@ -1,4 +1,6 @@
-
+########################################################################
+#################PLEASE DON'T UPLOAD THIS FILE TO LIVE DB###############
+#########################################################################
 
 /****** Object:  UserDefinedFunction [dbo].[Split]    Script Date: 03/04/2016 16:40:28 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Split]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
