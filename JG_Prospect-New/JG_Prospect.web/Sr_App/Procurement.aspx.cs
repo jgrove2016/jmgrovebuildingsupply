@@ -89,7 +89,7 @@ namespace JG_Prospect.Sr_App
                     bindAllVendors();
                     strerror.Append("after vendors");
                     strerror.Append("before vendors category");
-                    bindvendorcategory();
+                    //bindvendorcategory();
                     strerror.Append("after vendors category");
                     strerror.Append("before folder delete vendors category");
                     bindfordeletevender();
@@ -102,6 +102,8 @@ namespace JG_Prospect.Sr_App
                     // lblerrornew.Text = Convert.ToString(strerror);
                     BindProductCategory();
                     GetAllVendorSubCat();
+                    BindVendorByProdCat(ddlprdtCategory.SelectedValue.ToString());
+                    BindVendorSubCatByVendorCat(ddlVndrCategory.SelectedValue.ToString());
                     string ManufacturerType = GetManufacturerType();
                     FilterVendors("", "ManufacturerType", ManufacturerType, "");
                 }
@@ -140,37 +142,66 @@ namespace JG_Prospect.Sr_App
         public string GetManufacturerType()
         {
             string MType = "";
-            if (rdoRetail.Checked)
-                MType = rdoRetail.Text;
-            else if (rdoWholeSale.Checked)
-                MType = rdoWholeSale.Text;
+            if (rdoRetailWholesale.Checked)
+                MType = rdoRetailWholesale.Text;
+            else if (rdoManufacturer.Checked)
+                MType = rdoManufacturer.Text;
             return MType;
         }
-        protected void rdoRetail_CheckedChanged(object sender, EventArgs e)
+        protected void rdoRetailWholesale_CheckedChanged(object sender, EventArgs e)
         {
             string ManufacturerType = GetManufacturerType();
-            FilterVendors("", "ManufacturerType", ManufacturerType, "");
-            ResetFilterDDL();
+            if (ddlVendorSubCategory.SelectedValue.ToString() != "Select")
+            {
+                FilterVendors(ddlVendorSubCategory.SelectedValue.ToString(), "VendorSubCategory", ManufacturerType, ddlVndrCategory.SelectedValue.ToString());
+            }
+            else if (ddlVndrCategory.SelectedValue.ToString() != "Select")
+            {
+                FilterVendors(ddlVndrCategory.SelectedValue.ToString(), "VendorCategory", ManufacturerType, "");
+            }
+            else if (ddlprdtCategory.SelectedValue.ToString() != "Select")
+            {
+                FilterVendorByProductCategory();
+            }
+            else
+            {
+                FilterVendors("", "ManufacturerType", ManufacturerType, "");
+            }
+            //ResetFilterDDL();
         }
 
-        protected void rdoWholeSale_CheckedChanged(object sender, EventArgs e)
+        protected void rdoManufacturer_CheckedChanged(object sender, EventArgs e)
         {
             string ManufacturerType = GetManufacturerType();
-            FilterVendors("", "ManufacturerType", ManufacturerType, "");
-            ResetFilterDDL();
+            if (ddlVendorSubCategory.SelectedValue.ToString() != "Select")
+            {
+                FilterVendors(ddlVendorSubCategory.SelectedValue.ToString(), "VendorSubCategory", ManufacturerType, ddlVndrCategory.SelectedValue.ToString());
+            }
+            else if (ddlVndrCategory.SelectedValue.ToString() != "Select")
+            {
+                FilterVendors(ddlVndrCategory.SelectedValue.ToString(), "VendorCategory", ManufacturerType, "");
+            }
+            else if (ddlprdtCategory.SelectedValue.ToString() != "Select")
+            {
+                FilterVendorByProductCategory();
+            }
+            else
+            {
+                FilterVendors("", "ManufacturerType", ManufacturerType, "");
+            }
         }
 
         public void ResetFilterDDL()
         {
             ddlprdtCategory.SelectedIndex = -1;
-            ddlVndrCategory.Items.Clear();
-            ddlVendorSubCategory.Items.Clear();
+            ddlVndrCategory.SelectedIndex = -1;
+            ddlVendorSubCategory.SelectedIndex = -1;
             ddlProductCatgoryPopup.SelectedIndex = -1;
         }
         protected void ddlprdtCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ddlVndrCategory.Items.Clear();
-            ddlVendorSubCategory.Items.Clear();
+            ddlVndrCategory.SelectedIndex = -1;
+            ddlVendorSubCategory.SelectedIndex = -1;
             BindVendorByProdCat(ddlprdtCategory.SelectedValue.ToString());
             BindVendorCatPopup();
             if (ddlprdtCategory.SelectedValue.ToString() != "Select")
@@ -209,13 +240,18 @@ namespace JG_Prospect.Sr_App
                 }
 
                 FilterParams = strVendorCategory.Remove(strVendorCategory.Length - 1, 1).ToString();
+                string ManufacturerType = GetManufacturerType();
+                FilterVendors(FilterParams, "ProductCategory", ManufacturerType, "");
             }
-            string ManufacturerType = GetManufacturerType();
-            FilterVendors(FilterParams, "ProductCategory", ManufacturerType, "");
+            else
+            {
+                grdVendorList.DataSource = null;
+                grdVendorList.DataBind();
+            }
         }
         protected void ddlVndrCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ddlVendorSubCategory.Items.Clear();
+            ddlVendorSubCategory.SelectedIndex = -1;
             BindVendorSubCatByVendorCat(ddlVndrCategory.SelectedValue.ToString());
             string ManufacturerType = GetManufacturerType();
 
@@ -272,12 +308,14 @@ namespace JG_Prospect.Sr_App
         }
         public class AddressClass
         {
+            public string AddressType { get; set; }
             public string Address { get; set; }
             public string City { get; set; }
             public string Zip { get; set; }
         }
         public class EmailClass
         {
+            public string EmailType { get; set; }
             public string Email { get; set; }
             public string FirstName { get; set; }
             public string LastName { get; set; }
@@ -290,261 +328,155 @@ namespace JG_Prospect.Sr_App
         }
         // New Code
         [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
-        public static string GetVendorDetails(string vendorid,List<AddressClass> Address, List<EmailClass> PrimaryEmail, List<EmailClass> SecEmail, List<EmailClass> AltEmail)
+        public static void PostVendorDetails(string vendorid, List<AddressClass> Address, List<EmailClass> VendorEmails)
         {
+            //string vendorid = "1";
+            DataTable dtVendorEmail = new DataTable("VendorEmail");
+            if (dtVendorEmail.Columns.Count < 1)
+            {
+                dtVendorEmail.Columns.Add("VendorId");
+                dtVendorEmail.Columns.Add("EmailType");
+                dtVendorEmail.Columns.Add("SeqNo");
+                dtVendorEmail.Columns.Add("Email");
+                dtVendorEmail.Columns.Add("FName");
+                dtVendorEmail.Columns.Add("LName");
+                dtVendorEmail.Columns.Add("Contact");
+            }
+            DataRow drow = dtVendorEmail.NewRow();
+            if (VendorEmails.Count > 0)
+            {
+                for (int i = 0; i < VendorEmails.Count; i++)
+                {
+                    drow["VendorId"] = vendorid;
+                    drow["EmailType"] = VendorEmails[i].EmailType.ToString();
+                    drow["SeqNo"] = i + 1;
+                    drow["Email"] = VendorEmails[i].Email.ToString();
+                    drow["FName"] = VendorEmails[i].FirstName.ToString();
+                    drow["LName"] = VendorEmails[i].LastName.ToString();
+                    JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
+                    string serializedContactJson = jsSerializer.Serialize(VendorEmails[i].Contact);
+                    drow["Contact"] = serializedContactJson;
+                    dtVendorEmail.Rows.Add(drow);
+                    drow = dtVendorEmail.NewRow();
+                }
+            }
+
+            HttpContext.Current.Session["dtVendorEmail"] = dtVendorEmail as DataTable;
+
+            DataTable dtVendorAddress = new DataTable("VendorAddress");
+            if (dtVendorAddress.Columns.Count < 1)
+            {
+                dtVendorAddress.Columns.Add("VendorId");
+                dtVendorAddress.Columns.Add("AddressType");
+                dtVendorAddress.Columns.Add("Address");
+                dtVendorAddress.Columns.Add("City");
+                dtVendorAddress.Columns.Add("Zip");
+            }
+            DataRow AddressRow = dtVendorAddress.NewRow();
+            if (Address.Count > 0)
+            {
+                for (int i = 0; i < Address.Count; i++)
+                {
+                    AddressRow["VendorId"] = vendorid;
+                    AddressRow["AddressType"] = Address[i].AddressType.ToString();
+                    AddressRow["Address"] = Address[i].Address.ToString();
+                    AddressRow["City"] = Address[i].City.ToString();
+                    AddressRow["Zip"] = Address[i].Zip.ToString();
+                    dtVendorAddress.Rows.Add(AddressRow);
+                    AddressRow = dtVendorAddress.NewRow();
+                }
+            }
+            HttpContext.Current.Session["dtVendorAddress"] = dtVendorAddress as DataTable;
+
             //JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
             //string deserializedJson = jsSerializer.Serialize(formVars);
             //DataTable dtContact4 = new DataTable();
             //dtContact4 = GetAllContact4Values(formVars);
             //HttpContext.Current.Session["dtContact4"] = dtContact4 as DataTable;
-            return "";
-        }
-
-        [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
-        public static void GetEmails(List<NameValue> formVars)
-        {
-            JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
-            string deserializedJson = jsSerializer.Serialize(formVars);
-            DataTable dtEmails = new DataTable();
-            dtEmails = GetAllEmailValues(formVars);
-            HttpContext.Current.Session["dtEmail2"] = dtEmails as DataTable;
+            // return "";
         }
 
 
-        [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
-        private static DataTable GetAllEmailValues(List<NameValue> formVars)
+        protected void btnSave_Click(object sender, EventArgs e)
         {
-            int intListLength = formVars.Count;
-            DataTable dtEmail = new DataTable();
-            dtEmail.Columns.Add("VendorId");
-            dtEmail.Columns.Add("Email2");
-            if (intListLength > 0)
+            //Save all Data...
+            flag = "";
+            SaveAllData();
+
+
+            //clearcontrols();
+        }
+
+
+        protected void SaveAllData()
+        {
+            Vendor objvendor = new Vendor();
+            if (ddlVndrCategory.SelectedValue == "Select")
             {
-                DataRow dRowNew = dtEmail.NewRow();
-                for (int i = 1; i < intListLength; i++)
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('please select Vendor Category');", true);
+                return;
+            }
+            else if (ddlVendorSubCategory.SelectedValue == "Select")
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('please select Vendor Sub Category');", true);
+                return;
+
+            }
+            else
+            {
+
+                //if (ddlVendorName.SelectedValue != "")
+                //    objvendor.vendor_id = Convert.ToInt32(ddlVendorName.SelectedValue);
+                //else
+                objvendor.vendor_id = Convert.ToInt32(txtVendorId.Text);
+
+                objvendor.vendor_name = txtVendorNm.Text;
+
+                objvendor.vendor_category_id = Convert.ToInt32(ddlVndrCategory.SelectedValue);
+
+               
+                objvendor.fax = txtVendorFax.Text;
+                objvendor.mail = txtprimaryemail.Text;
+                objvendor.contract_person = txtFName.Text + " " + txtLName.Text;
+                objvendor.contract_number = txtContact1.Text;
+                objvendor.ContactExten = txtContactExten1.Text;
+                objvendor.address = txtPrimaryAddress.Text;
+                objvendor.notes = "";
+                objvendor.ManufacturerType = (ddlmanufacturertype.SelectedValue == "Select") ? "" : ddlmanufacturertype.SelectedValue;
+                objvendor.BillingAddress = txtBillingAddr.Text;
+                objvendor.TaxId = txtTaxId.Text;
+                objvendor.ExpenseCategory = "";
+                objvendor.AutoTruckInsurance = "";
+                objvendor.vendor_subcategory_id = Convert.ToInt32(ddlVendorSubCategory.SelectedValue);
+                objvendor.VendorStatus = (ddlVendorStatus.SelectedValue == "Select") ? "" : ddlVendorStatus.SelectedValue;
+                objvendor.Website = txtWebsite.Text;
+                bool res = VendorBLL.Instance.savevendor(objvendor);
+                if (flag == "")
                 {
-                    if (formVars[i].key.Contains("nametxtEMail1" + (i - 1)))
+                    if (res)
                     {
-                        dRowNew["VendorId"] = HttpContext.Current.Session["VendorId"].ToString();
-                        dRowNew["Email2"] = formVars[i].value;
-                        dtEmail.Rows.Add(dRowNew);
-                        dRowNew = dtEmail.NewRow();
+                        objvendor.tblVendorEmail = (DataTable)HttpContext.Current.Session["dtVendorEmail"];
+                        bool emailres = VendorBLL.Instance.InsertVendorEmail(objvendor);
+                        objvendor.tblVendorAddress = (DataTable)HttpContext.Current.Session["dtVendorAddress"];
+                        bool addressres = VendorBLL.Instance.InsertVendorAddress(objvendor);
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Vendor Saved/Updated Successfully');", true);
+                        clear();
                     }
                 }
             }
-            return dtEmail;
         }
-
-        [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
-        public static void GetSecEmails(List<NameValue> formVars)
+        protected void clear()
         {
-            JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
-            string deserializedJson = jsSerializer.Serialize(formVars);
-            DataTable dtEmails = new DataTable();
-            dtEmails = GetAllSecEmailValues(formVars);
-            HttpContext.Current.Session["dtSecEmail"] = dtEmails as DataTable;
+            txtContact1.Text = txtContactExten1.Text = txtFName.Text = txtLName.Text = txtVendorFax.Text = txtprimaryemail.Text = txtVendorNm.Text = null;
+            txtWebsite.Text = txtTaxId.Text = txtPrimaryAddress.Text = txtPrimaryCity.Text = txtPrimaryZip.Text = null;
+            txtSecAddress.Text = txtSecCity.Text = txtSeczip.Text = null;
+            txtBillingAddr.Text = txtBillingCity.Text = txtBillingZip.Text = null;
+            txtPrimaryContactExten0.Text = txtPrimaryContact0.Text = txtSecContactExten0.Text = txtSecContact0.Text = txtAltContactExten0.Text = txtAltContact0.Text = null;
+            //ddlVndrCategory.ClearSelection();
+            ddlVendorStatus.ClearSelection();
+            ddlmanufacturertype.ClearSelection();
+            btnSave.Text = "Save";
         }
-
-
-        [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
-        private static DataTable GetAllSecEmailValues(List<NameValue> formVars)
-        {
-            int intListLength = formVars.Count;
-            DataTable dtEmail = new DataTable();
-            dtEmail.Columns.Add("VendorId");
-            dtEmail.Columns.Add("SecContactEmail");
-            if (intListLength > 0)
-            {
-                DataRow dRowNew = dtEmail.NewRow();
-                for (int i = 1; i < intListLength; i++)
-                {
-                    if (formVars[i].key.Contains("nametxtEMail3" + (i - 1)))
-                    {
-                        dRowNew["VendorId"] = HttpContext.Current.Session["VendorId"].ToString();
-                        dRowNew["SecContactEmail"] = formVars[i].value;
-                        dtEmail.Rows.Add(dRowNew);
-                        dRowNew = dtEmail.NewRow();
-                    }
-                }
-            }
-            return dtEmail;
-        }
-
-        [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
-        public static void GetAltEmails(List<NameValue> formVars)
-        {
-            JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
-            string deserializedJson = jsSerializer.Serialize(formVars);
-            DataTable dtEmails = new DataTable();
-            dtEmails = GetAllAltEmailValues(formVars);
-            HttpContext.Current.Session["dtAltEmail"] = dtEmails as DataTable;
-        }
-
-
-        [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
-        private static DataTable GetAllAltEmailValues(List<NameValue> formVars)
-        {
-            int intListLength = formVars.Count;
-            DataTable dtEmail = new DataTable();
-            dtEmail.Columns.Add("VendorId");
-            dtEmail.Columns.Add("AltContactEmail");
-            if (intListLength > 0)
-            {
-                DataRow dRowNew = dtEmail.NewRow();
-                for (int i = 1; i < intListLength; i++)
-                {
-                    if (formVars[i].key.Contains("nametxtEMail5" + (i - 1)))
-                    {
-                        dRowNew["VendorId"] = HttpContext.Current.Session["VendorId"].ToString();
-                        dRowNew["AltContactEmail"] = formVars[i].value;
-                        dtEmail.Rows.Add(dRowNew);
-                        dRowNew = dtEmail.NewRow();
-                    }
-                }
-            }
-            return dtEmail;
-        }
-
-        // Get Contact 2
-
-        [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
-        public static void GetContact2(List<NameValue> formVars)
-        {
-            JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
-            string deserializedJson = jsSerializer.Serialize(formVars);
-            DataTable dtContact2 = new DataTable();
-            dtContact2 = GetAllContact2Values(formVars);
-            HttpContext.Current.Session["dtContact2"] = dtContact2 as DataTable;
-        }
-
-
-        [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
-        private static DataTable GetAllContact2Values(List<NameValue> formVars)
-        {
-            int intListLength = formVars.Count;
-            DataTable dtContact2 = new DataTable();
-            dtContact2.Columns.Add("VendorId");
-            dtContact2.Columns.Add("ContactExten2");
-            dtContact2.Columns.Add("ContactNo2");
-            if (intListLength > 0)
-            {
-                DataRow dRowNew = dtContact2.NewRow();
-                int d = 2;
-                for (int i = 2; i < intListLength; i++)
-                {
-
-                    if (formVars[i].key.Contains("nametxtContactExten1" + (i - d)))
-                    {
-                        dRowNew["ContactExten2"] = formVars[i].value;
-                        i++;
-                    }
-                    if (formVars[i].key.Contains("nametxtcontact1" + (i - (d + 1))))
-                    {
-                        dRowNew["ContactNo2"] = formVars[i].value;
-                    }
-                    d++;
-                    dRowNew["VendorId"] = HttpContext.Current.Session["VendorId"].ToString();
-                    dtContact2.Rows.Add(dRowNew);
-                    dRowNew = dtContact2.NewRow();
-                }
-
-            }
-            return dtContact2;
-        }
-
-        // Get Contact 3
-
-        [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
-        public static void GetContact3(List<NameValue> formVars)
-        {
-            JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
-            string deserializedJson = jsSerializer.Serialize(formVars);
-            DataTable dtContact3 = new DataTable();
-            dtContact3 = GetAllContact3Values(formVars);
-            HttpContext.Current.Session["dtContact3"] = dtContact3 as DataTable;
-        }
-
-
-        [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
-        private static DataTable GetAllContact3Values(List<NameValue> formVars)
-        {
-            int intListLength = formVars.Count;
-            DataTable dtContact3 = new DataTable();
-            dtContact3.Columns.Add("VendorId");
-            dtContact3.Columns.Add("ContactExten3");
-            dtContact3.Columns.Add("ContactNo3");
-            if (intListLength > 0)
-            {
-                DataRow dRowNew = dtContact3.NewRow();
-                int d = 2;
-                for (int i = 2; i < intListLength; i++)
-                {
-
-                    if (formVars[i].key.Contains("nametxtContactExten3" + (i - d)))
-                    {
-                        dRowNew["ContactExten3"] = formVars[i].value;
-                        i++;
-                    }
-                    if (formVars[i].key.Contains("nametxtcontact3" + (i - (d + 1))))
-                    {
-                        dRowNew["ContactNo3"] = formVars[i].value;
-                    }
-                    d++;
-                    dRowNew["VendorId"] = HttpContext.Current.Session["VendorId"].ToString();
-                    dtContact3.Rows.Add(dRowNew);
-                    dRowNew = dtContact3.NewRow();
-                }
-
-            }
-            return dtContact3;
-        }
-
-        // Get Contact 4
-
-        [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
-        public static void GetContact4(List<NameValue> formVars)
-        {
-            JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
-            string deserializedJson = jsSerializer.Serialize(formVars);
-            DataTable dtContact4 = new DataTable();
-            dtContact4 = GetAllContact4Values(formVars);
-            HttpContext.Current.Session["dtContact4"] = dtContact4 as DataTable;
-        }
-
-        [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
-        private static DataTable GetAllContact4Values(List<NameValue> formVars)
-        {
-            int intListLength = formVars.Count;
-            DataTable dtContact4 = new DataTable();
-            dtContact4.Columns.Add("VendorId");
-            dtContact4.Columns.Add("ContactExten4");
-            dtContact4.Columns.Add("ContactNo4");
-            if (intListLength > 0)
-            {
-                DataRow dRowNew = dtContact4.NewRow();
-                int d = 2;
-                for (int i = 2; i < intListLength; i++)
-                {
-
-                    if (formVars[i].key.Contains("nametxtContactExten5" + (i - d)))
-                    {
-                        dRowNew["ContactExten4"] = formVars[i].value;
-                        i++;
-                    }
-                    if (formVars[i].key.Contains("nametxtcontact5" + (i - (d + 1))))
-                    {
-                        dRowNew["ContactNo4"] = formVars[i].value;
-                    }
-                    d++;
-                    dRowNew["VendorId"] = HttpContext.Current.Session["VendorId"].ToString();
-                    dtContact4.Rows.Add(dRowNew);
-                    dRowNew = dtContact4.NewRow();
-                }
-
-            }
-            return dtContact4;
-        }
-        
         protected void lnkVendorName_Click(object sender, EventArgs e)
         {
             LinkButton lnkbtnVendorName = sender as LinkButton;
@@ -571,60 +503,60 @@ namespace JG_Prospect.Sr_App
             //lstVendors.DataBind();
 
 
-            ddlVendorName.Items.Clear();
-            DataSet ds = new DataSet();
-            ds = VendorBLL.Instance.fetchallvendordetails();
-            ddlVendorName.DataSource = ds;
-            ddlVendorName.DataTextField = "VendorName";
-            ddlVendorName.DataValueField = "VendorId";
-
-            ddlVendorName.DataBind();
-
-
-        }
-        protected void bindvendor(int selectedVendorCategoryId)
-        {
-            //lstVendors.Items.Clear();
-
-            //DataSet dsVendorNames = VendorBLL.Instance.fetchVendorNamesByVendorCategory(selectedVendorCategoryId);
-            //lstVendors.DataSource = dsVendorNames;
-            //lstVendors.DataTextField = "VendorName";
-            //lstVendors.DataValueField = "VendorId";
-            //lstVendors.DataBind();
-
-
-            ddlVendorName.Items.Clear();
-
-            DataSet dsVendorNames = VendorBLL.Instance.fetchVendorNamesByVendorCategory(selectedVendorCategoryId);
-            ddlVendorName.DataSource = dsVendorNames;
-            ddlVendorName.DataTextField = "VendorName";
-            ddlVendorName.DataValueField = "VendorId";
-            ddlVendorName.DataBind();
-
-
-
-
-
-
+            //ddlVendorName.Items.Clear();
             //DataSet ds = new DataSet();
             //ds = VendorBLL.Instance.fetchallvendordetails();
-            //lstVendors.DataSource = ds.Tables[0];
-            //lstVendors.DataTextField = ds.Tables[0].Columns[1].ToString();
-            //lstVendors.DataValueField = ds.Tables[0].Columns[0].ToString();
+            //ddlVendorName.DataSource = ds;
+            //ddlVendorName.DataTextField = "VendorName";
+            //ddlVendorName.DataValueField = "VendorId";
 
-            //lstVendors.DataBind();
+            //ddlVendorName.DataBind();
 
 
         }
+        //protected void bindvendor(int selectedVendorCategoryId)
+        //{
+        //    //lstVendors.Items.Clear();
+
+        //    //DataSet dsVendorNames = VendorBLL.Instance.fetchVendorNamesByVendorCategory(selectedVendorCategoryId);
+        //    //lstVendors.DataSource = dsVendorNames;
+        //    //lstVendors.DataTextField = "VendorName";
+        //    //lstVendors.DataValueField = "VendorId";
+        //    //lstVendors.DataBind();
+
+
+        //    ddlVendorName.Items.Clear();
+
+        //    DataSet dsVendorNames = VendorBLL.Instance.fetchVendorNamesByVendorCategory(selectedVendorCategoryId);
+        //    ddlVendorName.DataSource = dsVendorNames;
+        //    ddlVendorName.DataTextField = "VendorName";
+        //    ddlVendorName.DataValueField = "VendorId";
+        //    ddlVendorName.DataBind();
+
+
+
+
+
+
+        //    //DataSet ds = new DataSet();
+        //    //ds = VendorBLL.Instance.fetchallvendordetails();
+        //    //lstVendors.DataSource = ds.Tables[0];
+        //    //lstVendors.DataTextField = ds.Tables[0].Columns[1].ToString();
+        //    //lstVendors.DataValueField = ds.Tables[0].Columns[0].ToString();
+
+        //    //lstVendors.DataBind();
+
+
+        //}
         protected void bindvendorcategory()
         {
             DataSet ds = new DataSet();
             ds = VendorBLL.Instance.fetchallvendorcategory();
-            ddlVendorCategory.DataSource = ds;
-            ddlVendorCategory.DataTextField = ds.Tables[0].Columns[1].ToString();
-            ddlVendorCategory.DataValueField = ds.Tables[0].Columns[0].ToString();
-            ddlVendorCategory.DataBind();
-            ddlVendorCategory.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select", "Select"));
+            ddlVndrCategory.DataSource = ds;
+            ddlVndrCategory.DataTextField = ds.Tables[0].Columns[1].ToString();
+            ddlVndrCategory.DataValueField = ds.Tables[0].Columns[0].ToString();
+            ddlVndrCategory.DataBind();
+            ddlVndrCategory.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select", "Select"));
 
             ddlVendorCatPopup.DataSource = ds;
             ddlVendorCatPopup.DataTextField = ds.Tables[0].Columns[1].ToString();
@@ -645,88 +577,30 @@ namespace JG_Prospect.Sr_App
             ddlVendorCatPopup.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select", "Select"));
         }
 
-        protected void lstVendors_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            DataSet ds = new DataSet();
-            ds = VendorBLL.Instance.FetchvendorDetails(Convert.ToInt32(ddlVendorName.SelectedValue));
+        //protected void lstVendors_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    DataSet ds = new DataSet();
+        //    ds = VendorBLL.Instance.FetchvendorDetails(Convert.ToInt32(ddlVendorName.SelectedValue));
 
-            txtVendorNm.Text = ds.Tables[0].Rows[0]["VendorName"].ToString();
-            ddlVendorCategory.SelectedValue = ds.Tables[0].Rows[0]["VendorCategoryId"].ToString();
-            txtcontactperson.Text = ds.Tables[0].Rows[0]["ContactPerson"].ToString();
-            txtcontactnumber.Text = ds.Tables[0].Rows[0]["ContactNumber"].ToString();
-            txtfax.Text = ds.Tables[0].Rows[0]["Fax"].ToString();
-            txtmail.Text = ds.Tables[0].Rows[0]["Email"].ToString();
-            txtaddress.Text = ds.Tables[0].Rows[0]["Address"].ToString();
-            txtNotes.Text = ds.Tables[0].Rows[0]["Notes"].ToString();
-            ddlMenufacturer.SelectedValue = ds.Tables[0].Rows[0]["ManufacturerType"].ToString();
-            txtBillingAddress.Text = ds.Tables[0].Rows[0]["BillingAddress"].ToString();
-            txtTaxId.Text = ds.Tables[0].Rows[0]["TaxId"].ToString();
-            txtExpenseCat.Text = ds.Tables[0].Rows[0]["ExpenseCategory"].ToString();
-            txtAutoInsurance.Text = ds.Tables[0].Rows[0]["AutoTruckInsurance"].ToString();
-            txtVendorId.Text = ddlVendorName.SelectedValue;
-            btnSave.Text = "Update";
-        }
-
-        protected void clear()
-        {
-            txtcontactnumber.Text = txtcontactperson.Text = txtfax.Text = txtmail.Text = txtVendorNm.Text = null;
-            ddlVendorCategory.ClearSelection();
-            btnSave.Text = "Save";
-        }
-        protected void SaveAllData()
-        {
-            Vendor objvendor = new Vendor();
-            if (ddlVndrCategory.SelectedValue == "Select")
-            {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('please select Vendor Category');", true);
-                return;
-            }
-
-            //if (ddlVendorName.SelectedValue != "")
-            //    objvendor.vendor_id = Convert.ToInt32(ddlVendorName.SelectedValue);
-            //else
-            objvendor.vendor_id = Convert.ToInt32(txtVendorId.Text);
-
-            objvendor.vendor_name = txtVendorNm.Text;
-
-            objvendor.vendor_category_id = Convert.ToInt32(ddlVndrCategory.SelectedValue);
-            objvendor.contract_person = txtFName.Text + " " + txtLName.Text;
-            objvendor.contract_number = txtcontactnumber.Text;
-            objvendor.fax = txtfax.Text;
-            objvendor.mail = txtmail.Text;
-            objvendor.address = txtaddress.Text;
-            objvendor.notes = txtNotes.Text;
-            objvendor.ManufacturerType = ddlMenufacturer.SelectedValue;
-            objvendor.BillingAddress = txtBillingAddress.Text;
-            objvendor.TaxId = txtTaxId.Text;
-            objvendor.ExpenseCategory = txtExpenseCat.Text;
-            objvendor.AutoTruckInsurance = txtAutoInsurance.Text;
-            bool res = VendorBLL.Instance.savevendor(objvendor);
-            if (flag == "")
-            {
-                if (res)
-                {
-                    txtVendorId.Enabled = true;
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Vendor Saved/Updated Successfully');", true);
-                }
-            }
+        //    txtVendorNm.Text = ds.Tables[0].Rows[0]["VendorName"].ToString();
+        //    ddlVndrCategory.SelectedValue = ds.Tables[0].Rows[0]["VendorCategoryId"].ToString();
+        //    txtcontactperson.Text = ds.Tables[0].Rows[0]["ContactPerson"].ToString();
+        //    txtcontactnumber.Text = ds.Tables[0].Rows[0]["ContactNumber"].ToString();
+        //    txtfax.Text = ds.Tables[0].Rows[0]["Fax"].ToString();
+        //    txtmail.Text = ds.Tables[0].Rows[0]["Email"].ToString();
+        //    txtaddress.Text = ds.Tables[0].Rows[0]["Address"].ToString();
+        //    txtNotes.Text = ds.Tables[0].Rows[0]["Notes"].ToString();
+        //    ddlMenufacturer.SelectedValue = ds.Tables[0].Rows[0]["ManufacturerType"].ToString();
+        //    txtBillingAddress.Text = ds.Tables[0].Rows[0]["BillingAddress"].ToString();
+        //    txtTaxId.Text = ds.Tables[0].Rows[0]["TaxId"].ToString();
+        //    txtExpenseCat.Text = ds.Tables[0].Rows[0]["ExpenseCategory"].ToString();
+        //    txtAutoInsurance.Text = ds.Tables[0].Rows[0]["AutoTruckInsurance"].ToString();
+        //    txtVendorId.Text = ddlVendorName.SelectedValue;
+        //    btnSave.Text = "Update";
+        //}
 
 
-            bindvendor(Convert.ToInt16(ddlVendorCategory.SelectedValue));
-            //bindvendorcategory();
-            //clear();
 
-
-        }
-        protected void btnSave_Click(object sender, EventArgs e)
-        {
-            //Save all Data...
-            flag = "";
-            SaveAllData();
-            clearcontrols();
-            int id = 1;
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "script1", "GetVendorDetails("+id+");", true);
-        }
 
         //protected void btndelete_Click(object sender, EventArgs e)
         //{
@@ -767,39 +641,39 @@ namespace JG_Prospect.Sr_App
 
         protected void clearcontrols()
         {
-            txtVendorNm.Text = "";
-            txtcontactperson.Text = "";
-            txtcontactnumber.Text = "";
-            txtfax.Text = "";
-            txtmail.Text = "";
-            txtaddress.Text = "";
-            ddlMenufacturer.SelectedValue = "0";
-            txtBillingAddress.Text = "";
-            txtTaxId.Text = "";
-            txtExpenseCat.Text = "";
-            txtAutoInsurance.Text = "";
+            //txtVendorNm.Text = "";
+            //txtcontactperson.Text = "";
+            //txtcontactnumber.Text = "";
+            //txtfax.Text = "";
+            //txtmail.Text = "";
+            //txtaddress.Text = "";
+            //ddlMenufacturer.SelectedValue = "0";
+            //txtBillingAddress.Text = "";
+            //txtTaxId.Text = "";
+            //txtExpenseCat.Text = "";
+            //txtAutoInsurance.Text = "";
         }
 
-        protected void ddlVendorCategory_SelectedIndexChanged1(object sender, EventArgs e)
-        {
-            if (ddlVendorCategory.SelectedValue != "Select")
-            {
-                int selectedVendorCategoryId = Convert.ToInt16(ddlVendorCategory.SelectedValue);
-                bindvendor(selectedVendorCategoryId);
-            }
-            else
-            {
-                ddlVendorName.Items.Clear();
-            }
+        //protected void ddlVendorCategory_SelectedIndexChanged1(object sender, EventArgs e)
+        //{
+        //    if (ddlVendorCategory.SelectedValue != "Select")
+        //    {
+        //        int selectedVendorCategoryId = Convert.ToInt16(ddlVendorCategory.SelectedValue);
+        //        bindvendor(selectedVendorCategoryId);
+        //    }
+        //    else
+        //    {
+        //        ddlVendorName.Items.Clear();
+        //    }
 
-            clearcontrols();
-            btnSave.Text = "Save";
+        //    clearcontrols();
+        //    btnSave.Text = "Save";
 
 
-            //  flag = "Autosave";
-            //  SaveAllData(); 
+        //    //  flag = "Autosave";
+        //    //  SaveAllData(); 
 
-        }
+        //}
 
         protected void VerifyAdminPermission(object sender, EventArgs e)
         {
@@ -909,24 +783,24 @@ namespace JG_Prospect.Sr_App
 
         protected void ddlVendorCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DropDownList ddlVendorCategory = (DropDownList)sender;
+            DropDownList ddlVndrCategory = (DropDownList)sender;
 
-            string selectedCategory = ddlVendorCategory.SelectedItem.Text;
+            string selectedCategory = ddlVndrCategory.SelectedItem.Text;
             string emailStatus = CustomBLL.Instance.GetEmailStatusOfCustomMaterialList(Convert.ToString(Session[SessionKey.Key.JobId.ToString()]));//, productTypeId, estimateId);
             int counter = 1;
             //foreach (GridViewRow r in grdcustom_material_list.Rows)
             //{
             //    if (selectedCategory == "Select")
             //    {
-            //        ddlVendorCategory.SelectedIndex = -1;
+            //        ddlVndrCategory.SelectedIndex = -1;
             //        ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please select a vendor category');", true);
 
             //    }
-            //    else if (((DropDownList)r.FindControl("ddlVendorCategory")).SelectedItem.Text == selectedCategory)
+            //    else if (((DropDownList)r.FindControl("ddlVndrCategory")).SelectedItem.Text == selectedCategory)
             //    {
             //        if (counter == 2)
             //        {
-            //            ddlVendorCategory.SelectedIndex = -1;
+            //            ddlVndrCategory.SelectedIndex = -1;
             //            ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('This Vendor Category is already selected');", true);
 
             //        }
@@ -936,11 +810,11 @@ namespace JG_Prospect.Sr_App
             //    if (emailStatus == JGConstant.EMAIL_STATUS_VENDORCATEGORIES)
             //    {
             //        DropDownList ddlVendorName = (DropDownList)r.FindControl("ddlVendorName");
-            //        DropDownList ddlVendorCategorySelected = (DropDownList)r.FindControl("ddlVendorCategory");
+            //        DropDownList ddlVndrCategorySelected = (DropDownList)r.FindControl("ddlVndrCategory");
             //        LinkButton lnkQuote = (LinkButton)r.FindControl("lnkQuote");
-            //        if (ddlVendorCategory == ddlVendorCategorySelected)
+            //        if (ddlVndrCategory == ddlVndrCategorySelected)
             //        {
-            //            int selectedCategoryID = Convert.ToInt16(ddlVendorCategory.SelectedItem.Value);
+            //            int selectedCategoryID = Convert.ToInt16(ddlVndrCategory.SelectedItem.Value);
             //            DataSet ds = GetVendorNames(selectedCategoryID);
             //            ddlVendorName.DataSource = ds;
             //            ddlVendorName.SelectedIndex = -1;
@@ -3195,38 +3069,47 @@ namespace JG_Prospect.Sr_App
             }
         }
 
-        protected void ddlVendorName_SelectedIndexChanged1(object sender, EventArgs e)
-        {
-            if (Convert.ToString(ddlVendorName.SelectedValue) != "")
-            {
-                EditVendor(Convert.ToInt16(ddlVendorName.SelectedValue));
-            }
-            // flag = "Autosave";
-            // SaveAllData(); 
-        }
+        //protected void ddlVendorName_SelectedIndexChanged1(object sender, EventArgs e)
+        //{
+        //    if (Convert.ToString(ddlVendorName.SelectedValue) != "")
+        //    {
+        //        EditVendor(Convert.ToInt16(ddlVendorName.SelectedValue));
+        //    }
+        //    // flag = "Autosave";
+        //    // SaveAllData(); 
+        //}
 
         public void EditVendor(int VendorIdToEdit)
         {
             DataSet ds = new DataSet();
-
             ds = VendorBLL.Instance.FetchvendorDetails(VendorIdToEdit);
 
             txtVendorNm.Text = ds.Tables[0].Rows[0]["VendorName"].ToString();
-            ddlVendorCategory.SelectedValue = ds.Tables[0].Rows[0]["VendorCategoryId"].ToString();
-            txtcontactperson.Text = ds.Tables[0].Rows[0]["ContactPerson"].ToString();
-            txtcontactnumber.Text = ds.Tables[0].Rows[0]["ContactNumber"].ToString();
-            txtfax.Text = ds.Tables[0].Rows[0]["Fax"].ToString();
-            txtmail.Text = ds.Tables[0].Rows[0]["Email"].ToString();
-            txtaddress.Text = ds.Tables[0].Rows[0]["Address"].ToString();
-            txtNotes.Text = ds.Tables[0].Rows[0]["Notes"].ToString();
-            ddlMenufacturer.SelectedValue = ds.Tables[0].Rows[0]["ManufacturerType"].ToString();
-            txtBillingAddress.Text = ds.Tables[0].Rows[0]["BillingAddress"].ToString();
+            //ddlVndrCategory.SelectedValue = ds.Tables[0].Rows[0]["VendorCategoryId"].ToString();
+            string Name = ds.Tables[0].Rows[0]["ContactPerson"].ToString();
+
+            // Split Name
+            string[] splittedName = Name.Split(' ');
+            txtFName.Text = splittedName[0].ToString();
+            txtLName.Text = splittedName[1].ToString();
+
+            string ContactNo = ds.Tables[0].Rows[0]["ContactNumber"].ToString();
+
+            // Spilt Contact No.
+
+            txtVendorFax.Text = ds.Tables[0].Rows[0]["Fax"].ToString();
+            txtprimaryemail.Text = ds.Tables[0].Rows[0]["Email"].ToString();
+            txtPrimaryAddress.Text = ds.Tables[0].Rows[0]["Address"].ToString();
+            //txtNotes.Text = ds.Tables[0].Rows[0]["Notes"].ToString();
+            ddlVendorStatus.SelectedValue = ds.Tables[0].Rows[0]["VendorStatus"].ToString();
             txtTaxId.Text = ds.Tables[0].Rows[0]["TaxId"].ToString();
-            txtExpenseCat.Text = ds.Tables[0].Rows[0]["ExpenseCategory"].ToString();
-            txtAutoInsurance.Text = ds.Tables[0].Rows[0]["AutoTruckInsurance"].ToString();
+            ddlmanufacturertype.SelectedValue = ds.Tables[0].Rows[0]["ManufacturerType"].ToString();
+            txtBillingAddr.Text = ds.Tables[0].Rows[0]["BillingAddress"].ToString();
+          
+            //txtExpenseCat.Text = ds.Tables[0].Rows[0]["ExpenseCategory"].ToString();
+            //txtAutoInsurance.Text = ds.Tables[0].Rows[0]["AutoTruckInsurance"].ToString();
             txtVendorId.Text = ds.Tables[0].Rows[0]["VendorId"].ToString();
             btnSave.Text = "Update";
-            txtVendorId.Enabled = false;
 
         }
 

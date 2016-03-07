@@ -11,7 +11,7 @@ namespace JG_Prospect.BLL
     {
         private static VendorBLL m_VendorBLL = new VendorBLL();
         private VendorBLL()
-        { 
+        {
         }
         public static VendorBLL Instance
         {
@@ -36,15 +36,15 @@ namespace JG_Prospect.BLL
             return ds;
         }
 
-        public DataSet GetMaterialListData(string soldJobId,int CustomerId)
+        public DataSet GetMaterialListData(string soldJobId, int CustomerId)
         {
             DataSet ds = VendorDAL.Instance.GetMaterialListData(soldJobId, CustomerId);
             return ds;
         }
-          public DataSet GetVendorQuoteByVendorId(string soldJobId, int vendorId)
+        public DataSet GetVendorQuoteByVendorId(string soldJobId, int vendorId)
         {
             return VendorDAL.Instance.GetVendorQuoteByVendorId(soldJobId, vendorId);
-        }      
+        }
 
         public DataSet fetchallvendordetails()
         {
@@ -99,12 +99,12 @@ namespace JG_Prospect.BLL
             return VendorDAL.Instance.savevendor(objvendor);
         }
         public DataSet FetchvendorDetails(int vendorid)
-        { 
-        return VendorDAL.Instance.FetchvendorDetails(vendorid);
+        {
+            return VendorDAL.Instance.FetchvendorDetails(vendorid);
         }
         public bool savevendorcatalogdetails(Vendor_Catalog objcatalog)
         {
-            return VendorDAL.Instance.savevendorcatalogdetails(objcatalog );
+            return VendorDAL.Instance.savevendorcatalogdetails(objcatalog);
         }
 
         public DataSet GetAllvendorDetails()
@@ -139,5 +139,14 @@ namespace JG_Prospect.BLL
         {
             return VendorDAL.Instance.GetVendorSubCategory();
         }
+        public bool InsertVendorEmail(Vendor objvendor)
+        {
+            return VendorDAL.Instance.InsertVendorEmail(objvendor);
+        }
+        public bool InsertVendorAddress(Vendor objvendor)
+        {
+            return VendorDAL.Instance.InsertVendorAddress(objvendor);
+        }
+
     }
 }

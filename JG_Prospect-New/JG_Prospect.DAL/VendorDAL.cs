@@ -8,6 +8,9 @@ using JG_Prospect.DAL.Database;
 using Microsoft.Practices.EnterpriseLibrary.Data;
 using Microsoft.Practices.EnterpriseLibrary.Data.Sql;
 using JG_Prospect.Common.modal;
+using System.Configuration;
+using System.Data.SqlClient;
+using JG_Prospect.Common;
 namespace JG_Prospect.DAL
 {
     public class VendorDAL
@@ -192,7 +195,7 @@ namespace JG_Prospect.DAL
             }
         }
 
-        public DataSet GetMaterialListData(string soldJobId,int CustomerId)
+        public DataSet GetMaterialListData(string soldJobId, int CustomerId)
         {
             DataSet ds = null;
             try
@@ -427,6 +430,10 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@TaxId", DbType.String, objvendor.TaxId);
                     database.AddInParameter(command, "@ExpenseCategory", DbType.String, objvendor.ExpenseCategory);
                     database.AddInParameter(command, "@AutoTruckInsurance", DbType.String, objvendor.AutoTruckInsurance);
+                    database.AddInParameter(command, "@VendorSubCategoryId", DbType.Int16, objvendor.vendor_subcategory_id);
+                    database.AddInParameter(command, "@VendorStatus", DbType.String, objvendor.VendorStatus);
+                    database.AddInParameter(command, "@Website", DbType.String, objvendor.Website);
+                    database.AddInParameter(command, "@ContactExten", DbType.String, objvendor.ContactExten);
 
                     database.ExecuteNonQuery(command);
                     return true;
@@ -631,6 +638,67 @@ namespace JG_Prospect.DAL
             catch (Exception ex)
             {
                 return null;
+            }
+        }
+
+        public bool InsertVendorEmail(Vendor objVendor)
+        {
+            try
+            {
+                string consString = ConfigurationManager.ConnectionStrings[DBConstants.CONFIG_CONNECTION_STRING_KEY].ConnectionString;
+                using (SqlConnection con = new SqlConnection(consString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_VendorEmail"))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Connection = con;
+                        cmd.Parameters.AddWithValue("@tblVendorEmail", objVendor.tblVendorEmail);
+                        cmd.Parameters.AddWithValue("@action", 1);
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                        return true;
+                    }
+                }
+                //SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                //{
+                //    DbCommand command = database.GetStoredProcCommand("sp_VendorEmail");
+                //    command.CommandType = CommandType.StoredProcedure;
+                //    database.AddInParameter(command, "@tblVendorEmail", DbType.Object, objVendor.tblVendorEmail);
+                //    database.AddInParameter(command, "@action", DbType.Int16, 1);
+                //    database.ExecuteNonQuery(command);
+                //    return true;
+                //}
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool InsertVendorAddress(Vendor objVendor)
+        {
+            try
+            {
+                string consString = ConfigurationManager.ConnectionStrings[DBConstants.CONFIG_CONNECTION_STRING_KEY].ConnectionString;
+                using (SqlConnection con = new SqlConnection(consString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_VendorAddress"))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Connection = con;
+                        cmd.Parameters.AddWithValue("@tblVendorAddress", objVendor.tblVendorAddress);
+                        cmd.Parameters.AddWithValue("@action", 1);
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
             }
         }
 
