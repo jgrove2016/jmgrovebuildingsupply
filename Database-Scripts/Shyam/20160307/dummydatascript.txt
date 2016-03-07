@@ -1,0 +1,57 @@
+
+
+
+GO
+
+
+INSERT INTO [dbo].[tblProductVendor]  ([ProductCategoryId] ,[ProductCategoryName] ,[VendorCategoryId] ,[VendorcategoryName])
+     VALUES  (3 , '',21 ,'')
+GO
+INSERT INTO [dbo].[tblProductVendor]  ([ProductCategoryId] ,[ProductCategoryName] ,[VendorCategoryId] ,[VendorcategoryName])
+     VALUES  (3 , '',127 ,'')
+go
+INSERT INTO [dbo].[tblVendorSubCategory]([VendorSubCategoryName],[VendorCategoryId])
+     VALUES('Test Paint Manufacturer' ,127)
+GO
+
+INSERT INTO [dbo].[tblVendorSubCategory]([VendorSubCategoryName],[VendorCategoryId])
+     VALUES('Test Paint Supplies' ,21)
+GO
+
+INSERT INTO [dbo].[tblVendorSubCategory]([VendorSubCategoryName],[VendorCategoryId])
+     VALUES('Test Paint Supplies second' ,21)
+     GO
+
+INSERT INTO [dbo].[tblVendorSubCategory]([VendorSubCategoryName],[VendorCategoryId])
+     VALUES('Test Paint Manufactures second' ,127)
+
+  update tblVendors
+  set ManufacturerType='Wholesale'
+  where VendorId between 795 and 800
+
+
+  update tblVendors
+  set ManufacturerType='Retail'
+  where VendorId between 801 and 809
+
+  update tblVendors
+  set ManufacturerType='Retail'
+  where VendorId in(17,18,53,54,56,57,271,272)
+
+  update tblVendors
+  set ManufacturerType='Wholesale'
+  where VendorId in(345,990,1027,1028,1029,1030,1031,1032)
+
+  update tblVendors
+  set VendorSubCategoryId=3
+  where VendorId in(1029,1030,1031,1032,56,57,271,272)
+
+  update tblVendors
+  set VendorSubCategoryId=2
+  where VendorId in(345,990,1027,1028,17,18,53,54)
+  update tblVendors
+  set VendorSubCategoryId=4
+  where VendorId in(798,799,800,806,807,808,809)
+  update tblVendors
+  set VendorSubCategoryId=1
+  where VendorId in(795,796,797,801,802,804,805)
