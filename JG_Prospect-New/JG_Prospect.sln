@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JG_Prospect.web", "JG_Prospect.web\JG_Prospect.web.csproj", "{A7B25516-4610-48D5-9280-6392DC92F935}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JG_Prospect.DAL", "JG_Prospect.DAL\JG_Prospect.DAL.csproj", "{2C56D357-387F-4070-9DC0-70AB17D35668}"
@@ -10,22 +12,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JG_Prospect.Common", "JG_Prospect.Common\JG_Prospect.Common.csproj", "{A445BB8A-2C2E-4144-93E8-6E6D79EDA646}"
 EndProject
 Global
-	GlobalSection(SourceCodeControl) = preSolution
-		SccNumberOfProjects = 5
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = JG_Prospect.BLL\\JG_Prospect.BLL.csproj
-		SccLocalPath1 = .
-		SccProjectFilePathRelativizedFromConnection1 = JG_Prospect.BLL\\
-		SccProjectUniqueName2 = JG_Prospect.Common\\JG_Prospect.Common.csproj
-		SccLocalPath2 = .
-		SccProjectFilePathRelativizedFromConnection2 = JG_Prospect.Common\\
-		SccProjectUniqueName3 = JG_Prospect.DAL\\JG_Prospect.DAL.csproj
-		SccLocalPath3 = .
-		SccProjectFilePathRelativizedFromConnection3 = JG_Prospect.DAL\\
-		SccProjectUniqueName4 = JG_Prospect.web\\JG_Prospect.web.csproj
-		SccLocalPath4 = .
-		SccProjectFilePathRelativizedFromConnection4 = JG_Prospect.web\\
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
