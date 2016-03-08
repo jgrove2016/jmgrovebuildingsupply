@@ -2279,37 +2279,37 @@ namespace JG_Prospect.Sr_App
         protected void ddlCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
             flag = "Autosave";
-            SaveMaterialList();
+            SaveMaterialList(sender , e);
         }
 
         protected void txtLine_TextChanged(object sender, EventArgs e)
         {
             flag = "Autosave";
-            SaveMaterialList();
+            SaveMaterialList(sender, e);
         }
 
         protected void txtSkuPartNo_TextChanged(object sender, EventArgs e)
         {
             flag = "Autosave";
-            SaveMaterialList();
+            SaveMaterialList(sender, e);
         }
 
         protected void txtDescription_TextChanged(object sender, EventArgs e)
         {
             flag = "Autosave";
-            SaveMaterialList();
+            SaveMaterialList(sender, e);
         }
 
         protected void txtQTY_TextChanged(object sender, EventArgs e)
         {
             flag = "Autosave";
-            SaveMaterialList();
+            SaveMaterialList(sender, e);
         }
 
         protected void txtUOM_TextChanged(object sender, EventArgs e)
         {
             flag = "Autosave";
-            SaveMaterialList();
+            SaveMaterialList(sender, e);
         }
 
         protected void ddlVendorName_SelectedIndexChanged1(object sender, EventArgs e)
@@ -2326,7 +2326,7 @@ namespace JG_Prospect.Sr_App
             List<CustomMaterialList> cmList = new List<CustomMaterialList>();
 
 
-            GridViewRow r;
+            GridViewRow r=new GridViewRow(0,0, DataControlRowType.DataRow, DataControlRowState.Normal);
             if (sender.GetType().Equals(typeof(LinkButton)))
             {
                 r = ((GridViewRow)((LinkButton)sender).Parent.Parent);
@@ -2826,7 +2826,7 @@ namespace JG_Prospect.Sr_App
             lblCost.Text = Convert.ToString(Convert.ToDecimal(txt.Text) * Convert.ToDecimal(txtCost.Text));
 
             flag = "Autosave";
-            SaveMaterialList();
+            SaveMaterialList(sender,e);
         }
 
         protected void ddlExtent_SelectedIndexChanged(object sender, EventArgs e)
@@ -2844,7 +2844,7 @@ namespace JG_Prospect.Sr_App
                 lblTotal.Text = Convert.ToString(lblCost.Text);
             }
             flag = "Autosave";
-            SaveMaterialList();
+            SaveMaterialList(sender,e);
         }
 
         protected void lnkAttachQuotes_Click(object sender, EventArgs e)
