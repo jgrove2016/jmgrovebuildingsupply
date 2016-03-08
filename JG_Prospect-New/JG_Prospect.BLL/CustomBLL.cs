@@ -160,6 +160,12 @@ namespace JG_Prospect.BLL
         {
             return CustomDAL.Instance.GetCustom_MaterialList(pJobID, pCustomerID);
         }
+
+        public DataSet GetCustomMaterialList(string pJobID, int pCustomerID)
+        {
+            return CustomDAL.Instance.GetCustomMaterialList(pJobID, pCustomerID);
+        }
+
         public string GetEmailStatusOfCustomMaterialList(string jobId)//, int productTypeId, int estimateId)
         {
             DataSet ds = CustomDAL.Instance.GetEmailStatusOfCustomMaterialList(jobId);//, productTypeId, estimateId);

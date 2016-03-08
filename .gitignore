@@ -18,3 +18,5 @@ JG_Prospect-New/JG_Prospect.web/obj/Debug/JG_Prospect.dll
 *.pdb
 JG_Prospect-New/JG_Prospect.web/obj/Debug/JG_Prospect.pdb
 JG_Prospect-New/JG_Prospect.web/obj/Debug/JG_Prospect.pdb
+*.dll
+JG_Prospect-New/JG_Prospect.BLL/bin/Debug/JG_Prospect.BLL.dll

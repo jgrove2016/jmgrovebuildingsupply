@@ -58,6 +58,9 @@ namespace JG_Prospect.Common
         public string AdminUserName { get; set; }
         public string AdminFirstName { get; set; }
         public string AdminLastName { get; set; }
+
+        public int StaffID { get; set; }
+        public string StaffName { get; set; }
     }
 }
 

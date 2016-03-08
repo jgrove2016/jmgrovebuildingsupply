@@ -52,6 +52,17 @@ namespace JG_Prospect.Sr_App
         //#- Private Variables
         private Boolean IsPageRefresh = false;
         private int estimateId = 0,  productTypeId = 0;
+
+        #region "Custom Material List"
+
+        protected DataSet PageDataset
+        {
+            get { return ViewState["PageDataSet"] != null ? ((DataSet)ViewState["PageDataSet"]) : new DataSet(); }
+            set { ViewState["PageDataSet"] = value; }
+        }
+
+        #endregion
+
         #endregion
 
         protected void Page_Load(object sender, EventArgs e)
@@ -75,6 +86,8 @@ namespace JG_Prospect.Sr_App
             setPermissions();
             if (!IsPostBack)
             {
+                InitialDataBind();
+                return;
                 bindMaterialList();
                 SetButtonText();
                 bind();
@@ -562,9 +575,7 @@ namespace JG_Prospect.Sr_App
                 itemList = GetMaterialListFromViewState();
             }
             List<CustomMaterialList> cmList = itemList.Where(c => c.Status != JGConstant.CustomMaterialListStatus.Deleted).ToList();
-            grdProdLines.DataSource = cmList;
-            grdProdLines.DataBind();
-
+           
             grdcustom_material_list.DataSource = cmList;
             grdcustom_material_list.DataBind();
             int j = 0;
@@ -2266,15 +2277,6 @@ namespace JG_Prospect.Sr_App
             Add_Click(sender, e);
         }
         
-        /// <summary>
-        /// This method will bind all the initial data items
-        /// </summary>
-        protected void InitialDataBind()
-        {
-
-        }
-
-
         string flag = "";
         protected void ddlCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -2450,7 +2452,7 @@ namespace JG_Prospect.Sr_App
             //List<CustomMaterialList> cmList2 = BindEmptyRowToMaterialList();
             //ViewState["CustomMaterialList"] = cmList2;
             bindMaterialList();
-
+            
 
             //try
             //{
@@ -2897,13 +2899,13 @@ namespace JG_Prospect.Sr_App
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                DropDownList ddlCategory = (DropDownList)e.Row.FindControl("ddlCategory");
-                DataSet ds = UserBLL.Instance.GetAllProducts();
-                ddlCategory.DataSource = ds;
-                ddlCategory.DataTextField = "ProductName";
-                ddlCategory.DataValueField = "ProductId";
-                ddlCategory.DataBind();
-                ddlCategory.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select", "0)"));
+                //DropDownList ddlCategory = (DropDownList)e.Row.FindControl("ddlCategory");
+                //DataSet ds = UserBLL.Instance.GetAllProducts();
+                //ddlCategory.DataSource = ds;
+                //ddlCategory.DataTextField = "ProductName";
+                //ddlCategory.DataValueField = "ProductId";
+                //ddlCategory.DataBind();
+                //ddlCategory.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select", "0)"));
 
 
                 DropDownCheckBoxes ddlVendorCategory = (DropDownCheckBoxes)e.Row.FindControl("ddlVendorName");
@@ -2918,10 +2920,212 @@ namespace JG_Prospect.Sr_App
             }
         }
 
-       
 
-       
+        #region "Custom Material List Grid Functionality"
+
+        /// <summary>
+        /// This method creates a Skeleton record which enables website user to add more material.
+        /// </summary>
+        /// <returns></returns>
+        private CustomMaterialList CreateSkeletonRecord()
+        {
+            CustomMaterialList cm1 = new CustomMaterialList();
+            cm1.Id = 0;
+            cm1.MaterialList = "";
+            cm1.VendorCategoryId = 0;
+            cm1.VendorCategoryName = "";
+            cm1.VendorId = 0;
+            cm1.VendorName = "";
+            cm1.Amount = 0;
+            cm1.ProductCatId = productTypeId;
+            cm1.DocName = "";
+            cm1.TempName = "";
+            cm1.IsForemanPermission = "";
+            cm1.IsSrSalemanPermissionF = "";
+            cm1.IsAdminPermission = "";
+            cm1.IsSrSalemanPermissionA = "";
+            cm1.Status = JGConstant.CustomMaterialListStatus.Unchanged;
+            cm1.ForemaneID = 0;
+            cm1.ForemanFirstName = "";
+            cm1.ForemanLastName = "";
+            cm1.ForemanUserName = "";
+
+            cm1.SrSaleManFID = 0;
+            cm1.ForemanFirstName = "";
+            cm1.ForemanLastName = "";
+            cm1.ForemanUserName = "";
+
+            cm1.SrSaleManAID = 0;
+            cm1.ForemanFirstName = "";
+            cm1.ForemanLastName = "";
+            cm1.ForemanUserName = "";
+
+            cm1.AdminID = 0;
+            cm1.ForemanFirstName = "";
+            cm1.ForemanLastName = "";
+            cm1.ForemanUserName = "";
+            
+            return cm1;
+        }
+
+        private void InitialDataBind()
+        {
+            
+            DataSet ds = UserBLL.Instance.GetAllProducts();
+            ddlCategory.DataSource = ds;
+            ddlCategory.DataTextField = "ProductName";
+            ddlCategory.DataValueField = "ProductId";
+            ddlCategory.DataBind();
+            ddlCategory.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select", "0)"));
+
+            PageDataset = CustomBLL.Instance.GetCustomMaterialList(jobId.ToString(), customerId);
+            List<CustomMaterialList> cmList = new List<CustomMaterialList>();
+            if (PageDataset.Tables[1].Rows.Count > 0)
+            {
+                for (int j = 0; j < PageDataset.Tables[1].Rows.Count; j++)
+                {
+                    DataRow dr = PageDataset.Tables[1].Rows[j];
+                    CustomMaterialList cm = new CustomMaterialList();
+                    cm.Id = Convert.ToInt16(dr["Id"]);
+                    cm.MaterialList = dr["MaterialList"].ToString();
+                    cm.VendorCategoryId = Convert.ToInt16(dr["VendorCategoryId"]);
+                    cm.VendorCategoryName = dr["VendorCategoryNm"].ToString();
+                    if (dr["VendorId"].ToString() != "")
+                        cm.VendorId = Convert.ToInt16(dr["VendorId"]);
+                    cm.VendorName = dr["VendorName"].ToString();
+                    if (dr["Amount"].ToString() != "")
+                        cm.Amount = Convert.ToDecimal(dr["Amount"]);
+                    cm.DocName = dr["DocName"].ToString();
+                    cm.TempName = dr["TempName"].ToString();
+                    cm.IsForemanPermission = dr["IsForemanPermission"].ToString();
+                    cm.IsSrSalemanPermissionF = dr["IsSrSalemanPermissionF"].ToString();
+                    cm.IsAdminPermission = dr["IsAdminPermission"].ToString();
+                    cm.IsSrSalemanPermissionA = dr["IsSrSalemanPermissionA"].ToString();
+                    cm.Status = JGConstant.CustomMaterialListStatus.Unchanged;
+
+                    cm.ForemaneID = Convert.ToInt32(dr["foremanID"].ToString());
+                    cm.ForemanFirstName = dr["foremanFirstName"].ToString();
+                    cm.ForemanLastName = dr["foremanLastName"].ToString();
+                    cm.ForemanUserName = dr["foremanUserName"].ToString();
+
+                    cm.SrSaleManFID = Convert.ToInt32(dr["SLFID"].ToString());
+                    cm.SrSaleManFFirstName = dr["SLFFirstName"].ToString();
+                    cm.SrSaleManFLastName = dr["SLFLastName"].ToString();
+                    cm.SrSaleManFUserName = dr["SLFUserName"].ToString();
+
+                    cm.SrSaleManAID = Convert.ToInt32(dr["SLAID"].ToString());
+                    cm.SrSaleManAFirstName = dr["SLAFirstName"].ToString();
+                    cm.SrSaleManALastName = dr["SLALastName"].ToString();
+                    cm.SrSaleManAUserName = dr["SLAUserName"].ToString();
+
+                    cm.AdminID = Convert.ToInt32(dr["ADID"].ToString());
+                    cm.AdminFirstName = dr["ADFirstName"].ToString();
+                    cm.AdminLastName = dr["ADLastName"].ToString();
+                    cm.AdminUserName = dr["ADUserName"].ToString();
+                    cmList.Add(cm);
+                    StaffID = Convert.ToInt32(dr["lastUpdatedByID"].ToString());
+                    StaffName = dr["lastUpdatedByfirstname"].ToString().Trim() != "" ? (dr["lastUpdatedByfirstName"] + " " + dr["lastUpdatedBylastname"]) : dr["lastUpdatedByusername"].ToString();
+                }
+            }
+
+            //#- Added By Shabbir Kanchwala
+            if (PageDataset.Tables.Count > 2)
+            {
+                if (PageDataset.Tables[2].Rows.Count > 0)
+                {
+                    //Response.Redirect("Custom.aspx?ProductTypeId=" + Convert.ToInt16(hdnProductTypeId.Value) + "&ProductId=" + productId + "&CustomerId=" + customerId);
+                    ElabJobID = jobId.Substring(0, 1) + "<a href='Customer_Profile.aspx?CustomerId=" + customerId + "'>" + jobId.Substring(1, jobId.IndexOf("-") - 1) + "</a>-<a href='Custom.aspx?ProductTypeId=" + PageDataset.Tables[2].Rows[0]["producttypeid"].ToString() + "&ProductId=" + PageDataset.Tables[2].Rows[0]["productid"].ToString() + "&CustomerId=" + customerId + "'>" + jobId.Substring(jobId.IndexOf("-") + 1) + "</a>";
+                    CustomerName = PageDataset.Tables[2].Rows[0]["CustomerName"].ToString() + " " + PageDataset.Tables[2].Rows[0]["LastName"].ToString();
+                }
+            }
 
 
+            //cmList.Add(CreateSkeletonRecord());
+
+             ViewState["CustomMaterialList"] = cmList;
+             BindCustomMaterialList(cmList);
+
+             lstCustomMaterialList.DataSource = PageDataset.Tables[0];
+             lstCustomMaterialList.DataBind();
+           
+        }
+
+        private void AddProductCategory()
+        {
+
+        }
+
+        protected void lstCustomMaterialList_ItemDataBound(object sender, ListViewItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListViewItemType.DataItem)
+            {
+                DataRowView lDrView = (DataRowView)e.Item.DataItem;
+                int lProdCatID = Convert.ToInt32(lDrView["ProductCatID"]);
+                GridView grdProdLines = (GridView)e.Item.FindControl("grdProdLines");
+                DataView lDvMaterialList = new DataView(PageDataset.Tables[1], "ProductCatID=" + lProdCatID, "id asc", DataViewRowState.OriginalRows);
+
+                grdProdLines.DataSource = lDvMaterialList;
+                grdProdLines.DataBind();
+            }
+        }
+        protected void lnkAddLines_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void lstCustomMaterialList_ItemCommand(object sender, ListViewCommandEventArgs e)
+        {
+            if (e.CommandName == "AddLine")
+            {
+                CustomMaterialList cm = new CustomMaterialList();
+                cm.ProductCatId = Convert.ToInt32(e.CommandArgument);
+                cm.MaterialList = "";
+                cm.Id = 0;
+                cm.VendorName = "";
+                cm.VendorEmail = "";
+                cm.IsAdminPermission = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+                cm.IsSrSalemanPermissionA = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+                cm.IsForemanPermission = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+                cm.IsSrSalemanPermissionF = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+                cm.EmailStatus = JGConstant.EMAIL_STATUS_NONE;
+                bool result = CustomBLL.Instance.AddCustomMaterialList(cm, jobId);
+                InitialDataBind();
+            }
+        }
+
+        protected void btnAddProdLines_Click(object sender, EventArgs e)
+        {
+            CustomMaterialList cm = new CustomMaterialList();
+            cm.ProductCatId = Convert.ToInt32(ddlCategory.SelectedValue);
+            cm.MaterialList = "";
+            cm.Id = 0;
+            cm.VendorName = "";
+            cm.VendorEmail = "";
+            cm.IsAdminPermission = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+            cm.IsSrSalemanPermissionA = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+            cm.IsForemanPermission = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+            cm.IsSrSalemanPermissionF = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+            cm.EmailStatus = JGConstant.EMAIL_STATUS_NONE;
+            bool result = CustomBLL.Instance.AddCustomMaterialList(cm, jobId);
+            InitialDataBind();
+        }
+        protected void lnkAddLines_Click1(object sender, EventArgs e)
+        {
+            LinkButton lnkAddLines = ((LinkButton)sender);
+            CustomMaterialList cm = new CustomMaterialList();
+            cm.ProductCatId = Convert.ToInt32(lnkAddLines.CommandArgument);
+            cm.MaterialList = "";
+            cm.Id = 0;
+            cm.VendorName = "";
+            cm.VendorEmail = "";
+            cm.IsAdminPermission = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+            cm.IsSrSalemanPermissionA = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+            cm.IsForemanPermission = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+            cm.IsSrSalemanPermissionF = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+            cm.EmailStatus = JGConstant.EMAIL_STATUS_NONE;
+            bool result = CustomBLL.Instance.AddCustomMaterialList(cm, jobId);
+            InitialDataBind();
+        }
+        #endregion
     }
 }

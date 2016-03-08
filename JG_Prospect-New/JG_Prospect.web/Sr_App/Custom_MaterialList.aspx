@@ -460,110 +460,124 @@
         <div class="grid">
             <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                 <ContentTemplate>
-                    <asp:GridView ID="grdProdLines" runat="server" OnRowDataBound="grdProdLines_RowDataBound" AutoGenerateColumns="false">
-                        <Columns>
-                            <asp:TemplateField HeaderText="Product Category">
-                                <ItemTemplate>
-                                    <asp:DropDownList ID="ddlCategory" Width="150px" runat="server" OnSelectedIndexChanged="ddlCategory_SelectedIndexChanged" AutoPostBack="true">
-                                    </asp:DropDownList> 
-                                     <asp:HiddenField ID="hdnMaterialListId" runat="server" Value='<%#Eval("Id")%>'/>
-                                    <asp:HiddenField ID="hdnEmailStatus" runat="server" Value='<%#Eval("EmailStatus")%>'/>
-                                    <asp:HiddenField ID="hdnForemanPermission" runat="server"  Value='<%#Eval("IsForemanPermission")%>'/>
-                                    <asp:HiddenField ID="hdnSrSalesmanPermissionF" runat="server" Value='<%#Eval("IsSrSalemanPermissionF")%>'/>
-                                    <asp:HiddenField ID="hdnAdminPermission" runat="server" Value='<%#Eval("IsAdminPermission")%>'/>
-                                    <asp:HiddenField ID="hdnSrSalesmanPermissionA" runat="server" Value='<%#Eval("IsSrSalemanPermissionA")%>'/>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Line - Image">
-                                <ItemTemplate>
-                                    <asp:TextBox ID="txtLine" Text='<%# Eval("Line") %>' Style="width:40px" MaxLength="4" runat="server" ClientIDMode="Static" OnTextChanged="txtLine_TextChanged" AutoPostBack="true"></asp:TextBox>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                             <asp:TemplateField HeaderText="JG sku- vendor part #">
-                                <ItemTemplate>
-                                    <asp:TextBox ID="txtSkuPartNo" Text='<%# Eval("JGSkuPartNo") %>' Style="width:120px" MaxLength="18" runat="server" ClientIDMode="Static" OnTextChanged="txtSkuPartNo_TextChanged" AutoPostBack="true"></asp:TextBox>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                             <asp:TemplateField HeaderText="Description">
-                                <ItemTemplate>
-                                    <asp:TextBox ID="txtDescription" Text='<%# Eval("MaterialList") %>' runat="server" TextMode="MultiLine" ClientIDMode="Static" OnTextChanged="txtDescription_TextChanged" AutoPostBack="true"></asp:TextBox>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                             <asp:TemplateField HeaderText="Quantity">
-                                <ItemTemplate>
-                                    <%--Text='<%# Eval("Qty") %>' --%>
-                                    <asp:TextBox ID="txtQTY" runat="server" Style="width:40px" MaxLength="4" ClientIDMode="Static" onkeypress="return isNumberKey(event)" OnTextChanged="txtQTY_TextChanged" AutoPostBack="true"></asp:TextBox>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                             <asp:TemplateField HeaderText="UOM">
-                                <ItemTemplate>
-                                     <%--Text='<%# Eval("UOM") %>'--%>
-                                    <asp:TextBox ID="txtUOM" runat="server" Style="width:50px" ClientIDMode="Static" OnTextChanged="txtUOM_TextChanged" AutoPostBack="true"></asp:TextBox>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Vendor Quotes/Invoice">
-                                <ItemTemplate>
-                                    <asp:DropDownCheckBoxes ID="ddlVendorName" ClientIDMode="Static" runat="server" Style="margin:-2em 0 0;width:180px" Width="180px" UseSelectAllNode="true" OnSelectedIndexChanged="ddlVendorName_SelectedIndexChanged1" AutoPostBack="true">
-                                    </asp:DropDownCheckBoxes>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Cost">  <%--Material Cost Per Item--%>
-                                <ItemTemplate>
-                                    <asp:UpdatePanel ID="udpMaterialCost" runat="server">
-                                        <ContentTemplate>
-                                            <%--Text='<%# Eval("MaterialCost") %>' --%>
-                                            <asp:TextBox ID="txtMaterialCost" AutoPostBack="true" Style="width:50px" OnTextChanged="txtMaterialCost_TextChanged" runat="server" ClientIDMode="Static" onkeypress="return onlyDotsAndNumbers(event)"></asp:TextBox>
-                                        </ContentTemplate>
-                                    </asp:UpdatePanel>
-                                    <%--<asp:Label ID="lblMaterialCost" runat="server" ClientIDMode="Static"></asp:Label>--%>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Extended">
-                                <ItemTemplate>
-                                    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-                                        <ContentTemplate>
-<%--Text='<%# Eval("Extent") %>'--%>
-                                            <asp:DropDownList ID="ddlExtent" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlExtent_SelectedIndexChanged">
-                                                <asp:ListItem Text="Select" Value="Select"></asp:ListItem>
-                                                <asp:ListItem Text="Pick Up" Value="PickUp"></asp:ListItem>
-                                                <asp:ListItem Text="Job Site Delivery" Value="Jobsitedelivery"></asp:ListItem>
-                                                <asp:ListItem Text="Rejected" Value="Rejected"></asp:ListItem>
-                                                <asp:ListItem Text="Office Delivery" Value="OfficeDelivery"></asp:ListItem>
-                                                <asp:ListItem Text="Stock Location" Value="StockLocation"></asp:ListItem>
-                                            </asp:DropDownList>
-                                        </ContentTemplate>
-                                    </asp:UpdatePanel>
-                                    <asp:UpdatePanel ID="udpCost" runat="server">
-                                        <ContentTemplate>
-                                            <%--Text='<%# Eval("SubTotal") %>'--%>
-                                            <asp:Label ID="lblCost"  runat="server"></asp:Label>
-                                        </ContentTemplate>
-                                        <Triggers>
-                                            <asp:AsyncPostBackTrigger ControlID="txtMaterialCost" EventName="TextChanged" />
-                                        </Triggers>
-                                    </asp:UpdatePanel>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Total">
-                                <ItemTemplate>
-                                    <asp:UpdatePanel ID="udpTotalCost" runat="server">
-                                        <ContentTemplate>
-                                            <%--<asp:Label ID="lblTotal" runat="server" Text='<%# Eval("Total") %>' ClientIDMode="Static"></asp:Label>--%>
-                                            <asp:LinkButton ID="lblTotal"  data-toggle="modal" data-target="#myModal" runat="server" Text='<%# Eval("Total") %>' ClientIDMode="Static"></asp:LinkButton>
-                                            <asp:LinkButton ID="lnkAttachQuotes" Text="Attach Quotes" runat="server" OnClick="lnkAttachQuotes_Click" ClientIDMode="Static"></asp:LinkButton>
-                                             </ContentTemplate>
-                                        <Triggers>
-                                            <asp:AsyncPostBackTrigger ControlID="ddlExtent" EventName="SelectedIndexChanged" />
-                                        </Triggers>
-                                    </asp:UpdatePanel>
-                                </ItemTemplate>
-                            </asp:TemplateField>
+                    Select Product Category:
+                    <asp:DropDownList ID="ddlCategory" Width="150px" runat="server" OnSelectedIndexChanged="ddlCategory_SelectedIndexChanged"  AutoPostBack="true">
+                    </asp:DropDownList>
+                    <asp:Button ID="btnAddProdLines" runat="server" Text="Add Product Category" Width="300px" Style="background: url(../img/btn1.png) no-repeat;" OnClick="btnAddProdLines_Click" />
+                    
+                    <asp:ListView ID="lstCustomMaterialList" OnItemCommand="lstCustomMaterialList_ItemCommand" runat="server" OnItemDataBound="lstCustomMaterialList_ItemDataBound" ItemPlaceholderID="itemPlaceHolder" GroupPlaceholderID="groupPlaceHolder">
+                        <LayoutTemplate>
+                            <div>
+                                <asp:PlaceHolder ID="groupPlaceHolder" runat="server"></asp:PlaceHolder>
+                            </div>
+                        </LayoutTemplate>
+                        <GroupTemplate>
+                            <asp:PlaceHolder ID="itemPlaceHolder" runat="server"></asp:PlaceHolder>
+                            
+                        </GroupTemplate>
+                        <ItemTemplate>
+                            <h3>Product Category: <%#Eval("ProductName") %> </h3>
+                            <asp:GridView ID="grdProdLines" runat="server" OnRowDataBound="grdProdLines_RowDataBound" AutoGenerateColumns="false">
+                                <Columns>
+                                    <asp:TemplateField HeaderText="Line - Image">
+                                        <ItemTemplate>
+                                            <asp:TextBox ID="txtLine" Text='<%# Eval("Line") %>' Style="width:40px" MaxLength="4" runat="server" ClientIDMode="Static" OnTextChanged="txtLine_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                            <asp:HiddenField ID="hdnMaterialListId" runat="server" Value='<%#Eval("Id")%>'/>
+                                            <asp:HiddenField ID="hdnEmailStatus" runat="server" Value='<%#Eval("EmailStatus")%>'/>
+                                            <asp:HiddenField ID="hdnForemanPermission" runat="server"  Value='<%#Eval("IsForemanPermission")%>'/>
+                                            <asp:HiddenField ID="hdnSrSalesmanPermissionF" runat="server" Value='<%#Eval("IsSrSalemanPermissionF")%>'/>
+                                            <asp:HiddenField ID="hdnAdminPermission" runat="server" Value='<%#Eval("IsAdminPermission")%>'/>
+                                            <asp:HiddenField ID="hdnSrSalesmanPermissionA" runat="server" Value='<%#Eval("IsSrSalemanPermissionA")%>'/>
+                                            <asp:HiddenField ID="hdnProductCatID" runat="server" Value='<%#Eval("ProductCatID")%>'/>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="JG sku- vendor part #">
+                                        <ItemTemplate>
+                                            <asp:TextBox ID="txtSkuPartNo" Text='<%# Eval("JGSkuPartNo") %>' Style="width:120px" MaxLength="18" runat="server" ClientIDMode="Static" OnTextChanged="txtSkuPartNo_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Description">
+                                        <ItemTemplate>
+                                            <asp:TextBox ID="txtDescription" Text='<%# Eval("MaterialList") %>' runat="server" TextMode="MultiLine" ClientIDMode="Static" OnTextChanged="txtDescription_TextChanged" AutoPostBack="false"></asp:TextBox>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Quantity">
+                                        <ItemTemplate>
+                                            <%--Text='<%# Eval("Qty") %>' --%>
+                                            <asp:TextBox ID="txtQTY" runat="server" Style="width:40px" MaxLength="4" ClientIDMode="Static" onkeypress="return isNumberKey(event)" OnTextChanged="txtQTY_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="UOM">
+                                        <ItemTemplate>
+                                                <%--Text='<%# Eval("UOM") %>'--%>
+                                            <asp:TextBox ID="txtUOM" runat="server" Style="width:50px" ClientIDMode="Static" OnTextChanged="txtUOM_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Vendor Quotes/Invoice">
+                                        <ItemTemplate>
+                                            <asp:DropDownCheckBoxes ID="ddlVendorName" ClientIDMode="Static" runat="server" Style="margin:-2em 0 0;width:180px" Width="180px" UseSelectAllNode="true" OnSelectedIndexChanged="ddlVendorName_SelectedIndexChanged1" AutoPostBack="true">
+                                            </asp:DropDownCheckBoxes>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Cost">  <%--Material Cost Per Item--%>
+                                        <ItemTemplate>
+                                            <asp:UpdatePanel ID="udpMaterialCost" runat="server">
+                                                <ContentTemplate>
+                                                    <%--Text='<%# Eval("MaterialCost") %>' --%>
+                                                    <asp:TextBox ID="txtMaterialCost" AutoPostBack="true" Style="width:50px" OnTextChanged="txtMaterialCost_TextChanged" runat="server" ClientIDMode="Static" onkeypress="return onlyDotsAndNumbers(event)"></asp:TextBox>
+                                                </ContentTemplate>
+                                            </asp:UpdatePanel>
+                                            <%--<asp:Label ID="lblMaterialCost" runat="server" ClientIDMode="Static"></asp:Label>--%>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Extended">
+                                        <ItemTemplate>
+                                            <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                                                <ContentTemplate>
+                                                    <%--Text='<%# Eval("Extent") %>'--%>
+                                                    <asp:DropDownList ID="ddlExtent" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlExtent_SelectedIndexChanged">
+                                                        <asp:ListItem Text="Select" Value="Select"></asp:ListItem>
+                                                        <asp:ListItem Text="Pick Up" Value="PickUp"></asp:ListItem>
+                                                        <asp:ListItem Text="Job Site Delivery" Value="Jobsitedelivery"></asp:ListItem>
+                                                        <asp:ListItem Text="Rejected" Value="Rejected"></asp:ListItem>
+                                                        <asp:ListItem Text="Office Delivery" Value="OfficeDelivery"></asp:ListItem>
+                                                        <asp:ListItem Text="Stock Location" Value="StockLocation"></asp:ListItem>
+                                                    </asp:DropDownList>
+                                                </ContentTemplate>
+                                            </asp:UpdatePanel>
+                                            <asp:UpdatePanel ID="udpCost" runat="server">
+                                                <ContentTemplate>
+                                                    <%--Text='<%# Eval("SubTotal") %>'--%>
+                                                    <asp:Label ID="lblCost"  runat="server"></asp:Label>
+                                                </ContentTemplate>
+                                                <Triggers>
+                                                    <asp:AsyncPostBackTrigger ControlID="txtMaterialCost" EventName="TextChanged" />
+                                                </Triggers>
+                                            </asp:UpdatePanel>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Total">
+                                        <ItemTemplate>
+                                            <asp:UpdatePanel ID="udpTotalCost" runat="server">
+                                                <ContentTemplate>
+                                                    <%--<asp:Label ID="lblTotal" runat="server" Text='<%# Eval("Total") %>' ClientIDMode="Static"></asp:Label>--%>
+                                                    <asp:LinkButton ID="lblTotal"  data-toggle="modal" data-target="#myModal" runat="server" Text='<%# Eval("Total") %>' ClientIDMode="Static"></asp:LinkButton>
+                                                    <asp:LinkButton ID="lnkAttachQuotes" Text="Attach Quotes" runat="server" OnClick="lnkAttachQuotes_Click" ClientIDMode="Static"></asp:LinkButton>
+                                                        </ContentTemplate>
+                                                <Triggers>
+                                                    <asp:AsyncPostBackTrigger ControlID="ddlExtent" EventName="SelectedIndexChanged" />
+                                                </Triggers>
+                                            </asp:UpdatePanel>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                </Columns>
+                            </asp:GridView>
+                            <asp:LinkButton ID="lnkAddLines" CommandName="AddLine" CommandArgument='<%#Eval("ProductCatId") %>' OnClick="lnkAddLines_Click1" runat="server">Add Line</asp:LinkButton>
+                        </ItemTemplate>
+                    </asp:ListView>
 
-                             
-                        </Columns>
-                    </asp:GridView>
-
-                    <asp:GridView ID="grdcustom_material_list" runat="server" Width="108%" AutoGenerateColumns="false"
+               
+                    <asp:GridView ID="grdcustom_material_list" runat="server" Width="108%" AutoGenerateColumns="false" Visible="false"
                         OnRowDataBound="grdcustom_material_list_RowDataBound" OnRowDeleting="grdcustom_material_list_RowDeleting" OnRowCommand="grdcustom_material_list_RowCommand">
                         <Columns>
                             <asp:TemplateField HeaderText="Sr No.">
