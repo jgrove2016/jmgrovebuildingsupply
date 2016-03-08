@@ -10,3 +10,5 @@ JG_Prospect-New/JG_Prospect.DAL/obj/Debug/JG_Prospect.DAL.csproj.FileListAbsolut
 *.suo
 *.config
 JG_Prospect-New/JG_Prospect.v12.suo
+*.dll
+JG_Prospect-New/JG_Prospect.BLL/bin/Debug/JG_Prospect.BLL.pdb

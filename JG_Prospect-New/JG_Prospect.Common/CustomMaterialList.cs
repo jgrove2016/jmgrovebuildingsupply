@@ -41,6 +41,23 @@ namespace JG_Prospect.Common
         public string VendorEmails { get; set; }
         public string DisplaDLL { get; set; }
         public JGConstant.CustomMaterialListStatus Status { get; set; }
+        public int ForemaneID { get; set; }
+        public string ForemanUserName { get; set; }
+        public string ForemanFirstName { get; set; }
+        public string ForemanLastName { get; set; }
+
+        public int SrSaleManFID { get; set; }
+        public string SrSaleManFUserName { get; set; }
+        public string SrSaleManFFirstName { get; set; }
+        public string SrSaleManFLastName { get; set; }
+        public int SrSaleManAID { get; set; }
+        public string SrSaleManAUserName { get; set; }
+        public string SrSaleManAFirstName { get; set; }
+        public string SrSaleManALastName { get; set; }
+        public int AdminID { get; set; }
+        public string AdminUserName { get; set; }
+        public string AdminFirstName { get; set; }
+        public string AdminLastName { get; set; }
     }
 }
 

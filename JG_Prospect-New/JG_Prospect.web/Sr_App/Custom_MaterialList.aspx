@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Sr_App/SR_app.Master" AutoEventWireup="true"
     EnableEventValidation="false" CodeBehind="Custom_MaterialList.aspx.cs" Inherits="JG_Prospect.Sr_App.Custom_MaterialList" %>
-
+<%@ Register TagPrefix="asp" Namespace="Saplin.Controls" Assembly="DropDownCheckBoxes" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit.HTMLEditor"
     TagPrefix="cc1" %>
@@ -206,7 +206,11 @@
               });
         }
     </script>
-
+    <style type="text/css">
+        .dd_chk_select{
+            width:180px;
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="right_panel">
@@ -231,12 +235,12 @@
                     <asp:Panel ID="pnlForeman" runat="server">
                         <asp:LinkButton ID="lnkForemanPermission" runat="server" Text="Foreman Permission" Visible="false"></asp:LinkButton>
                         <span id="spnforemanelabel" style='display:<%=(ForemanPwdVisibility==""?"none":"")%>'>Foreman Password:</span> <asp:TextBox ID="txtForemanManPwd" runat="server" onblur="VerifyForemanManPwd()"></asp:TextBox>
-                        <span ID="lblForemanPermission" style='display:<%=ForemanPwdVisibility%>'>Foreman has approved the request</span>
+                        <span ID="lblForemanPermission" style='display:<%=ForemanPwdVisibility%>'><%=ForemanMessage %></span>
                     </asp:Panel>
                     <asp:Panel ID="pnlAdmin" runat="server">
                     <asp:LinkButton ID="lnkAdminPermission" runat="server" Text="Admin Permission" Visible="false"></asp:LinkButton>
                     <span id="spnadminlabel" style='display:<%=(AdminPwdVisibility==""?"none":"")%>'>Admin Password:</span> <asp:TextBox ID="txtAdminPwd" runat="server" onblur="VerifyAdminPwd()"></asp:TextBox>
-                    <span ID="lblAdminPermission" style='display:<%=AdminPwdVisibility%>'>Admin has approved the request</span>
+                    <span ID="lblAdminPermission" style='display:<%=AdminPwdVisibility%>'><%=AdminMessage %></span>
                     </asp:Panel>
                     
                 </td>
@@ -248,13 +252,13 @@
                     <asp:Panel ID="pnlSrSalesman" runat="server">
                     <asp:LinkButton ID="lnkSrSalesmanPermissionA" runat="server" Text="Sr. Salesman Permission 1" Visible="false"></asp:LinkButton>
                     <span id="spnsrsalesmanelabel" style='display:<%=(SrSalesmanPwdVisibility==""?"none":"")%>'>Sr. Salesman Password:</span> <asp:TextBox ID="txtSrSales1Pwd" runat="server" onblur="VerifySalesManPwd1()"></asp:TextBox>
-                    <span ID="lblSrSalesmanPermission" style='display:<%=SrSalesmanPwdVisibility%>'>Sr. Salesman has approved the request</span>
+                    <span ID="lblSrSalesmanPermission" style='display:<%=SrSalesmanPwdVisibility%>'><%=SrSalesManMessage %></span>
                     </asp:Panel>
 
                     <asp:Panel ID="pnlSalesF" runat="server">
                     <asp:LinkButton ID="lnkSrSalesmanPermissionF" runat="server" Text="Sr. Salesman Permission 2 " Visible="false"></asp:LinkButton>
                     <span id="spnsalesmanelabel" style='display:<%=(SalesmanPwdVisibility==""?"none":"")%>'>Sr. Salesman Password:</span> <asp:TextBox ID="txtSrSalesManPwd" runat="server" onblur="VerifySalesManPwd()"></asp:TextBox>
-                    <span ID="lblSalesmanPermission" style='display:<%=SalesmanPwdVisibility%>'>Sr. Salesman has approved the request</span>
+                    <span ID="lblSalesmanPermission" style='display:<%=SalesmanPwdVisibility%>'><%=SalesmanMessage %></span>
                     </asp:Panel>
                 </td>
             </tr>
@@ -264,9 +268,8 @@
                 <td>
                     <fieldset style="border-style:solid;border-width:1px;padding:5px;">
                         <legend>Job Details</legend>
-                        <b>Job ID: </b> <%=jobId %><br />
-                        <b>Customer ID:</b><%=customerId %><br />
-                        <b>Customer Name:</b><%=CustomerName %><br />
+                        <b>Job ID: </b> <%=ElabJobID %><br />
+                        <b>Customer Name:</b> <%=CustomerName %><br />
                     </fieldset>
                 </td>
                 <td>&nbsp;</td>
@@ -457,6 +460,109 @@
         <div class="grid">
             <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                 <ContentTemplate>
+                    <asp:GridView ID="grdProdLines" runat="server" OnRowDataBound="grdProdLines_RowDataBound" AutoGenerateColumns="false">
+                        <Columns>
+                            <asp:TemplateField HeaderText="Product Category">
+                                <ItemTemplate>
+                                    <asp:DropDownList ID="ddlCategory" Width="150px" runat="server" OnSelectedIndexChanged="ddlCategory_SelectedIndexChanged" AutoPostBack="true">
+                                    </asp:DropDownList> 
+                                     <asp:HiddenField ID="hdnMaterialListId" runat="server" Value='<%#Eval("Id")%>'/>
+                                    <asp:HiddenField ID="hdnEmailStatus" runat="server" Value='<%#Eval("EmailStatus")%>'/>
+                                    <asp:HiddenField ID="hdnForemanPermission" runat="server"  Value='<%#Eval("IsForemanPermission")%>'/>
+                                    <asp:HiddenField ID="hdnSrSalesmanPermissionF" runat="server" Value='<%#Eval("IsSrSalemanPermissionF")%>'/>
+                                    <asp:HiddenField ID="hdnAdminPermission" runat="server" Value='<%#Eval("IsAdminPermission")%>'/>
+                                    <asp:HiddenField ID="hdnSrSalesmanPermissionA" runat="server" Value='<%#Eval("IsSrSalemanPermissionA")%>'/>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Line - Image">
+                                <ItemTemplate>
+                                    <asp:TextBox ID="txtLine" Text='<%# Eval("Line") %>' Style="width:40px" MaxLength="4" runat="server" ClientIDMode="Static" OnTextChanged="txtLine_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                             <asp:TemplateField HeaderText="JG sku- vendor part #">
+                                <ItemTemplate>
+                                    <asp:TextBox ID="txtSkuPartNo" Text='<%# Eval("JGSkuPartNo") %>' Style="width:120px" MaxLength="18" runat="server" ClientIDMode="Static" OnTextChanged="txtSkuPartNo_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                             <asp:TemplateField HeaderText="Description">
+                                <ItemTemplate>
+                                    <asp:TextBox ID="txtDescription" Text='<%# Eval("MaterialList") %>' runat="server" TextMode="MultiLine" ClientIDMode="Static" OnTextChanged="txtDescription_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                             <asp:TemplateField HeaderText="Quantity">
+                                <ItemTemplate>
+                                    <%--Text='<%# Eval("Qty") %>' --%>
+                                    <asp:TextBox ID="txtQTY" runat="server" Style="width:40px" MaxLength="4" ClientIDMode="Static" onkeypress="return isNumberKey(event)" OnTextChanged="txtQTY_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                             <asp:TemplateField HeaderText="UOM">
+                                <ItemTemplate>
+                                     <%--Text='<%# Eval("UOM") %>'--%>
+                                    <asp:TextBox ID="txtUOM" runat="server" Style="width:50px" ClientIDMode="Static" OnTextChanged="txtUOM_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Vendor Quotes/Invoice">
+                                <ItemTemplate>
+                                    <asp:DropDownCheckBoxes ID="ddlVendorName" ClientIDMode="Static" runat="server" Style="margin:-2em 0 0;width:180px" Width="180px" UseSelectAllNode="true" OnSelectedIndexChanged="ddlVendorName_SelectedIndexChanged1" AutoPostBack="true">
+                                    </asp:DropDownCheckBoxes>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Cost">  <%--Material Cost Per Item--%>
+                                <ItemTemplate>
+                                    <asp:UpdatePanel ID="udpMaterialCost" runat="server">
+                                        <ContentTemplate>
+                                            <%--Text='<%# Eval("MaterialCost") %>' --%>
+                                            <asp:TextBox ID="txtMaterialCost" AutoPostBack="true" Style="width:50px" OnTextChanged="txtMaterialCost_TextChanged" runat="server" ClientIDMode="Static" onkeypress="return onlyDotsAndNumbers(event)"></asp:TextBox>
+                                        </ContentTemplate>
+                                    </asp:UpdatePanel>
+                                    <%--<asp:Label ID="lblMaterialCost" runat="server" ClientIDMode="Static"></asp:Label>--%>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Extended">
+                                <ItemTemplate>
+                                    <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                                        <ContentTemplate>
+<%--Text='<%# Eval("Extent") %>'--%>
+                                            <asp:DropDownList ID="ddlExtent" AutoPostBack="true" runat="server" OnSelectedIndexChanged="ddlExtent_SelectedIndexChanged">
+                                                <asp:ListItem Text="Select" Value="Select"></asp:ListItem>
+                                                <asp:ListItem Text="Pick Up" Value="PickUp"></asp:ListItem>
+                                                <asp:ListItem Text="Job Site Delivery" Value="Jobsitedelivery"></asp:ListItem>
+                                                <asp:ListItem Text="Rejected" Value="Rejected"></asp:ListItem>
+                                                <asp:ListItem Text="Office Delivery" Value="OfficeDelivery"></asp:ListItem>
+                                                <asp:ListItem Text="Stock Location" Value="StockLocation"></asp:ListItem>
+                                            </asp:DropDownList>
+                                        </ContentTemplate>
+                                    </asp:UpdatePanel>
+                                    <asp:UpdatePanel ID="udpCost" runat="server">
+                                        <ContentTemplate>
+                                            <%--Text='<%# Eval("SubTotal") %>'--%>
+                                            <asp:Label ID="lblCost"  runat="server"></asp:Label>
+                                        </ContentTemplate>
+                                        <Triggers>
+                                            <asp:AsyncPostBackTrigger ControlID="txtMaterialCost" EventName="TextChanged" />
+                                        </Triggers>
+                                    </asp:UpdatePanel>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Total">
+                                <ItemTemplate>
+                                    <asp:UpdatePanel ID="udpTotalCost" runat="server">
+                                        <ContentTemplate>
+                                            <%--<asp:Label ID="lblTotal" runat="server" Text='<%# Eval("Total") %>' ClientIDMode="Static"></asp:Label>--%>
+                                            <asp:LinkButton ID="lblTotal"  data-toggle="modal" data-target="#myModal" runat="server" Text='<%# Eval("Total") %>' ClientIDMode="Static"></asp:LinkButton>
+                                            <asp:LinkButton ID="lnkAttachQuotes" Text="Attach Quotes" runat="server" OnClick="lnkAttachQuotes_Click" ClientIDMode="Static"></asp:LinkButton>
+                                             </ContentTemplate>
+                                        <Triggers>
+                                            <asp:AsyncPostBackTrigger ControlID="ddlExtent" EventName="SelectedIndexChanged" />
+                                        </Triggers>
+                                    </asp:UpdatePanel>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+
+                             
+                        </Columns>
+                    </asp:GridView>
+
                     <asp:GridView ID="grdcustom_material_list" runat="server" Width="108%" AutoGenerateColumns="false"
                         OnRowDataBound="grdcustom_material_list_RowDataBound" OnRowDeleting="grdcustom_material_list_RowDeleting" OnRowCommand="grdcustom_material_list_RowCommand">
                         <Columns>

@@ -21,6 +21,7 @@ using System.Configuration;
 using System.Net.Configuration;
 using System.Net;
 using JG_Prospect.Common.Logger;
+using Saplin.Controls;
 //using System.Diagnostics;
 
 namespace JG_Prospect.Sr_App
@@ -33,15 +34,20 @@ namespace JG_Prospect.Sr_App
         #region "Page Vairable"
         //#- Protected Vairables
         protected string ForemanPwdVisibility = "none";
+        protected string ForemanMessage = "";
         protected string SalesmanPwdVisibility = "none";
+        protected string SalesmanMessage = "";
         protected string AdminPwdVisibility = "none";
+        protected string AdminMessage = "";
         protected string SrSalesmanPwdVisibility = "none";
+        protected string SrSalesManMessage = "";
         protected static string jobId = string.Empty;
         protected static string salesmanCode = "";
         protected static int LoggedinUserID = 0;
-        protected int StaffID;
-        protected string StaffName;
         protected int customerId = 0;
+        protected int StaffID = 0;
+        protected string StaffName = "";
+        protected string ElabJobID; //#- Elaborated Job ID
         protected string CustomerName;
         //#- Private Variables
         private Boolean IsPageRefresh = false;
@@ -169,6 +175,7 @@ namespace JG_Prospect.Sr_App
             DataSet ds = CustomBLL.Instance.GetAllPermissionOfCustomMaterialList(jobId);//, productTypeId, estimateId);
             if (ds.Tables[0].Rows.Count > 0)
             {
+                List<CustomMaterialList> lCustomMaterial = (List<CustomMaterialList>)ViewState["CustomMaterialList"];
                 if (lnkForemanPermission.Visible == true)
                 {
                     //#- Since we have text boxes, we don't need this controls.
@@ -181,6 +188,7 @@ namespace JG_Prospect.Sr_App
                     {
                         lnkForemanPermission.Enabled = false;
                         ForemanPwdVisibility = "";
+                        ForemanMessage = "<a href='EditUser.aspx?id=" + lCustomMaterial[0].ForemaneID + "'>" + lCustomMaterial[0].ForemaneID + "</a> - " + (lCustomMaterial[0].ForemanFirstName.Trim() != "" ? lCustomMaterial[0].ForemanFirstName + " " + lCustomMaterial[0].ForemanLastName : lCustomMaterial[0].ForemanUserName) + " has approved the material list.";
                         txtForemanManPwd.Visible = false;
                         lnkForemanPermission.ForeColor = System.Drawing.Color.DarkGray;
                         popupForeman_permission.TargetControlID = "hdnForeman";
@@ -189,6 +197,7 @@ namespace JG_Prospect.Sr_App
                     {
                         lnkSrSalesmanPermissionF.Enabled = false;
                         SalesmanPwdVisibility = "";
+                        SalesmanMessage = "<a href='EditUser.aspx?id=" + lCustomMaterial[0].SrSaleManFID + "'>" + lCustomMaterial[0].SrSaleManFID + "</a> - " + (lCustomMaterial[0].SrSaleManFFirstName.Trim() != "" ? lCustomMaterial[0].SrSaleManFFirstName + " " + lCustomMaterial[0].SrSaleManFLastName : lCustomMaterial[0].SrSaleManFUserName) + " has approved the material list.";
                         txtSrSalesManPwd.Visible = false;
                         lnkSrSalesmanPermissionF.ForeColor = System.Drawing.Color.DarkGray;
                         popupSrSalesmanPermissionF.TargetControlID = "hdnSrF";
@@ -204,6 +213,7 @@ namespace JG_Prospect.Sr_App
                     {
                         lnkAdminPermission.Enabled = false;
                         AdminPwdVisibility = "";
+                        AdminMessage = "<a href='EditUser.aspx?id=" + lCustomMaterial[0].AdminID + "'>" + lCustomMaterial[0].AdminID + "</a> - " + (lCustomMaterial[0].AdminFirstName.Trim() != "" ? lCustomMaterial[0].AdminFirstName + " " + lCustomMaterial[0].AdminLastName : lCustomMaterial[0].AdminUserName) + " has approved the material list.";
                         txtAdminPwd.Visible = false;
                         lnkAdminPermission.ForeColor = System.Drawing.Color.DarkGray;
                         popupAdmin_permission.TargetControlID = "hdnAdmin";
@@ -212,6 +222,7 @@ namespace JG_Prospect.Sr_App
                     {
                         lnkSrSalesmanPermissionA.Enabled = false;
                         SrSalesmanPwdVisibility = "";
+                        SrSalesManMessage = "<a href='EditUser.aspx?id=" + lCustomMaterial[0].SrSaleManAID + "'>" + lCustomMaterial[0].SrSaleManAID + "</a> - " + (lCustomMaterial[0].SrSaleManAFirstName.Trim() != "" ? lCustomMaterial[0].SrSaleManAFirstName + " " + lCustomMaterial[0].SrSaleManALastName : lCustomMaterial[0].SrSaleManAUserName) + " has approved the material list.";
                         txtSrSales1Pwd.Visible = false;
                         lnkSrSalesmanPermissionA.ForeColor = System.Drawing.Color.DarkGray;
                         popupSrSalesmanPermissionA.TargetControlID = "hdnSrA";
@@ -310,7 +321,7 @@ namespace JG_Prospect.Sr_App
 
         private void bindMaterialList()
         {
-            DataSet ds = CustomBLL.Instance.GetCustom_MaterialList(jobId.ToString());//,productTypeId,estimateId);
+            DataSet ds = CustomBLL.Instance.GetCustom_MaterialList(jobId.ToString(), customerId);//,productTypeId,estimateId);
             List<CustomMaterialList> cmList = new List<CustomMaterialList>();
             if (ds.Tables[0].Rows.Count > 0)
             {
@@ -334,9 +345,29 @@ namespace JG_Prospect.Sr_App
                     cm.IsAdminPermission = dr["IsAdminPermission"].ToString();
                     cm.IsSrSalemanPermissionA = dr["IsSrSalemanPermissionA"].ToString();
                     cm.Status = JGConstant.CustomMaterialListStatus.Unchanged;
+
+                    cm.ForemaneID = Convert.ToInt32(dr["foremanID"].ToString());
+                    cm.ForemanFirstName = dr["foremanFirstName"].ToString();
+                    cm.ForemanLastName = dr["foremanLastName"].ToString();
+                    cm.ForemanUserName = dr["foremanUserName"].ToString();
+
+                    cm.SrSaleManFID = Convert.ToInt32(dr["SLFID"].ToString());
+                    cm.SrSaleManFFirstName = dr["SLFFirstName"].ToString();
+                    cm.SrSaleManFLastName = dr["SLFLastName"].ToString();
+                    cm.SrSaleManFUserName = dr["SLFUserName"].ToString();
+
+                    cm.SrSaleManAID = Convert.ToInt32(dr["SLAID"].ToString());
+                    cm.SrSaleManAFirstName = dr["SLAFirstName"].ToString();
+                    cm.SrSaleManALastName = dr["SLALastName"].ToString();
+                    cm.SrSaleManAUserName = dr["SLAUserName"].ToString();
+
+                    cm.AdminID = Convert.ToInt32(dr["ADID"].ToString());
+                    cm.AdminFirstName = dr["ADFirstName"].ToString();
+                    cm.AdminLastName = dr["ADLastName"].ToString();
+                    cm.AdminUserName = dr["ADUserName"].ToString();
                     cmList.Add(cm);
-                    StaffID = Convert.ToInt32(dr["UserID"].ToString());
-                    StaffName = dr["firstname"].ToString() != "" ? (dr["firstName"] + " " + dr["lastname"]) : dr["username"].ToString();
+                    StaffID = Convert.ToInt32(dr["lastUpdatedByID"].ToString());
+                    StaffName = dr["lastUpdatedByfirstname"].ToString().Trim() != "" ? (dr["lastUpdatedByfirstName"] + " " + dr["lastUpdatedBylastname"]) : dr["lastUpdatedByusername"].ToString();
                 }
                 CustomMaterialList cm1 = new CustomMaterialList();
                 cm1.Id = 0;
@@ -354,6 +385,25 @@ namespace JG_Prospect.Sr_App
                 cm1.IsAdminPermission = "";
                 cm1.IsSrSalemanPermissionA = "";
                 cm1.Status = JGConstant.CustomMaterialListStatus.Unchanged;
+                cm1.ForemaneID =0;
+                cm1.ForemanFirstName ="";
+                cm1.ForemanLastName = "";
+                cm1.ForemanUserName = "";
+                
+                cm1.SrSaleManFID = 0;
+                cm1.ForemanFirstName = "";
+                cm1.ForemanLastName = "";
+                cm1.ForemanUserName = "";
+                
+                cm1.SrSaleManAID = 0;
+                cm1.ForemanFirstName = "";
+                cm1.ForemanLastName = "";
+                cm1.ForemanUserName = "";
+                
+                cm1.AdminID = 0;
+                cm1.ForemanFirstName = "";
+                cm1.ForemanLastName = "";
+                cm1.ForemanUserName = "";
                 cmList.Add(cm1);
                 ViewState["CustomMaterialList"] = cmList;
 
@@ -371,7 +421,9 @@ namespace JG_Prospect.Sr_App
             {
                 if (ds.Tables[1].Rows.Count > 0)
                 {
-                    CustomerName = ds.Tables[1].Rows[0]["CustomerName"].ToString();
+                    //Response.Redirect("Custom.aspx?ProductTypeId=" + Convert.ToInt16(hdnProductTypeId.Value) + "&ProductId=" + productId + "&CustomerId=" + customerId);
+                    ElabJobID = jobId.Substring(0, 1) + "<a href='Customer_Profile.aspx?CustomerId=" + customerId + "'>" + jobId.Substring(1, jobId.IndexOf("-") - 1) + "</a>-<a href='Custom.aspx?ProductTypeId=" + ds.Tables[1].Rows[0]["producttypeid"].ToString() + "&ProductId=" + ds.Tables[1].Rows[0]["productid"].ToString() + "&CustomerId=" + customerId + "'>" + jobId.Substring(jobId.IndexOf("-")+1) + "</a>";
+                    CustomerName = ds.Tables[1].Rows[0]["CustomerName"].ToString() + " " + ds.Tables[1].Rows[0]["LastName"].ToString();
                 }
             }
         }
@@ -510,6 +562,9 @@ namespace JG_Prospect.Sr_App
                 itemList = GetMaterialListFromViewState();
             }
             List<CustomMaterialList> cmList = itemList.Where(c => c.Status != JGConstant.CustomMaterialListStatus.Deleted).ToList();
+            grdProdLines.DataSource = cmList;
+            grdProdLines.DataBind();
+
             grdcustom_material_list.DataSource = cmList;
             grdcustom_material_list.DataBind();
             int j = 0;
@@ -1882,6 +1937,12 @@ namespace JG_Prospect.Sr_App
         }
 
         #region "Shabbir's Methods"
+
+        /// <summary>
+        /// This method will verify Foreman permission.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         [WebMethod]
         public static string VerifyForemanPermissionWB(String password)
         {
@@ -1918,6 +1979,11 @@ namespace JG_Prospect.Sr_App
             return lReturnValue;
         }
 
+        /// <summary>
+        /// This method will verify Sr. Salesman permission.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         [WebMethod]
         public static string VerifySrSalesmanPermissionFWB(string password)
         {
@@ -1956,6 +2022,11 @@ namespace JG_Prospect.Sr_App
             return lResult;
         }
 
+        /// <summary>
+        /// This method will verify Admin permission.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         [WebMethod]
         public static string VerifyAdminPermissionWB(string password)
         {
@@ -1994,6 +2065,11 @@ namespace JG_Prospect.Sr_App
             return lResult;
         }
 
+        /// <summary>
+        /// This method will verify Sr. Salesman permission.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         [WebMethod]
         public static string VerifySrSalesmanPermissionAWB(string password)
         {
@@ -2032,6 +2108,12 @@ namespace JG_Prospect.Sr_App
             }
             return lResult;
         }
+
+        /// <summary>
+        /// This method will auto save the custom material list.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void Add_Click(object sender, EventArgs e)
         {
             string status = CustomBLL.Instance.GetEmailStatusOfCustomMaterialList(jobId);//, productTypeId, estimateId);
@@ -2163,16 +2245,678 @@ namespace JG_Prospect.Sr_App
             //ViewState["CustomMaterialList"] = cmList2;
             bindMaterialList();
         }
+
+        /// <summary>
+        /// This method will auto save the custom material list.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void txtAmount_TextChanged(object sender, EventArgs e)
         {
             Add_Click(sender, e);
         }
+        
+        /// <summary>
+        /// This method will auto save the custom material list.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void txtMateriallist_TextChanged(object sender, EventArgs e)
         {
             Add_Click(sender, e);
         }
+        
+        /// <summary>
+        /// This method will bind all the initial data items
+        /// </summary>
+        protected void InitialDataBind()
+        {
 
+        }
+
+
+        string flag = "";
+        protected void ddlCategory_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            flag = "Autosave";
+            SaveMaterialList();
+        }
+
+        protected void txtLine_TextChanged(object sender, EventArgs e)
+        {
+            flag = "Autosave";
+            SaveMaterialList();
+        }
+
+        protected void txtSkuPartNo_TextChanged(object sender, EventArgs e)
+        {
+            flag = "Autosave";
+            SaveMaterialList();
+        }
+
+        protected void txtDescription_TextChanged(object sender, EventArgs e)
+        {
+            flag = "Autosave";
+            SaveMaterialList();
+        }
+
+        protected void txtQTY_TextChanged(object sender, EventArgs e)
+        {
+            flag = "Autosave";
+            SaveMaterialList();
+        }
+
+        protected void txtUOM_TextChanged(object sender, EventArgs e)
+        {
+            flag = "Autosave";
+            SaveMaterialList();
+        }
+
+        protected void ddlVendorName_SelectedIndexChanged1(object sender, EventArgs e)
+        {
+            flag = "Autosave";
+            SaveMaterialList(sender, e);
+        }
+
+        private void SaveMaterialList(object sender, EventArgs e)
+        {
+            //#-This line is not required. 
+            string status = CustomBLL.Instance.GetEmailStatusOfCustomMaterialList(jobId);//, productTypeId, estimateId);
+
+            List<CustomMaterialList> cmList = new List<CustomMaterialList>();
+
+
+            GridViewRow r;
+            if (sender.GetType().Equals(typeof(LinkButton)))
+            {
+                r = ((GridViewRow)((LinkButton)sender).Parent.Parent);
+            }
+            else if (sender.GetType().Equals(typeof(TextBox)))
+            {
+                r = ((GridViewRow)((TextBox)sender).Parent.Parent);
+            }
+            else if (sender.GetType().Equals(typeof(DropDownList)))
+            {
+                r = ((GridViewRow)((DropDownList)sender).Parent.Parent);
+            }
+
+            CustomMaterialList cm = new CustomMaterialList();
+            DropDownList ddlVendorCategory = (DropDownList)r.FindControl("ddlVendorCategory");
+            cm.VendorCategoryId = Convert.ToInt16(ddlVendorCategory.SelectedValue);
+            TextBox txtMateriallist = (TextBox)r.FindControl("txtMateriallist");
+            HiddenField hdnMaterialListId = (HiddenField)r.FindControl("hdnMaterialListId");
+            HiddenField hdnEmailStatus = (HiddenField)r.FindControl("hdnEmailStatus");
+            HiddenField hdnForemanPermission = (HiddenField)r.FindControl("hdnForemanPermission");
+            HiddenField hdnSrSalesmanPermissionF = (HiddenField)r.FindControl("hdnSrSalesmanPermissionF");
+            HiddenField hdnAdminPermission = (HiddenField)r.FindControl("hdnAdminPermission");
+            HiddenField hdnSrSalesmanPermissionA = (HiddenField)r.FindControl("hdnSrSalesmanPermissionA");
+            cm.ProductCatId = productTypeId;
+            if (txtMateriallist.Text == "")
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please fill Material List(s).');", true);
+            }
+            else
+            {
+                cm.MaterialList = txtMateriallist.Text;
+            }
+
+            if (hdnMaterialListId.Value != "")
+            {
+                cm.Id = Convert.ToInt16(hdnMaterialListId.Value);
+            }
+            else
+            {
+                cm.Id = 0;
+            }
+            DropDownList ddlVendorName = (DropDownList)r.FindControl("ddlVendorName");
+            TextBox txtAmount = (TextBox)r.FindControl("txtAmount");
+
+            if (status == "C") //mail was already sent to vendor categories
+            {
+                if (ddlVendorName.SelectedItem.Text == "Select")
+                {
+                    //ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please select vendor name.');", true);
+                    //return;
+                }
+                else
+                {
+                    cm.VendorName = ddlVendorName.SelectedItem.Text;
+                    cm.VendorId = Convert.ToInt16(ddlVendorName.SelectedValue);
+
+                    DataSet ds = VendorBLL.Instance.getVendorEmailId(ddlVendorName.SelectedItem.Text);
+                    cm.VendorEmail = ds.Tables[0].Rows[0][0].ToString();
+                }
+
+                if (txtAmount.Text == "")
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please enter amount.');", true);
+                    return;
+                }
+                else
+                {
+                    cm.Amount = Convert.ToDecimal(txtAmount.Text);
+                }
+                if (lnkAdminPermission.Enabled == true)
+                {
+                    cm.IsAdminPermission = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+                }
+                else
+                {
+                    cm.IsAdminPermission = JGConstant.PERMISSION_STATUS_GRANTED.ToString();
+                }
+                if (lnkSrSalesmanPermissionA.Enabled == true)
+                {
+                    cm.IsSrSalemanPermissionA = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+                }
+                else
+                {
+                    cm.IsSrSalemanPermissionA = JGConstant.PERMISSION_STATUS_GRANTED.ToString();
+                }
+                cm.IsForemanPermission = JGConstant.PERMISSION_STATUS_GRANTED.ToString();
+                cm.IsSrSalemanPermissionF = JGConstant.PERMISSION_STATUS_GRANTED.ToString();
+
+                cm.EmailStatus = JGConstant.EMAIL_STATUS_VENDORCATEGORIES;
+            }
+            else // mail was not sent to vendor categories
+            {
+                cm.VendorName = "";
+                cm.VendorEmail = "";
+                cm.IsAdminPermission = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+                cm.IsSrSalemanPermissionA = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+                if (lnkForemanPermission.Enabled == true)
+                {
+                    cm.IsForemanPermission = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+                }
+                else
+                {
+                    cm.IsForemanPermission = JGConstant.PERMISSION_STATUS_GRANTED.ToString();
+                }
+                if (lnkSrSalesmanPermissionF.Enabled == true)
+                {
+                    cm.IsSrSalemanPermissionF = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+                }
+                else
+                {
+                    cm.IsSrSalemanPermissionF = JGConstant.PERMISSION_STATUS_GRANTED.ToString();
+                }
+
+                cm.EmailStatus = JGConstant.EMAIL_STATUS_NONE;
+            }
+            cmList.Add(cm);
+            if (cm.VendorCategoryId > 0)
+            {
+                bool result = CustomBLL.Instance.AddCustomMaterialList(cm, jobId);//,productTypeId,estimateId);
+            }
+            //List<CustomMaterialList> cmList2 = BindEmptyRowToMaterialList();
+            //ViewState["CustomMaterialList"] = cmList2;
+            bindMaterialList();
+
+
+            //try
+            //{
+            //    StringBuilder strerr = new StringBuilder();
+
+            //    //  lblException.Text = Convert.ToString(strerr.Append("Status start"));
+            //    string status = CustomBLL.Instance.GetEmailStatusOfCustomMaterialList(SSNo.Text);//, productTypeId, estimateId);
+            //    //   lblException.Text = Convert.ToString(strerr.Append("End Status "));
+            //    List<CustomMaterialList> cmList = new List<CustomMaterialList>();
+            //    foreach (GridViewRow r in grdcustom_material_list.Rows)
+            //    {
+            //        //  lblException.Text = Convert.ToString(strerr.Append("Customer List found "));
+            //        HiddenField HiddenVisible = (HiddenField)r.FindControl("HiddenField1");
+
+            //        CustomMaterialList cm = new CustomMaterialList();
+            //        HiddenField hidCategory = (HiddenField)r.FindControl("hidCategory");
+            //        TextBox txtLine = (TextBox)r.FindControl("txtLine");
+            //        TextBox txtSkuPartNo = (TextBox)r.FindControl("txtSkuPartNo");
+            //        TextBox txtDescription = (TextBox)r.FindControl("txtDescription");
+            //        TextBox txtQTY = (TextBox)r.FindControl("txtQTY");
+            //        TextBox txtUOM = (TextBox)r.FindControl("txtUOM");
+            //        TextBox txtMaterialCost = (TextBox)r.FindControl("txtMaterialCost");
+            //        LinkButton lblTotal = (LinkButton)r.FindControl("lblTotal");
+            //        DropDownList ddlExtent = (DropDownList)r.FindControl("ddlExtent");
+            //        //DropDownCheckBoxes ddlVendorName = (DropDownCheckBoxes)r.FindControl("ddlVendorName");
+
+            //        //DropDownList ddlVendorCategory = (DropDownList)r.FindControl("ddlVendorCategory");
+            //        //cm.VendorCategoryId = Convert.ToInt16(ddlVendorCategory.SelectedValue);
+            //        //TextBox txtMateriallist = (TextBox)r.FindControl("txtMateriallist");
+            //        //HiddenField hdnMaterialListId = (HiddenField)r.FindControl("hdnMaterialListId");
+            //        //database.AddInParameter(command, "@VendorQuotesPath"	varchar(MAX) = '',
+            //        //HiddenField hdnEmailStatus = (HiddenField)r.FindControl("hdnEmailStatus");
+            //        //HiddenField hdnForemanPermission = (HiddenField)r.FindControl("hdnForemanPermission");
+            //        //HiddenField hdnSrSalesmanPermissionF = (HiddenField)r.FindControl("hdnSrSalesmanPermissionF");
+            //        //HiddenField hdnAdminPermission = (HiddenField)r.FindControl("hdnAdminPermission");
+            //        //HiddenField hdnSrSalesmanPermissionA = (HiddenField)r.FindControl("hdnSrSalesmanPermissionA");
+
+            //        if (txtLine.Text == "")
+            //        {
+            //            if (flag == "")
+            //            {
+            //                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please fill Line Item;", true);
+            //            }
+            //        }
+            //        else
+            //        {
+            //            cm.Line = txtLine.Text;
+            //        }
+
+            //        //if (hdnMaterialListId.Value != "")
+            //        //{
+            //        //    cm.Id = Convert.ToInt16(hdnMaterialListId.Value);
+            //        //}
+            //        //else
+            //        //{
+            //        //    cm.Id = 0;
+            //        //}
+            //        Saplin.Controls.DropDownCheckBoxes ddlVendorName = (Saplin.Controls.DropDownCheckBoxes)r.FindControl("ddlVendorName");
+            //        //TextBox txtAmount = (TextBox)r.FindControl("txtAmount");
+            //        if (txtMaterialCost.Text == "")
+            //        {
+            //            if (flag == "")
+            //            {
+            //                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please enter amount.');", true);
+            //                return;
+            //            }
+            //            else
+            //            {
+            //                cm.Amount = 0;
+            //            }
+            //        }
+            //        else
+            //        {
+            //            cm.Amount = Convert.ToDecimal(txtMaterialCost.Text);
+            //        }
+            //        // if (lnkAdminPermission.Enabled == true)
+            //        if (txtAdminPasswordNew.Visible == true)
+            //        {
+            //            cm.IsAdminPermission = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+            //        }
+            //        else
+            //        {
+            //            cm.IsAdminPermission = JGConstant.PERMISSION_STATUS_GRANTED.ToString();
+            //        }
+            //        //if (lnkSrSalesmanPermissionA.Enabled == true)
+            //        if (txtSrSalesPassword.Visible == true)
+            //        {
+            //            cm.IsSrSalemanPermissionA = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+            //        }
+            //        else
+            //        {
+            //            cm.IsSrSalemanPermissionA = JGConstant.PERMISSION_STATUS_GRANTED.ToString();
+            //        }
+            //        cm.IsForemanPermission = JGConstant.PERMISSION_STATUS_GRANTED.ToString();
+            //        cm.IsSrSalemanPermissionF = JGConstant.PERMISSION_STATUS_GRANTED.ToString();
+
+            //        cm.EmailStatus = JGConstant.EMAIL_STATUS_VENDORCATEGORIES;
+            //        if (hidCategory.Value != "")
+            //        {
+            //            cm.ProductCatId = Convert.ToInt32(hidCategory.Value);
+            //        }
+            //        else
+            //        {
+            //            cm.ProductCatId = Convert.ToInt32(Convert.ToInt32(Session["MaterialListProductId"]));
+            //        }
+            //        cm.JGSkuPartNo = txtSkuPartNo.Text;
+            //        cm.Description = txtDescription.Text;
+            //        cm.MaterialList = txtDescription.Text;
+            //        cm.Quantity = txtQTY.Text;
+            //        cm.UOM = txtUOM.Text;
+            //        cm.extend = ddlExtent.SelectedValue;
+            //        if (lblTotal.Text != "")
+            //        {
+            //            cm.Total = Convert.ToDecimal(lblTotal.Text);
+            //        }
+            //        else
+            //        {
+            //            cm.Total = 0;
+            //        }
+            //        if (status == "C") //mail was already sent to vendor categories
+            //        {
+            //            //  lblException.Text = Convert.ToString(strerr.Append("mail was already sent to vendor categories"));
+            //            string VendorId = string.Empty;
+            //            for (int i = 0; i < ddlVendorName.Items.Count; i++)
+            //            {
+            //                if (ddlVendorName.Items[i].Selected)
+            //                {
+            //                    if (VendorId == string.Empty)
+            //                    {
+            //                        VendorId = ddlVendorName.Items[i].Value;
+            //                    }
+            //                    else
+            //                    {
+            //                        VendorId = VendorId + "," + ddlVendorName.Items[i].Value;
+            //                    }
+            //                }
+            //            }
+            //            cm.VendorIds = VendorId;
+            //            string VendorNames = string.Empty;
+            //            string VendorEmailIds = string.Empty;
+            //            DataSet ds = VendorBLL.Instance.getVendorDetails(VendorId);
+
+            //            if (ds.Tables.Count > 0)
+            //            {
+            //                if (ds.Tables[0].Rows.Count > 0)
+            //                {
+            //                    lblException.Text = Convert.ToString(strerr.Append("VendorId found"));
+            //                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+            //                    {
+            //                        if (VendorNames == string.Empty)
+            //                        {
+            //                            VendorNames = Convert.ToString(ds.Tables[0].Rows[i][1]);
+            //                        }
+            //                        else
+            //                        {
+            //                            VendorNames = VendorNames + "," + Convert.ToString(ds.Tables[0].Rows[i][1]);
+            //                        }
+            //                        if (VendorEmailIds == string.Empty)
+            //                        {
+            //                            VendorEmailIds = Convert.ToString(ds.Tables[0].Rows[i][6]);
+            //                        }
+            //                        else
+            //                        {
+            //                            VendorEmailIds = VendorEmailIds + "," + Convert.ToString(ds.Tables[0].Rows[i][6]);
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //            cm.VendorNames = VendorNames;
+            //            cm.VendorEmails = VendorEmailIds;
+            //            //cm.VendorName = ddlVendorName.SelectedItem.Text;
+            //            //cm.VendorId = Convert.ToInt16(ddlVendorName.SelectedValue);
+            //            //DataSet ds = VendorBLL.Instance.getVendorEmailId(ddlVendorName.SelectedItem.Text);
+            //            //cm.VendorEmail = ds.Tables[0].Rows[0][0].ToString();
+            //            //if (ddlVendorName.SelectedItem.Text == "Select")
+            //            //{
+            //            //    //ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please select vendor name.');", true);
+            //            //    //return;
+            //            //}
+            //            //else
+            //            //{
+            //            //    cm.VendorName = ddlVendorName.SelectedItem.Text;
+            //            //    cm.VendorId = Convert.ToInt16(ddlVendorName.SelectedValue);
+
+            //            //    DataSet ds = VendorBLL.Instance.getVendorEmailId(ddlVendorName.SelectedItem.Text);
+            //            //    cm.VendorEmail = ds.Tables[0].Rows[0][0].ToString();
+            //            //}
+
+
+            //        }
+            //        else // mail was not sent to vendor categories
+            //        {
+            //            cm.VendorName = "";
+            //            cm.VendorEmail = "";
+            //            cm.IsAdminPermission = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+            //            cm.IsSrSalemanPermissionA = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+            //            // if (lnkForemanPermission.Enabled == true)
+            //            if (txtForemanPasswordNew.Visible == true)
+            //            {
+            //                cm.IsForemanPermission = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+            //            }
+            //            else
+            //            {
+            //                cm.IsForemanPermission = JGConstant.PERMISSION_STATUS_GRANTED.ToString();
+            //            }
+            //            //if (lnkSrSalesmanPermissionF.Enabled == true)
+            //            if (txtSrSalesManPermition.Visible == true)
+            //            {
+            //                cm.IsSrSalemanPermissionF = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+            //            }
+            //            else
+            //            {
+            //                cm.IsSrSalemanPermissionF = JGConstant.PERMISSION_STATUS_GRANTED.ToString();
+            //            }
+
+            //            cm.EmailStatus = JGConstant.EMAIL_STATUS_NONE;
+            //            //if(Convert.ToString(Session["Visible"])=="Visible")
+            //            if (Convert.ToString(HiddenVisible.Value) != "")
+            //            {
+            //                cm.DisplaDLL = Convert.ToString(HiddenVisible.Value);
+            //            }
+            //            else
+            //            {
+            //                if (Convert.ToString(Session["Visible"]) == "Visible")
+            //                {
+            //                    cm.DisplaDLL = "Visible";
+            //                }
+            //                else
+            //                {
+            //                    cm.DisplaDLL = "NotVisible";
+            //                }
+            //            }
+
+            //        }
+            //        cmList.Add(cm);
+            //    }
+            //    if (btnSendMail.Text == "Save")
+            //    {
+            //        // lblException.Text = Convert.ToString(strerr.Append("Start existsList "));
+            //        int existsList = CustomBLL.Instance.WhetherCustomMaterialListExists(SSNo.Text);//, productTypeId, estimateId);
+            //        // lblException.Text = Convert.ToString(strerr.Append("End existsList"));
+            //        if (existsList == 0)
+            //        {
+            //            lblException.Text = Convert.ToString(strerr.Append(" existsList = 0"));
+            //            saveCustom_MaterialList(cmList);
+            //        }
+            //        else
+            //        {
+            //            // lblException.Text = Convert.ToString(strerr.Append(" existsList != 0"));
+            //            EnableVendorNameAndAmount();
+            //            int permissionStatusCategories = CustomBLL.Instance.CheckPermissionsForCategories(SSNo.Text);//, productTypeId, estimateId);
+            //            if (permissionStatusCategories == 0)
+            //            {
+            //                saveCustom_MaterialList(cmList);
+
+            //                if (flag == "")
+            //                {
+            //                    ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('All lists are saved.');", true);
+            //                    return;
+            //                }
+            //            }
+            //            else
+            //            {
+            //                int permissionStatusVendors = CustomBLL.Instance.CheckPermissionsForVendors(SSNo.Text);//, productTypeId, estimateId);
+            //                if (permissionStatusVendors == 0)
+            //                {
+            //                    saveCustom_MaterialList(cmList);
+            //                    if (flag == "")
+            //                    {
+            //                        ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('All lists are saved.');", true);
+            //                        return;
+            //                    }
+            //                }
+            //                else
+            //                {
+            //                    ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('After giving permissions lists cann't be changed');", true);
+            //                    return;
+            //                }
+            //            }
+            //        }
+            //        if (flag == "")
+            //        {
+            //            ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('All lists are saved.');", true);
+
+            //        }
+            //    }
+            //    else if (btnSendMail.Text == "Send Mail To Vendor Category(s)")
+            //    {
+
+            //        int permissionStatus = CustomBLL.Instance.CheckPermissionsForCategories(SSNo.Text);//, productTypeId, estimateId);
+            //        if (permissionStatus == 1)
+            //        {
+            //            bool emailStatusVendorCategory = sendEmailToVendorCategories(cmList);
+
+            //            if (emailStatusVendorCategory == true)
+            //            {
+            //                bool result = CustomBLL.Instance.UpdateEmailStatusOfCustomMaterialList(SSNo.Text, JGConstant.EMAIL_STATUS_VENDORCATEGORIES);//, productTypeId, estimateId);
+            //                UpdateEmailStatus(JGConstant.EMAIL_STATUS_VENDORCATEGORIES.ToString());
+            //                btnSendMail.Text = "Save";
+            //                setControlsForVendors();
+            //                grdcustom_material_list.Columns[6].Visible = true;
+            //                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Email is sent to all vendor categories');", true);
+
+            //            }
+            //        }
+            //        else
+            //        {
+            //            ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('First grant Foreman and Sr. Salesman permission');", true);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        int permissionStatus = CustomBLL.Instance.CheckPermissionsForVendors(SSNo.Text);//, productTypeId, estimateId);
+            //        if (permissionStatus == 1)
+            //        {
+            //            int statusQuotes = CustomBLL.Instance.WhetherVendorQuotesExists(SSNo.Text);
+            //            if (statusQuotes == 1)
+            //            {
+
+            //                bool emailStatusVendor = sendEmailToVendors(cmList);
+            //                if (emailStatusVendor == true)
+            //                {
+            //                    bool result = CustomBLL.Instance.UpdateEmailStatusOfCustomMaterialList(SSNo.Text, JGConstant.EMAIL_STATUS_VENDOR);//, productTypeId, estimateId);
+            //                    UpdateEmailStatus(JGConstant.EMAIL_STATUS_VENDOR.ToString());
+            //                    btnSendMail.Text = "Save";
+            //                    ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Email is sent to all vendors');", true);
+            //                    setControlsAfterSendingBothMails();
+
+            //                    DeleteExistingWorkorders();
+            //                    GenerateWorkOrder();
+
+            //                }
+            //            }
+            //            else
+            //            {
+            //                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('First attach quotes.');", true);
+            //            }
+            //        }
+            //        else
+            //        {
+            //            ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('First grant Admin and Sr. Salesman permission');", true);
+            //        }
+
+            //    }
+            //}
+            //catch (Exception)
+            //{
+
+            //}
+        }
+
+        private void DeleteExistingWorkorders()
+        {
+            string path = Server.MapPath("/CustomerDocs/Pdfs/");
+            string soldjobId = Session["jobId"].ToString();
+            bool result = CustomBLL.Instance.DeleteWorkorders(soldjobId);
+        }
+        protected void txtMaterialCost_TextChanged(object sender, EventArgs e)
+        {
+            GridViewRow currentRow = (GridViewRow)((TextBox)sender).Parent.Parent.Parent.Parent;
+            TextBox txt = (TextBox)currentRow.FindControl("txtQTY");
+            TextBox txtCost = (TextBox)currentRow.FindControl("txtMaterialCost");
+            Label lblCost = (Label)currentRow.FindControl("lblCost");
+            int a = 0;
+            if (txt.Text == "")
+            {
+                txt.Text = Convert.ToString(a);
+            }
+            if (txtCost.Text == "")
+            {
+                txtCost.Text = Convert.ToString(a);
+            }
+            lblCost.Text = Convert.ToString(Convert.ToDecimal(txt.Text) * Convert.ToDecimal(txtCost.Text));
+
+            flag = "Autosave";
+            SaveMaterialList();
+        }
+
+        protected void ddlExtent_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            GridViewRow currentRow = (GridViewRow)((DropDownList)sender).Parent.Parent.Parent.Parent;
+            DropDownList ddl = (DropDownList)currentRow.FindControl("ddlExtent");
+            LinkButton lblTotal = (LinkButton)currentRow.FindControl("lblTotal");
+            Label lblCost = (Label)currentRow.FindControl("lblCost");
+            if (ddl.SelectedValue == "Jobsitedelivery" || ddl.SelectedValue == "OfficeDelivery")
+            {
+                lblTotal.Text = Convert.ToString(Convert.ToDecimal(lblCost.Text) + 20);
+            }
+            else
+            {
+                lblTotal.Text = Convert.ToString(lblCost.Text);
+            }
+            flag = "Autosave";
+            SaveMaterialList();
+        }
+
+        protected void lnkAttachQuotes_Click(object sender, EventArgs e)
+        {
+            #region Originonal Code...
+            /*
+            string Qt=Convert.ToString(Request.QueryString[QueryStringKey.Key.SoldJobId.ToString()]);
+            string emailStatus = CustomBLL.Instance.GetEmailStatusOfCustomMaterialList(Qt);//, Convert.ToInt16(lblProductType.Text),  Convert.ToInt16(hdnproductid.Value));
+            if (emailStatus == JGConstant.EMAIL_STATUS_VENDORCATEGORIES)
+            {
+                ViewState[ViewStateKey.Key.ProductTypeId.ToString()] = Convert.ToInt16(productTypeId);
+                Response.Redirect("~/Sr_App/AttachQuotes.aspx");
+                // Response.Redirect("~/Sr_App/AttachQuotes.aspx?CustomerId=" + custId + "&ProductId=" + hdnproductid.Value + "&ProductTypeId=" + Convert.ToInt16(lblProductType.Text));
+            }
+            else if (emailStatus == JGConstant.EMAIL_STATUS_VENDOR)
+            {
+                ViewState[ViewStateKey.Key.ProductTypeId.ToString()] = Convert.ToInt16(productTypeId);
+                Response.Redirect("~/Sr_App/AttachQuotes.aspx?EmailStatus=" + emailStatus);
+                // Response.Redirect("~/Sr_App/AttachQuotes.aspx?CustomerId=" + custId + "&ProductId=" + hdnproductid.Value + "&ProductTypeId=" + Convert.ToInt16(lblProductType.Text) + "&EmailStatus=" + emailStatus);
+            }
+            //else if (lblProductType.Text == JGConstant.PRODUCT_SHUTTER)
+            //{
+            //    ViewState[ViewStateKey.Key.ProductTypeId.ToString()] = (int)JGConstant.ProductType.shutter;
+
+            //    Response.Redirect("~/Sr_App/AttachQuotes.aspx?CustomerId=" + custId + "&ProductId=" + hdnproductid.Value + "&ProductTypeId=" + (int)JGConstant.ProductType.shutter);
+            //}
+            else
+            {
+                Response.Redirect("~/Sr_App/AttachQuotes.aspx");
+              //  ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('First send email to all vendor categories');", true);
+            }
+
+            */
+            #endregion
+
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "overlayPS()", true);
+            return;
+        }
+        protected void btnCancelQuotes1_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Procurement.aspx");
+        }
+        protected void btnResetQuotes1_Click(object sender, EventArgs e)
+        {
+           // ResetControl();
+        }
         #endregion
+
+        protected void grdProdLines_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                DropDownList ddlCategory = (DropDownList)e.Row.FindControl("ddlCategory");
+                DataSet ds = UserBLL.Instance.GetAllProducts();
+                ddlCategory.DataSource = ds;
+                ddlCategory.DataTextField = "ProductName";
+                ddlCategory.DataValueField = "ProductId";
+                ddlCategory.DataBind();
+                ddlCategory.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select", "0)"));
+
+
+                DropDownCheckBoxes ddlVendorCategory = (DropDownCheckBoxes)e.Row.FindControl("ddlVendorName");
+                DataSet dsVendorCategory = GetVendorCategories();
+                ddlVendorCategory.DataSource = GetVendorCategories();
+                ddlVendorCategory.DataSource = dsVendorCategory;
+                ddlVendorCategory.DataTextField = "VendorCategoryNm";
+                ddlVendorCategory.DataValueField = "VendorCategpryId";
+                ddlVendorCategory.DataBind();
+                ddlVendorCategory.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select", "0"));
+                ddlVendorCategory.SelectedIndex = 0;
+            }
+        }
 
        
 
