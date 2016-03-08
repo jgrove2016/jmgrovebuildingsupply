@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data;
 
 namespace JG_Prospect.Common.modal
 {
@@ -21,5 +22,11 @@ namespace JG_Prospect.Common.modal
         public string TaxId;
         public string ExpenseCategory;
         public string AutoTruckInsurance;
+        public int vendor_subcategory_id;
+        public string VendorStatus;
+        public string Website;
+        public string ContactExten;
+        public DataTable tblVendorEmail;
+        public DataTable tblVendorAddress;
     }
 }

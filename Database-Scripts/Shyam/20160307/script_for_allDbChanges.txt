@@ -1,0 +1,422 @@
+
+/****** Object:  UserDefinedFunction [dbo].[Split]    Script Date: 03/04/2016 16:40:28 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Split]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+DROP FUNCTION [dbo].[Split]
+GO
+
+
+
+/****** Object:  UserDefinedFunction [dbo].[Split]    Script Date: 03/04/2016 16:40:28 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+create FUNCTION [dbo].[Split] (
+      @InputString                  VARCHAR(8000),
+      @Delimiter                    VARCHAR(50)
+)
+
+RETURNS @Items TABLE (
+      Item                          VARCHAR(8000)
+)
+
+AS
+BEGIN
+      IF @Delimiter = ' '
+      BEGIN
+            SET @Delimiter = ','
+            SET @InputString = REPLACE(@InputString, ' ', @Delimiter)
+      END
+
+      IF (@Delimiter IS NULL OR @Delimiter = '')
+            SET @Delimiter = ','
+
+--INSERT INTO @Items VALUES (@Delimiter) -- Diagnostic
+--INSERT INTO @Items VALUES (@InputString) -- Diagnostic
+
+      DECLARE @Item                 VARCHAR(8000)
+      DECLARE @ItemList       VARCHAR(8000)
+      DECLARE @DelimIndex     INT
+
+      SET @ItemList = @InputString
+      SET @DelimIndex = CHARINDEX(@Delimiter, @ItemList, 0)
+      WHILE (@DelimIndex != 0)
+      BEGIN
+            SET @Item = SUBSTRING(@ItemList, 0, @DelimIndex)
+            INSERT INTO @Items VALUES (@Item)
+
+            -- Set @ItemList = @ItemList minus one less item
+            SET @ItemList = SUBSTRING(@ItemList, @DelimIndex+1, LEN(@ItemList)-@DelimIndex)
+            SET @DelimIndex = CHARINDEX(@Delimiter, @ItemList, 0)
+      END -- End WHILE
+
+      IF @Item IS NOT NULL -- At least one delimiter was encountered in @InputString
+      BEGIN
+            SET @Item = @ItemList
+            INSERT INTO @Items VALUES (@Item)
+      END
+
+      -- No delimiters were encountered in @InputString, so just return @InputString
+      ELSE INSERT INTO @Items VALUES (@InputString)
+
+      RETURN
+
+END -- End Function
+
+
+
+GO
+
+
+
+/****** Object:  StoredProcedure [dbo].[USP_GetProductVendor]    Script Date: 03/04/2016 13:55:29 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_GetProductVendor]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_GetProductVendor]
+GO
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_GetProductVendor]    Script Date: 03/04/2016 13:55:29 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE proc [dbo].[USP_GetProductVendor]
+@ProductCategoryId int=null,
+@VendorCategoryId int=null
+
+as
+
+begin
+set nocount on;
+SELECT pv.ProductCategoryId,pv.VendorCategoryId,tc.VendorCategoryNm as VendorCategoryName
+	  FROM [dbo].[tblProductVendor] pv
+	  inner join [tblVendorCategory] tc
+	  on pv.VendorCategoryId=tc.[VendorCategpryId]
+	  where ProductCategoryId=@ProductCategoryId
+end
+
+GO
+
+/****** Object:  Table [dbo].[tblVendorAddress]    Script Date: 03/04/2016 12:24:46 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tblVendorAddress]') AND type in (N'U'))
+DROP TABLE [dbo].[tblVendorAddress]
+GO
+
+
+
+/****** Object:  Table [dbo].[tblVendorAddress]    Script Date: 03/04/2016 12:24:46 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[tblVendorAddress](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[VendorId] [int] NULL,
+	[AddressType] [nvarchar](50) NULL,
+	[Address] [nvarchar](500) NULL,
+	[City] [nvarchar](50) NULL,
+	[Zip] [nvarchar](10) NULL,
+ CONSTRAINT [PK_tblVendorAddress] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+
+
+/****** Object:  Table [dbo].[tblVendorEmail]    Script Date: 03/04/2016 12:24:28 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tblVendorEmail]') AND type in (N'U'))
+DROP TABLE [dbo].[tblVendorEmail]
+GO
+
+/****** Object:  Table [dbo].[tblVendorEmail]    Script Date: 03/04/2016 12:24:28 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[tblVendorEmail](
+	[VendorId] [int] NULL,
+	[EmailType] [nvarchar](50) NULL,
+	[SeqNo] [int] NULL,
+	[Email] [nvarchar](150) NULL,
+	[FName] [nvarchar](50) NULL,
+	[LName] [nvarchar](50) NULL,
+	[Contact] [nvarchar](max) NULL
+) ON [PRIMARY]
+
+GO
+
+
+GO
+
+/****** Object:  UserDefinedTableType [dbo].[VendorAddress]    Script Date: 03/04/2016 12:23:55 ******/
+IF  EXISTS (SELECT * FROM sys.types st JOIN sys.schemas ss ON st.schema_id = ss.schema_id WHERE st.name = N'VendorAddress' AND ss.name = N'dbo')
+DROP TYPE [dbo].[VendorAddress]
+GO
+
+
+GO
+
+/****** Object:  UserDefinedTableType [dbo].[VendorAddress]    Script Date: 03/04/2016 12:23:55 ******/
+CREATE TYPE [dbo].[VendorAddress] AS TABLE(
+	[VendorId] [int] NULL,
+	[AddressType] [nvarchar](50) NULL,
+	[Address] [nvarchar](500) NULL,
+	[City] [nvarchar](50) NULL,
+	[Zip] [nvarchar](10) NULL
+)
+GO
+
+
+/****** Object:  UserDefinedTableType [dbo].[VendorEmail]    Script Date: 03/04/2016 12:23:39 ******/
+IF  EXISTS (SELECT * FROM sys.types st JOIN sys.schemas ss ON st.schema_id = ss.schema_id WHERE st.name = N'VendorEmail' AND ss.name = N'dbo')
+DROP TYPE [dbo].[VendorEmail]
+
+GO
+
+/****** Object:  UserDefinedTableType [dbo].[VendorEmail]    Script Date: 03/04/2016 12:23:39 ******/
+CREATE TYPE [dbo].[VendorEmail] AS TABLE(
+	[VendorId] [int] NULL,
+	[EmailType] [nvarchar](50) NULL,
+	[SeqNo] [int] NULL,
+	[Email] [nvarchar](150) NULL,
+	[FName] [nvarchar](50) NULL,
+	[LName] [nvarchar](50) NULL,
+	[Contact] [nvarchar](max) NULL
+)
+GO
+
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[sp_VendorAddress]    Script Date: 03/07/2016 12:57:08 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[sp_VendorAddress]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[sp_VendorAddress]
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[sp_VendorAddress]    Script Date: 03/07/2016 12:57:08 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE proc [dbo].[sp_VendorAddress]
+@action int=null,
+@tblVendorAddress VendorAddress READONLY
+
+AS
+ if(@action=1)
+	Begin
+		insert into tblVendorAddress(VendorId,AddressType,Address,City,Zip) select VendorId,AddressType,Address,City,Zip from @tblVendorAddress
+	End
+
+GO
+
+
+
+
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[sp_VendorEmail]    Script Date: 03/04/2016 12:21:41 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[sp_VendorEmail]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[sp_VendorEmail]
+GO
+
+/****** Object:  StoredProcedure [dbo].[sp_VendorEmail]    Script Date: 03/04/2016 12:21:41 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE proc [dbo].[sp_VendorEmail]
+@VendorId int=null,
+@action int=null,
+@tblVendorEmail [dbo].[VendorEmail] READONLY
+as
+if(@action=1)
+ Begin
+ SET NOCOUNT ON;
+	insert into tblVendorEmail(VendorId,EmailType,SeqNo,Email,FName,LName,Contact) select VendorId,EmailType,SeqNo,Email,FName,LName,Contact from @tblVendorEmail
+ End
+if(@action=2)
+ Begin
+	select * from tblVendorEmail where VendorId=@VendorId
+ End
+GO
+
+
+
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_GetVendorList]    Script Date: 03/07/2016 12:58:50 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_GetVendorList]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_GetVendorList]
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[USP_GetVendorList]    Script Date: 03/07/2016 12:58:50 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE proc [dbo].[USP_GetVendorList]
+@FilterParams nvarchar(Max)=null,
+@FilterBy nvarchar(50)=null,
+@ManufacturerType nvarchar(20)=null,
+@VendorCategoryId nvarchar(10)=null
+as
+BEGIN
+	Declare @BaseQuery nvarchar(max) ='select VendorName , VendorId from tblVendors',
+			@WhereClause nvarchar(max)=' Where 1=1';
+			--@other nvarchar(20)=' Order By VendorName';
+	 if(@FilterBy='VendorSubCategory')
+		begin
+			if(@ManufacturerType='Retail/Wholesale')
+				Begin
+					set @WhereClause= @WhereClause +' AND VendorSubCategoryId=@FilterParams and VendorCategoryId=@VendorCategoryId And (ManufacturerType=''Retail'' OR ManufacturerType=''Wholesale'')';
+				End
+			else if(@ManufacturerType='Manufacturer')
+				Begin
+					set @WhereClause= @WhereClause +' AND VendorSubCategoryId=@FilterParams and VendorCategoryId=@VendorCategoryId And ManufacturerType=''Manufacturer''';
+				End	
+		end
+	 else if(@FilterBy='VendorCategory')
+		begin
+			if(@ManufacturerType='Retail/Wholesale')
+				Begin
+					set @WhereClause= @WhereClause +' AND VendorCategoryId=@FilterParams And (ManufacturerType=''Retail'' OR ManufacturerType=''Wholesale'')';
+				End
+			else if(@ManufacturerType='Manufacturer')
+				Begin
+					set @WhereClause= @WhereClause +' AND VendorCategoryId=@FilterParams And ManufacturerType=''Manufacturer''';
+				End	
+			
+		end
+	 else if(@FilterBy='ProductCategory')
+		begin
+			if(@ManufacturerType='Retail/Wholesale')
+				Begin
+					set @WhereClause= @WhereClause +' And VendorCategoryId in (select * from dbo.split(@FilterParams,'','')) And ManufacturerType=''Retail'' OR ManufacturerType=''Wholesale''';
+				End
+			else if(@ManufacturerType='Manufacturer')
+				Begin
+					set @WhereClause= @WhereClause +' And VendorCategoryId in (select * from dbo.split(@FilterParams,'','')) And ManufacturerType=''Manufacturer''';
+				End	
+		end
+		
+	else if(@FilterBy='ManufacturerType')
+		begin
+			if(@ManufacturerType='Retail/Wholesale')
+				Begin
+					set @WhereClause= @WhereClause +' And (ManufacturerType=''Retail'' OR ManufacturerType=''Wholesale'')';
+				End
+			else if(@ManufacturerType='Manufacturer')
+				Begin
+					set @WhereClause= @WhereClause +' And ManufacturerType=''Manufacturer''';
+				End	
+		end
+	set @BaseQuery = @BaseQuery+@WhereClause+' Order By VendorName';
+	--print @BaseQuery
+	EXECUTE sp_executesql @BaseQuery,N'@FilterParams nvarchar(max),@FilterBy nvarchar(50),@ManufacturerType nvarchar(20),@VendorCategoryId nvarchar(10)',
+							@FilterParams,@FilterBy,@ManufacturerType,@VendorCategoryId
+END
+
+--exec [USP_GetVendorList] @FilterBy='ManufacturerType',@ManufacturerType='Manufacturer'
+
+--select * from tblvendors where ManufacturerType='Retail' OR ManufacturerType='Wholesale'
+
+GO
+
+
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[UPP_savevendor]    Script Date: 03/07/2016 13:05:35 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UPP_savevendor]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[UPP_savevendor]
+GO
+
+
+
+/****** Object:  StoredProcedure [dbo].[UPP_savevendor]    Script Date: 03/07/2016 13:05:35 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE Procedure [dbo].[UPP_savevendor]
+@vendor_id int,
+@vendor_name varchar(100),
+@vendor_category int,
+@contact_person varchar(100),
+@contact_number varchar(20),
+@fax varchar(20),
+@email varchar(50),
+@address varchar(100),
+@notes varchar(500),
+@ManufacturerType varchar(70) = '',
+@BillingAddress	varchar(MAX) = '',
+@TaxId	varchar(50)	= '',
+@ExpenseCategory	varchar(50) = '',
+@AutoTruckInsurance	varchar(50)	= '',
+@VendorSubCategoryId int,
+@VendorStatus nvarchar(50)='',
+@Website nvarchar(100)='',
+@ContactExten nvarchar(6)=''
+as
+if exists(select 1 from tblVendors where VendorId=@vendor_id)
+begin
+update tblVendors
+set
+VendorName=@vendor_name,
+VendorCategoryId=@vendor_category,
+ContactPerson=@contact_person,
+ContactNumber= @contact_number,
+Fax=@fax,
+Email=@email,
+[Address]=@address,
+Notes=@notes,
+ManufacturerType = @ManufacturerType,
+BillingAddress = @BillingAddress,
+TaxId = @TaxId,
+ExpenseCategory = @ExpenseCategory,
+AutoTruckInsurance = @AutoTruckInsurance,
+VendorSubCategoryId=@VendorSubCategoryId,
+VendorStatus=@VendorStatus,
+Website=@Website,
+ContactExten = @ContactExten
+where VendorId = @vendor_id
+end
+else
+insert into tblVendors(VendorName,VendorCategoryId,ContactPerson,ContactNumber,Fax,Email,[Address],Notes,ManufacturerType,BillingAddress,TaxId,ExpenseCategory,AutoTruckInsurance,VendorSubCategoryId,VendorStatus,Website,ContactExten) 
+values(@vendor_name,@vendor_category,@contact_person,@contact_number,@fax,@email,@address,@notes,@ManufacturerType,@BillingAddress,@TaxId,@ExpenseCategory,@AutoTruckInsurance,@VendorSubCategoryId,@VendorStatus,@Website,@ContactExten)
+
+GO
+
+
+
+
+
