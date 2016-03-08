@@ -577,11 +577,11 @@ namespace JG_Prospect
                         }
                     }
                     //Added by Neeta.......
-                    else
-                    {
-                        Session["loginid"] = null;
-                        ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Check the UserName,Password or its status to login.');", true);
-                    }
+                    //else
+                    //{
+                    //    Session["loginid"] = null;
+                    //    ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Check the UserName,Password or its status to login.');", true);
+                    //}
 
                 //}
                 //else if (rdSalesIns.Checked)
