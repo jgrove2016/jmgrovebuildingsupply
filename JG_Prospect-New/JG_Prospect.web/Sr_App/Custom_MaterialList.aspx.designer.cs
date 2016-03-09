@@ -22,6 +22,15 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl h1Heading;
         
         /// <summary>
+        /// pnlForeman control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlForeman;
+        
+        /// <summary>
         /// lnkForemanPermission control.
         /// </summary>
         /// <remarks>
@@ -29,6 +38,24 @@ namespace JG_Prospect.Sr_App {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lnkForemanPermission;
+        
+        /// <summary>
+        /// txtForemanManPwd control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtForemanManPwd;
+        
+        /// <summary>
+        /// pnlAdmin control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlAdmin;
         
         /// <summary>
         /// lnkAdminPermission control.
@@ -40,6 +67,24 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.LinkButton lnkAdminPermission;
         
         /// <summary>
+        /// txtAdminPwd control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtAdminPwd;
+        
+        /// <summary>
+        /// pnlSrSalesman control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlSrSalesman;
+        
+        /// <summary>
         /// lnkSrSalesmanPermissionA control.
         /// </summary>
         /// <remarks>
@@ -49,6 +94,24 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.LinkButton lnkSrSalesmanPermissionA;
         
         /// <summary>
+        /// txtSrSales1Pwd control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtSrSales1Pwd;
+        
+        /// <summary>
+        /// pnlSalesF control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlSalesF;
+        
+        /// <summary>
         /// lnkSrSalesmanPermissionF control.
         /// </summary>
         /// <remarks>
@@ -56,6 +119,15 @@ namespace JG_Prospect.Sr_App {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton lnkSrSalesmanPermissionF;
+        
+        /// <summary>
+        /// txtSrSalesManPwd control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtSrSalesManPwd;
         
         /// <summary>
         /// hdnAdmin control.
@@ -380,6 +452,42 @@ namespace JG_Prospect.Sr_App {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnVerifySrSalesmanF;
+        
+        /// <summary>
+        /// updMaterialList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel updMaterialList;
+        
+        /// <summary>
+        /// ddlCategory control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlCategory;
+        
+        /// <summary>
+        /// btnAddProdLines control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnAddProdLines;
+        
+        /// <summary>
+        /// lstCustomMaterialList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ListView lstCustomMaterialList;
         
         /// <summary>
         /// grdcustom_material_list control.

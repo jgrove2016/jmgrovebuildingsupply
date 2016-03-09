@@ -96,12 +96,13 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@Quantity", DbType.Int32, Convert.ToInt32(cm.Quantity));
                     database.AddInParameter(command, "@UOM", DbType.String, cm.UOM);
                     //database.AddInParameter(command, "@VendorQuotesPath"	varchar(MAX) = '',
-                    database.AddInParameter(command, "@MaterialCost", DbType.Decimal, cm.Amount);
+                    database.AddInParameter(command, "@MaterialCost", DbType.Decimal, cm.MaterialCost);
                     database.AddInParameter(command, "@extend", DbType.String, cm.extend);
                     database.AddInParameter(command, "@Total", DbType.Decimal, cm.Total);
                     database.AddInParameter(command, "@JobSeqId", DbType.Int32, cm.JobSeqId);
                     database.AddInParameter(command, "@VendorIds", DbType.String, cm.VendorIds);
                     database.AddInParameter(command, "@Visible", DbType.String, cm.DisplaDLL);
+                    database.AddInParameter(command, "@ID", DbType.String, cm.Id);
 
 
                     //database.AddInParameter(command, "@productId", DbType.Int16, productTypeId);
@@ -115,6 +116,61 @@ namespace JG_Prospect.DAL
             }
 
             return result > JGConstant.RETURN_ZERO ? JGConstant.RETURN_TRUE : JGConstant.RETURN_FALSE;
+        }
+
+        public void UpdateProductTypeInMaterialList(int pProdCatID, int pOldProdCatID, string pSoldJobID) //, int productTypeId, int estimateId)
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_UpdateProdCatOfCustomMaterial");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@ProdCatID", DbType.Int32, pProdCatID);
+                    database.AddInParameter(command, "@OldProdCatID", DbType.Int32, pOldProdCatID);
+                    database.AddInParameter(command, "@SoldJobID", DbType.String, pSoldJobID);
+                    database.ExecuteNonQuery(command);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public void DeleteCustomMaterialList(int pID) //, int productTypeId, int estimateId)
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("UDP_DeleteCustomMaterial");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@ID", DbType.String, pID);
+                    database.ExecuteNonQuery(command);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void DeleteCustomMaterialListByProductCatID(int pProdCatID) //, int productTypeId, int estimateId)
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_DeleteCustomMaterialByProdCat");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@ProdCatID", DbType.String, pProdCatID);
+                    database.ExecuteNonQuery(command);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public bool DeleteCustomMaterialList(string id)//, int productTypeId, int estimateId)
@@ -273,7 +329,7 @@ namespace JG_Prospect.DAL
 
             return result;
         }
-        public int UpdateForemanPermissionOfCustomMaterialList(string jobid, char permissionStatus)//, int productTypeId, int estimateId)
+        public int UpdateForemanPermissionOfCustomMaterialList(string jobid, char permissionStatus, int updatedby)//, int productTypeId, int estimateId)
         {
             int result = JGConstant.RETURN_ZERO;
             try
@@ -285,7 +341,10 @@ namespace JG_Prospect.DAL
 
                     database.AddInParameter(command, "@soldJobId", DbType.String, jobid);
                     database.AddInParameter(command, "@permissionStatus", DbType.String, permissionStatus);
+                    database.AddInParameter(command, "@UpdatedBy", DbType.Int32, updatedby);
                     database.AddOutParameter(command, "@result", DbType.Int16, result);
+                    
+                    
                     //database.AddInParameter(command, "@productId", DbType.Int16, productTypeId);
                     //database.AddInParameter(command, "@estimateId", DbType.Int16, estimateId);
 
@@ -643,7 +702,7 @@ namespace JG_Prospect.DAL
 
         //    return result > JGConstant.RETURN_ZERO ? JGConstant.RETURN_TRUE : JGConstant.RETURN_FALSE;
         //}
-        public DataSet GetCustom_MaterialList(string jobId)//, int productTypeId, int estimateId)
+        public DataSet GetCustom_MaterialList(string jobId, int pCustomerID)//, int productTypeId, int estimateId)
         {
             DataSet returndata = null;
             try
@@ -654,11 +713,8 @@ namespace JG_Prospect.DAL
                     DbCommand command = database.GetStoredProcCommand("UDP_GetCustom_MaterialList");
                     command.CommandType = CommandType.StoredProcedure;
                     database.AddInParameter(command, "@soldJobId", DbType.String, jobId);
-                    //database.AddInParameter(command, "@productId", DbType.Int16, productTypeId);
-                    //database.AddInParameter(command, "@estimateId", DbType.Int16, estimateId);
-
+                    database.AddInParameter(command, "@customerID", DbType.String, pCustomerID);
                     returndata = database.ExecuteDataSet(command);
-
                     return returndata;
                 }
             }
@@ -667,7 +723,21 @@ namespace JG_Prospect.DAL
                 throw ex;
             }
         }
-     
+
+        public DataSet GetCustomMaterialList(string jobId, int pCustomerID)
+        {
+            DataSet lListOfCustomMaterial = new DataSet();
+            SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+            {
+
+                DbCommand command = database.GetStoredProcCommand("USP_GetCustomMaterialList");
+                command.CommandType = CommandType.StoredProcedure;
+                database.AddInParameter(command, "@soldJobId", DbType.String, jobId);
+                database.AddInParameter(command, "@customerID", DbType.String, pCustomerID);
+                lListOfCustomMaterial = database.ExecuteDataSet(command);
+            }
+            return lListOfCustomMaterial;
+        }
        
         public Customs GetCustomDetail(Customs custom)
         {
@@ -744,7 +814,7 @@ namespace JG_Prospect.DAL
                 throw ex;
             }
         }
-        public int UpdateSrSalesmanPermissionOfCustomMaterialListF(string jobid, char permissionStatus)//, int productTypeId, int estimateId)
+        public int UpdateSrSalesmanPermissionOfCustomMaterialListF(string jobid, char permissionStatus, int updatedby)//, int productTypeId, int estimateId)
         {
             int result = JGConstant.RETURN_ZERO;
             try
@@ -756,7 +826,9 @@ namespace JG_Prospect.DAL
 
                     database.AddInParameter(command, "@soldJobId", DbType.String, jobid);
                     database.AddInParameter(command, "@permissionStatus", DbType.String, permissionStatus);
+                    database.AddInParameter(command, "@UpdatedBy", DbType.Int32, updatedby);
                     database.AddOutParameter(command, "@result", DbType.Int16, result);
+                    
                     //database.AddInParameter(command, "@productId", DbType.Int16, productTypeId);
                     //database.AddInParameter(command, "@estimateId", DbType.Int16, estimateId);
 
@@ -771,7 +843,7 @@ namespace JG_Prospect.DAL
 
             return result;
         }
-        public int UpdateAdminPermissionOfCustomMaterialList(string jobid, char permissionStatus)//, int productTypeId, int estimateId)
+        public int UpdateAdminPermissionOfCustomMaterialList(string jobid, char permissionStatus, int updatedby)//, int productTypeId, int estimateId)
         {
             int result = JGConstant.RETURN_ZERO;
             try
@@ -783,6 +855,7 @@ namespace JG_Prospect.DAL
 
                     database.AddInParameter(command, "@soldJobId", DbType.String, jobid);
                     database.AddInParameter(command, "@permissionStatus", DbType.String, permissionStatus);
+                    database.AddInParameter(command, "@UpdatedBy", DbType.String, updatedby);
                     database.AddOutParameter(command, "@result", DbType.Int16, result);
                     //database.AddInParameter(command, "@productId", DbType.Int16, productTypeId);
                     //database.AddInParameter(command, "@estimateId", DbType.Int16, estimateId);
@@ -798,7 +871,7 @@ namespace JG_Prospect.DAL
 
             return result;
         }
-        public int UpdateSrSalesmanPermissionOfCustomMaterialList(string jobid, char permissionStatus)//, int productTypeId, int estimateId)
+        public int UpdateSrSalesmanPermissionOfCustomMaterialList(string jobid, char permissionStatus, int updatedby)//, int productTypeId, int estimateId)
         {
             int result = JGConstant.RETURN_ZERO;
             try
@@ -810,6 +883,7 @@ namespace JG_Prospect.DAL
 
                     database.AddInParameter(command, "@soldJobId", DbType.String, jobid);
                     database.AddInParameter(command, "@permissionStatus", DbType.String, permissionStatus);
+                    database.AddInParameter(command, "@UpdatedBy", DbType.String, updatedby);
                     database.AddOutParameter(command, "@result", DbType.Int16, result);
                     //database.AddInParameter(command, "@productId", DbType.Int16, productTypeId);
                     //database.AddInParameter(command, "@estimateId", DbType.Int16, estimateId);

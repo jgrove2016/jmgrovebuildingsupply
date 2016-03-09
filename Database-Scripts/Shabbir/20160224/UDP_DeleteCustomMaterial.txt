@@ -1,0 +1,24 @@
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-02-24
+-- Description:	This procedure will delete custom material 
+-- =============================================
+CREATE PROCEDURE UDP_DeleteCustomMaterial
+(
+	 @ID INT
+)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	DELETE FROM [tblCustom_MaterialList] where id = @ID
+END
+GO

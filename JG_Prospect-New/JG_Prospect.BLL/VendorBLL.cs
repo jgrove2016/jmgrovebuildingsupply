@@ -11,7 +11,7 @@ namespace JG_Prospect.BLL
     {
         private static VendorBLL m_VendorBLL = new VendorBLL();
         private VendorBLL()
-        { 
+        {
         }
         public static VendorBLL Instance
         {
@@ -36,15 +36,15 @@ namespace JG_Prospect.BLL
             return ds;
         }
 
-        public DataSet GetMaterialListData(string soldJobId,int CustomerId)
+        public DataSet GetMaterialListData(string soldJobId, int CustomerId)
         {
             DataSet ds = VendorDAL.Instance.GetMaterialListData(soldJobId, CustomerId);
             return ds;
         }
-          public DataSet GetVendorQuoteByVendorId(string soldJobId, int vendorId)
+        public DataSet GetVendorQuoteByVendorId(string soldJobId, int vendorId)
         {
             return VendorDAL.Instance.GetVendorQuoteByVendorId(soldJobId, vendorId);
-        }      
+        }
 
         public DataSet fetchallvendordetails()
         {
@@ -99,12 +99,12 @@ namespace JG_Prospect.BLL
             return VendorDAL.Instance.savevendor(objvendor);
         }
         public DataSet FetchvendorDetails(int vendorid)
-        { 
-        return VendorDAL.Instance.FetchvendorDetails(vendorid);
+        {
+            return VendorDAL.Instance.FetchvendorDetails(vendorid);
         }
         public bool savevendorcatalogdetails(Vendor_Catalog objcatalog)
         {
-            return VendorDAL.Instance.savevendorcatalogdetails(objcatalog );
+            return VendorDAL.Instance.savevendorcatalogdetails(objcatalog);
         }
 
         public DataSet GetAllvendorDetails()
@@ -112,5 +112,68 @@ namespace JG_Prospect.BLL
             return VendorDAL.Instance.GetAllvendorDetails();
         }
 
+
+        public DataSet GetVendorList(string FilterParams, string FilterBy, string ManufacturerType, string VendorCategoryId)
+        {
+            return VendorDAL.Instance.GetVendorList(FilterParams, FilterBy, ManufacturerType, VendorCategoryId);
+        }
+
+        public string SaveNewVendorCategory(NewVendorCategory objNewVendorCat)
+        {
+            return VendorDAL.Instance.SaveNewVendorCategory(objNewVendorCat);
+        }
+
+        public bool SaveNewVendorProduct(NewVendorCategory objNewVendorCat)
+        {
+            return VendorDAL.Instance.SaveNewVendorProduct(objNewVendorCat);
+        }
+        public bool SaveNewVendorSubCat(VendorSubCategory objVendorsubCat)
+        {
+            return VendorDAL.Instance.SaveNewVendorSubCat(objVendorsubCat);
+        }
+        public bool DeleteVendorSubCat(VendorSubCategory objVendorsubCat)
+        {
+            return VendorDAL.Instance.DeleteVendorSubCat(objVendorsubCat);
+        }
+        public DataSet GetVendorSubCategory()
+        {
+            return VendorDAL.Instance.GetVendorSubCategory();
+        }
+        public bool InsertVendorEmail(Vendor objvendor)
+        {
+            return VendorDAL.Instance.InsertVendorEmail(objvendor);
+        }
+        public bool InsertVendorAddress(Vendor objvendor)
+        {
+            return VendorDAL.Instance.InsertVendorAddress(objvendor);
+        }
+
+        public List<AutoCompleteVendor> SearchVendor(string searchString, string tableName)
+        {
+            DataTable dt = VendorDAL.Instance.SearchVendor(searchString, tableName);
+            List<AutoCompleteVendor> lstResult = new List<AutoCompleteVendor>();
+            foreach (DataRow item in dt.Rows)
+            {
+                lstResult.Add(new AutoCompleteVendor
+                {
+                    id = Convert.ToInt32(item["VendorId"].ToString()),
+                    label = Convert.ToString(item["VendorName"]),
+                    value = Convert.ToString(item["VendorName"])
+                });
+            }
+            return lstResult;
+        }
+        public DataSet fetchvendorcategory(bool Isretail_Wholesale, bool IsManufacturer)
+        {
+            return VendorDAL.Instance.fetchvendorcategory(Isretail_Wholesale, IsManufacturer);
+        }
+    }
+
+
+    public class AutoCompleteVendor
+    {
+        public int id { get; set; }
+        public string value { get; set; }
+        public string label { get; set; }
     }
 }

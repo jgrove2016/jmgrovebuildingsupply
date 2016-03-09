@@ -1,0 +1,271 @@
+Go
+
+/****** Object:  Table [dbo].[tbl_Vendor_VendorSubCat]    Script Date: 03/09/2016 16:47:41 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tbl_Vendor_VendorSubCat]') AND type in (N'U'))
+DROP TABLE [dbo].[tbl_Vendor_VendorSubCat]
+GO
+
+
+/****** Object:  Table [dbo].[tbl_Vendor_VendorSubCat]    Script Date: 03/09/2016 16:47:41 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[tbl_Vendor_VendorSubCat](
+	[VendorId] [int] NULL,
+	[VendorSubCatId] [int] NULL
+) ON [PRIMARY]
+
+GO
+
+
+
+GO
+
+/****** Object:  Table [dbo].[tbl_VendorCat_VendorSubCat]    Script Date: 03/09/2016 16:48:44 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tbl_VendorCat_VendorSubCat]') AND type in (N'U'))
+DROP TABLE [dbo].[tbl_VendorCat_VendorSubCat]
+GO
+
+
+
+/****** Object:  Table [dbo].[tbl_VendorCat_VendorSubCat]    Script Date: 03/09/2016 16:48:45 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[tbl_VendorCat_VendorSubCat](
+	[VendorCategoryId] [int] NULL,
+	[VendorSubCategoryId] [int] NULL
+) ON [PRIMARY]
+
+GO
+
+
+EXEC sp_rename 'tblProductVendor', 'tblProductVendorCat'
+
+GO
+
+
+GO
+/****** Object:  StoredProcedure [dbo].[sp_newVendorCategory]    Script Date: 03/09/2016 16:51:51 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER proc [dbo].[sp_newVendorCategory]
+@vendorCatId nvarchar(5)=null,
+@vendorCatName nvarchar(max)=null,
+@productCatName nvarchar(max)=null,
+@productCatId nvarchar(5)=null,
+@IsRetail_Wholesale bit=false,
+@IsManufacturer bit=false,
+@action int=null
+as
+
+Begin
+if(@action='1')
+	Begin
+		insert into tblVendorCategory(VendorCategoryNm,IsRetail_Wholesale,IsManufacturer) output inserted.VendorCategpryId values(@vendorCatName,@IsRetail_Wholesale,@IsManufacturer)
+	End
+if(@action='2')
+	Begin
+		insert into tblProductVendorCat (ProductCategoryId,VendorCategoryId) values (@productCatId,@vendorCatId)
+	End
+End
+
+
+
+GO
+/****** Object:  StoredProcedure [dbo].[UDP_deletevendorcategory]    Script Date: 03/09/2016 16:52:39 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER procedure [dbo].[UDP_deletevendorcategory]
+@vendorcategory_id int 
+as
+delete from tblVendorCategory where VendorCategpryId=@vendorcategory_id
+delete from tblVendorSubCategory where VendorCategoryId=@vendorcategory_id
+delete from tblProductVendorCat where VendorCategoryId=@vendorcategory_id
+
+
+
+GO
+/****** Object:  StoredProcedure [dbo].[USP_GetProductVendor]    Script Date: 03/09/2016 16:53:18 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER proc [dbo].[USP_GetProductVendor]
+@ProductCategoryId int=null,
+@VendorCategoryId int=null,
+@IsRetail_Wholesale bit=false,
+@IsManufacturer bit=false
+
+as
+
+begin
+set nocount on;
+SELECT pv.ProductCategoryId,pv.VendorCategoryId,tc.VendorCategoryNm as VendorCategoryName
+	  FROM [dbo].[tblProductVendorCat] pv
+	  inner join [tblVendorCategory] tc
+	  on pv.VendorCategoryId=tc.[VendorCategpryId]
+	  where ProductCategoryId=@ProductCategoryId
+	  and (tc.IsRetail_Wholesale=@IsRetail_Wholesale OR tc.IsManufacturer=@IsManufacturer)
+end
+
+
+GO
+/****** Object:  StoredProcedure [dbo].[USP_GetVendorSubCategory]    Script Date: 03/09/2016 16:53:57 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER proc [dbo].[USP_GetVendorSubCategory]
+@VendorCategoryId int=null,
+@IsRetail_Wholesale bit=false,
+@IsManufacturer bit=false
+as
+begin
+	--select * from tblVendorSubCategory where VendorCategoryId=@VendorCategoryId
+	
+select * from tblVendorSubCategory vsc inner join tbl_VendorCat_VendorSubCat vc_vsc 
+on vsc.VendorSubCategoryId=vc_vsc.VendorSubCategoryId 
+where vc_vsc.VendorCategoryId=@VendorCategoryId and (vsc.IsRetail_Wholesale=@IsRetail_Wholesale OR vsc.IsManufacturer=@IsManufacturer)
+end
+
+
+
+GO
+/****** Object:  StoredProcedure [dbo].[USP_GetVendorList]    Script Date: 03/09/2016 16:54:30 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER proc [dbo].[USP_GetVendorList]
+@FilterParams nvarchar(Max)=null,
+@FilterBy nvarchar(50)=null,
+@ManufacturerType nvarchar(20)=null,
+@VendorCategoryId nvarchar(10)=null
+as
+BEGIN
+	Declare @BaseQuery nvarchar(max) ='select v.VendorName,v.VendorId '
+										+'from tbl_Vendor_VendorSubCat V_Vsc '
+										+'inner join tblVendors v '
+										+'on V_Vsc.VendorId = v.VendorId '
+										+'inner join tbl_VendorCat_VendorSubCat Vc_Vsc '
+										+'on Vc_Vsc.VendorSubCategoryId=V_Vsc.VendorSubCatId',
+			@WhereClause nvarchar(max)=' Where 1=1';
+	 if(@FilterBy='VendorSubCategory')
+		begin
+			set @WhereClause= @WhereClause +' AND V_Vsc.VendorSubCatId=@FilterParams';
+		end
+	 else if(@FilterBy='VendorCategory')
+		begin
+			set @WhereClause= @WhereClause +' AND Vc_Vsc.VendorCategoryId=@FilterParams'
+		end
+	 else if(@FilterBy='ProductCategory')
+		begin
+			set @WhereClause= @WhereClause +' And Vc_Vsc.VendorCategoryId in (select * from dbo.split(@FilterParams,'',''))';
+		end
+		
+	--else if(@FilterBy='ManufacturerType')
+	--	begin
+	--		set @WhereClause= @WhereClause +' And (ManufacturerType=''Retail'' OR ManufacturerType=''Wholesale'')';
+	--	end
+	set @BaseQuery = @BaseQuery+@WhereClause+' group by v.VendorName,v.VendorId Order By v.VendorName';
+	--print @BaseQuery
+	EXECUTE sp_executesql @BaseQuery,N'@FilterParams nvarchar(max),@FilterBy nvarchar(50),@ManufacturerType nvarchar(20),@VendorCategoryId nvarchar(10)',
+							@FilterParams,@FilterBy,@ManufacturerType,@VendorCategoryId
+END
+
+
+
+
+
+--exec [USP_GetVendorList] @FilterBy='ProductCategory',@FilterParams='21,127'
+
+--select * from tblvendors where ManufacturerType='Retail' OR ManufacturerType='Wholesale'
+
+
+
+GO
+/****** Object:  StoredProcedure [dbo].[sp_VendorSubCat]    Script Date: 03/09/2016 16:55:24 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER proc [dbo].[sp_VendorSubCat]
+@VendorSubCategoryName nvarchar(500)=null,
+@VendorCategoryId nvarchar(5)=null,
+@VendorSubCategoryId nvarchar(5)=null,
+@IsRetail_Wholesale bit=false,
+@IsManufacturer bit=false,
+@action int=null
+as
+begin 
+if(@action=1)
+ begin
+	insert into tblVendorSubCategory (VendorSubCategoryName,IsRetail_Wholesale,IsManufacturer) values(@VendorSubCategoryName,@IsRetail_Wholesale,@IsManufacturer)
+ end	
+if(@action=2)
+ begin
+	delete from tblVendorSubCategory where VendorSubCategoryId=@VendorSubCategoryId
+ end
+if(@action=3)
+	begin
+		select * from tblVendorSubCategory
+	end
+end
+
+
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[UDP_fetchvendorcategory]    Script Date: 03/09/2016 16:57:08 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UDP_fetchvendorcategory]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[UDP_fetchvendorcategory]
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[UDP_fetchvendorcategory]    Script Date: 03/09/2016 16:57:08 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+Create Procedure [dbo].[UDP_fetchvendorcategory]
+@IsRetail_Wholesale bit,
+@IsManufacturer bit
+as
+select VendorCategpryId,VendorCategoryNm from tblVendorCategory where IsRetail_wholesale =@IsRetail_Wholesale or IsManufacturer=@IsManufacturer order by VendorCategoryNm
+select * from tblVendorCategory
+GO
+
+
+Alter table tblVendorSubCategory drop column VendorCategoryId
+
+Go
+
+Alter table tblVendorSubCategory Add IsRetail_Wholesale bit,IsManufacturer bit
+
+Go
+
+Alter table tblVendorCategory Add IsRetail_Wholesale bit,IsManufacturer bit
+
+GO
+
+Alter table tblProductVendorCat drop column ProductCategoryName,VendorcategoryName
+

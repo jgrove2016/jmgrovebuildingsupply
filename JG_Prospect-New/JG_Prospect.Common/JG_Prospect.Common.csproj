@@ -12,10 +12,14 @@
     <AssemblyName>JG_Prospect.Common</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -99,6 +103,7 @@
     <Compile Include="modal\CustomerLocationPics.cs" />
     <Compile Include="modal\CustomerStatus.cs" />
     <Compile Include="modal\Customs.cs" />
+    <Compile Include="modal\NewVendorCategory.cs" />
     <Compile Include="modal\period.cs" />
     <Compile Include="modal\ProductSoldDetails.cs" />
     <Compile Include="modal\prospect.cs" />
@@ -109,6 +114,7 @@
     <Compile Include="modal\user.cs" />
     <Compile Include="modal\Vendor.cs" />
     <Compile Include="modal\VendorCategory.cs" />
+    <Compile Include="modal\VendorSubCategory.cs" />
     <Compile Include="modal\Vendor_Catalog.cs" />
     <Compile Include="modal\Video.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

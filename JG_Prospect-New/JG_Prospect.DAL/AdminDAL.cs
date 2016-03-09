@@ -1541,6 +1541,72 @@ namespace JG_Prospect.DAL
             }
 
         }
+
+        public DataSet GetProductCategory()
+        {
+            DataSet result = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_GetProductLineNew");
+                    command.CommandType = CommandType.StoredProcedure;
+                    result = database.ExecuteDataSet(command);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+                return null;
+            }
+        }
+
+        public DataSet GetVendorCategory(string ProductCategoryId,bool Isretail_wholesale, bool IsManufacturer)
+        {
+            DataSet result = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_GetProductVendor");
+                    database.AddInParameter(command, "@ProductCategoryId", DbType.String, ProductCategoryId);
+                    database.AddInParameter(command, "@IsRetail_Wholesale", DbType.Boolean, Isretail_wholesale);
+                    database.AddInParameter(command, "@IsManufacturer", DbType.Boolean, IsManufacturer);
+                    command.CommandType = CommandType.StoredProcedure;
+                    result = database.ExecuteDataSet(command);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+                return null;
+            }
+        }
+        public DataSet GetVendorSubCategory(string VendorCategoryId, bool Isretail_wholesale, bool IsManufacturer)
+        {
+            DataSet result = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_GetVendorSubCategory");
+                    database.AddInParameter(command, "@VendorCategoryId", DbType.String, VendorCategoryId);
+                    database.AddInParameter(command, "@IsRetail_Wholesale", DbType.Boolean, Isretail_wholesale);
+                    database.AddInParameter(command, "@IsManufacturer", DbType.Boolean, IsManufacturer);
+                    command.CommandType = CommandType.StoredProcedure;
+                    result = database.ExecuteDataSet(command);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+                return null;
+            }
+        }
+
     }
 
 }

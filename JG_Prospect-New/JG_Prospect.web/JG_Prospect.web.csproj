@@ -24,10 +24,14 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -229,6 +233,7 @@
     <Content Include="Controls\left.ascx" />
     <Content Include="Controls\LeftMenu_home.ascx" />
     <Content Include="CreateUser.aspx" />
+    <Content Include="css\jquery-ui.css" />
     <Content Include="css\pgwslideshow.min.css" />
     <Content Include="CustomerDocs\LocationPics\017aaf2f-442b-4408-bfb6-4f9eb50edd95-Hydrangeas.jpg" />
     <Content Include="CustomerDocs\LocationPics\01cc5970-1d8a-43b8-9e44-ee8e8c00596d-Jellyfish.jpg" />
@@ -341,14 +346,6 @@
     <Content Include="CustomerDocs\LocationPics\f64d2be7-11ab-42d2-94dc-2cfddcd613ad-Desert.jpg" />
     <Content Include="CustomerDocs\LocationPics\f7adbd5e-7c28-444d-a934-15e1c2be94a6-Hydrangeas.jpg" />
     <Content Include="CustomerDocs\LocationPics\f8a93f58-1447-40c6-9a5e-3ef1c6218430-Desert.jpg" />
-    <Content Include="CustomerDocs\LocationPics\fc9bf57a-4992-4863-8af4-2d9799d9665e-Jellyfish.jpg" />
-    <Content Include="CustomerDocs\LocationPics\fe446828-a9a6-4eac-99f6-7a501fe0204a-Hydrangeas.jpg" />
-    <Content Include="CustomerDocs\LocationPics\fea3bc39-9042-4c6a-b854-8eeeaf582aef-icons-390.jpg" />
-    <Content Include="CustomerDocs\LocationPics\Hydrangeas.jpg" />
-    <Content Include="CustomerDocs\LocationPics\Jellyfish.jpg" />
-    <Content Include="CustomerDocs\LocationPics\Lighthouse.jpg" />
-    <Content Include="CustomerDocs\LocationPics\Penguins.jpg" />
-    <Content Include="CustomerDocs\LocationPics\Tulips.jpg" />
     <Content Include="CustomerDocs\Pdfs\pdf.jpg" />
     <Content Include="CustomerDocs\Pdfs\wkhtmltopdf.exe" />
     <Content Include="fonts\barcodefont-demo.html" />
@@ -381,6 +378,7 @@
     <Content Include="img\gplus.png" />
     <Content Include="img\JG-Logo-white.gif" />
     <Content Include="img\JG-Logo.gif" />
+    <Content Include="img\loader.gif" />
     <Content Include="img\LoginwithFB.jpg" />
     <Content Include="img\LogoJG_PDF.png" />
     <Content Include="img\Logo_BG.png" />
@@ -456,6 +454,7 @@
     <Content Include="JrAnnualCalendar.aspx" />
     <Content Include="js\jquery-latest.js" />
     <Content Include="js\jquery-latest_old.js" />
+    <Content Include="js\jquery-ui.js" />
     <Content Include="js\jquery.datetimepicker.css" />
     <Content Include="js\jquery.datetimepicker.js" />
     <Content Include="js\jquery.js" />
@@ -1546,8 +1545,8 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>False</AutoAssignPort>
           <DevelopmentServerPort>61394</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/JG_Prospect.web</IISUrl>

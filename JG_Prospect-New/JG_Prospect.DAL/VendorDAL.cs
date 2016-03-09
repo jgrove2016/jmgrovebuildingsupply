@@ -8,6 +8,9 @@ using JG_Prospect.DAL.Database;
 using Microsoft.Practices.EnterpriseLibrary.Data;
 using Microsoft.Practices.EnterpriseLibrary.Data.Sql;
 using JG_Prospect.Common.modal;
+using System.Configuration;
+using System.Data.SqlClient;
+using JG_Prospect.Common;
 namespace JG_Prospect.DAL
 {
     public class VendorDAL
@@ -192,7 +195,7 @@ namespace JG_Prospect.DAL
             }
         }
 
-        public DataSet GetMaterialListData(string soldJobId,int CustomerId)
+        public DataSet GetMaterialListData(string soldJobId, int CustomerId)
         {
             DataSet ds = null;
             try
@@ -427,6 +430,10 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@TaxId", DbType.String, objvendor.TaxId);
                     database.AddInParameter(command, "@ExpenseCategory", DbType.String, objvendor.ExpenseCategory);
                     database.AddInParameter(command, "@AutoTruckInsurance", DbType.String, objvendor.AutoTruckInsurance);
+                    database.AddInParameter(command, "@VendorSubCategoryId", DbType.Int16, objvendor.vendor_subcategory_id);
+                    database.AddInParameter(command, "@VendorStatus", DbType.String, objvendor.VendorStatus);
+                    database.AddInParameter(command, "@Website", DbType.String, objvendor.Website);
+                    database.AddInParameter(command, "@ContactExten", DbType.String, objvendor.ContactExten);
 
                     database.ExecuteNonQuery(command);
                     return true;
@@ -502,5 +509,248 @@ namespace JG_Prospect.DAL
             }
         }
 
+        public DataSet GetVendorList(string FilterParams, string FilterBy, string ManufacturerType, string VendorCategoryId)
+        {
+            try
+            {
+                {
+                    SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                    DS = new DataSet();
+                    DbCommand command = database.GetStoredProcCommand("USP_GetVendorList");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@FilterParams", DbType.String, FilterParams);
+                    database.AddInParameter(command, "@FilterBy", DbType.String, FilterBy);
+                    database.AddInParameter(command, "@ManufacturerType", DbType.String, ManufacturerType);
+                    database.AddInParameter(command, "@VendorCategoryId", DbType.String, VendorCategoryId);
+                    DS = database.ExecuteDataSet(command);
+                    return DS;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public string SaveNewVendorCategory(NewVendorCategory objNewVendorCat)
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+
+                    DbCommand command = database.GetStoredProcCommand("sp_newVendorCategory");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@vendorCatName", DbType.String, objNewVendorCat.VendorName);
+                    database.AddInParameter(command, "@IsRetail_Wholesale", DbType.Boolean, objNewVendorCat.IsRetail_Wholesale);
+                    database.AddInParameter(command, "@IsManufacturer", DbType.Boolean, objNewVendorCat.IsManufacturer);
+                    database.AddInParameter(command, "@action", DbType.Int16, 1);
+                    object VendorId = database.ExecuteScalar(command);
+                    return VendorId.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+
+        }
+
+
+        public bool SaveNewVendorProduct(NewVendorCategory objNewVendorCat)
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+
+                    DbCommand command = database.GetStoredProcCommand("sp_newVendorCategory");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@vendorCatId", DbType.String, objNewVendorCat.VendorId);
+                    database.AddInParameter(command, "@productCatId", DbType.String, objNewVendorCat.ProductId);
+                    database.AddInParameter(command, "@action", DbType.Int16, 2);
+                    database.ExecuteNonQuery(command);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+        }
+
+        public bool SaveNewVendorSubCat(VendorSubCategory objVendorSubCat)
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("sp_VendorSubCat");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@VendorCategoryId", DbType.String, objVendorSubCat.VendorCatId);
+                    database.AddInParameter(command, "@VendorSubCategoryName", DbType.String, objVendorSubCat.Name);
+                    database.AddInParameter(command, "@IsRetail_Wholesale", DbType.Boolean, objVendorSubCat.IsRetail_Wholesale);
+                    database.AddInParameter(command, "@IsManufacturer", DbType.Boolean, objVendorSubCat.IsManufacturer);
+                    database.AddInParameter(command, "@action", DbType.Int16, 1);
+                    database.ExecuteNonQuery(command);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+
+
+        public bool DeleteVendorSubCat(VendorSubCategory objVendorSubCat)
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("sp_VendorSubCat");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@VendorSubCategoryId", DbType.String, objVendorSubCat.Id);
+                    database.AddInParameter(command, "@action", DbType.Int16, 2);
+                    database.ExecuteNonQuery(command);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public DataSet GetVendorSubCategory()
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                DS = new DataSet();
+                DbCommand command = database.GetStoredProcCommand("sp_VendorSubCat");
+                command.CommandType = CommandType.StoredProcedure;
+                database.AddInParameter(command, "@action", DbType.Int16, 3);
+                DS = database.ExecuteDataSet(command);
+                return DS;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public bool InsertVendorEmail(Vendor objVendor)
+        {
+            try
+            {
+                string consString = ConfigurationManager.ConnectionStrings[DBConstants.CONFIG_CONNECTION_STRING_KEY].ConnectionString;
+                using (SqlConnection con = new SqlConnection(consString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_VendorEmail"))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Connection = con;
+                        cmd.Parameters.AddWithValue("@tblVendorEmail", objVendor.tblVendorEmail);
+                        cmd.Parameters.AddWithValue("@action", 1);
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                        return true;
+                    }
+                }
+                //SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                //{
+                //    DbCommand command = database.GetStoredProcCommand("sp_VendorEmail");
+                //    command.CommandType = CommandType.StoredProcedure;
+                //    database.AddInParameter(command, "@tblVendorEmail", DbType.Object, objVendor.tblVendorEmail);
+                //    database.AddInParameter(command, "@action", DbType.Int16, 1);
+                //    database.ExecuteNonQuery(command);
+                //    return true;
+                //}
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool InsertVendorAddress(Vendor objVendor)
+        {
+            try
+            {
+                string consString = ConfigurationManager.ConnectionStrings[DBConstants.CONFIG_CONNECTION_STRING_KEY].ConnectionString;
+                using (SqlConnection con = new SqlConnection(consString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_VendorAddress"))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Connection = con;
+                        cmd.Parameters.AddWithValue("@tblVendorAddress", objVendor.tblVendorAddress);
+                        cmd.Parameters.AddWithValue("@action", 1);
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public DataTable SearchVendor(string searchString, string tableName)
+        {
+            //List<string> searchResult = new List<string>();
+            DataTable dt = new DataTable();
+            try
+            {
+                string consString = ConfigurationManager.ConnectionStrings[DBConstants.CONFIG_CONNECTION_STRING_KEY].ConnectionString;
+                using (SqlConnection con = new SqlConnection(consString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_FindStringInTable"))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Connection = con;
+                        cmd.Parameters.AddWithValue("@stringToFind", "%" + searchString + "%");
+                        cmd.Parameters.AddWithValue("@table", "tblVendors");
+                        SqlDataAdapter da = new SqlDataAdapter(cmd);
+                        da.Fill(dt);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return dt;
+        }
+
+
+        public DataSet fetchvendorcategory(bool Isretail_Wholesale, bool IsManufacturer)
+        {
+            try
+            {
+                {
+                    SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                    DS = new DataSet();
+                    DbCommand command = database.GetStoredProcCommand("UDP_fetchvendorcategory");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@IsRetail_Wholesale", DbType.Boolean, Isretail_Wholesale);
+                    database.AddInParameter(command, "@IsManufacturer", DbType.Boolean, IsManufacturer);
+                    DS = database.ExecuteDataSet(command);
+                    return DS;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
     }
 }

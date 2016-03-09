@@ -250,7 +250,7 @@
             directionsDisplay.setPanel(document.getElementById('directionpanel'));
 
             var control = document.getElementById('control');
-            control.style.display = 'block';
+           // control.style.display = 'block';
 
 
         }
@@ -763,7 +763,7 @@
     <%---------end script for Datetime Picker----------%>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <asp:Panel ID="pan1" runat="server" ScrollBars="Auto">
+   <%-- <asp:Panel ID="pan1" runat="server" ScrollBars="Auto">--%>
         <div class="right_panel">
             <!-- Tabs starts -->
             <!-- appointment tabs section start -->
@@ -1394,5 +1394,5 @@
             </div>
             <!-- Tabs endss -->
         </div>
-    </asp:Panel>
+   <%-- </asp:Panel>--%>
 </asp:Content>

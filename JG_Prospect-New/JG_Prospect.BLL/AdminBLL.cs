@@ -60,12 +60,12 @@ namespace JG_Prospect.BLL
             return AdminDAL.Instance.UpdateContractTemplate(ContracttemplateHeader, ContracttemplateBodyA, ContracttemplateBodyB, ContracttemplateFooter, ContractTemplateBody2, id);
         }
 
-        public bool UpdateEmailVendorCategoryTemplate(string EmailTemplateHeader, string EmailTemplateFooter,string EAttachment)
+        public bool UpdateEmailVendorCategoryTemplate(string EmailTemplateHeader, string EmailTemplateFooter, string EAttachment)
         {
-            return AdminDAL.Instance.UpdateEmailVendorCategoryTemplate(EmailTemplateHeader, EmailTemplateFooter,EAttachment);
+            return AdminDAL.Instance.UpdateEmailVendorCategoryTemplate(EmailTemplateHeader, EmailTemplateFooter, EAttachment);
         }
 
-        public void DisableCustomer(int Id,string Reason)
+        public void DisableCustomer(int Id, string Reason)
         {
             AdminDAL.Instance.DisableCustomer(Id, Reason);
         }
@@ -100,12 +100,12 @@ namespace JG_Prospect.BLL
 
         public DataSet InsertProductContract(string ProductLineName, string HTMLHeader, string HTMLBody, string HTMLFooter, string HTMLBody2)
         {
-            return AdminDAL.Instance.InsertContract(ProductLineName,HTMLHeader,HTMLBody,HTMLFooter,HTMLBody2);
+            return AdminDAL.Instance.InsertContract(ProductLineName, HTMLHeader, HTMLBody, HTMLFooter, HTMLBody2);
         }
 
-        public DataSet UpdateProductContract(int Id,string ProductLineName, string HTMLHeader, string HTMLBody, string HTMLFooter, string HTMLBody2)
+        public DataSet UpdateProductContract(int Id, string ProductLineName, string HTMLHeader, string HTMLBody, string HTMLFooter, string HTMLBody2)
         {
-            return AdminDAL.Instance.UpdateContractTemplate(Id,ProductLineName,HTMLHeader,HTMLBody,HTMLFooter,HTMLBody2);
+            return AdminDAL.Instance.UpdateContractTemplate(Id, ProductLineName, HTMLHeader, HTMLBody, HTMLFooter, HTMLBody2);
         }
 
         public DataSet GetShutterwidth()
@@ -138,14 +138,14 @@ namespace JG_Prospect.BLL
             return AdminDAL.Instance.FetchALLcustomer();
         }
 
-        public DataSet BindGridForSrSales(string str_Search, string str_Criateria,string from,string to)
+        public DataSet BindGridForSrSales(string str_Search, string str_Criateria, string from, string to)
         {
-            return AdminDAL.Instance.BindGridForSrSales(str_Search,str_Criateria,from,to);
+            return AdminDAL.Instance.BindGridForSrSales(str_Search, str_Criateria, from, to);
         }
 
-        public void UpdateStatusFromGrid(int Id,string str_Status)
+        public void UpdateStatusFromGrid(int Id, string str_Status)
         {
-            AdminDAL.Instance.UpdateStatusFromGrid(Id,str_Status);
+            AdminDAL.Instance.UpdateStatusFromGrid(Id, str_Status);
         }
 
         public void UpdateCloseReason(int Id, string str_Status)
@@ -153,20 +153,20 @@ namespace JG_Prospect.BLL
             AdminDAL.Instance.UpdateCloseReason(Id, str_Status);
         }
 
-        public void UpdateSoldStatus(int Id, string str_Status,string Status)
+        public void UpdateSoldStatus(int Id, string str_Status, string Status)
         {
             AdminDAL.Instance.UpdateSold(Id, str_Status, Status);
         }
 
-        public void UpdateEstDate(int Id, string str_Status,string Status)
+        public void UpdateEstDate(int Id, string str_Status, string Status)
         {
             AdminDAL.Instance.UpdateEst(Id, str_Status, Status);
         }
 
 
-        public void MakeAppointments(int UserId, int QuoteId, string Date, string Time,string CalType)
+        public void MakeAppointments(int UserId, int QuoteId, string Date, string Time, string CalType)
         {
-            AdminDAL.Instance.MakeAppointments(UserId, QuoteId, Date, Time,CalType);
+            AdminDAL.Instance.MakeAppointments(UserId, QuoteId, Date, Time, CalType);
         }
 
         //Start ....Code added by Neeta A....
@@ -216,7 +216,7 @@ namespace JG_Prospect.BLL
         }
         public DataSet GetAnnualEventByID(int UserId, string year)
         {
-            return AdminDAL.Instance.GetAnnualEventByID(UserId,year);
+            return AdminDAL.Instance.GetAnnualEventByID(UserId, year);
         }
         public DataSet GetAllAnnualEvent()
         {
@@ -226,7 +226,7 @@ namespace JG_Prospect.BLL
         public DataSet GetEventCalendar()
         {
             return AdminDAL.Instance.GetEventCalendar();
-        } 
+        }
         //For HR Calendar...
         public DataSet GetHRCalendar()
         {
@@ -245,7 +245,7 @@ namespace JG_Prospect.BLL
         public DataSet GetJuniorsalesAppointmentsById(int UserId)
         {
             return AdminDAL.Instance.GetJuniorsalesAppointmentsById(UserId);
-        }        
+        }
         public DataSet GetTodaysSalesAppointment(int UserId)
         {
             return AdminDAL.Instance.GetTodaysSalesAppointment(UserId);
@@ -299,7 +299,7 @@ namespace JG_Prospect.BLL
 
         public bool UpdateStatus(int custid, string status, string followupdate)
         {
-            return AdminDAL.Instance.UpdateStatus(custid, status,followupdate);
+            return AdminDAL.Instance.UpdateStatus(custid, status, followupdate);
         }
         public string GetAdminCode()
         {
@@ -318,9 +318,9 @@ namespace JG_Prospect.BLL
             return AdminDAL.Instance.FetchCustomerEmailTemplate(id);
         }
 
-        public bool UpdateCustomerEmailTemplate(string ContracttemplateHeader, string ContracttemplateBody, string ContracttemplateFooter, int id,List<CustomerDocument> custList)
+        public bool UpdateCustomerEmailTemplate(string ContracttemplateHeader, string ContracttemplateBody, string ContracttemplateFooter, int id, List<CustomerDocument> custList)
         {
-            return AdminDAL.Instance.UpdateCustomerEmailtTemplate(ContracttemplateHeader, ContracttemplateBody, ContracttemplateFooter, id,custList);
+            return AdminDAL.Instance.UpdateCustomerEmailtTemplate(ContracttemplateHeader, ContracttemplateBody, ContracttemplateFooter, id, custList);
         }
 
         public DataSet FetchCustomerAttachmentTemplate()
@@ -331,7 +331,7 @@ namespace JG_Prospect.BLL
         {
             return AdminDAL.Instance.FetchCustomerAttachments();
         }
-        public bool DeleteCustomerAttachment(string  custAttachment)
+        public bool DeleteCustomerAttachment(string custAttachment)
         {
             return AdminDAL.Instance.DeleteCustomerAttachment(custAttachment);
         }
@@ -349,6 +349,19 @@ namespace JG_Prospect.BLL
         public bool UpdateEmailVendorCategoryTemplate(string EmailTemplateHeader, string EmailTemplateFooter)
         {
             return AdminDAL.Instance.UpdateEmailVendorCategoryTemplate(EmailTemplateHeader, EmailTemplateFooter);
+        }
+
+        public DataSet GetProductCategory()
+        {
+            return AdminDAL.Instance.GetProductCategory();
+        }
+        public DataSet GetVendorCategory(string ProductCategoryId, bool Isretail_wholesale, bool IsManufacturer)
+        {
+            return AdminDAL.Instance.GetVendorCategory(ProductCategoryId, Isretail_wholesale, IsManufacturer);
+        }
+        public DataSet GetVendorSubCategory(string VendorCategoryId, bool Isretail_wholesale, bool IsManufacturer)
+        {
+            return AdminDAL.Instance.GetVendorSubCategory(VendorCategoryId, Isretail_wholesale, IsManufacturer);
         }
     }
 }

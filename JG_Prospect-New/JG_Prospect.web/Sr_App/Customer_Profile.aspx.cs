@@ -1726,7 +1726,7 @@ namespace JG_Prospect.Sr_App
                 {
                     for (int i = 0; i < dsTeamMembers.Tables[0].Rows.Count; i++)
                     {
-                        strDiv += "<li><span class='clsCustomerIdLink'><a href='Customer_Profile.aspx?CustomerId=" + dsTeamMembers.Tables[0].Rows[i]["userid"] + "'>" + dsTeamMembers.Tables[0].Rows[i]["userid"] + "</a></span><span> - " + dsTeamMembers.Tables[0].Rows[i]["Username"] + " </span></li>";
+                        strDiv += "<li><span class='clsCustomerIdLink'><a href='Customer_Profile.aspx?CustomerId=" + dsTeamMembers.Tables[0].Rows[i]["userid"] + "'>" + dsTeamMembers.Tables[0].Rows[i]["userid"] + "</a></span><span> - " + dsTeamMembers.Tables[0].Rows[i]["UserType"]+ " - " + dsTeamMembers.Tables[0].Rows[i]["Username"] + " </span></li>";
                       //  strDiv += "<option value='"+ dsTeamMembers.Tables[0].Rows[i]["userid"] + "'>" + dsTeamMembers.Tables[0].Rows[i]["userid"] + " - " + dsTeamMembers.Tables[0].Rows[i]["Username"] + " </option>";
                     }
                 }
@@ -1734,8 +1734,9 @@ namespace JG_Prospect.Sr_App
                 strDiv = "<div class='popover drop_popover' data-content=\"<ul>" + strDiv + "</ul>\">Team Members</div>";
 
                 HtmlGenericControl div = e.Row.FindControl("ddlDropDown") as HtmlGenericControl;
-                div.InnerHtml = strDiv;
-
+                div.InnerHtml = strDiv + "<script type='text/javascript'>$('.popover').webuiPopover({ constrains: 'horizontal', multi: false, placement: 'bottom', width: 200 });</script>";
+                //this.Page.RegisterStartupScript("ShowPopup", "<script type='text/javascript'>$('.popover').webuiPopover({ constrains: 'horizontal', multi: false, placement: 'bottom', width: 200 });</script>");
+                ClientScript.RegisterStartupScript(this.GetType(),"ShowPopup", "<script type='text/javascript'>$('.popover').webuiPopover({ constrains: 'horizontal', multi: false, placement: 'bottom', width: 200 });</script>");
                 //string strDiv = "";
                 //for(int i = 0; i < dsStatus.Tables[0].Rows.Count - 1; i++)
                 //{

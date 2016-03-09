@@ -31,6 +31,20 @@ namespace JG_Prospect.BLL
         {
             return CustomDAL.Instance.AddCustomMaterialList(cm, jobid);//, productTypeId, estimateId);
         }
+        public void DeleteCustomMaterialList(int pID)//,int productTypeId,int estimateId)
+        {
+            CustomDAL.Instance.DeleteCustomMaterialList(pID);
+        }
+
+        public void UpdateProductTypeInMaterialList(int pProdCatID, int pOldProdCatID, string pSoldJobID)
+        {
+            CustomDAL.Instance.UpdateProductTypeInMaterialList(pProdCatID, pOldProdCatID, pSoldJobID);
+        }
+        public void DeleteCustomMaterialListByProductCatID(int pProdCatID)//,int productTypeId,int estimateId)
+        {
+            CustomDAL.Instance.DeleteCustomMaterialListByProductCatID(pProdCatID);
+        }
+
         public bool DeleteCustomMaterialList(string id)//, int productTypeId, int estimateId)
         {
             return CustomDAL.Instance.DeleteCustomMaterialList(id);//, productTypeId, estimateId);
@@ -50,9 +64,9 @@ namespace JG_Prospect.BLL
         {
             return CustomDAL.Instance.UpdateForemanPermissionOfCustomMaterialList2(jobid, permissionStatus, FormanEmail);//, productTypeId, estimateId);
         }
-        public int UpdateForemanPermissionOfCustomMaterialList(string jobid, char permissionStatus)//, int productTypeId, int estimateId)
+        public int UpdateForemanPermissionOfCustomMaterialList(string jobid, char permissionStatus, int updatedby)//, int productTypeId, int estimateId)
         {
-            return CustomDAL.Instance.UpdateForemanPermissionOfCustomMaterialList(jobid, permissionStatus);//, productTypeId, estimateId);
+            return CustomDAL.Instance.UpdateForemanPermissionOfCustomMaterialList(jobid, permissionStatus, updatedby);//, productTypeId, estimateId);
         }
 
         public DataSet GetFormanEmail(string jobId)//, int productTypeId, int estimateId)
@@ -107,9 +121,9 @@ namespace JG_Prospect.BLL
         {
             return CustomDAL.Instance.CheckPermissionsForVendors(jobid);//, productTypeId, estimateId);
         }
-        public int UpdateSrSalesmanPermissionOfCustomMaterialList(string jobid, char permissionStatus)//, int productTypeId, int estimateId)
+        public int UpdateSrSalesmanPermissionOfCustomMaterialList(string jobid, char permissionStatus, int updatedby)//, int productTypeId, int estimateId)
         {
-            return CustomDAL.Instance.UpdateSrSalesmanPermissionOfCustomMaterialList(jobid, permissionStatus);//, productTypeId, estimateId);
+            return CustomDAL.Instance.UpdateSrSalesmanPermissionOfCustomMaterialList(jobid, permissionStatus, updatedby);//, productTypeId, estimateId);
         }
         public int UpdateSrSalesmanPermissionOfCustomMaterialList(string jobid, char permissionStatus,string SrSalesEmail)//, int productTypeId, int estimateId)
         {
@@ -137,11 +151,31 @@ namespace JG_Prospect.BLL
             DataSet ds = null;
             return ds = CustomDAL.Instance.GetAllPermissionOfCustomMaterialList(jobId);//, productTypeId, estimateId);
         }
-        public DataSet GetCustom_MaterialList(string jobId)//, int productTypeId, int estimateId)
+        /// <summary>
+        /// Shabbir Kanchwala: Called another method from this method. Earlier it was calling the DAL library function.
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <returns></returns>
+        public DataSet GetCustom_MaterialList(string jobId)
         {
-            DataSet ds = null;
-            return ds = CustomDAL.Instance.GetCustom_MaterialList(jobId);//,productTypeId,estimateId);
+            return GetCustom_MaterialList(jobId, 0);
         }
+        /// <summary>
+        /// Shabbir Kanchwala: Did parameter overloading to achieve customer details
+        /// </summary>
+        /// <param name="jobId"></param>
+        /// <param name="pCustomerID"></param>
+        /// <returns></returns>
+        public DataSet GetCustom_MaterialList(string pJobID, int pCustomerID)
+        {
+            return CustomDAL.Instance.GetCustom_MaterialList(pJobID, pCustomerID);
+        }
+
+        public DataSet GetCustomMaterialList(string pJobID, int pCustomerID)
+        {
+            return CustomDAL.Instance.GetCustomMaterialList(pJobID, pCustomerID);
+        }
+
         public string GetEmailStatusOfCustomMaterialList(string jobId)//, int productTypeId, int estimateId)
         {
             DataSet ds = CustomDAL.Instance.GetEmailStatusOfCustomMaterialList(jobId);//, productTypeId, estimateId);
@@ -152,13 +186,13 @@ namespace JG_Prospect.BLL
             }
             return emailStatus;
         }
-        public int UpdateSrSalesmanPermissionOfCustomMaterialListF(string jobid, char permissionStatus)//, int productTypeId, int estimateId)
+        public int UpdateSrSalesmanPermissionOfCustomMaterialListF(string jobid, char permissionStatus, int updatedby)//, int productTypeId, int estimateId)
         {
-            return CustomDAL.Instance.UpdateSrSalesmanPermissionOfCustomMaterialListF(jobid, permissionStatus);//, productTypeId, estimateId);
+            return CustomDAL.Instance.UpdateSrSalesmanPermissionOfCustomMaterialListF(jobid, permissionStatus, updatedby);//, productTypeId, estimateId);
         }
-        public int UpdateAdminPermissionOfCustomMaterialList(string jobid, char permissionStatus)//, int productTypeId, int estimateId)
+        public int UpdateAdminPermissionOfCustomMaterialList(string jobid, char permissionStatus, int updatedby)//, int productTypeId, int estimateId)
         {
-            return CustomDAL.Instance.UpdateAdminPermissionOfCustomMaterialList(jobid, permissionStatus);//, productTypeId, estimateId);
+            return CustomDAL.Instance.UpdateAdminPermissionOfCustomMaterialList(jobid, permissionStatus,updatedby);//, productTypeId, estimateId);
         }
        
     }

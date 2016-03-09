@@ -29,7 +29,7 @@ namespace JG_Prospect.Common
         public string Line { get; set; }
         public string JGSkuPartNo { get; set; }
         public string Description { get; set; }
-        public string Quantity { get; set; }
+        public int Quantity { get; set; }
         public string UOM { get; set; }
         public string VendorQuotesPath { get; set; }
         public Decimal MaterialCost { get; set; }
@@ -41,6 +41,26 @@ namespace JG_Prospect.Common
         public string VendorEmails { get; set; }
         public string DisplaDLL { get; set; }
         public JGConstant.CustomMaterialListStatus Status { get; set; }
+        public int ForemaneID { get; set; }
+        public string ForemanUserName { get; set; }
+        public string ForemanFirstName { get; set; }
+        public string ForemanLastName { get; set; }
+
+        public int SrSaleManFID { get; set; }
+        public string SrSaleManFUserName { get; set; }
+        public string SrSaleManFFirstName { get; set; }
+        public string SrSaleManFLastName { get; set; }
+        public int SrSaleManAID { get; set; }
+        public string SrSaleManAUserName { get; set; }
+        public string SrSaleManAFirstName { get; set; }
+        public string SrSaleManALastName { get; set; }
+        public int AdminID { get; set; }
+        public string AdminUserName { get; set; }
+        public string AdminFirstName { get; set; }
+        public string AdminLastName { get; set; }
+
+        public int StaffID { get; set; }
+        public string StaffName { get; set; }
     }
 }
 

@@ -1,0 +1,253 @@
+USE [jgrove_JGP]
+GO
+
+/****** Object:  Table [dbo].[tblProductVendor]    Script Date: 02/25/2016 10:46:15 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[tblProductVendor](
+	[ProductCategoryId] [int] NOT NULL,
+	[ProductCategoryName] [nvarchar](500) NULL,
+	[VendorCategoryId] [int] NOT NULL,
+	[VendorcategoryName] [nvarchar](500) NULL
+) ON [PRIMARY]
+
+GO
+
+USE [jgrove_JGP]
+GO
+
+/****** Object:  Table [dbo].[tblVendors]    Script Date: 02/25/2016 10:51:31 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [dbo].[tblVendors](
+	[VendorId] [int] IDENTITY(1,1) NOT NULL,
+	[VendorName] [varchar](100) NULL,
+	[VendorCategoryId] [int] NULL,
+	[VendorSubCategoryId] [int] NULL,
+	[ContactPerson] [varchar](100) NULL,
+	[ContactNumber] [varchar](20) NULL,
+	[Fax] [varchar](20) NULL,
+	[Email] [varchar](50) NULL,
+	[Address] [varchar](100) NULL,
+	[Notes] [varchar](500) NULL,
+	[ManufacturerType] [varchar](70) NULL,
+	[BillingAddress] [varchar](max) NULL,
+	[TaxId] [varchar](50) NULL,
+	[ExpenseCategory] [varchar](50) NULL,
+	[AutoTruckInsurance] [varchar](50) NULL
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+ALTER TABLE [dbo].[tblVendors]  WITH CHECK ADD  CONSTRAINT [FK_tblVendors_tblVendorCategory] FOREIGN KEY([VendorCategoryId])
+REFERENCES [dbo].[tblVendorCategory] ([VendorCategpryId])
+GO
+
+ALTER TABLE [dbo].[tblVendors] CHECK CONSTRAINT [FK_tblVendors_tblVendorCategory]
+GO
+
+USE [jgrove_JGP]
+GO
+
+/****** Object:  Table [dbo].[tblVendorSubCategory]    Script Date: 02/25/2016 10:45:42 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[tblVendorSubCategory](
+	[VendorSubCategoryId] [int] IDENTITY(1,1) NOT NULL,
+	[VendorSubCategoryName] [nvarchar](500) NULL,
+	[VendorCategoryId] [nvarchar](5) NULL,
+ CONSTRAINT [PK_tblVendorSubCategory] PRIMARY KEY CLUSTERED 
+(
+	[VendorSubCategoryId] ASC
+)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+
+
+USE [jgrove_JGP]
+GO
+
+/****** Object:  StoredProcedure [dbo].[sp_newVendorCategory]    Script Date: 02/25/2016 10:47:36 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE proc [dbo].[sp_newVendorCategory]
+@vendorCatId nvarchar(5)=null,
+@vendorCatName nvarchar(max)=null,
+@productCatName nvarchar(max)=null,
+@productCatId nvarchar(5)=null,
+@action int=null
+as
+
+Begin
+if(@action='1')
+	Begin
+		insert into tblVendorCategory(VendorCategoryNm) output inserted.VendorCategpryId values(@vendorCatName)
+	End
+if(@action='2')
+	Begin
+		insert into tblProductVendor (ProductCategoryId,ProductCategoryName,VendorCategoryId,VendorcategoryName) values (@productCatId,@productCatName,@vendorCatId,@vendorCatName)
+	End
+End
+GO
+
+USE [jgrove_JGP]
+GO
+
+/****** Object:  StoredProcedure [dbo].[sp_VendorSubCat]    Script Date: 02/25/2016 10:48:07 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE proc [dbo].[sp_VendorSubCat]
+@VendorSubCategoryName nvarchar(500)=null,
+@VendorCategoryId nvarchar(5)=null,
+@VendorSubCategoryId nvarchar(5)=null,
+@action int=null
+as
+begin 
+if(@action=1)
+ begin
+	insert into tblVendorSubCategory (VendorSubCategoryName,VendorCategoryId) values(@VendorSubCategoryName,@VendorCategoryId)
+ end	
+if(@action=2)
+ begin
+	delete from tblVendorSubCategory where VendorSubCategoryId=@VendorSubCategoryId
+ end
+if(@action=3)
+	begin
+		select * from tblVendorSubCategory
+	end
+end
+GO
+
+USE [jgrove_JGP]
+GO
+
+/****** Object:  StoredProcedure [dbo].[UDP_deletevendorcategory]    Script Date: 02/25/2016 10:49:28 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER procedure [dbo].[UDP_deletevendorcategory]
+@vendorcategory_id int 
+as
+delete from tblVendorCategory where VendorCategpryId=@vendorcategory_id
+delete from tblVendorSubCategory where VendorCategoryId=@vendorcategory_id
+delete from tblProductVendor where VendorCategoryId=@vendorcategory_id
+
+GO
+
+USE [jgrove_JGP]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_GetVendorList]    Script Date: 03/01/2016 17:30:08 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE proc [dbo].[USP_GetVendorList]
+@FilterParams nvarchar(Max)=null,
+@FilterBy nvarchar(50)=null,
+@ManufacturerType nvarchar(20)=null,
+@VendorCategoryId nvarchar(10)=null
+as
+BEGIN
+	Declare @BaseQuery nvarchar(max) ='select VendorName , VendorId from tblVendors',
+			@WhereClause nvarchar(max)=' Where 1=1';
+	 if(@FilterBy='VendorSubCategory')
+		begin
+			If (@ManufacturerType IS NOT NULL and @ManufacturerType <> '')
+				Begin
+					Set @WhereClause= @WhereClause +' AND VendorSubCategoryId=@FilterParams and VendorCategoryId=@VendorCategoryId and ManufacturerType=@ManufacturerType'
+				End
+			Else
+				Begin
+					Set @WhereClause= @WhereClause +' AND VendorSubCategoryId=@FilterParams and VendorCategoryId=@VendorCategoryId'
+				End
+		end
+	 else if(@FilterBy='VendorCategory')
+		begin
+			If (@ManufacturerType IS NOT NULL and @ManufacturerType <> '')
+				Begin
+			 		Set @WhereClause= @WhereClause +' AND VendorCategoryId=@FilterParams and ManufacturerType=@ManufacturerType';
+				End
+			Else
+				Begin
+					set @WhereClause= @WhereClause +' AND VendorCategoryId=@FilterParams';
+				End
+		end
+	 else if(@FilterBy='ProductCategory')
+		begin
+			If (@ManufacturerType IS NOT NULL and @ManufacturerType <> '')
+				Begin
+					set @WhereClause= @WhereClause +' And VendorCategoryId in (select * from dbo.split(@FilterParams,'','')) and ManufacturerType=@ManufacturerType';
+				End
+			Else
+				Begin
+					set @WhereClause= @WhereClause +' And VendorCategoryId in (select * from dbo.split(@FilterParams,'',''))';
+				End
+		end
+	else if(@FilterBy='ManufacturerType')
+		begin
+		
+					set @WhereClause= @WhereClause +' And ManufacturerType=@ManufacturerType';
+			
+		end
+	set @BaseQuery = @BaseQuery+@WhereClause;
+	--print @BaseQuery
+	EXECUTE sp_executesql @BaseQuery,N'@FilterParams nvarchar(max),@FilterBy nvarchar(50),@ManufacturerType nvarchar(20),@VendorCategoryId nvarchar(10)',
+							@FilterParams,@FilterBy,@ManufacturerType,@VendorCategoryId
+END
+
+--exec [USP_GetVendorList] @FilterParams='41',@FilterBy='ProductCategory',@ManufacturerType=''
+GO
+
+USE [jgrove_JGP]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_GetVendorSubCategory]    Script Date: 03/01/2016 17:30:35 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER proc [dbo].[USP_GetVendorSubCategory]
+@VendorCategoryId int=null
+as
+begin
+	select * from tblVendorSubCategory where VendorCategoryId=@VendorCategoryId
+end
+GO
+
+
