@@ -193,7 +193,7 @@ namespace JG_Prospect.Sr_App
                 rqPenalty.Enabled = false;
              //   rqSource.Enabled = true;
                 lblConfirmPass.Visible = false;
-                RequiredFieldValidator7.Enabled = false;
+                //RequiredFieldValidator7.Enabled = false;
                 #endregion
 
 
@@ -1369,14 +1369,17 @@ namespace JG_Prospect.Sr_App
         //Save User......
         protected void btncreate_Click(object sender, EventArgs e)
         {
+            if (!Page.IsValid)
+                return;
+
             string InstallId = string.Empty;
             string str_Status = string.Empty;
             string str_Reason = string.Empty;
-            if (txtNotes.Text =="")
-            {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please Enter Notes');", true);
-                return;
-            }
+            //if (txtNotes.Text =="")
+            //{
+            //    ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please Enter Notes');", true);
+            //    return;
+            //}
             //if (ddldesignation.SelectedValue == "Applicant")
             //{
             //    if (ddlSource.SelectedIndex == 0)
@@ -1736,7 +1739,7 @@ namespace JG_Prospect.Sr_App
                     objuser.TC = false;
                 }
                 DataSet dsCheckDuplicate = InstallUserBLL.Instance.CheckInstallUser(txtemail.Text, txtPhone.Text);
-                if (dsCheckDuplicate.Tables[0].Rows.Count > 0)
+                if (dsCheckDuplicate.Tables.Count > 0 && dsCheckDuplicate.Tables[0].Rows.Count > 0)
                 {
                     Session["EmailEdiId"] = Convert.ToInt32(dsCheckDuplicate.Tables[0].Rows[0][0]);
                     ScriptManager.RegisterStartupScript(this, GetType(), "overlay", "overlay();", true);
@@ -3535,7 +3538,7 @@ namespace JG_Prospect.Sr_App
         //        dtInterviewDate.Visible = false;
         //        ddlInsteviewtime.Visible = false;
         //        txtReson.Visible = true;
-        //        RequiredFieldValidator7.Enabled = true;
+        //        //RequiredFieldValidator7.Enabled = true;
         //        }
         //    else if (ddlstatus.SelectedValue == "InterviewDate")
         //    {
@@ -3552,7 +3555,7 @@ namespace JG_Prospect.Sr_App
         //        dtInterviewDate.Visible = false;
         //        ddlInsteviewtime.Visible = false;
         //        txtReson.Visible = true;
-        //        RequiredFieldValidator7.Enabled = true;
+        //        //RequiredFieldValidator7.Enabled = true;
         //    }
         //    else
         //    {
@@ -3894,7 +3897,7 @@ namespace JG_Prospect.Sr_App
         //        //lblReqEmpType.Visible = true;
         //        //rqEmpType.Enabled = true;
         //        txtReson.Visible = true;
-        //        RequiredFieldValidator7.Enabled = true;
+        //        //RequiredFieldValidator7.Enabled = true;
 
         //        #endregion
         //    }
@@ -3966,7 +3969,7 @@ namespace JG_Prospect.Sr_App
         //        //lblReqEmpType.Visible = true;
         //        //rqEmpType.Enabled = true;
         //        txtReson.Visible = true;
-        //        RequiredFieldValidator7.Enabled = true;
+        //        //RequiredFieldValidator7.Enabled = true;
         //        #endregion
 
         //    }
@@ -4025,7 +4028,7 @@ namespace JG_Prospect.Sr_App
         //        rqPenalty.Enabled = false;
         //       // rqSource.Enabled = false;
         //        lblConfirmPass.Visible = false;
-        //        RequiredFieldValidator7.Enabled = true;
+        //        //RequiredFieldValidator7.Enabled = true;
         //        #endregion
         //        //ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Fill new hire section above')", true);
         //        //return;
@@ -9337,6 +9340,8 @@ namespace JG_Prospect.Sr_App
 
         protected void ddlstatus_SelectedIndexChanged(object sender, EventArgs e)
         {
+            ValidationSummary1.ValidationGroup = btncreate.ValidationGroup = "submit";
+
             if (Convert.ToString(Session["PreviousStatusNew"]) == "Active" && (!(Convert.ToString(Session["usertype"]).Contains("Admin"))))
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Status cannot be changed to any other status other than Deactive once user is Active')", true);
@@ -9417,7 +9422,7 @@ namespace JG_Prospect.Sr_App
                 dtInterviewDate.Visible = false;
                 ddlInsteviewtime.Visible = false;
                 txtReson.Visible = true;
-                RequiredFieldValidator7.Enabled = true;
+                //RequiredFieldValidator7.Enabled = true;
             }
             else if (ddlstatus.SelectedValue == "InterviewDate")
             {
@@ -9434,7 +9439,7 @@ namespace JG_Prospect.Sr_App
                 dtInterviewDate.Visible = false;
                 ddlInsteviewtime.Visible = false;
                 txtReson.Visible = true;
-                RequiredFieldValidator7.Enabled = true;
+                //RequiredFieldValidator7.Enabled = true;
             }
            
             else
@@ -9574,7 +9579,7 @@ namespace JG_Prospect.Sr_App
             //    rqState.Enabled = true;
             //    lblStateReq.Visible = true;
             //    rqCity.Enabled = true;
-            //    lblCityReq.Visible = true;
+            //        lblCityReq.Visible = true;
             //    password.Enabled = true;
             //    rqPass.Enabled = false;
             //    //rqMaritalStatus.Enabled = false;
@@ -9726,6 +9731,7 @@ namespace JG_Prospect.Sr_App
             }
             else if (ddlstatus.SelectedValue == "OfferMade")
             {
+                ValidationSummary1.ValidationGroup = btncreate.ValidationGroup = "OfferMade";
                 Label2.Visible = false;
                 rqDesignition.Enabled = true;
                 RequiredFieldValidator3.Enabled = true;
@@ -9790,7 +9796,7 @@ namespace JG_Prospect.Sr_App
                 //lblReqEmpType.Visible = true;
                 //rqEmpType.Enabled = true;
                 txtReson.Visible = true;
-                RequiredFieldValidator7.Enabled = true;
+                //RequiredFieldValidator7.Enabled = true;
                 lblReqDL.Visible = false;
                 lblReqPicture.Visible = false;
                 lblReqEmail.Visible = true;
@@ -9872,7 +9878,7 @@ namespace JG_Prospect.Sr_App
                 //lblReqEmpType.Visible = true;
                 //rqEmpType.Enabled = true;
                 txtReson.Visible = true;
-                RequiredFieldValidator7.Enabled = true;
+                //RequiredFieldValidator7.Enabled = true;
                 lblReqDL.Visible = true;
                 lblReqPicture.Visible = true;
                 lblReqEmail.Visible = true;
@@ -9942,7 +9948,7 @@ namespace JG_Prospect.Sr_App
                 rqPenalty.Enabled = false;
                 // rqSource.Enabled = false;
                 lblConfirmPass.Visible = false;
-                RequiredFieldValidator7.Enabled = true;
+                //RequiredFieldValidator7.Enabled = true;
                 lblReqDL.Visible = false;
                 lblReqPicture.Visible = false;
                 #endregion
@@ -9968,14 +9974,14 @@ namespace JG_Prospect.Sr_App
                 {
                     ddlInsteviewtime.Visible = false;
                     dtInterviewDate.Visible = false;
-                    RequiredFieldValidator7.Enabled = true;
+                    //RequiredFieldValidator7.Enabled = true;
 
                     txtReson.Visible = true;
                 }
                 else if (a == "InterviewDate")
                 {
                     txtReson.Visible = false;
-                    RequiredFieldValidator7.Enabled = false;
+                    //RequiredFieldValidator7.Enabled = false;
                     dtInterviewDate.Visible = true;
                     dtInterviewDate.Text = DateTime.Now.AddDays(1).ToShortDateString();
                     ddlInsteviewtime.Visible = true;
@@ -9995,14 +10001,14 @@ namespace JG_Prospect.Sr_App
                     ddlInsteviewtime.Visible = false;
                     dtInterviewDate.Visible = false;
                     txtReson.Visible = false;
-                    RequiredFieldValidator7.Enabled = false;
+                    //RequiredFieldValidator7.Enabled = false;
                 }
 
                 else
                 {
                     ddlInsteviewtime.Visible = false;
                     txtReson.Visible = false;
-                    RequiredFieldValidator7.Enabled = false;
+                    //RequiredFieldValidator7.Enabled = false;
                     dtInterviewDate.Visible = false;
                 }
 
