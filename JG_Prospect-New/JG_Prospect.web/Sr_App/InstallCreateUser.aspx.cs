@@ -32,6 +32,7 @@ namespace JG_Prospect.Sr_App
         DataTable dtDeduction = new DataTable();
         protected void Page_Load(object sender, EventArgs e)
         {
+
             //  CalendarExtender10.StartDate = DateTime.Now;
             if (Session["Username"] == null)
             {
@@ -99,35 +100,35 @@ namespace JG_Prospect.Sr_App
                 rqDeduction.Enabled = false;
                 rqDeductionAmt.Enabled = false;
                 rqDesignition.Enabled = true;
-                rqPrimaryTrade.Enabled = true;
-                rqSecondaryTrade.Enabled = true;
+                //rqPrimaryTrade.Enabled = true;
+                //rqSecondaryTrade.Enabled = true;
                 rqFirstName.Enabled = true;
-                rqEmail.Enabled = true;
-                reEmail.Enabled = true;
+                //rqEmail.Enabled = true;
+                //reEmail.Enabled = true;
                 rqZip.Enabled = true;
                 rqState.Enabled = true;
                 lblStateReq.Visible = true;
                 rqCity.Enabled = true;
                 lblCityReq.Visible = true;
                 lblCityReq.Visible = true;
-                password.Enabled = true;
-                rqConPass.Enabled = true;
+                //password.Enabled = true;
+                //rqConPass.Enabled = true;
                 lblConfirmPass.Visible = true;
                 rqSign.Enabled = false;
                 lblReqSig.Visible = false;
                 rqMaritalStatus.Enabled = false;
                 lblReqMarSt.Visible = false;
-                rqNotes.Enabled = false;
+                ////rqNotes.Enabled = false;
                 lblNotesReq.Visible = false;
                 // rqSource.Enabled = true;
                 lblSourceReq.Visible = true;
                 lblSourceReq.Visible = true;
-                rqLastName.Enabled = true;
+                //rqLastName.Enabled = true;
                 rqAddress.Enabled = true;
                 lblAddressReq.Visible = true;
-                rqPhone.Enabled = true;
+                ////rqPhone.Enabled = true;
                 lblPhoneReq.Visible = true;
-                rqPass.Enabled = true;
+                //rqPass.Enabled = true;
                 lblPassReq.Visible = true;
                 rqSSN1.Enabled = false;
                 lblReqSSN.Visible = false;
@@ -194,8 +195,8 @@ namespace JG_Prospect.Sr_App
                 lnkW9.Visible = false;
                 lnkI9.Visible = true;
                 lnkW4.Visible = true;
-                lblInstallerType.Visible = true;
-                ddlInstallerType.Visible = true;
+                //lblInstallerType.Visible = true;
+                //ddlInstallerType.Visible = true;
 
 
                 #region Default Required Fields
@@ -203,24 +204,24 @@ namespace JG_Prospect.Sr_App
                 RequiredFieldValidator3.Enabled = false;
                 lblReqDesig.Visible = false;
                 lblReqPtrade.Visible = true;
-                rqPrimaryTrade.Enabled = true;
+                //rqPrimaryTrade.Enabled = true;
                 lblReqSTrate.Visible = true;
-                rqSecondaryTrade.Enabled = true;
+                //rqSecondaryTrade.Enabled = true;
                 lblReqLastName.Visible = true;
-                rqLastName.Enabled = true;
-                RequiredFieldValidator5.Enabled = true;
+                //rqLastName.Enabled = true;
+                //RequiredFieldValidator5.Enabled = true;
                 lblReqFName.Visible = true;
                 rqFirstName.Enabled = true;
                 RequiredFieldValidator4.Enabled = true;
                 lblPhoneReq.Visible = true;
-                rqPhone.Enabled = true;
+                //rqPhone.Enabled = true;
                 lblSourceReq.Visible = true;
                 //  rqSource.Enabled = true;
                 lblNotesReq.Visible = false;
-                rqNotes.Enabled = false;
+                ////rqNotes.Enabled = false;
                 lblReqEmail.Visible = false;
-                rqEmail.Enabled = false;
-                reEmail.Enabled = true;
+                //rqEmail.Enabled = false;
+                //reEmail.Enabled = true;
                 lblReqZip.Visible = false;
                 rqZip.Enabled = false;
                 lblStateReq.Visible = false;
@@ -228,21 +229,21 @@ namespace JG_Prospect.Sr_App
                 lblCityReq.Visible = false;
                 rqCity.Enabled = false;
                 lblPassReq.Visible = false;
-                rqPass.Enabled = false;
+                //rqPass.Enabled = false;
                 lblReqSig.Visible = false;
                 rqSign.Enabled = false;
                 lblReqMarSt.Visible = false;
                 rqMaritalStatus.Enabled = false;
                 lblReqPicture.Style["display"] = "none";
                 // lblReqPicture.Visible = false;
-              //  lblReqDL.Visible = false;
+                //  lblReqDL.Visible = false;
                 lblReqDL.Style["display"] = "none";
                 lblAddressReq.Visible = false;
                 rqAddress.Enabled = false;
                 Label1.Visible = false;
                 RequiredFieldValidator6.Enabled = false;
                 lblConfirmPass.Visible = true;
-                rqConPass.Enabled = false;
+                //rqConPass.Enabled = false;
                 lblReqSSN.Visible = false;
                 rqSSN1.Enabled = false;
                 rqSSN2.Enabled = false;
@@ -371,24 +372,24 @@ namespace JG_Prospect.Sr_App
                                 RequiredFieldValidator3.Enabled = false;
                                 lblReqDesig.Visible = false;
                                 lblReqPtrade.Visible = true;
-                                rqPrimaryTrade.Enabled = true;
+                                //rqPrimaryTrade.Enabled = true;
                                 lblReqSTrate.Visible = true;
-                                rqSecondaryTrade.Enabled = true;
+                                //rqSecondaryTrade.Enabled = true;
                                 lblReqLastName.Visible = true;
-                                rqLastName.Enabled = true;
-                                RequiredFieldValidator5.Enabled = true;
+                                //rqLastName.Enabled = true;
+                                //RequiredFieldValidator5.Enabled = true;
                                 lblReqFName.Visible = true;
                                 rqFirstName.Enabled = true;
                                 RequiredFieldValidator4.Enabled = true;
                                 lblPhoneReq.Visible = true;
-                                rqPhone.Enabled = true;
+                                //rqPhone.Enabled = true;
                                 lblSourceReq.Visible = true;
                                 //   rqSource.Enabled = true;
                                 lblNotesReq.Visible = false;
-                                rqNotes.Enabled = false;
+                                ////rqNotes.Enabled = false;
                                 lblReqEmail.Visible = false;
-                                rqEmail.Enabled = false;
-                                reEmail.Enabled = true;
+                                //rqEmail.Enabled = false;
+                                //reEmail.Enabled = true;
                                 lblReqZip.Visible = false;
                                 rqZip.Enabled = false;
                                 lblStateReq.Visible = false;
@@ -396,21 +397,21 @@ namespace JG_Prospect.Sr_App
                                 lblCityReq.Visible = false;
                                 rqCity.Enabled = false;
                                 lblPassReq.Visible = false;
-                                rqPass.Enabled = false;
+                                //rqPass.Enabled = false;
                                 lblReqSig.Visible = false;
                                 rqSign.Enabled = false;
                                 lblReqMarSt.Visible = false;
                                 rqMaritalStatus.Enabled = false;
                                 lblReqPicture.Style["display"] = "none";
                                 // lblReqPicture.Visible = false;
-                               // lblReqDL.Visible = false;
+                                // lblReqDL.Visible = false;
                                 lblReqDL.Style["display"] = "none";
                                 lblAddressReq.Visible = false;
                                 rqAddress.Enabled = false;
                                 Label1.Visible = false;
                                 RequiredFieldValidator6.Enabled = false;
                                 lblConfirmPass.Visible = true;
-                                rqConPass.Enabled = false;
+                                //rqConPass.Enabled = false;
                                 lblReqSSN.Visible = false;
                                 rqSSN1.Enabled = false;
                                 rqSSN2.Enabled = false;
@@ -429,24 +430,24 @@ namespace JG_Prospect.Sr_App
                                 RequiredFieldValidator3.Enabled = false;
                                 lblReqDesig.Visible = false;
                                 lblReqPtrade.Visible = true;
-                                rqPrimaryTrade.Enabled = true;
+                                //rqPrimaryTrade.Enabled = true;
                                 lblReqSTrate.Visible = true;
-                                rqSecondaryTrade.Enabled = true;
+                                //rqSecondaryTrade.Enabled = true;
                                 lblReqLastName.Visible = true;
-                                rqLastName.Enabled = true;
-                                RequiredFieldValidator5.Enabled = true;
+                                //rqLastName.Enabled = true;
+                                //RequiredFieldValidator5.Enabled = true;
                                 lblReqFName.Visible = true;
                                 rqFirstName.Enabled = true;
                                 RequiredFieldValidator4.Enabled = true;
                                 lblPhoneReq.Visible = true;
-                                rqPhone.Enabled = true;
+                                //rqPhone.Enabled = true;
                                 lblSourceReq.Visible = true;
                                 //  rqSource.Enabled = true;
                                 lblNotesReq.Visible = false;
-                                rqNotes.Enabled = false;
+                                ////rqNotes.Enabled = false;
                                 lblReqEmail.Visible = false;
-                                rqEmail.Enabled = false;
-                                reEmail.Enabled = true;
+                                //rqEmail.Enabled = false;
+                                //reEmail.Enabled = true;
                                 lblReqZip.Visible = false;
                                 rqZip.Enabled = false;
                                 lblStateReq.Visible = false;
@@ -454,21 +455,21 @@ namespace JG_Prospect.Sr_App
                                 lblCityReq.Visible = false;
                                 rqCity.Enabled = false;
                                 lblPassReq.Visible = false;
-                                rqPass.Enabled = false;
+                                //rqPass.Enabled = false;
                                 lblReqSig.Visible = false;
                                 rqSign.Enabled = false;
                                 lblReqMarSt.Visible = false;
                                 rqMaritalStatus.Enabled = false;
                                 // lblReqPicture.Visible = false;
                                 lblReqPicture.Style["display"] = "none";
-                               // lblReqDL.Visible = false;
+                                // lblReqDL.Visible = false;
                                 lblReqDL.Style["display"] = "none";
                                 lblAddressReq.Visible = false;
                                 rqAddress.Enabled = false;
                                 Label1.Visible = false;
                                 RequiredFieldValidator6.Enabled = false;
                                 lblConfirmPass.Visible = true;
-                                rqConPass.Enabled = false;
+                                //rqConPass.Enabled = false;
                                 lblReqSSN.Visible = false;
                                 rqSSN1.Enabled = false;
                                 rqSSN2.Enabled = false;
@@ -486,24 +487,24 @@ namespace JG_Prospect.Sr_App
                                 RequiredFieldValidator3.Enabled = true;
                                 lblReqDesig.Visible = true;
                                 lblReqPtrade.Visible = true;
-                                rqPrimaryTrade.Enabled = true;
+                                //rqPrimaryTrade.Enabled = true;
                                 lblReqSTrate.Visible = true;
-                                rqSecondaryTrade.Enabled = true;
+                                //rqSecondaryTrade.Enabled = true;
                                 lblReqLastName.Visible = true;
-                                rqLastName.Enabled = true;
-                                RequiredFieldValidator5.Enabled = true;
+                                //rqLastName.Enabled = true;
+                                //RequiredFieldValidator5.Enabled = true;
                                 lblReqFName.Visible = true;
                                 rqFirstName.Enabled = true;
                                 RequiredFieldValidator4.Enabled = true;
                                 lblPhoneReq.Visible = true;
-                                rqPhone.Enabled = true;
+                                //rqPhone.Enabled = true;
                                 lblSourceReq.Visible = true;
                                 //  rqSource.Enabled = true;
                                 lblNotesReq.Visible = false;
-                                rqNotes.Enabled = false;
+                                ////rqNotes.Enabled = false;
                                 lblReqEmail.Visible = false;
-                                rqEmail.Enabled = false;
-                                reEmail.Enabled = true;
+                                //rqEmail.Enabled = false;
+                                //reEmail.Enabled = true;
                                 lblReqZip.Visible = true;
                                 rqZip.Enabled = true;
                                 lblStateReq.Visible = true;
@@ -511,14 +512,14 @@ namespace JG_Prospect.Sr_App
                                 lblCityReq.Visible = true;
                                 rqCity.Enabled = true;
                                 lblPassReq.Visible = false;
-                                rqPass.Enabled = false;
+                                //rqPass.Enabled = false;
                                 lblReqSig.Visible = false;
                                 rqSign.Enabled = false;
                                 lblReqMarSt.Visible = false;
                                 rqMaritalStatus.Enabled = false;
                                 //lblReqPicture.Visible = false;
                                 lblReqPicture.Style["display"] = "none";
-                              //  lblReqDL.Visible = false;
+                                //  lblReqDL.Visible = false;
                                 lblReqDL.Style["display"] = "none";
 
                                 #region Req from NewHire
@@ -527,7 +528,7 @@ namespace JG_Prospect.Sr_App
                                 Label1.Visible = true;
                                 RequiredFieldValidator6.Enabled = true;
                                 lblConfirmPass.Visible = true;
-                                rqConPass.Enabled = false;
+                                //rqConPass.Enabled = false;
                                 lblReqSSN.Visible = false;
                                 rqSSN1.Enabled = false;
                                 rqSSN2.Enabled = false;
@@ -554,24 +555,24 @@ namespace JG_Prospect.Sr_App
                                 RequiredFieldValidator3.Enabled = true;
                                 lblReqDesig.Visible = true;
                                 lblReqPtrade.Visible = true;
-                                rqPrimaryTrade.Enabled = true;
+                                //rqPrimaryTrade.Enabled = true;
                                 lblReqSTrate.Visible = true;
-                                rqSecondaryTrade.Enabled = true;
+                                //rqSecondaryTrade.Enabled = true;
                                 lblReqLastName.Visible = true;
-                                rqLastName.Enabled = true;
-                                RequiredFieldValidator5.Enabled = true;
+                                //rqLastName.Enabled = true;
+                                //RequiredFieldValidator5.Enabled = true;
                                 lblReqFName.Visible = true;
                                 rqFirstName.Enabled = true;
                                 RequiredFieldValidator4.Enabled = true;
                                 lblPhoneReq.Visible = true;
-                                rqPhone.Enabled = true;
+                                //rqPhone.Enabled = true;
                                 lblSourceReq.Visible = true;
                                 //   rqSource.Enabled = true;
                                 lblNotesReq.Visible = false;
-                                rqNotes.Enabled = false;
+                                //rqNotes.Enabled = false;
                                 lblReqEmail.Visible = false;
-                                rqEmail.Enabled = false;
-                                reEmail.Enabled = true;
+                                //rqEmail.Enabled = false;
+                                //reEmail.Enabled = true;
                                 lblReqZip.Visible = true;
                                 rqZip.Enabled = true;
                                 lblStateReq.Visible = true;
@@ -579,7 +580,7 @@ namespace JG_Prospect.Sr_App
                                 lblCityReq.Visible = true;
                                 rqCity.Enabled = true;
                                 lblPassReq.Visible = true;
-                                rqPass.Enabled = true;
+                                //rqPass.Enabled = true;
                                 lblReqSig.Visible = false;
                                 lblConfirmPass.Visible = true;
                                 password.Enabled = true;
@@ -589,7 +590,7 @@ namespace JG_Prospect.Sr_App
                                 rqMaritalStatus.Enabled = true;
                                 lblReqPicture.Style["display"] = "block";
                                 // lblReqPicture.Visible = true;
-                              //  lblReqDL.Visible = false;
+                                //  lblReqDL.Visible = false;
                                 lblReqDL.Style["display"] = "block";
 
                                 #region Req from NewHire
@@ -598,7 +599,7 @@ namespace JG_Prospect.Sr_App
                                 Label1.Visible = true;
                                 RequiredFieldValidator6.Enabled = true;
                                 lblConfirmPass.Visible = true;
-                                rqConPass.Enabled = false;
+                                //rqConPass.Enabled = false;
                                 lblReqSSN.Visible = true;
                                 rqSSN1.Enabled = true;
                                 rqSSN2.Enabled = true;
@@ -625,24 +626,24 @@ namespace JG_Prospect.Sr_App
                                 RequiredFieldValidator3.Enabled = false;
                                 lblReqDesig.Visible = false;
                                 lblReqPtrade.Visible = true;
-                                rqPrimaryTrade.Enabled = true;
+                                //rqPrimaryTrade.Enabled = true;
                                 lblReqSTrate.Visible = true;
-                                rqSecondaryTrade.Enabled = true;
+                                //rqSecondaryTrade.Enabled = true;
                                 lblReqLastName.Visible = true;
-                                rqLastName.Enabled = true;
-                                RequiredFieldValidator5.Enabled = true;
+                                //rqLastName.Enabled = true;
+                                //RequiredFieldValidator5.Enabled = true;
                                 lblReqFName.Visible = true;
                                 rqFirstName.Enabled = true;
                                 RequiredFieldValidator4.Enabled = true;
                                 lblPhoneReq.Visible = true;
-                                rqPhone.Enabled = true;
+                                //rqPhone.Enabled = true;
                                 lblSourceReq.Visible = true;
                                 // rqSource.Enabled = true;
                                 lblNotesReq.Visible = false;
-                                rqNotes.Enabled = false;
+                                //rqNotes.Enabled = false;
                                 lblReqEmail.Visible = true;
-                                rqEmail.Enabled = true;
-                                reEmail.Enabled = true;
+                                //rqEmail.Enabled = true;
+                                //reEmail.Enabled = true;
                                 lblReqZip.Visible = false;
                                 rqZip.Enabled = false;
                                 lblStateReq.Visible = false;
@@ -650,21 +651,21 @@ namespace JG_Prospect.Sr_App
                                 lblCityReq.Visible = false;
                                 rqCity.Enabled = false;
                                 lblPassReq.Visible = false;
-                                rqPass.Enabled = false;
+                                //rqPass.Enabled = false;
                                 lblReqSig.Visible = false;
                                 rqSign.Enabled = false;
                                 lblReqMarSt.Visible = false;
                                 rqMaritalStatus.Enabled = false;
                                 lblReqPicture.Style["display"] = "none";
                                 //lblReqPicture.Visible = false;
-                              //  lblReqDL.Visible = false;
+                                //  lblReqDL.Visible = false;
                                 lblReqDL.Style["display"] = "none";
                                 lblAddressReq.Visible = false;
                                 rqAddress.Enabled = false;
                                 Label1.Visible = false;
                                 RequiredFieldValidator6.Enabled = false;
                                 lblConfirmPass.Visible = true;
-                                rqConPass.Enabled = false;
+                                //rqConPass.Enabled = false;
                                 lblReqSSN.Visible = false;
                                 rqSSN1.Enabled = false;
                                 rqSSN2.Enabled = false;
@@ -1134,25 +1135,25 @@ namespace JG_Prospect.Sr_App
                         //}
                         if (Convert.ToString(ds.Tables[0].Rows[0]["InstallerType"]) != "")
                         {
-                            string b = Convert.ToString(ds.Tables[0].Rows[0]["InstallerType"]);
-                            //ddlInstallerType.SelectedValue = Convert.ToString(ds.Tables[0].Rows[0]["Designation"]);
-                            if (b == "Labor")
-                            {
+                            //string b = Convert.ToString(ds.Tables[0].Rows[0]["InstallerType"]);
+                            ////ddlInstallerType.SelectedValue = Convert.ToString(ds.Tables[0].Rows[0]["Designation"]);
+                            //if (b == "Labor")
+                            //{
 
-                                ddlInstallerType.SelectedIndex = 0;
-                            }
-                            else if (b == "Journeyman")
-                            {
-                                ddlInstallerType.SelectedIndex = 1;
-                            }
-                            else if (b == "Leads Mechanic")
-                            {
-                                ddlInstallerType.SelectedIndex = 2;
-                            }
-                            else
-                            {
-                                ddlInstallerType.SelectedIndex = 3;
-                            }
+                            //    ddlInstallerType.SelectedIndex = 0;
+                            //}
+                            //else if (b == "Journeyman")
+                            //{
+                            //    ddlInstallerType.SelectedIndex = 1;
+                            //}
+                            //else if (b == "Leads Mechanic")
+                            //{
+                            //    ddlInstallerType.SelectedIndex = 2;
+                            //}
+                            //else
+                            //{
+                            //    ddlInstallerType.SelectedIndex = 3;
+                            //}
 
                         }
 
@@ -1165,20 +1166,20 @@ namespace JG_Prospect.Sr_App
                             {
 
                                 ddldesignation.SelectedIndex = 0;
-                                lblInstallerType.Visible = true;
-                                ddlInstallerType.Visible = true;
+                                //lblInstallerType.Visible = true;
+                                //ddlInstallerType.Visible = true;
                             }
                             else
                             {
                                 ddldesignation.SelectedIndex = 1;
-                                lblInstallerType.Visible = false;
-                                ddlInstallerType.Visible = false;
+                                //lblInstallerType.Visible = false;
+                                //ddlInstallerType.Visible = false;
                             }
                         }
                         else
                         {
-                            lblInstallerType.Visible = false;
-                            ddlInstallerType.Visible = false;
+                            //lblInstallerType.Visible = false;
+                            //ddlInstallerType.Visible = false;
                         }
 
 
@@ -1397,6 +1398,16 @@ namespace JG_Prospect.Sr_App
                 //rqAccountType.Enabled = false;
             }
 
+
+            //if (ddlstatus.SelectedValue == "OfferMade")
+            //{
+            //    ValidationSummary1.ValidationGroup = lnkSubmit.ValidationGroup = "OfferMade";
+            //}
+            //else
+            //{
+            //    ValidationSummary1.ValidationGroup = lnkSubmit.ValidationGroup = "submit";
+            //}
+
         }
 
         private void LoadNewSkillUser(int i)
@@ -1560,13 +1571,13 @@ namespace JG_Prospect.Sr_App
             }
             if (ddldesignation.SelectedItem.Text == "Installer")
             {
-                lblInstallerType.Visible = true;
-                ddlInstallerType.Visible = true;
+                //lblInstallerType.Visible = true;
+                //ddlInstallerType.Visible = true;
             }
             else
             {
-                lblInstallerType.Visible = false;
-                ddlInstallerType.Visible = false;
+                //lblInstallerType.Visible = false;
+                //ddlInstallerType.Visible = false;
             }
 
         }
@@ -1898,7 +1909,7 @@ namespace JG_Prospect.Sr_App
             ddlcitizen.SelectedValue = "0";
             ddldesignation.SelectedValue = "Installer";
             ddlstatus.SelectedValue = "Applicant";
-            ddlInstallerType.SelectedValue = "Labor";
+            //ddlInstallerType.SelectedValue = "Labor";
             //txtHireDate.Text = DateTime.Today.ToShortDateString();
             ddlWorkerCompCode.SelectedValue = "0";
             txtRoutingNo.Text = txtDeduction.Text = txtDeducReason.Text = txtAccountNo.Text = txtAccountType.Text = txtExtraIncome.Text = dtReviewDate.Text = "";
@@ -1941,13 +1952,13 @@ namespace JG_Prospect.Sr_App
             //btnAddEmpPartner.Enabled = true;
             if (ddldesignation.SelectedItem.Text == "Installer")
             {
-                lblInstallerType.Visible = true;
-                ddlInstallerType.Visible = true;
+                //lblInstallerType.Visible = true;
+                //ddlInstallerType.Visible = true;
             }
             else
             {
-                lblInstallerType.Visible = false;
-                ddlInstallerType.Visible = false;
+                //lblInstallerType.Visible = false;
+                //ddlInstallerType.Visible = false;
             }
             txtFullTimePos.Text = "";
             txtContractor1.Text = "";
@@ -2305,10 +2316,10 @@ namespace JG_Prospect.Sr_App
                 objuser.PersonName = Convert.ToString(Session["PersonName"]);
                 objuser.PersonType = Convert.ToString(Session["PersonType"]);
                 //objuser.CompanyPrinciple = txtPrinciple.Text;
-                if (ddldesignation.SelectedValue != "0" && ddlInstallerType.Visible == true)
-                {
-                    objuser.InstallerType = ddlInstallerType.SelectedValue;
-                }
+                //if (ddldesignation.SelectedValue != "0" && ddlInstallerType.Visible == true)
+                //{
+                //    //objuser.InstallerType = ddlInstallerType.SelectedValue;
+                //}
                 if (ddlstatus.SelectedValue == "InterviewDate")
                 {
                     objuser.InterviewTime = ddlInsteviewtime.SelectedItem.Text;
@@ -2336,13 +2347,13 @@ namespace JG_Prospect.Sr_App
                 clearcontrols();
                 if (ddldesignation.SelectedItem.Text == "Installer")
                 {
-                    lblInstallerType.Visible = true;
-                    ddlInstallerType.Visible = true;
+                    //lblInstallerType.Visible = true;
+                    //ddlInstallerType.Visible = true;
                 }
                 else
                 {
-                    lblInstallerType.Visible = false;
-                    ddlInstallerType.Visible = false;
+                    //lblInstallerType.Visible = false;
+                    //ddlInstallerType.Visible = false;
                 }
 
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('InstallUser  Update successfully.');window.location ='EditInstallUser.aspx';", true);
@@ -2356,19 +2367,22 @@ namespace JG_Prospect.Sr_App
 
         //Create Sales User......Button
         protected void btncreate_Click(object sender, EventArgs e)
-        { 
+        {
             try
             {
+                if (!Page.IsValid)
+                    return;
+
                 string InstallId = string.Empty;
                 string str_Status = string.Empty;
                 string str_Reason = string.Empty;
 
                 //For DOB.. Code Added by Neeta..
-                if (DOBdatepicker.Text == "")
-                {
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please Enter Date Of Birth.');", true);
-                    return;
-                }
+                //if (DOBdatepicker.Text == "")
+                //{
+                //    ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please Enter Date Of Birth.');", true);
+                //    return;
+                //}
 
                 if ((ddlstatus.SelectedValue == "Active") && (txtA.Text == "" || txtB.Text == "" || txtC.Text == "" || txtD.Text == "" || txtE.Text == "" || txtF.Text == "" || txtG.Text == "" || txtH.Text == "" || txt5.Text == "" || txt6.Text == "" || txt7.Text == ""))
                 {
@@ -2385,11 +2399,11 @@ namespace JG_Prospect.Sr_App
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please select DL License file');", true);
                     return;
                 }
-                if (txtemail.Text == "")
-                {
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please Enter Email Address');", true);
-                    return;
-                }
+                //if (txtemail.Text == "")
+                //{
+                //    ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please Enter Email Address');", true);
+                //    return;
+                //}
                 //if (ddlstatus.SelectedValue == "Applicant")
                 //{
                 //    if (ddlSource.SelectedIndex == 0)
@@ -2729,10 +2743,10 @@ namespace JG_Prospect.Sr_App
                     //    }
                     //}
                     //objuser.CompanyPrinciple = txtPrinciple.Text;
-                    if (ddldesignation.SelectedValue != "0" && ddlInstallerType.Visible == true)
-                    {
-                        objuser.InstallerType = ddlInstallerType.SelectedValue;
-                    }
+                    //if (ddldesignation.SelectedValue != "0" && ddlInstallerType.Visible == true)
+                    //{
+                    //    //objuser.InstallerType = ddlInstallerType.SelectedValue;
+                    //}
                     if (ddlstatus.SelectedValue == "InterviewDate")
                     {
                         objuser.InterviewTime = ddlInsteviewtime.SelectedItem.Text;
@@ -2799,7 +2813,7 @@ namespace JG_Prospect.Sr_App
                     DataSet dsCheckDuplicate;
                     dsCheckDuplicate = InstallUserBLL.Instance.CheckInstallUser(txtemail.Text, txtPhone.Text);
                     //if (dsCheckDuplicate.Tables[0].Rows.Count > 0)
-                    if (dsCheckDuplicate.Tables.Count > 0)
+                    if (dsCheckDuplicate.Tables.Count > 0 && dsCheckDuplicate.Tables[0].Rows.Count > 0)
                     {
                         Session["EmailEdiId"] = Convert.ToInt32(dsCheckDuplicate.Tables[0].Rows[0][0]);
                         ScriptManager.RegisterStartupScript(this, GetType(), "overlay", "overlay();", true);
@@ -2842,16 +2856,16 @@ namespace JG_Prospect.Sr_App
                         //ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('User has been created successfully');", true);
                         ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('User has been created successfully');window.location ='EditInstallUser.aspx';", true);
                         clearcontrols();
-                        if (ddldesignation.SelectedItem.Text == "Installer")
-                        {
-                            lblInstallerType.Visible = true;
-                            ddlInstallerType.Visible = true;
-                        }
-                        else
-                        {
-                            lblInstallerType.Visible = false;
-                            ddlInstallerType.Visible = false;
-                        }
+                        //if (ddldesignation.SelectedItem.Text == "Installer")
+                        //{
+                        //    //lblInstallerType.Visible = true;
+                        //    //ddlInstallerType.Visible = true;
+                        //}
+                        //else
+                        //{
+                        //    //lblInstallerType.Visible = false;
+                        //    //ddlInstallerType.Visible = false;
+                        //}
                     }
                 }
                 //else
@@ -2862,7 +2876,7 @@ namespace JG_Prospect.Sr_App
             catch (Exception ex)
             {
 
-               // throw;
+                // throw;
             }
         }
 
@@ -3590,7 +3604,7 @@ namespace JG_Prospect.Sr_App
                 aDoc.Close(ref missing, ref missing, ref missing);
             }
             using (MailMessage mm = new MailMessage("qat2015team@gmail.com", txtemail.Text))
-           // using (MailMessage mm = new MailMessage("support@jmgroveconstruction.com", txtemail.Text))
+            // using (MailMessage mm = new MailMessage("support@jmgroveconstruction.com", txtemail.Text))
             {
                 try
                 {
@@ -3600,7 +3614,7 @@ namespace JG_Prospect.Sr_App
                     mm.IsBodyHtml = true;
                     SmtpClient smtp = new SmtpClient();
                     smtp.Host = "smtp.gmail.com";
-                   // smtp.Host = "mail.jmgroveconstruction.com";
+                    // smtp.Host = "mail.jmgroveconstruction.com";
                     smtp.EnableSsl = true;
                     NetworkCredential NetworkCred = new NetworkCredential("qat2015team@gmail.com", "q$7@wt%j*65ba#3M@9P6");
                     //NetworkCredential NetworkCred = new NetworkCredential("support@jmgroveconstruction.com", "kq2u0D3%");
@@ -3839,16 +3853,16 @@ namespace JG_Prospect.Sr_App
                 ScriptManager.RegisterStartupScript(this, GetType(), "alert", "alert(Please Select Designition,Enter First Name & last Name)", true);
                 return;
             }
-            if (ddldesignation.SelectedItem.Text == "Installer")
-            {
-                lblInstallerType.Visible = true;
-                ddlInstallerType.Visible = true;
-            }
-            else
-            {
-                lblInstallerType.Visible = false;
-                ddlInstallerType.Visible = false;
-            }
+            //if (ddldesignation.SelectedItem.Text == "Installer")
+            //{
+            //    lblInstallerType.Visible = true;
+            //    ddlInstallerType.Visible = true;
+            //}
+            //else
+            //{
+            //    lblInstallerType.Visible = false;
+            //    ddlInstallerType.Visible = false;
+            //}
             btnPluse.Visible = true;
             btnMinus.Visible = false;
             pnl4.Visible = false;
@@ -4172,10 +4186,10 @@ namespace JG_Prospect.Sr_App
                 objuser.PersonName = Convert.ToString(Session["PersonName"]);
                 objuser.PersonType = Convert.ToString(Session["PersonType"]);
                 //objuser.CompanyPrinciple = txtPrinciple.Text;
-                if (ddldesignation.SelectedValue != "0" && ddlInstallerType.Visible == true)
-                {
-                    objuser.InstallerType = ddlInstallerType.SelectedValue;
-                }
+                //if (ddldesignation.SelectedValue != "0" && ddlInstallerType.Visible == true)
+                //{
+                //    objuser.InstallerType = ddlInstallerType.SelectedValue;
+                //}
                 if (ddlstatus.SelectedValue == "InterviewDate")
                 {
                     objuser.InterviewTime = ddlInsteviewtime.SelectedItem.Text;
@@ -4247,16 +4261,16 @@ namespace JG_Prospect.Sr_App
                     //lblmsg.Text = "User has been created successfully";
                     //ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('InstallUser  Update successfully');", true);
                     clearcontrols();
-                    if (ddldesignation.SelectedItem.Text == "Installer")
-                    {
-                        lblInstallerType.Visible = true;
-                        ddlInstallerType.Visible = true;
-                    }
-                    else
-                    {
-                        lblInstallerType.Visible = false;
-                        ddlInstallerType.Visible = false;
-                    }
+                    //if (ddldesignation.SelectedItem.Text == "Installer")
+                    //{
+                    //    lblInstallerType.Visible = true;
+                    //    ddlInstallerType.Visible = true;
+                    //}
+                    //else
+                    //{
+                    //    lblInstallerType.Visible = false;
+                    //    ddlInstallerType.Visible = false;
+                    //}
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('InstallUser  Update successfully.');window.location ='EditInstallUser.aspx';", true);
                     //Server.Transfer("EditInstallUser.aspx");
                 }
@@ -4352,16 +4366,16 @@ namespace JG_Prospect.Sr_App
             {
                 GenerateBarCode(Convert.ToString(Session["IdGenerated"]));
             }
-            if (ddldesignation.SelectedItem.Text == "Installer")
-            {
-                lblInstallerType.Visible = true;
-                ddlInstallerType.Visible = true;
-            }
-            else
-            {
-                lblInstallerType.Visible = false;
-                ddlInstallerType.Visible = false;
-            }
+            //if (ddldesignation.SelectedItem.Text == "Installer")
+            //{
+            //    lblInstallerType.Visible = true;
+            //    ddlInstallerType.Visible = true;
+            //}
+            //else
+            //{
+            //    lblInstallerType.Visible = false;
+            //    ddlInstallerType.Visible = false;
+            //}
 
             btnPluse.Visible = true;
             btnMinus.Visible = false;
@@ -4884,16 +4898,16 @@ namespace JG_Prospect.Sr_App
             pnl4.Visible = true;
             btnPluse.Visible = false;
             btnMinus.Visible = true;
-            if (ddldesignation.SelectedItem.Text == "Installer")
-            {
-                lblInstallerType.Visible = true;
-                ddlInstallerType.Visible = true;
-            }
-            else
-            {
-                lblInstallerType.Visible = false;
-                ddlInstallerType.Visible = false;
-            }
+            //if (ddldesignation.SelectedItem.Text == "Installer")
+            //{
+            //    lblInstallerType.Visible = true;
+            //    ddlInstallerType.Visible = true;
+            //}
+            //else
+            //{
+            //    lblInstallerType.Visible = false;
+            //    ddlInstallerType.Visible = false;
+            //}
         }
 
         protected void btnMinus_Click(object sender, EventArgs e)
@@ -4901,16 +4915,16 @@ namespace JG_Prospect.Sr_App
             pnl4.Visible = false;
             btnPluse.Visible = true;
             btnMinus.Visible = false;
-            if (ddldesignation.SelectedItem.Text == "Installer")
-            {
-                lblInstallerType.Visible = true;
-                ddlInstallerType.Visible = true;
-            }
-            else
-            {
-                lblInstallerType.Visible = false;
-                ddlInstallerType.Visible = false;
-            }
+            //if (ddldesignation.SelectedItem.Text == "Installer")
+            //{
+            //    lblInstallerType.Visible = true;
+            //    ddlInstallerType.Visible = true;
+            //}
+            //else
+            //{
+            //    lblInstallerType.Visible = false;
+            //    ddlInstallerType.Visible = false;
+            //}
         }
 
         //protected void btnGeneralLiability_Click(object sender, EventArgs e)
@@ -5000,16 +5014,16 @@ namespace JG_Prospect.Sr_App
             {
                 GenerateBarCode(Convert.ToString(Session["IdGenerated"]));
             }
-            if (ddldesignation.SelectedItem.Text == "Installer")
-            {
-                lblInstallerType.Visible = true;
-                ddlInstallerType.Visible = true;
-            }
-            else
-            {
-                lblInstallerType.Visible = false;
-                ddlInstallerType.Visible = false;
-            }
+            //if (ddldesignation.SelectedItem.Text == "Installer")
+            //{
+            //    lblInstallerType.Visible = true;
+            //    ddlInstallerType.Visible = true;
+            //}
+            //else
+            //{
+            //    lblInstallerType.Visible = false;
+            //    ddlInstallerType.Visible = false;
+            //}
             btnPluse.Visible = true;
             btnMinus.Visible = false;
             pnl4.Visible = false;
@@ -5127,16 +5141,16 @@ namespace JG_Prospect.Sr_App
                 txtAccountType.Visible = true;
                 txtOtherTrade.Visible = true;
             }
-            if (ddldesignation.SelectedItem.Text == "Installer")
-            {
-                lblInstallerType.Visible = true;
-                ddlInstallerType.Visible = true;
-            }
-            else
-            {
-                lblInstallerType.Visible = false;
-                ddlInstallerType.Visible = false;
-            }
+            //if (ddldesignation.SelectedItem.Text == "Installer")
+            //{
+            //    lblInstallerType.Visible = true;
+            //    ddlInstallerType.Visible = true;
+            //}
+            //else
+            //{
+            //    lblInstallerType.Visible = false;
+            //    ddlInstallerType.Visible = false;
+            //}
         }
 
         protected void btnNewMinus_Click(object sender, EventArgs e)
@@ -5167,16 +5181,16 @@ namespace JG_Prospect.Sr_App
                 txtAccountType.Visible = true;
                 txtOtherTrade.Visible = true;
             }
-            if (ddldesignation.SelectedItem.Text == "Installer")
-            {
-                lblInstallerType.Visible = true;
-                ddlInstallerType.Visible = true;
-            }
-            else
-            {
-                lblInstallerType.Visible = false;
-                ddlInstallerType.Visible = false;
-            }
+            //if (ddldesignation.SelectedItem.Text == "Installer")
+            //{
+            //    lblInstallerType.Visible = true;
+            //    ddlInstallerType.Visible = true;
+            //}
+            //else
+            //{
+            //    lblInstallerType.Visible = false;
+            //    ddlInstallerType.Visible = false;
+            //}
         }
 
         protected void btnAddExtraIncome_Click(object sender, EventArgs e)
@@ -5337,16 +5351,16 @@ namespace JG_Prospect.Sr_App
             //    rqExtraEarnings.Enabled = false;
             //    rqExtraEarningAmt.Enabled = false;
             //}
-            if (ddldesignation.SelectedItem.Text == "Installer")
-            {
-                lblInstallerType.Visible = true;
-                ddlInstallerType.Visible = true;
-            }
-            else
-            {
-                lblInstallerType.Visible = false;
-                ddlInstallerType.Visible = false;
-            }
+            //if (ddldesignation.SelectedItem.Text == "Installer")
+            //{
+            //    lblInstallerType.Visible = true;
+            //    ddlInstallerType.Visible = true;
+            //}
+            //else
+            //{
+            //    lblInstallerType.Visible = false;
+            //    ddlInstallerType.Visible = false;
+            //}
             btnPluse.Visible = true;
             btnMinus.Visible = false;
             pnl4.Visible = false;
@@ -5474,16 +5488,16 @@ namespace JG_Prospect.Sr_App
                 txtAccountType.Visible = true;
                 txtOtherTrade.Visible = true;
             }
-            if (ddldesignation.SelectedItem.Text == "Installer")
-            {
-                lblInstallerType.Visible = true;
-                ddlInstallerType.Visible = true;
-            }
-            else
-            {
-                lblInstallerType.Visible = false;
-                ddlInstallerType.Visible = false;
-            }
+            //if (ddldesignation.SelectedItem.Text == "Installer")
+            //{
+            //    lblInstallerType.Visible = true;
+            //    ddlInstallerType.Visible = true;
+            //}
+            //else
+            //{
+            //    lblInstallerType.Visible = false;
+            //    ddlInstallerType.Visible = false;
+            //}
             btnPluse.Visible = true;
             btnMinus.Visible = false;
             pnl4.Visible = false;
@@ -5526,16 +5540,16 @@ namespace JG_Prospect.Sr_App
             {
                 pnlAll.Visible = false;
             }
-            if (ddldesignation.SelectedItem.Text == "Installer")
-            {
-                lblInstallerType.Visible = true;
-                ddlInstallerType.Visible = true;
-            }
-            else
-            {
-                lblInstallerType.Visible = false;
-                ddlInstallerType.Visible = false;
-            }
+            //if (ddldesignation.SelectedItem.Text == "Installer")
+            //{
+            //    lblInstallerType.Visible = true;
+            //    ddlInstallerType.Visible = true;
+            //}
+            //else
+            //{
+            //    lblInstallerType.Visible = false;
+            //    ddlInstallerType.Visible = false;
+            //}
             if (ddldesignation.SelectedItem.Text == "SubContractor")
             {
                 if (Request.QueryString["ID"] != null)
@@ -5743,16 +5757,16 @@ namespace JG_Prospect.Sr_App
             {
                 txtOtherTrade.Visible = false;
             }
-            if (ddldesignation.SelectedItem.Text == "Installer")
-            {
-                lblInstallerType.Visible = true;
-                ddlInstallerType.Visible = true;
-            }
-            else
-            {
-                lblInstallerType.Visible = false;
-                ddlInstallerType.Visible = false;
-            }
+            //if (ddldesignation.SelectedItem.Text == "Installer")
+            //{
+            //    lblInstallerType.Visible = true;
+            //    ddlInstallerType.Visible = true;
+            //}
+            //else
+            //{
+            //    lblInstallerType.Visible = false;
+            //    ddlInstallerType.Visible = false;
+            //}
         }
 
         protected void ddlSecondaryTrade_SelectedIndexChanged(object sender, EventArgs e)
@@ -5765,16 +5779,16 @@ namespace JG_Prospect.Sr_App
             {
                 txtSecTradeOthers.Visible = false;
             }
-            if (ddldesignation.SelectedItem.Text == "Installer")
-            {
-                lblInstallerType.Visible = true;
-                ddlInstallerType.Visible = true;
-            }
-            else
-            {
-                lblInstallerType.Visible = false;
-                ddlInstallerType.Visible = false;
-            }
+            //if (ddldesignation.SelectedItem.Text == "Installer")
+            //{
+            //    lblInstallerType.Visible = true;
+            //    ddlInstallerType.Visible = true;
+            //}
+            //else
+            //{
+            //    lblInstallerType.Visible = false;
+            //    ddlInstallerType.Visible = false;
+            //}
         }
 
         protected void rdoDeposite_CheckedChanged(object sender, EventArgs e)
@@ -5831,26 +5845,26 @@ namespace JG_Prospect.Sr_App
                 //rqAccountNo.Enabled = false;
                 //rqAccountType.Enabled = false;
             }
-            if (ddldesignation.SelectedItem.Text == "Installer")
-            {
-                lblInstallerType.Visible = true;
-                ddlInstallerType.Visible = true;
-            }
-            else
-            {
-                lblInstallerType.Visible = false;
-                ddlInstallerType.Visible = false;
-            }
-            if (ddldesignation.SelectedItem.Text == "Installer")
-            {
-                lblInstallerType.Visible = true;
-                ddlInstallerType.Visible = true;
-            }
-            else
-            {
-                lblInstallerType.Visible = false;
-                ddlInstallerType.Visible = false;
-            }
+            //if (ddldesignation.SelectedItem.Text == "Installer")
+            //{
+            //    lblInstallerType.Visible = true;
+            //    ddlInstallerType.Visible = true;
+            //}
+            //else
+            //{
+            //    lblInstallerType.Visible = false;
+            //    ddlInstallerType.Visible = false;
+            //}
+            //if (ddldesignation.SelectedItem.Text == "Installer")
+            //{
+            //    lblInstallerType.Visible = true;
+            //    ddlInstallerType.Visible = true;
+            //}
+            //else
+            //{
+            //    lblInstallerType.Visible = false;
+            //    ddlInstallerType.Visible = false;
+            //}
         }
 
         protected void btnDeleteSource_Click(object sender, EventArgs e)
@@ -5894,16 +5908,16 @@ namespace JG_Prospect.Sr_App
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Select source to delete.')", true);
                 //    ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Enter value to delete')", true);
             }
-            if (ddldesignation.SelectedItem.Text == "Installer")
-            {
-                lblInstallerType.Visible = true;
-                ddlInstallerType.Visible = true;
-            }
-            else
-            {
-                lblInstallerType.Visible = false;
-                ddlInstallerType.Visible = false;
-            }
+            //if (ddldesignation.SelectedItem.Text == "Installer")
+            //{
+            //    lblInstallerType.Visible = true;
+            //    ddlInstallerType.Visible = true;
+            //}
+            //else
+            //{
+            //    lblInstallerType.Visible = false;
+            //    ddlInstallerType.Visible = false;
+            //}
             btnPluse.Visible = true;
             btnMinus.Visible = false;
             pnl4.Visible = false;
@@ -5939,16 +5953,16 @@ namespace JG_Prospect.Sr_App
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Enter value to add.')", true);
             }
-            if (ddldesignation.SelectedItem.Text == "Installer")
-            {
-                lblInstallerType.Visible = true;
-                ddlInstallerType.Visible = true;
-            }
-            else
-            {
-                lblInstallerType.Visible = false;
-                ddlInstallerType.Visible = false;
-            }
+            //if (ddldesignation.SelectedItem.Text == "Installer")
+            //{
+            //    lblInstallerType.Visible = true;
+            //    ddlInstallerType.Visible = true;
+            //}
+            //else
+            //{
+            //    lblInstallerType.Visible = false;
+            //    ddlInstallerType.Visible = false;
+            //}
             btnPluse.Visible = true;
             btnMinus.Visible = false;
             pnl4.Visible = false;
@@ -6005,16 +6019,16 @@ namespace JG_Prospect.Sr_App
             {
                 GenerateBarCode(Convert.ToString(Session["IdGenerated"]));
             }
-            if (ddldesignation.SelectedItem.Text == "Installer")
-            {
-                lblInstallerType.Visible = true;
-                ddlInstallerType.Visible = true;
-            }
-            else
-            {
-                lblInstallerType.Visible = false;
-                ddlInstallerType.Visible = false;
-            }
+            //if (ddldesignation.SelectedItem.Text == "Installer")
+            //{
+            //    lblInstallerType.Visible = true;
+            //    ddlInstallerType.Visible = true;
+            //}
+            //else
+            //{
+            //    lblInstallerType.Visible = false;
+            //    ddlInstallerType.Visible = false;
+            //}
             btnPluse.Visible = true;
             btnMinus.Visible = false;
             pnl4.Visible = false;
@@ -6068,16 +6082,16 @@ namespace JG_Prospect.Sr_App
             {
                 GenerateBarCode(Convert.ToString(Session["IdGenerated"]));
             }
-            if (ddldesignation.SelectedItem.Text == "Installer")
-            {
-                lblInstallerType.Visible = true;
-                ddlInstallerType.Visible = true;
-            }
-            else
-            {
-                lblInstallerType.Visible = false;
-                ddlInstallerType.Visible = false;
-            }
+            //if (ddldesignation.SelectedItem.Text == "Installer")
+            //{
+            //    lblInstallerType.Visible = true;
+            //    ddlInstallerType.Visible = true;
+            //}
+            //else
+            //{
+            //    lblInstallerType.Visible = false;
+            //    ddlInstallerType.Visible = false;
+            //}
             btnPluse.Visible = true;
             btnMinus.Visible = false;
             pnl4.Visible = false;
@@ -6089,16 +6103,16 @@ namespace JG_Prospect.Sr_App
             btnPlusNew.Visible = false;
             Panel3.Visible = true;
             Panel4.Visible = true;
-            if (ddldesignation.SelectedItem.Text == "Installer")
-            {
-                lblInstallerType.Visible = true;
-                ddlInstallerType.Visible = true;
-            }
-            else
-            {
-                lblInstallerType.Visible = false;
-                ddlInstallerType.Visible = false;
-            }
+            //if (ddldesignation.SelectedItem.Text == "Installer")
+            //{
+            //    lblInstallerType.Visible = true;
+            //    ddlInstallerType.Visible = true;
+            //}
+            //else
+            //{
+            //    lblInstallerType.Visible = false;
+            //    ddlInstallerType.Visible = false;
+            //}
             lblSectionHeading.Visible = true;
         }
 
@@ -6108,16 +6122,16 @@ namespace JG_Prospect.Sr_App
             btnPlusNew.Visible = true;
             Panel3.Visible = false;
             Panel4.Visible = false;
-            if (ddldesignation.SelectedItem.Text == "Installer")
-            {
-                lblInstallerType.Visible = true;
-                ddlInstallerType.Visible = true;
-            }
-            else
-            {
-                lblInstallerType.Visible = false;
-                ddlInstallerType.Visible = false;
-            }
+            //if (ddldesignation.SelectedItem.Text == "Installer")
+            //{
+            //    lblInstallerType.Visible = true;
+            //    ddlInstallerType.Visible = true;
+            //}
+            //else
+            //{
+            //    lblInstallerType.Visible = false;
+            //    ddlInstallerType.Visible = false;
+            //}
             lblSectionHeading.Visible = false;
         }
 
@@ -6155,16 +6169,16 @@ namespace JG_Prospect.Sr_App
             //    ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Select User Type')", true);
             //    return;
             //}
-            if (ddldesignation.SelectedItem.Text == "Installer")
-            {
-                lblInstallerType.Visible = true;
-                ddlInstallerType.Visible = true;
-            }
-            else
-            {
-                lblInstallerType.Visible = false;
-                ddlInstallerType.Visible = false;
-            }
+            //if (ddldesignation.SelectedItem.Text == "Installer")
+            //{
+            //    lblInstallerType.Visible = true;
+            //    ddlInstallerType.Visible = true;
+            //}
+            //else
+            //{
+            //    lblInstallerType.Visible = false;
+            //    ddlInstallerType.Visible = false;
+            //}
             btnPluse.Visible = true;
             btnMinus.Visible = false;
             pnl4.Visible = false;
@@ -6245,16 +6259,16 @@ namespace JG_Prospect.Sr_App
                 //txtPrinciple.Enabled = true;
                 //btnAddEmpPartner.Enabled = true;
             }
-            if (ddldesignation.SelectedItem.Text == "Installer")
-            {
-                lblInstallerType.Visible = true;
-                ddlInstallerType.Visible = true;
-            }
-            else
-            {
-                lblInstallerType.Visible = false;
-                ddlInstallerType.Visible = false;
-            }
+            //if (ddldesignation.SelectedItem.Text == "Installer")
+            //{
+            //    lblInstallerType.Visible = true;
+            //    ddlInstallerType.Visible = true;
+            //}
+            //else
+            //{
+            //    lblInstallerType.Visible = false;
+            //    ddlInstallerType.Visible = false;
+            //}
         }
 
         public void createForeMenForJobAcceptance(string str_Body)
@@ -6295,7 +6309,7 @@ namespace JG_Prospect.Sr_App
                 aDoc.Close(ref missing, ref missing, ref missing);
             }
             using (MailMessage mm = new MailMessage("qat2015team@gmail.com", txtemail.Text))
-          //  using (MailMessage mm = new MailMessage("support@jmgroveconstruction.com", txtemail.Text))
+            //  using (MailMessage mm = new MailMessage("support@jmgroveconstruction.com", txtemail.Text))
             {
                 try
                 {
@@ -6305,10 +6319,10 @@ namespace JG_Prospect.Sr_App
                     mm.IsBodyHtml = true;
                     SmtpClient smtp = new SmtpClient();
                     smtp.Host = "smtp.gmail.com";
-                  //  smtp.Host = "mail.jmgroveconstruction.com";
+                    //  smtp.Host = "mail.jmgroveconstruction.com";
                     smtp.EnableSsl = true;
                     NetworkCredential NetworkCred = new NetworkCredential("qat2015team@gmail.com", "q$7@wt%j*65ba#3M@9P6");
-                   // NetworkCredential NetworkCred = new NetworkCredential("support@jmgroveconstruction.com", "kq2u0D3%");
+                    // NetworkCredential NetworkCred = new NetworkCredential("support@jmgroveconstruction.com", "kq2u0D3%");
                     smtp.UseDefaultCredentials = true;
                     smtp.Credentials = NetworkCred;
                     smtp.Port = 25;
@@ -6418,16 +6432,16 @@ namespace JG_Prospect.Sr_App
                 btnUploadSkills.Enabled = true;
                 flpSkillAssessment.Enabled = true;
             }
-            if (ddldesignation.SelectedItem.Text == "Installer")
-            {
-                lblInstallerType.Visible = true;
-                ddlInstallerType.Visible = true;
-            }
-            else
-            {
-                lblInstallerType.Visible = false;
-                ddlInstallerType.Visible = false;
-            }
+            //if (ddldesignation.SelectedItem.Text == "Installer")
+            //{
+            //    lblInstallerType.Visible = true;
+            //    ddlInstallerType.Visible = true;
+            //}
+            //else
+            //{
+            //    lblInstallerType.Visible = false;
+            //    ddlInstallerType.Visible = false;
+            //}
         }
 
         protected void rdoEmptionYse_CheckedChanged(object sender, EventArgs e)
@@ -10489,8 +10503,8 @@ namespace JG_Prospect.Sr_App
         //    //    rqDeduction.Enabled = true;
         //    //    rqDeductionAmt.Enabled = true;
         //    //    rqDesignition.Enabled = true;
-        //    //    rqPrimaryTrade.Enabled = true;
-        //    //    rqSecondaryTrade.Enabled = true;
+        //    //    //rqPrimaryTrade.Enabled = true;
+        //    //    //rqSecondaryTrade.Enabled = true;
         //    //    rqFirstName.Enabled = true;
         //    //    rqEmail.Enabled = true;
         //    //    reEmail.Enabled = true;
@@ -10507,14 +10521,14 @@ namespace JG_Prospect.Sr_App
         //    //    lblReqSig.Visible = true;
         //    //    rqMaritalStatus.Enabled = true;
         //    //    lblReqMarSt.Visible = true;
-        //    //    rqNotes.Enabled = true;
+        //    //    //rqNotes.Enabled = true;
         //    //    lblNotesReq.Visible = true;
         //    //    rqSource.Enabled = true;
         //    //    lblSourceReq.Visible = true;
-        //    //    rqLastName.Enabled = true;
+        //    //    //rqLastName.Enabled = true;
         //    //    rqAddress.Enabled = true;
         //    //    lblAddressReq.Visible = true;
-        //    //    rqPhone.Enabled = true;
+        //    //    //rqPhone.Enabled = true;
         //    //    lblPhoneReq.Visible = true;
         //    //    rqPass.Enabled = true;
         //    //    lblPassReq.Visible = true;
@@ -10544,8 +10558,8 @@ namespace JG_Prospect.Sr_App
         //    //    rqDeduction.Enabled = false;
         //    //    rqDeductionAmt.Enabled = false;
         //    //    rqDesignition.Enabled = false;
-        //    //    rqPrimaryTrade.Enabled = true;
-        //    //    rqSecondaryTrade.Enabled = true;
+        //    //    //rqPrimaryTrade.Enabled = true;
+        //    //    //rqSecondaryTrade.Enabled = true;
         //    //    rqFirstName.Enabled = true;
         //    //    rqEmail.Enabled = true;
         //    //    reEmail.Enabled = true;
@@ -10562,14 +10576,14 @@ namespace JG_Prospect.Sr_App
         //    //    lblReqSig.Visible = false;
         //    //    rqMaritalStatus.Enabled = false;
         //    //    lblReqMarSt.Visible = false;
-        //    //    rqNotes.Enabled = false;
+        //    //    //rqNotes.Enabled = false;
         //    //    lblNotesReq.Visible = false;
         //    //    rqSource.Enabled = true;
         //    //    lblSourceReq.Visible = true;
-        //    //    rqLastName.Enabled = true;
+        //    //    //rqLastName.Enabled = true;
         //    //    rqAddress.Enabled = true;
         //    //    lblAddressReq.Visible = true;
-        //    //    rqPhone.Enabled = true;
+        //    //    //rqPhone.Enabled = true;
         //    //    lblPhoneReq.Visible = true;
         //    //    rqPass.Enabled = true;
         //    //    lblPassReq.Visible = true;
@@ -10619,21 +10633,21 @@ namespace JG_Prospect.Sr_App
         //        RequiredFieldValidator3.Enabled = false;
         //        lblReqDesig.Visible = false;
         //        lblReqPtrade.Visible = true;
-        //        rqPrimaryTrade.Enabled = true;
+        //        //rqPrimaryTrade.Enabled = true;
         //        lblReqSTrate.Visible = true;
-        //        rqSecondaryTrade.Enabled = true;
+        //        //rqSecondaryTrade.Enabled = true;
         //        lblReqLastName.Visible = true;
-        //        rqLastName.Enabled = true;
-        //        RequiredFieldValidator5.Enabled = true;
+        //        //rqLastName.Enabled = true;
+        //        //RequiredFieldValidator5.Enabled = true;
         //        lblReqFName.Visible = true;
         //        rqFirstName.Enabled = true;
         //        RequiredFieldValidator4.Enabled = true;
         //        lblPhoneReq.Visible = true;
-        //        rqPhone.Enabled = true;
+        //        //rqPhone.Enabled = true;
         //        lblSourceReq.Visible = true;
         //      //  rqSource.Enabled = true;
         //        lblNotesReq.Visible = false;
-        //        rqNotes.Enabled = false;
+        //        //rqNotes.Enabled = false;
         //        lblReqEmail.Visible = false;
         //        rqEmail.Enabled = false;
         //        reEmail.Enabled = true;
@@ -10674,21 +10688,21 @@ namespace JG_Prospect.Sr_App
         //        RequiredFieldValidator3.Enabled = false;
         //        lblReqDesig.Visible = false;
         //        lblReqPtrade.Visible = true;
-        //        rqPrimaryTrade.Enabled = true;
+        //        //rqPrimaryTrade.Enabled = true;
         //        lblReqSTrate.Visible = true;
-        //        rqSecondaryTrade.Enabled = true;
+        //        //rqSecondaryTrade.Enabled = true;
         //        lblReqLastName.Visible = true;
-        //        rqLastName.Enabled = true;
-        //        RequiredFieldValidator5.Enabled = true;
+        //        //rqLastName.Enabled = true;
+        //        //RequiredFieldValidator5.Enabled = true;
         //        lblReqFName.Visible = true;
         //        rqFirstName.Enabled = true;
         //        RequiredFieldValidator4.Enabled = true;
         //        lblPhoneReq.Visible = true;
-        //        rqPhone.Enabled = true;
+        //        //rqPhone.Enabled = true;
         //        lblSourceReq.Visible = true;
         //       // rqSource.Enabled = true;
         //        lblNotesReq.Visible = false;
-        //        rqNotes.Enabled = false;
+        //        //rqNotes.Enabled = false;
         //        lblReqEmail.Visible = false;
         //        rqEmail.Enabled = false;
         //        reEmail.Enabled = true;
@@ -10729,21 +10743,21 @@ namespace JG_Prospect.Sr_App
         //        RequiredFieldValidator3.Enabled = true;
         //        lblReqDesig.Visible = true;
         //        lblReqPtrade.Visible = true;
-        //        rqPrimaryTrade.Enabled = true;
+        //        //rqPrimaryTrade.Enabled = true;
         //        lblReqSTrate.Visible = true;
-        //        rqSecondaryTrade.Enabled = true;
+        //        //rqSecondaryTrade.Enabled = true;
         //        lblReqLastName.Visible = true;
-        //        rqLastName.Enabled = true;
-        //        RequiredFieldValidator5.Enabled = true;
+        //        //rqLastName.Enabled = true;
+        //        //RequiredFieldValidator5.Enabled = true;
         //        lblReqFName.Visible = true;
         //        rqFirstName.Enabled = true;
         //        RequiredFieldValidator4.Enabled = true;
         //        lblPhoneReq.Visible = true;
-        //        rqPhone.Enabled = true;
+        //        //rqPhone.Enabled = true;
         //        lblSourceReq.Visible = true;
         //      //  rqSource.Enabled = true;
         //        lblNotesReq.Visible = false;
-        //        rqNotes.Enabled = false;
+        //        //rqNotes.Enabled = false;
         //        lblReqEmail.Visible = false;
         //        rqEmail.Enabled = false;
         //        reEmail.Enabled = true;
@@ -10797,21 +10811,21 @@ namespace JG_Prospect.Sr_App
         //        RequiredFieldValidator3.Enabled = true;
         //        lblReqDesig.Visible = true;
         //        lblReqPtrade.Visible = true;
-        //        rqPrimaryTrade.Enabled = true;
+        //        //rqPrimaryTrade.Enabled = true;
         //        lblReqSTrate.Visible = true;
-        //        rqSecondaryTrade.Enabled = true;
+        //        //rqSecondaryTrade.Enabled = true;
         //        lblReqLastName.Visible = true;
-        //        rqLastName.Enabled = true;
-        //        RequiredFieldValidator5.Enabled = true;
+        //        //rqLastName.Enabled = true;
+        //        //RequiredFieldValidator5.Enabled = true;
         //        lblReqFName.Visible = true;
         //        rqFirstName.Enabled = true;
         //        RequiredFieldValidator4.Enabled = true;
         //        lblPhoneReq.Visible = true;
-        //        rqPhone.Enabled = true;
+        //        //rqPhone.Enabled = true;
         //        lblSourceReq.Visible = true;
         //      //  rqSource.Enabled = true;
         //        lblNotesReq.Visible = false;
-        //        rqNotes.Enabled = false;
+        //        //rqNotes.Enabled = false;
         //        lblReqEmail.Visible = true;
         //        rqEmail.Enabled = true;
         //        reEmail.Enabled = true;
@@ -10871,21 +10885,21 @@ namespace JG_Prospect.Sr_App
         //        RequiredFieldValidator3.Enabled = false;
         //        lblReqDesig.Visible = false;
         //        lblReqPtrade.Visible = false;
-        //        rqPrimaryTrade.Enabled = false;
+        //        //rqPrimaryTrade.Enabled = false;
         //        lblReqSTrate.Visible = false;
-        //        rqSecondaryTrade.Enabled = false;
+        //        //rqSecondaryTrade.Enabled = false;
         //        lblReqLastName.Visible = false;
-        //        rqLastName.Enabled = false;
-        //        RequiredFieldValidator5.Enabled = false;
+        //        //rqLastName.Enabled = false;
+        //        //RequiredFieldValidator5.Enabled = false;
         //        lblReqFName.Visible = false;
         //        rqFirstName.Enabled = false;
         //        RequiredFieldValidator4.Enabled = false;
         //        lblPhoneReq.Visible = false;
-        //        rqPhone.Enabled = false;
+        //        //rqPhone.Enabled = false;
         //        lblSourceReq.Visible = false;
         //      //  rqSource.Enabled = false;
         //        lblNotesReq.Visible = false;
-        //        rqNotes.Enabled = false;
+        //        //rqNotes.Enabled = false;
         //        lblReqEmail.Visible = false;
         //        rqEmail.Enabled = false;
         //        reEmail.Enabled = false;
@@ -10945,6 +10959,7 @@ namespace JG_Prospect.Sr_App
         //}
         protected void ddlstatus_SelectedIndexChanged(object sender, EventArgs e)
         {
+            ValidationSummary1.ValidationGroup = lnkSubmit.ValidationGroup = "submit";
 
             if (Convert.ToString(Session["PreviousStatusNew"]) == "Active" && (!(Convert.ToString(Session["usertype"]).Contains("Admin"))))
             {
@@ -11018,6 +11033,7 @@ namespace JG_Prospect.Sr_App
             }
             else if (ddlstatus.SelectedValue == "Applicant")
             {
+
                 ddlInsteviewtime.Visible = false;
                 dtInterviewDate.Visible = false;
                 txtReson.Visible = false;
@@ -11049,6 +11065,7 @@ namespace JG_Prospect.Sr_App
             }
             else if (ddlstatus.SelectedValue == "OfferMade")
             {
+                ValidationSummary1.ValidationGroup = lnkSubmit.ValidationGroup = "OfferMade";
                 ddlInsteviewtime.Visible = false;
                 txtReson.Visible = false;
                 RequiredFieldValidator7.Enabled = false;
@@ -11212,8 +11229,8 @@ namespace JG_Prospect.Sr_App
             //    rqDeduction.Enabled = true;
             //    rqDeductionAmt.Enabled = true;
             //    rqDesignition.Enabled = true;
-            //    rqPrimaryTrade.Enabled = true;
-            //    rqSecondaryTrade.Enabled = true;
+            //    //rqPrimaryTrade.Enabled = true;
+            //    //rqSecondaryTrade.Enabled = true;
             //    rqFirstName.Enabled = true;
             //    rqEmail.Enabled = true;
             //    reEmail.Enabled = true;
@@ -11230,14 +11247,14 @@ namespace JG_Prospect.Sr_App
             //    lblReqSig.Visible = true;
             //    rqMaritalStatus.Enabled = true;
             //    lblReqMarSt.Visible = true;
-            //    rqNotes.Enabled = true;
+            //    //rqNotes.Enabled = true;
             //    lblNotesReq.Visible = true;
             //    rqSource.Enabled = true;
             //    lblSourceReq.Visible = true;
-            //    rqLastName.Enabled = true;
+            //    //rqLastName.Enabled = true;
             //    rqAddress.Enabled = true;
             //    lblAddressReq.Visible = true;
-            //    rqPhone.Enabled = true;
+            //    //rqPhone.Enabled = true;
             //    lblPhoneReq.Visible = true;
             //    rqPass.Enabled = true;
             //    lblPassReq.Visible = true;
@@ -11267,8 +11284,8 @@ namespace JG_Prospect.Sr_App
             //    rqDeduction.Enabled = false;
             //    rqDeductionAmt.Enabled = false;
             //    rqDesignition.Enabled = false;
-            //    rqPrimaryTrade.Enabled = true;
-            //    rqSecondaryTrade.Enabled = true;
+            //    //rqPrimaryTrade.Enabled = true;
+            //    //rqSecondaryTrade.Enabled = true;
             //    rqFirstName.Enabled = true;
             //    rqEmail.Enabled = true;
             //    reEmail.Enabled = true;
@@ -11285,14 +11302,14 @@ namespace JG_Prospect.Sr_App
             //    lblReqSig.Visible = false;
             //    rqMaritalStatus.Enabled = false;
             //    lblReqMarSt.Visible = false;
-            //    rqNotes.Enabled = false;
+            //    //rqNotes.Enabled = false;
             //    lblNotesReq.Visible = false;
             //    rqSource.Enabled = true;
             //    lblSourceReq.Visible = true;
-            //    rqLastName.Enabled = true;
+            //    //rqLastName.Enabled = true;
             //    rqAddress.Enabled = true;
             //    lblAddressReq.Visible = true;
-            //    rqPhone.Enabled = true;
+            //    //rqPhone.Enabled = true;
             //    lblPhoneReq.Visible = true;
             //    rqPass.Enabled = true;
             //    lblPassReq.Visible = true;
@@ -11305,16 +11322,16 @@ namespace JG_Prospect.Sr_App
             //    lblReqPOP.Visible = false;
             //}
             #endregion
-            if (ddldesignation.SelectedItem.Text == "Installer")
-            {
-                lblInstallerType.Visible = true;
-                ddlInstallerType.Visible = true;
-            }
-            else
-            {
-                lblInstallerType.Visible = false;
-                ddlInstallerType.Visible = false;
-            }
+            //if (ddldesignation.SelectedItem.Text == "Installer")
+            //{
+            //    lblInstallerType.Visible = true;
+            //    ddlInstallerType.Visible = true;
+            //}
+            //else
+            //{
+            //    lblInstallerType.Visible = false;
+            //    ddlInstallerType.Visible = false;
+            //}
             if (ddlstatus.SelectedValue == "Applicant" || ddlstatus.SelectedValue == "InterviewDate" || ddlstatus.SelectedValue == "PhoneScreened")
             {
                 btnMinusNew.Visible = true;
@@ -11342,24 +11359,24 @@ namespace JG_Prospect.Sr_App
                 RequiredFieldValidator3.Enabled = false;
                 lblReqDesig.Visible = false;
                 lblReqPtrade.Visible = true;
-                rqPrimaryTrade.Enabled = true;
+                //rqPrimaryTrade.Enabled = true;
                 lblReqSTrate.Visible = true;
-                rqSecondaryTrade.Enabled = true;
+                //rqSecondaryTrade.Enabled = true;
                 lblReqLastName.Visible = true;
-                rqLastName.Enabled = true;
-                RequiredFieldValidator5.Enabled = true;
+                //rqLastName.Enabled = true;
+                //RequiredFieldValidator5.Enabled = true;
                 lblReqFName.Visible = true;
                 rqFirstName.Enabled = true;
                 RequiredFieldValidator4.Enabled = true;
                 lblPhoneReq.Visible = true;
-                rqPhone.Enabled = true;
+                //rqPhone.Enabled = true;
                 lblSourceReq.Visible = true;
                 //  rqSource.Enabled = true;
                 lblNotesReq.Visible = false;
-                rqNotes.Enabled = false;
+                //rqNotes.Enabled = false;
                 lblReqEmail.Visible = false;
-                rqEmail.Enabled = false;
-                reEmail.Enabled = true;
+                //rqEmail.Enabled = false;
+                //reEmail.Enabled = true;
                 lblReqZip.Visible = false;
                 rqZip.Enabled = false;
                 lblStateReq.Visible = false;
@@ -11367,21 +11384,21 @@ namespace JG_Prospect.Sr_App
                 lblCityReq.Visible = false;
                 rqCity.Enabled = false;
                 lblPassReq.Visible = false;
-                rqPass.Enabled = false;
+                //rqPass.Enabled = false;
                 lblReqSig.Visible = false;
                 rqSign.Enabled = false;
                 lblReqMarSt.Visible = false;
                 rqMaritalStatus.Enabled = false;
                 // lblReqPicture.Visible = false;
                 lblReqPicture.Style["display"] = "none";
-             //   lblReqDL.Visible = false;
+                //   lblReqDL.Visible = false;
                 lblReqDL.Style["display"] = "none";
                 lblAddressReq.Visible = false;
                 rqAddress.Enabled = false;
                 Label1.Visible = false;
                 RequiredFieldValidator6.Enabled = false;
                 lblConfirmPass.Visible = true;
-                rqConPass.Enabled = false;
+                //rqConPass.Enabled = false;
                 lblReqSSN.Visible = false;
                 rqSSN1.Enabled = false;
                 rqSSN2.Enabled = false;
@@ -11399,24 +11416,24 @@ namespace JG_Prospect.Sr_App
                 RequiredFieldValidator3.Enabled = false;
                 lblReqDesig.Visible = false;
                 lblReqPtrade.Visible = true;
-                rqPrimaryTrade.Enabled = true;
+                //rqPrimaryTrade.Enabled = true;
                 lblReqSTrate.Visible = true;
-                rqSecondaryTrade.Enabled = true;
+                //rqSecondaryTrade.Enabled = true;
                 lblReqLastName.Visible = true;
-                rqLastName.Enabled = true;
-                RequiredFieldValidator5.Enabled = true;
+                //rqLastName.Enabled = true;
+                //RequiredFieldValidator5.Enabled = true;
                 lblReqFName.Visible = true;
                 rqFirstName.Enabled = true;
                 RequiredFieldValidator4.Enabled = true;
                 lblPhoneReq.Visible = true;
-                rqPhone.Enabled = true;
+                //rqPhone.Enabled = true;
                 lblSourceReq.Visible = true;
                 // rqSource.Enabled = true;
                 lblNotesReq.Visible = false;
-                rqNotes.Enabled = false;
+                //rqNotes.Enabled = false;
                 lblReqEmail.Visible = false;
-                rqEmail.Enabled = false;
-                reEmail.Enabled = true;
+                //rqEmail.Enabled = false;
+                //reEmail.Enabled = true;
                 lblReqZip.Visible = false;
                 rqZip.Enabled = false;
                 lblStateReq.Visible = false;
@@ -11424,7 +11441,7 @@ namespace JG_Prospect.Sr_App
                 lblCityReq.Visible = false;
                 rqCity.Enabled = false;
                 lblPassReq.Visible = false;
-                rqPass.Enabled = false;
+                //rqPass.Enabled = false;
                 lblReqSig.Visible = false;
                 rqSign.Enabled = false;
                 lblReqMarSt.Visible = false;
@@ -11432,14 +11449,14 @@ namespace JG_Prospect.Sr_App
                 //  lblReqPicture.Visible = false;
                 lblReqPicture.Style["display"] = "none";
 
-              //  lblReqDL.Visible = false;
+                //  lblReqDL.Visible = false;
                 lblReqDL.Style["display"] = "none";
                 lblAddressReq.Visible = false;
                 rqAddress.Enabled = false;
                 Label1.Visible = false;
                 RequiredFieldValidator6.Enabled = false;
                 lblConfirmPass.Visible = true;
-                rqConPass.Enabled = false;
+                //rqConPass.Enabled = false;
                 lblReqSSN.Visible = false;
                 rqSSN1.Enabled = false;
                 rqSSN2.Enabled = false;
@@ -11457,24 +11474,24 @@ namespace JG_Prospect.Sr_App
                 RequiredFieldValidator3.Enabled = true;
                 lblReqDesig.Visible = true;
                 lblReqPtrade.Visible = true;
-                rqPrimaryTrade.Enabled = true;
+                //rqPrimaryTrade.Enabled = true;
                 lblReqSTrate.Visible = true;
-                rqSecondaryTrade.Enabled = true;
+                //rqSecondaryTrade.Enabled = true;
                 lblReqLastName.Visible = true;
-                rqLastName.Enabled = true;
-                RequiredFieldValidator5.Enabled = true;
+                //rqLastName.Enabled = true;
+                //RequiredFieldValidator5.Enabled = true;
                 lblReqFName.Visible = true;
                 rqFirstName.Enabled = true;
                 RequiredFieldValidator4.Enabled = true;
                 lblPhoneReq.Visible = true;
-                rqPhone.Enabled = true;
+                //rqPhone.Enabled = true;
                 lblSourceReq.Visible = true;
                 //  rqSource.Enabled = true;
                 lblNotesReq.Visible = false;
-                rqNotes.Enabled = false;
+                //rqNotes.Enabled = false;
                 lblReqEmail.Visible = false;
-                rqEmail.Enabled = false;
-                reEmail.Enabled = true;
+                //rqEmail.Enabled = false;
+                //reEmail.Enabled = true;
                 lblReqZip.Visible = true;
                 rqZip.Enabled = true;
                 lblStateReq.Visible = true;
@@ -11482,14 +11499,14 @@ namespace JG_Prospect.Sr_App
                 lblCityReq.Visible = true;
                 rqCity.Enabled = true;
                 lblPassReq.Visible = false;
-                rqPass.Enabled = false;
+                //rqPass.Enabled = false;
                 lblReqSig.Visible = false;
                 rqSign.Enabled = false;
                 lblReqMarSt.Visible = false;
                 rqMaritalStatus.Enabled = false;
                 //  lblReqPicture.Visible = false;
                 lblReqPicture.Style["display"] = "none";
-              //  lblReqDL.Visible = false;
+                //  lblReqDL.Visible = false;
                 lblReqDL.Style["display"] = "none";
 
                 #region Req from NewHire
@@ -11498,7 +11515,7 @@ namespace JG_Prospect.Sr_App
                 Label1.Visible = true;
                 RequiredFieldValidator6.Enabled = true;
                 lblConfirmPass.Visible = true;
-                rqConPass.Enabled = false;
+                //rqConPass.Enabled = false;
                 lblReqSSN.Visible = false;
                 rqSSN1.Enabled = false;
                 rqSSN2.Enabled = false;
@@ -11518,8 +11535,8 @@ namespace JG_Prospect.Sr_App
                 lblReqEmpType.Visible = true;
                 rqEmpType.Enabled = true;
                 #endregion
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Fill new hire section above')", true);
-                return;
+                //ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Fill new hire section above')", true);
+                //return;
             }
             else if (ddlstatus.SelectedValue == "Active")
             {
@@ -11527,27 +11544,27 @@ namespace JG_Prospect.Sr_App
                 RequiredFieldValidator3.Enabled = true;
                 lblReqDesig.Visible = true;
                 lblReqPtrade.Visible = true;
-                rqPrimaryTrade.Enabled = true;
+                //rqPrimaryTrade.Enabled = true;
                 lblReqSTrate.Visible = true;
-                rqSecondaryTrade.Enabled = true;
+                //rqSecondaryTrade.Enabled = true;
                 lblReqLastName.Visible = true;
-                rqLastName.Enabled = true;
-                RequiredFieldValidator5.Enabled = true;
+                //rqLastName.Enabled = true;
+                //RequiredFieldValidator5.Enabled = true;
                 lblReqFName.Visible = true;
                 rqFirstName.Enabled = true;
                 RequiredFieldValidator4.Enabled = true;
                 lblPhoneReq.Visible = true;
-                rqPhone.Enabled = true;
+                //rqPhone.Enabled = true;
                 lblSourceReq.Visible = true;
                 //  rqSource.Enabled = true;
 
 
 
                 lblNotesReq.Visible = false;
-                rqNotes.Enabled = false;
+                //rqNotes.Enabled = false;
                 lblReqEmail.Visible = true;
-                rqEmail.Enabled = true;
-                reEmail.Enabled = true;
+                //rqEmail.Enabled = true;
+                //reEmail.Enabled = true;
                 lblReqZip.Visible = true;
                 rqZip.Enabled = true;
                 lblStateReq.Visible = true;
@@ -11555,7 +11572,7 @@ namespace JG_Prospect.Sr_App
                 lblCityReq.Visible = true;
                 rqCity.Enabled = true;
                 lblPassReq.Visible = true;
-                rqPass.Enabled = true;
+                //rqPass.Enabled = true;
                 lblReqSig.Visible = true;
                 lblConfirmPass.Visible = true;
                 password.Enabled = true;
@@ -11566,7 +11583,7 @@ namespace JG_Prospect.Sr_App
                 //  lblReqPicture.Visible = true;
                 lblReqPicture.Style["display"] = "block";
 
-               // lblReqDL.Visible = false;
+                // lblReqDL.Visible = false;
                 lblReqDL.Style["display"] = "block";
                 txtDateSourced.Text = DateTime.Now.ToShortDateString();
 
@@ -11611,24 +11628,24 @@ namespace JG_Prospect.Sr_App
                 RequiredFieldValidator3.Enabled = false;
                 lblReqDesig.Visible = false;
                 lblReqPtrade.Visible = false;
-                rqPrimaryTrade.Enabled = false;
+                //rqPrimaryTrade.Enabled = false;
                 lblReqSTrate.Visible = false;
-                rqSecondaryTrade.Enabled = false;
+                //rqSecondaryTrade.Enabled = false;
                 lblReqLastName.Visible = false;
-                rqLastName.Enabled = false;
-                RequiredFieldValidator5.Enabled = false;
+                //rqLastName.Enabled = false;
+                //RequiredFieldValidator5.Enabled = false;
                 lblReqFName.Visible = false;
                 rqFirstName.Enabled = false;
                 RequiredFieldValidator4.Enabled = false;
                 lblPhoneReq.Visible = false;
-                rqPhone.Enabled = false;
+                //rqPhone.Enabled = false;
                 lblSourceReq.Visible = false;
                 //  rqSource.Enabled = false;
                 lblNotesReq.Visible = false;
-                rqNotes.Enabled = false;
+                ////rqNotes.Enabled = false;
                 lblReqEmail.Visible = false;
-                rqEmail.Enabled = false;
-                reEmail.Enabled = false;
+                //rqEmail.Enabled = false;
+                //reEmail.Enabled = false;
                 lblReqZip.Visible = false;
                 rqZip.Enabled = false;
                 lblStateReq.Visible = false;
@@ -11636,17 +11653,17 @@ namespace JG_Prospect.Sr_App
                 lblCityReq.Visible = false;
                 rqCity.Enabled = false;
                 lblPassReq.Visible = false;
-                rqPass.Enabled = false;
+                //rqPass.Enabled = false;
                 lblReqSig.Visible = false;
                 lblConfirmPass.Visible = false;
                 password.Enabled = false;
-                rqConPass.Enabled = false;
+                //rqConPass.Enabled = false;
                 rqSign.Enabled = false;
                 lblReqMarSt.Visible = false;
                 rqMaritalStatus.Enabled = false;
                 lblReqPicture.Style["display"] = "none";
                 //lblReqPicture.Visible = false;
-               // lblReqDL.Visible = false;
+                // lblReqDL.Visible = false;
                 lblReqDL.Style["display"] = "none";
                 //txtDateSourced.Text = DateTime.Now.ToShortDateString();
                 #region Req from NewHire
@@ -11655,7 +11672,7 @@ namespace JG_Prospect.Sr_App
                 Label1.Visible = false;
                 RequiredFieldValidator6.Enabled = false;
                 lblConfirmPass.Visible = false;
-                rqConPass.Enabled = false;
+                //rqConPass.Enabled = false;
                 lblReqSSN.Visible = false;
                 rqSSN1.Enabled = false;
                 rqSSN2.Enabled = false;
@@ -11688,24 +11705,24 @@ namespace JG_Prospect.Sr_App
                 RequiredFieldValidator3.Enabled = false;
                 lblReqDesig.Visible = false;
                 lblReqPtrade.Visible = true;
-                rqPrimaryTrade.Enabled = true;
+                //rqPrimaryTrade.Enabled = true;
                 lblReqSTrate.Visible = true;
-                rqSecondaryTrade.Enabled = true;
+                //rqSecondaryTrade.Enabled = true;
                 lblReqLastName.Visible = true;
-                rqLastName.Enabled = true;
-                RequiredFieldValidator5.Enabled = true;
+                //rqLastName.Enabled = true;
+                //RequiredFieldValidator5.Enabled = true;
                 lblReqFName.Visible = true;
                 rqFirstName.Enabled = true;
                 RequiredFieldValidator4.Enabled = true;
                 lblPhoneReq.Visible = true;
-                rqPhone.Enabled = true;
+                //rqPhone.Enabled = true;
                 lblSourceReq.Visible = true;
                 // rqSource.Enabled = true;
                 lblNotesReq.Visible = false;
-                rqNotes.Enabled = false;
+                ////rqNotes.Enabled = false;
                 lblReqEmail.Visible = true;
-                rqEmail.Enabled = true;
-                reEmail.Enabled = true;
+                //rqEmail.Enabled = true;
+                //reEmail.Enabled = true;
                 lblReqZip.Visible = false;
                 rqZip.Enabled = false;
                 lblStateReq.Visible = false;
@@ -11713,21 +11730,21 @@ namespace JG_Prospect.Sr_App
                 lblCityReq.Visible = false;
                 rqCity.Enabled = false;
                 lblPassReq.Visible = false;
-                rqPass.Enabled = false;
+                //rqPass.Enabled = false;
                 lblReqSig.Visible = false;
                 rqSign.Enabled = false;
                 lblReqMarSt.Visible = false;
                 rqMaritalStatus.Enabled = false;
                 // lblReqPicture.Visible = false;
                 lblReqPicture.Style["display"] = "none";
-               // lblReqDL.Visible = false;
+                // lblReqDL.Visible = false;
                 lblReqDL.Style["display"] = "none";
                 lblAddressReq.Visible = false;
                 rqAddress.Enabled = false;
                 Label1.Visible = false;
                 RequiredFieldValidator6.Enabled = false;
                 lblConfirmPass.Visible = true;
-                rqConPass.Enabled = false;
+                //rqConPass.Enabled = false;
                 lblReqSSN.Visible = false;
                 rqSSN1.Enabled = false;
                 rqSSN2.Enabled = false;
@@ -11951,6 +11968,24 @@ namespace JG_Prospect.Sr_App
                     return;
                 }
                 #endregion
+            }
+        }
+        protected void ddlstatus_DataBinding(object sender, EventArgs e)
+        {
+            foreach (System.Web.UI.WebControls.ListItem myItem in ddlstatus.Items)
+            {
+                switch (myItem.Value)
+                {
+                    case "OfferMade":
+                        myItem.Attributes.Add("style", "background-color:#00008B");
+                        break;
+                    default:
+                        myItem.Attributes.Add("style", "background-color:#111111");
+                        break;
+                }
+                //Do some things to determine the color of the item
+                //Set the item background-color like so:
+                //myItem.Attributes.Add("style", "background-color:#111111");
             }
         }
     }

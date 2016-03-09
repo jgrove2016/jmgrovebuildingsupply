@@ -1,0 +1,27 @@
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_GetVendorSubCategory]    Script Date: 03/08/2016 15:52:51 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_GetVendorSubCategory]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_GetVendorSubCategory]
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[USP_GetVendorSubCategory]    Script Date: 03/08/2016 15:52:51 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE proc [dbo].[USP_GetVendorSubCategory]
+@VendorCategoryId int=null
+as
+begin
+	select * from tblVendorSubCategory where VendorCategoryId=@VendorCategoryId
+end
+
+GO
+
+

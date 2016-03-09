@@ -686,7 +686,21 @@ namespace JG_Prospect.DAL
                 throw ex;
             }
         }
-     
+
+        public DataSet GetCustomMaterialList(string jobId, int pCustomerID)
+        {
+            DataSet lListOfCustomMaterial = new DataSet();
+            SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+            {
+
+                DbCommand command = database.GetStoredProcCommand("USP_GetCustomMaterialList");
+                command.CommandType = CommandType.StoredProcedure;
+                database.AddInParameter(command, "@soldJobId", DbType.String, jobId);
+                database.AddInParameter(command, "@customerID", DbType.String, pCustomerID);
+                lListOfCustomMaterial = database.ExecuteDataSet(command);
+            }
+            return lListOfCustomMaterial;
+        }
        
         public Customs GetCustomDetail(Customs custom)
         {
