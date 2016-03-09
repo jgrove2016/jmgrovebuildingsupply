@@ -702,5 +702,32 @@ namespace JG_Prospect.DAL
             }
         }
 
+        public DataTable SearchVendor(string searchString, string tableName)
+        {
+            //List<string> searchResult = new List<string>();
+            DataTable dt = new DataTable();
+            try
+            {
+                string consString = ConfigurationManager.ConnectionStrings[DBConstants.CONFIG_CONNECTION_STRING_KEY].ConnectionString;
+                using (SqlConnection con = new SqlConnection(consString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_FindStringInTable"))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Connection = con;
+                        cmd.Parameters.AddWithValue("@stringToFind", "%" + searchString + "%");
+                        cmd.Parameters.AddWithValue("@table", "tblVendors");
+                        SqlDataAdapter da = new SqlDataAdapter(cmd);
+                        da.Fill(dt);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return dt;
+        }
+
     }
 }

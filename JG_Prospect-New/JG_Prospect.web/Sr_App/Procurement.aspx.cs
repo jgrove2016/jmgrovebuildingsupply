@@ -19,6 +19,8 @@ using iTextSharp.text.html.simpleparser;
 using JG_Prospect.Common.Logger;
 using System.Drawing;
 using System.Web.Script.Serialization;
+using System.Data.SqlClient;
+using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace JG_Prospect.Sr_App
 {
@@ -326,7 +328,7 @@ namespace JG_Prospect.Sr_App
             public string Extension { get; set; }
             public string Number { get; set; }
         }
-        // New Code
+
         [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
         public static void PostVendorDetails(string vendorid, List<AddressClass> Address, List<EmailClass> VendorEmails)
         {
@@ -397,13 +399,29 @@ namespace JG_Prospect.Sr_App
         }
 
 
+
+        [WebMethod]
+        public static string SearchVendor(string searchstring)
+        {
+            List<AutoCompleteVendor> lstvendor = VendorBLL.Instance.SearchVendor(searchstring, "tblVendors");
+            JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
+            string deserializedJson = jsSerializer.Serialize(lstvendor);
+            return deserializedJson;
+        }
+
+
+        [WebMethod]
+        public static void EditVendor(string vendorid)
+        {
+            //Procurement obj = new Procurement();
+            //obj.EditVendor(Convert.ToInt16(vendorid));
+        }
+
         protected void btnSave_Click(object sender, EventArgs e)
         {
             //Save all Data...
             flag = "";
             SaveAllData();
-
-
             //clearcontrols();
         }
 
@@ -434,7 +452,7 @@ namespace JG_Prospect.Sr_App
 
                 objvendor.vendor_category_id = Convert.ToInt32(ddlVndrCategory.SelectedValue);
 
-               
+
                 objvendor.fax = txtVendorFax.Text;
                 objvendor.mail = txtprimaryemail.Text;
                 objvendor.contract_person = txtFName.Text + " " + txtLName.Text;
@@ -461,13 +479,15 @@ namespace JG_Prospect.Sr_App
                         bool addressres = VendorBLL.Instance.InsertVendorAddress(objvendor);
                         ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Vendor Saved/Updated Successfully');", true);
                         clear();
+                        string ManufacturerType = GetManufacturerType();
+                        FilterVendors(ddlVendorSubCategory.SelectedValue.ToString(), "VendorSubCategory", ManufacturerType, ddlVndrCategory.SelectedValue.ToString());
                     }
                 }
             }
         }
         protected void clear()
         {
-            txtContact1.Text = txtContactExten1.Text = txtFName.Text = txtLName.Text = txtVendorFax.Text = txtprimaryemail.Text = txtVendorNm.Text = null;
+            txtContact1.Text = txtContactExten1.Text = txtFName.Text = txtLName.Text = txtVendorFax.Text = txtprimaryemail.Text = txtVendorNm.Text = txtVendorId.Text = null;
             txtWebsite.Text = txtTaxId.Text = txtPrimaryAddress.Text = txtPrimaryCity.Text = txtPrimaryZip.Text = null;
             txtSecAddress.Text = txtSecCity.Text = txtSeczip.Text = null;
             txtBillingAddr.Text = txtBillingCity.Text = txtBillingZip.Text = null;
@@ -483,6 +503,13 @@ namespace JG_Prospect.Sr_App
             GridViewRow gr = (GridViewRow)lnkbtnVendorName.Parent.Parent;
             HiddenField hdnVendorId = (HiddenField)gr.FindControl("hdnVendorId");
             EditVendor(Convert.ToInt16(hdnVendorId.Value));
+            updtpnlAddVender.Update();
+        }
+
+        protected void btneditVendor_Click(object sender, EventArgs e)
+        {
+            string vid = Request.Form["vendorId"];
+            EditVendor(Convert.ToInt16(vid));
             updtpnlAddVender.Update();
         }
         protected void lnkAddVendorCategory1_Click(object sender, EventArgs e)
@@ -1094,8 +1121,8 @@ namespace JG_Prospect.Sr_App
                 ddlVndrCategory.DataBind();
                 ddlVndrCategory.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select", "Select"));
                 BindVendorCatPopup();
-                ddlVndrCategory.Items.Clear();
-                ddlVendorCatPopup.Items.Clear();
+                ddlVndrCategory.ClearSelection();
+                ddlVendorCatPopup.ClearSelection();
             }
             else
             {
@@ -3081,34 +3108,41 @@ namespace JG_Prospect.Sr_App
 
         public void EditVendor(int VendorIdToEdit)
         {
+           
             DataSet ds = new DataSet();
             ds = VendorBLL.Instance.FetchvendorDetails(VendorIdToEdit);
-
-            txtVendorNm.Text = ds.Tables[0].Rows[0]["VendorName"].ToString();
+            
+            txtVendorNm.Text = Convert.ToString(ds.Tables[0].Rows[0]["VendorName"]);
             //ddlVndrCategory.SelectedValue = ds.Tables[0].Rows[0]["VendorCategoryId"].ToString();
-            string Name = ds.Tables[0].Rows[0]["ContactPerson"].ToString();
 
+            string Name = Convert.ToString(ds.Tables[0].Rows[0]["ContactPerson"]);
             // Split Name
             string[] splittedName = Name.Split(' ');
-            txtFName.Text = splittedName[0].ToString();
-            txtLName.Text = splittedName[1].ToString();
+            if (splittedName.Length > 1)
+            {
+                txtFName.Text = Convert.ToString(splittedName[0]);
+                txtLName.Text = Convert.ToString(splittedName[1]);
+            }
+            else
+            {
+                txtFName.Text = Convert.ToString(splittedName[0]);
+            }
+            txtContact1.Text = Convert.ToString(ds.Tables[0].Rows[0]["ContactNumber"]);
+            txtContactExten1.Text = Convert.ToString(ds.Tables[0].Rows[0]["ContactExten"]);
 
-            string ContactNo = ds.Tables[0].Rows[0]["ContactNumber"].ToString();
-
-            // Spilt Contact No.
-
-            txtVendorFax.Text = ds.Tables[0].Rows[0]["Fax"].ToString();
-            txtprimaryemail.Text = ds.Tables[0].Rows[0]["Email"].ToString();
-            txtPrimaryAddress.Text = ds.Tables[0].Rows[0]["Address"].ToString();
+            txtVendorFax.Text = Convert.ToString(ds.Tables[0].Rows[0]["Fax"]);
+            txtprimaryemail.Text = Convert.ToString(ds.Tables[0].Rows[0]["Email"]);
+            txtPrimaryAddress.Text = Convert.ToString(ds.Tables[0].Rows[0]["Address"]);
             //txtNotes.Text = ds.Tables[0].Rows[0]["Notes"].ToString();
-            ddlVendorStatus.SelectedValue = ds.Tables[0].Rows[0]["VendorStatus"].ToString();
-            txtTaxId.Text = ds.Tables[0].Rows[0]["TaxId"].ToString();
-            ddlmanufacturertype.SelectedValue = ds.Tables[0].Rows[0]["ManufacturerType"].ToString();
-            txtBillingAddr.Text = ds.Tables[0].Rows[0]["BillingAddress"].ToString();
-          
+            ddlVendorStatus.SelectedValue = Convert.ToString(ds.Tables[0].Rows[0]["VendorStatus"]);
+            txtTaxId.Text = Convert.ToString(ds.Tables[0].Rows[0]["TaxId"]);
+            ddlmanufacturertype.SelectedValue = Convert.ToString(ds.Tables[0].Rows[0]["ManufacturerType"]);
+            txtWebsite.Text = Convert.ToString(ds.Tables[0].Rows[0]["Website"]);
+            txtBillingAddr.Text = Convert.ToString(ds.Tables[0].Rows[0]["BillingAddress"]);
+
             //txtExpenseCat.Text = ds.Tables[0].Rows[0]["ExpenseCategory"].ToString();
             //txtAutoInsurance.Text = ds.Tables[0].Rows[0]["AutoTruckInsurance"].ToString();
-            txtVendorId.Text = ds.Tables[0].Rows[0]["VendorId"].ToString();
+            txtVendorId.Text = Convert.ToString(ds.Tables[0].Rows[0]["VendorId"]);
             btnSave.Text = "Update";
 
         }

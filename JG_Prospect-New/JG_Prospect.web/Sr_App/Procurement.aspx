@@ -243,7 +243,7 @@
                 url: "Procurement.aspx/PostVendorDetails",
                 contentType: "application/json; charset=utf-8",
                 dataType: "JSON",
-                data: JSON.stringify({vendorid:vid, Address: AddressData, VendorEmails: VendorEmailData }),
+                data: JSON.stringify({ vendorid: vid, Address: AddressData, VendorEmails: VendorEmailData }),
                 success: function (data) {
                     console.log(data);
                 }
@@ -251,6 +251,7 @@
         }
 
     </script>
+
 
     <style type="text/css">
         .black_overlay {
@@ -354,10 +355,14 @@
             -moz-opacity: 1;
         }
 
-            .center img {
-                height: 128px;
-                width: 128px;
-            }
+        .center img {
+            height: 128px;
+            width: 128px;
+        }
+
+        .clsbtnEditVendor {
+            display: none;
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -604,7 +609,15 @@
                                         <td>
                                             <asp:RadioButton ID="rdoManufacturer" runat="server" Text="Manufacturer" GroupName="MT" OnCheckedChanged="rdoManufacturer_CheckedChanged" AutoPostBack="true" />
                                         </td>
-                                        <td colspan="4"></td>
+                                        <td colspan="2"></td>
+                                        <td colspan="2">
+                                            <div class="ui-widget">
+                                                <asp:TextBox ID="txtVendorSearchBox" CssClass="VendorSearchBox" runat="server" placeholder="Search" Width="90%"></asp:TextBox>
+                                            </div>
+                                        </td>
+                                        <input type="hidden" id="hdnvendorId" name="vendorId" />
+                                        <asp:Button ID="btnEditVendor" runat="server" Text="EditVendor" CssClass="clsbtnEditVendor" OnClick="btneditVendor_Click" />
+
                                     </tr>
                                     <tr>
                                         <td>Product Category</td>
@@ -862,9 +875,9 @@
                                                             <span style="font-weight: bold; font-size: 15px; font-style: normal; padding: 15px 15px 5px; display: block;">Vendor Address</span>
                                                             <table class="vendor_table">
                                                                 <tr class="fixedAddressrow">
-                                                                    <td>
+                                                                    <td colspan="2">
                                                                         <label><span>* </span>Primary Address:</label><br />
-                                                                        <asp:TextBox ID="txtPrimaryAddress" runat="server" TabIndex="7" TextMode="MultiLine" CssClass="clstxtAddress0"></asp:TextBox>
+                                                                        <asp:TextBox ID="txtPrimaryAddress" runat="server" TabIndex="7" TextMode="MultiLine" Columns="57" Rows="3" CssClass="clstxtAddress0"></asp:TextBox>
                                                                         <asp:RequiredFieldValidator ID="RfvAddress" runat="server" ControlToValidate="txtPrimaryAddress" Display="Dynamic"
                                                                             ValidationGroup="addvendor" ErrorMessage="Please Enter Primary Address." ForeColor="Red"></asp:RequiredFieldValidator>
                                                                     </td>
@@ -877,12 +890,12 @@
                                                                         <asp:TextBox ID="txtPrimaryZip" runat="server" TabIndex="7" CssClass="clstxtZip0"></asp:TextBox>
 
                                                                     </td>
-                                                                    <td></td>
+
                                                                 </tr>
                                                                 <tr class="fixedAddressrow">
-                                                                    <td>
+                                                                    <td colspan="2">
                                                                         <label><span>* </span>Secondary Address:</label><br />
-                                                                        <asp:TextBox ID="txtSecAddress" runat="server" TabIndex="7" TextMode="MultiLine" CssClass="clstxtAddress1"></asp:TextBox>
+                                                                        <asp:TextBox ID="txtSecAddress" runat="server" TabIndex="7" TextMode="MultiLine" Columns="57" Rows="3" CssClass="clstxtAddress1"></asp:TextBox>
                                                                         <asp:RequiredFieldValidator ID="rfvSecAddress" runat="server" ControlToValidate="txtSecAddress" Display="Dynamic"
                                                                             ValidationGroup="addvendor" ErrorMessage="Please Enter Secondary Address." ForeColor="Red"></asp:RequiredFieldValidator>
                                                                     </td>
@@ -896,12 +909,12 @@
                                                                         <asp:TextBox ID="txtSeczip" runat="server" TabIndex="7" CssClass="clstxtZip1"></asp:TextBox>
 
                                                                     </td>
-                                                                    <td></td>
+
                                                                 </tr>
                                                                 <tr class="fixedAddressrow">
-                                                                    <td>
+                                                                    <td colspan="2">
                                                                         <label><span>* </span>Billing Address:</label><br />
-                                                                        <asp:TextBox ID="txtBillingAddr" runat="server" TabIndex="7" TextMode="MultiLine" CssClass="clstxtAddress2"></asp:TextBox>
+                                                                        <asp:TextBox ID="txtBillingAddr" runat="server" TabIndex="7" TextMode="MultiLine" Columns="57" Rows="3" CssClass="clstxtAddress2"></asp:TextBox>
                                                                         <asp:RequiredFieldValidator ID="rfvbillAdd" runat="server" ControlToValidate="txtBillingAddr" Display="Dynamic"
                                                                             ValidationGroup="addvendor" ErrorMessage="Please Enter Billing Address." ForeColor="Red"></asp:RequiredFieldValidator>
                                                                     </td>
@@ -915,7 +928,6 @@
                                                                         <asp:TextBox ID="txtBillingZip" runat="server" TabIndex="7" CssClass="clstxtZip2"></asp:TextBox>
 
                                                                     </td>
-                                                                    <td></td>
                                                                 </tr>
                                                             </table>
                                                             <table id="tblVendorLocation">
@@ -1606,11 +1618,70 @@
     <%-- </div>
     </div>
     </div>--%>
+
+    <%--<script type="text/javascript">
+        $(function () {
+          
+        });
+    </script>--%>
+
+    <link href="../css/jquery-ui.css" rel="stylesheet" />
+    <script src="../js/jquery-ui.js"></script>
     <script src="../Scripts/jquery.maskedinput.min.js" type="text/javascript"></script>
     <script type="text/javascript">
-        $(function () {
+
+        $(document).ready(function () {
+            SearchText();
             $('.clsmaskphone').mask("(999) 999-9999");
             $('.clsmaskphoneexten').mask("999999");
         });
+
+        function SearchText() {
+
+            $(".VendorSearchBox").autocomplete({
+                minLength: 0,
+                source: function (request, response) {
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        url: "Procurement.aspx/SearchVendor",
+                        data: "{'searchstring':'" + $(".VendorSearchBox").val() + "'}",
+                        dataType: "json",
+                        success: function (data) {
+                            response($.parseJSON(data.d));
+                        },
+                        error: function (result) {
+                            console.log("No Match");
+                        }
+                    });
+                },
+                focus: function (event, ui) {
+                    $(".VendorSearchBox").val(ui.item.value);
+                    return false;
+                },
+                select: function (event, ui) {
+                    $(".VendorSearchBox").val(ui.item.value);
+                    $("#hdnvendorId").val(ui.item.id);
+                    console.log("test");
+                    console.log($(".clsbtnEditVendor").val());
+                    $(".clsbtnEditVendor").trigger("click");
+
+                    //$.ajax({
+                    //    type: "POST",
+                    //    contentType: "application/json; charset=utf-8",
+                    //    url: "Procurement.aspx/EditVendor",
+                    //    data: "{'vendorid':'" + $("#hdnvendorId").val() + "'}",
+                    //    dataType: "json",
+                    //    success: function (data) {
+                    //        response(data);
+                    //    },
+                    //    error: function (result) {
+                    //        console.log(result);
+                    //    }
+                    //});
+                    return false;
+                }
+            });
+        }
     </script>
 </asp:Content>

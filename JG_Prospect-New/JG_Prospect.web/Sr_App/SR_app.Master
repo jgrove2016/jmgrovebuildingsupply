@@ -12,13 +12,14 @@
     
     <link href="../css/screen.css" rel="stylesheet" media="screen" type="text/css" />
     <link href="../css/jquery.ui.theme.css" rel="stylesheet" media="screen" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/themes/redmond/jquery-ui.css" />
+    <%--<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/themes/redmond/jquery-ui.css" />--%>
     <link href="../datetime/js/jquery.ptTimeSelect.css" rel="stylesheet" type="text/css" />
     <link href="../datetime/js/jquery.ptDayOnlySelect.css" rel="stylesheet" type="text/css" />
     <link href="../datetime/js/jquery.ptTimeOnlySelect.css" rel="stylesheet" type="text/css" />
 
     
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
+    <%--<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />--%>
+    <link href="../css/jquery-ui.css" rel="stylesheet" />
 
      <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyD0X4v7eqMFcWCR-VZAJwEMfb47id9IZao"></script>
