@@ -542,6 +542,8 @@ namespace JG_Prospect.DAL
                     DbCommand command = database.GetStoredProcCommand("sp_newVendorCategory");
                     command.CommandType = CommandType.StoredProcedure;
                     database.AddInParameter(command, "@vendorCatName", DbType.String, objNewVendorCat.VendorName);
+                    database.AddInParameter(command, "@IsRetail_Wholesale", DbType.Boolean, objNewVendorCat.IsRetail_Wholesale);
+                    database.AddInParameter(command, "@IsManufacturer", DbType.Boolean, objNewVendorCat.IsManufacturer);
                     database.AddInParameter(command, "@action", DbType.Int16, 1);
                     object VendorId = database.ExecuteScalar(command);
                     return VendorId.ToString();
@@ -565,9 +567,7 @@ namespace JG_Prospect.DAL
                     DbCommand command = database.GetStoredProcCommand("sp_newVendorCategory");
                     command.CommandType = CommandType.StoredProcedure;
                     database.AddInParameter(command, "@vendorCatId", DbType.String, objNewVendorCat.VendorId);
-                    database.AddInParameter(command, "@vendorCatName", DbType.String, objNewVendorCat.VendorName);
                     database.AddInParameter(command, "@productCatId", DbType.String, objNewVendorCat.ProductId);
-                    database.AddInParameter(command, "@productCatName", DbType.String, objNewVendorCat.ProductName);
                     database.AddInParameter(command, "@action", DbType.Int16, 2);
                     database.ExecuteNonQuery(command);
                     return true;
@@ -590,6 +590,8 @@ namespace JG_Prospect.DAL
                     command.CommandType = CommandType.StoredProcedure;
                     database.AddInParameter(command, "@VendorCategoryId", DbType.String, objVendorSubCat.VendorCatId);
                     database.AddInParameter(command, "@VendorSubCategoryName", DbType.String, objVendorSubCat.Name);
+                    database.AddInParameter(command, "@IsRetail_Wholesale", DbType.Boolean, objVendorSubCat.IsRetail_Wholesale);
+                    database.AddInParameter(command, "@IsManufacturer", DbType.Boolean, objVendorSubCat.IsManufacturer);
                     database.AddInParameter(command, "@action", DbType.Int16, 1);
                     database.ExecuteNonQuery(command);
                     return true;
@@ -729,5 +731,26 @@ namespace JG_Prospect.DAL
             return dt;
         }
 
+
+        public DataSet fetchvendorcategory(bool Isretail_Wholesale, bool IsManufacturer)
+        {
+            try
+            {
+                {
+                    SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                    DS = new DataSet();
+                    DbCommand command = database.GetStoredProcCommand("UDP_fetchvendorcategory");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@IsRetail_Wholesale", DbType.Boolean, Isretail_Wholesale);
+                    database.AddInParameter(command, "@IsManufacturer", DbType.Boolean, IsManufacturer);
+                    DS = database.ExecuteDataSet(command);
+                    return DS;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
     }
 }

@@ -150,7 +150,7 @@ namespace JG_Prospect.BLL
 
         public List<AutoCompleteVendor> SearchVendor(string searchString, string tableName)
         {
-            DataTable dt= VendorDAL.Instance.SearchVendor(searchString, tableName);
+            DataTable dt = VendorDAL.Instance.SearchVendor(searchString, tableName);
             List<AutoCompleteVendor> lstResult = new List<AutoCompleteVendor>();
             foreach (DataRow item in dt.Rows)
             {
@@ -163,8 +163,13 @@ namespace JG_Prospect.BLL
             }
             return lstResult;
         }
-
+        public DataSet fetchvendorcategory(bool Isretail_Wholesale, bool IsManufacturer)
+        {
+            return VendorDAL.Instance.fetchvendorcategory(Isretail_Wholesale, IsManufacturer);
+        }
     }
+
+
     public class AutoCompleteVendor
     {
         public int id { get; set; }

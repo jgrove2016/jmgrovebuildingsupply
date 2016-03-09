@@ -33,5 +33,8 @@ namespace JG_Prospect.Common.modal
             get { return _productid; }
             set { _productid = value; }
         }
+
+        public bool IsRetail_Wholesale { get; set; }
+        public bool IsManufacturer { get; set; }
     }
 }

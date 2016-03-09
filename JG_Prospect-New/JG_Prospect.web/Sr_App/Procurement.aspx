@@ -355,10 +355,10 @@
             -moz-opacity: 1;
         }
 
-        .center img {
-            height: 128px;
-            width: 128px;
-        }
+            .center img {
+                height: 128px;
+                width: 128px;
+            }
 
         .clsbtnEditVendor {
             display: none;
@@ -664,6 +664,15 @@
                                                         </td>
                                                     </tr>
                                                     <tr>
+                                                        <td align="right" style="width: 31%">Manufacturer Type
+                                                        </td>
+                                                        <td>
+
+                                                            <asp:CheckBox ID="chkVCRetail_Wholesale" runat="server" Text="Retail/Wholesale" />
+                                                            <asp:CheckBox ID="chkVCManufacturer" runat="server" Text="Manufacturer" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
                                                         <td colspan="2" align="center">
                                                             <asp:Button ID="btnNewVendor" Style="width: 100px;" runat="server"
                                                                 OnClick="btnNewVendor_Click" Text="Save" ValidationGroup="addvendorcat" />
@@ -715,6 +724,14 @@
                                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ControlToValidate="txtVendorSubCat"
                                                                         ValidationGroup="addvendorsubcat" ErrorMessage="Enter Vendor Sub Category Name." ForeColor="Red"
                                                                         Display="Dynamic"></asp:RequiredFieldValidator>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td align="right" style="width: 31%">Manufacturer Type
+                                                                </td>
+                                                                <td>
+                                                                    <asp:CheckBox ID="chkVSCRetail_Wholesale" runat="server" Text="Retail/Wholesale" />
+                                                                    <asp:CheckBox ID="chkVSCManufacturer" runat="server" Text="Manufacturer" />
                                                                 </td>
                                                             </tr>
                                                             <tr>

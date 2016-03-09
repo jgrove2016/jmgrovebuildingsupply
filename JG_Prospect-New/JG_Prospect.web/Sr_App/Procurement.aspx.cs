@@ -152,45 +152,22 @@ namespace JG_Prospect.Sr_App
         }
         protected void rdoRetailWholesale_CheckedChanged(object sender, EventArgs e)
         {
-            string ManufacturerType = GetManufacturerType();
-            if (ddlVendorSubCategory.SelectedValue.ToString() != "Select")
-            {
-                FilterVendors(ddlVendorSubCategory.SelectedValue.ToString(), "VendorSubCategory", ManufacturerType, ddlVndrCategory.SelectedValue.ToString());
-            }
-            else if (ddlVndrCategory.SelectedValue.ToString() != "Select")
-            {
-                FilterVendors(ddlVndrCategory.SelectedValue.ToString(), "VendorCategory", ManufacturerType, "");
-            }
-            else if (ddlprdtCategory.SelectedValue.ToString() != "Select")
-            {
-                FilterVendorByProductCategory();
-            }
+            if (ddlprdtCategory.SelectedValue.ToString() != "Select")
+                BindVendorByProdCat(ddlprdtCategory.SelectedValue.ToString());
             else
-            {
-                FilterVendors("", "ManufacturerType", ManufacturerType, "");
-            }
-            //ResetFilterDDL();
+                bindvendorcategory();
+
+            ddlVendorSubCategory.SelectedIndex = -1;
         }
 
         protected void rdoManufacturer_CheckedChanged(object sender, EventArgs e)
         {
             string ManufacturerType = GetManufacturerType();
-            if (ddlVendorSubCategory.SelectedValue.ToString() != "Select")
-            {
-                FilterVendors(ddlVendorSubCategory.SelectedValue.ToString(), "VendorSubCategory", ManufacturerType, ddlVndrCategory.SelectedValue.ToString());
-            }
-            else if (ddlVndrCategory.SelectedValue.ToString() != "Select")
-            {
-                FilterVendors(ddlVndrCategory.SelectedValue.ToString(), "VendorCategory", ManufacturerType, "");
-            }
-            else if (ddlprdtCategory.SelectedValue.ToString() != "Select")
-            {
-                FilterVendorByProductCategory();
-            }
+            if (ddlprdtCategory.SelectedValue.ToString() != "Select")
+                BindVendorByProdCat(ddlprdtCategory.SelectedValue.ToString());
             else
-            {
-                FilterVendors("", "ManufacturerType", ManufacturerType, "");
-            }
+                bindvendorcategory();
+            ddlVendorSubCategory.SelectedIndex = -1;
         }
 
         public void ResetFilterDDL()
@@ -222,7 +199,7 @@ namespace JG_Prospect.Sr_App
         public void BindVendorByProdCat(string ProductId)
         {
             DataSet ds = new DataSet();
-            ds = AdminBLL.Instance.GetVendorCategory(ProductId);
+            ds = AdminBLL.Instance.GetVendorCategory(ProductId, rdoRetailWholesale.Checked, rdoManufacturer.Checked);
             ddlVndrCategory.DataSource = ds;
             ddlVndrCategory.DataTextField = "VendorCategoryName";
             ddlVndrCategory.DataValueField = "VendorCategoryId";
@@ -271,7 +248,7 @@ namespace JG_Prospect.Sr_App
         public void BindVendorSubCatByVendorCat(string VendorCatId)
         {
             DataSet ds = new DataSet();
-            ds = AdminBLL.Instance.GetVendorSubCategory(VendorCatId);
+            ds = AdminBLL.Instance.GetVendorSubCategory(VendorCatId, rdoRetailWholesale.Checked, rdoManufacturer.Checked);
             ddlVendorSubCategory.DataSource = ds;
             ddlVendorSubCategory.DataTextField = "VendorSubCategoryName";
             ddlVendorSubCategory.DataValueField = "VendorSubCategoryId";
@@ -578,7 +555,7 @@ namespace JG_Prospect.Sr_App
         protected void bindvendorcategory()
         {
             DataSet ds = new DataSet();
-            ds = VendorBLL.Instance.fetchallvendorcategory();
+            ds = VendorBLL.Instance.fetchvendorcategory(rdoRetailWholesale.Checked, rdoManufacturer.Checked);
             ddlVndrCategory.DataSource = ds;
             ddlVndrCategory.DataTextField = ds.Tables[0].Columns[1].ToString();
             ddlVndrCategory.DataValueField = ds.Tables[0].Columns[0].ToString();
@@ -596,7 +573,7 @@ namespace JG_Prospect.Sr_App
         public void BindVendorCatPopup()
         {
             DataSet ds = new DataSet();
-            ds = VendorBLL.Instance.fetchallvendorcategory();
+            ds = VendorBLL.Instance.fetchvendorcategory(rdoRetailWholesale.Checked, rdoManufacturer.Checked);
             ddlVendorCatPopup.DataSource = ds;
             ddlVendorCatPopup.DataTextField = ds.Tables[0].Columns[1].ToString();
             ddlVendorCatPopup.DataValueField = ds.Tables[0].Columns[0].ToString();
@@ -1049,7 +1026,7 @@ namespace JG_Prospect.Sr_App
         protected void bindfordeletevender()
         {
             DataSet ds = new DataSet();
-            ds = VendorBLL.Instance.fetchallvendorcategory();
+            ds = VendorBLL.Instance.fetchvendorcategory(rdoRetailWholesale.Checked, rdoManufacturer.Checked);
             ddlvendercategoryname.DataSource = ds;
             ddlvendercategoryname.DataTextField = ds.Tables[0].Columns[1].ToString();
             ddlvendercategoryname.DataValueField = ds.Tables[0].Columns[0].ToString();
@@ -1094,6 +1071,8 @@ namespace JG_Prospect.Sr_App
             NewVendorCategory objNewVendor = new NewVendorCategory();
 
             objNewVendor.VendorName = txtnewVendorCat.Text;
+            objNewVendor.IsRetail_Wholesale = chkVCRetail_Wholesale.Checked;
+            objNewVendor.IsManufacturer = chkVCManufacturer.Checked;
             string vendorCatId = VendorBLL.Instance.SaveNewVendorCategory(objNewVendor);
             objNewVendor.VendorId = vendorCatId;
             objNewVendor.ProductId = ddlProductCatgoryPopup.SelectedValue.ToString();
@@ -1114,7 +1093,7 @@ namespace JG_Prospect.Sr_App
             if (ddlprdtCategory.SelectedValue.ToString() == "Select")
             {
                 DataSet ds = new DataSet();
-                ds = VendorBLL.Instance.fetchallvendorcategory();
+                ds = VendorBLL.Instance.fetchvendorcategory(rdoRetailWholesale.Checked, rdoManufacturer.Checked);
                 ddlVndrCategory.DataSource = ds;
                 ddlVndrCategory.DataTextField = ds.Tables[0].Columns[1].ToString();
                 ddlVndrCategory.DataValueField = ds.Tables[0].Columns[0].ToString();
@@ -1133,6 +1112,8 @@ namespace JG_Prospect.Sr_App
         {
             VendorSubCategory objVendorSubCat = new VendorSubCategory();
             objVendorSubCat.VendorCatId = ddlVendorCatPopup.SelectedValue.ToString();
+            objVendorSubCat.IsRetail_Wholesale = chkVSCRetail_Wholesale.Checked;
+            objVendorSubCat.IsManufacturer = chkVSCManufacturer.Checked;
             objVendorSubCat.Name = txtVendorSubCat.Text;
             bool res = VendorBLL.Instance.SaveNewVendorSubCat(objVendorSubCat);
             if (res)
@@ -3108,10 +3089,10 @@ namespace JG_Prospect.Sr_App
 
         public void EditVendor(int VendorIdToEdit)
         {
-           
+
             DataSet ds = new DataSet();
             ds = VendorBLL.Instance.FetchvendorDetails(VendorIdToEdit);
-            
+
             txtVendorNm.Text = Convert.ToString(ds.Tables[0].Rows[0]["VendorName"]);
             //ddlVndrCategory.SelectedValue = ds.Tables[0].Rows[0]["VendorCategoryId"].ToString();
 
