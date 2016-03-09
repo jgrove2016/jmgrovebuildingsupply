@@ -1562,7 +1562,7 @@ namespace JG_Prospect.DAL
             }
         }
 
-        public DataSet GetVendorCategory(string ProductCategoryId)
+        public DataSet GetVendorCategory(string ProductCategoryId,bool Isretail_wholesale, bool IsManufacturer)
         {
             DataSet result = new DataSet();
             try
@@ -1571,6 +1571,8 @@ namespace JG_Prospect.DAL
                 {
                     DbCommand command = database.GetStoredProcCommand("USP_GetProductVendor");
                     database.AddInParameter(command, "@ProductCategoryId", DbType.String, ProductCategoryId);
+                    database.AddInParameter(command, "@IsRetail_Wholesale", DbType.Boolean, Isretail_wholesale);
+                    database.AddInParameter(command, "@IsManufacturer", DbType.Boolean, IsManufacturer);
                     command.CommandType = CommandType.StoredProcedure;
                     result = database.ExecuteDataSet(command);
                 }
@@ -1582,7 +1584,7 @@ namespace JG_Prospect.DAL
                 return null;
             }
         }
-        public DataSet GetVendorSubCategory(string VendorCategoryId)
+        public DataSet GetVendorSubCategory(string VendorCategoryId, bool Isretail_wholesale, bool IsManufacturer)
         {
             DataSet result = new DataSet();
             try
@@ -1591,6 +1593,8 @@ namespace JG_Prospect.DAL
                 {
                     DbCommand command = database.GetStoredProcCommand("USP_GetVendorSubCategory");
                     database.AddInParameter(command, "@VendorCategoryId", DbType.String, VendorCategoryId);
+                    database.AddInParameter(command, "@IsRetail_Wholesale", DbType.Boolean, Isretail_wholesale);
+                    database.AddInParameter(command, "@IsManufacturer", DbType.Boolean, IsManufacturer);
                     command.CommandType = CommandType.StoredProcedure;
                     result = database.ExecuteDataSet(command);
                 }

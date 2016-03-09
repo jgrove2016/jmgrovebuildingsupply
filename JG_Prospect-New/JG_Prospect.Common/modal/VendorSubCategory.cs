@@ -27,5 +27,8 @@ namespace JG_Prospect.Common.modal
             get { return _vendorcatid; }
             set { _vendorcatid = value; }
         }
+
+        public bool IsRetail_Wholesale { get; set; }
+        public bool IsManufacturer { get; set; }
     }
 }

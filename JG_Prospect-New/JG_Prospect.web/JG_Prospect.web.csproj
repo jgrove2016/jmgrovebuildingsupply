@@ -233,6 +233,7 @@
     <Content Include="Controls\left.ascx" />
     <Content Include="Controls\LeftMenu_home.ascx" />
     <Content Include="CreateUser.aspx" />
+    <Content Include="css\jquery-ui.css" />
     <Content Include="css\pgwslideshow.min.css" />
     <Content Include="CustomerDocs\LocationPics\017aaf2f-442b-4408-bfb6-4f9eb50edd95-Hydrangeas.jpg" />
     <Content Include="CustomerDocs\LocationPics\01cc5970-1d8a-43b8-9e44-ee8e8c00596d-Jellyfish.jpg" />
@@ -453,6 +454,7 @@
     <Content Include="JrAnnualCalendar.aspx" />
     <Content Include="js\jquery-latest.js" />
     <Content Include="js\jquery-latest_old.js" />
+    <Content Include="js\jquery-ui.js" />
     <Content Include="js\jquery.datetimepicker.css" />
     <Content Include="js\jquery.datetimepicker.js" />
     <Content Include="js\jquery.js" />
@@ -478,7 +480,6 @@
     <Content Include="Sr_App\CreateSalesUser.aspx" />
     <Content Include="Sr_App\Custom.aspx" />
     <Content Include="Sr_App\CustomerEmailTemplate.aspx" />
-    <Content Include="Sr_App\Customers.xml" />
     <Content Include="Sr_App\Custom_MaterialList.aspx" />
     <Content Include="Sr_App\EditInstallUser.aspx" />
     <Content Include="Sr_App\EmailTemplateForVendorCategories.aspx" />
