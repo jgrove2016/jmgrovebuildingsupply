@@ -361,37 +361,39 @@
         <h1>
             Create Admin Sales Users
         </h1>
+        <asp:ValidationSummary ID="ValidationSummary1" runat="server" Style="padding: 5px" HeaderText="Following error occurs....." ShowMessageBox="true"
+            DisplayMode="BulletList" ShowSummary="true" ValidationGroup="submit" ShowModelStateErrors="true" ShowValidationErrors="true" BackColor="Snow" ForeColor="Red" Font-Size="X-Large" Font-Italic="true" />
         <div class="form_panel_custom">
             <span>
                 <%--<asp:Label ID="lblmsg" runat="server" Visible="false"></asp:Label>--%>
             </span>
-            <asp:UpdatePanel ID="UpdatePanel10" runat="server">
-                <ContentTemplate>
+            <%--<asp:UpdatePanel ID="UpdatePanel10" runat="server">
+                <ContentTemplate>--%>
                     <asp:Panel ID="pnlAll" runat="server">
                         <ul style="overflow: hidden; margin-bottom: 10px;">
                             <li style="width: 100%;">
                                 <table width="100%" style="height: 30px;">
                                     <tr>
                                         <td class="auto-style10" style="width: 60px;">
-                                            <asp:UpdatePanel ID="UpdatePanel8" runat="server">
-                                                <ContentTemplate>
+                                            <%--<asp:UpdatePanel ID="UpdatePanel8" runat="server">
+                                                <ContentTemplate>--%>
                                                     <asp:Button ID="btnNewPluse" runat="server" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff;" Text="+" OnClick="btnNewPluse_Click" /><%-- TabIndex="149" --%>
                                                     <asp:Button ID="btnNewMinus" runat="server" Text="-" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff;" OnClick="btnNewMinus_Click" /> <%--TabIndex="150"--%> 
-                                                </ContentTemplate>
+                                                <%--</ContentTemplate>
                                                 <Triggers>
                                                     <asp:AsyncPostBackTrigger ControlID="btnNewPluse" EventName="Click" />
                                                     <asp:AsyncPostBackTrigger ControlID="btnNewMinus" EventName="Click" />
                                                     <asp:AsyncPostBackTrigger ControlID="ddlstatus" EventName="SelectedIndexChanged" />
                                                 </Triggers>
-                                            </asp:UpdatePanel>
+                                            </asp:UpdatePanel>--%>
                                         </td>
                                         <td style="font-weight: bold; font-size: large">New Hire</td>
                                     </tr>
                                 </table>
                             </li>
                             <li style="width: 49%;">
-                                <asp:UpdatePanel ID="UpdatePanel3" runat="server">
-                                    <ContentTemplate>
+                               <%-- <asp:UpdatePanel ID="UpdatePanel3" runat="server">
+                                    <ContentTemplate>--%>
 
                                         <asp:Panel ID="pnlnewHire" runat="server">
                                             <table border="0" cellspacing="0" cellpadding="0">
@@ -471,8 +473,8 @@
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <asp:UpdatePanel ID="UpdatePanel14" UpdateMode="Always" runat="server">
-                                                            <ContentTemplate>
+                                                        <%--<asp:UpdatePanel ID="UpdatePanel14" UpdateMode="Always" runat="server">
+                                                            <ContentTemplate>--%>
                                                                 <label>
                                                                     <asp:Label ID="lblAba" runat="server" ForeColor="Black">
                                                             ABA Routing #</asp:Label>
@@ -483,12 +485,12 @@
                                                                 <label></label>
                                                                 <asp:RequiredFieldValidator ID="rqRoutingNo" Display="Dynamic" runat="server" ControlToValidate="txtRoutingNo"
                                                                     ForeColor="Red" ValidationGroup="submit" ErrorMessage="Enter Routing No."></asp:RequiredFieldValidator>
-                                                            </ContentTemplate>
+                                                            <%--</ContentTemplate>
                                                             <Triggers>
                                                                 <asp:AsyncPostBackTrigger ControlID="rdoDeposite" EventName="CheckedChanged" />
                                                                 <asp:AsyncPostBackTrigger ControlID="rdoCheque" EventName="CheckedChanged" />
                                                             </Triggers>
-                                                        </asp:UpdatePanel>
+                                                        </asp:UpdatePanel>--%>
                                                         <br />
                                                         <label></label>
 
@@ -496,8 +498,8 @@
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <asp:UpdatePanel ID="UpdatePanel15" UpdateMode="Always" runat="server">
-                                                            <ContentTemplate>
+                                                        <%--<asp:UpdatePanel ID="UpdatePanel15" UpdateMode="Always" runat="server">
+                                                            <ContentTemplate>--%>
                                                                 <label>
                                                                     <asp:Label ID="lblAccount" runat="server" ForeColor="Black">
                                                             Account #</asp:Label>
@@ -508,12 +510,12 @@
                                                                 <label></label>
                                                                 <asp:RequiredFieldValidator ID="rqAccountNo" Display="Dynamic" runat="server" ControlToValidate="txtAccountNo"
                                                                     ForeColor="Red" ValidationGroup="submit" ErrorMessage="Enter Account No."></asp:RequiredFieldValidator>
-                                                            </ContentTemplate>
+                                                            <%--</ContentTemplate>
                                                             <Triggers>
                                                                 <asp:AsyncPostBackTrigger ControlID="rdoDeposite" EventName="CheckedChanged" />
                                                                 <asp:AsyncPostBackTrigger ControlID="rdoCheque" EventName="CheckedChanged" />
                                                             </Triggers>
-                                                        </asp:UpdatePanel>
+                                                        </asp:UpdatePanel>--%>
                                                         <br />
                                                         <label></label>
 
@@ -521,8 +523,8 @@
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <asp:UpdatePanel ID="UpdatePanel16" runat="server" UpdateMode="Always">
-                                                            <ContentTemplate>
+                                                        <%--<asp:UpdatePanel ID="UpdatePanel16" runat="server" UpdateMode="Always">
+                                                            <ContentTemplate>--%>
                                                                 <label>
                                                                     <asp:Label ID="lblAccountType" runat="server" ForeColor="Black">
                                                             Account Type</asp:Label>
@@ -533,12 +535,12 @@
                                                                 <label></label>
                                                                 <asp:RequiredFieldValidator ID="rqAccountType" Display="Dynamic" runat="server" ControlToValidate="txtAccountType"
                                                                     ForeColor="Red" ValidationGroup="submit" ErrorMessage="Enter Account Account Type"></asp:RequiredFieldValidator>
-                                                            </ContentTemplate>
+                                                            <%--</ContentTemplate>
                                                             <Triggers>
                                                                 <asp:AsyncPostBackTrigger ControlID="rdoDeposite" EventName="CheckedChanged" />
                                                                 <asp:AsyncPostBackTrigger ControlID="rdoCheque" EventName="CheckedChanged" />
                                                             </Triggers>
-                                                        </asp:UpdatePanel>
+                                                        </asp:UpdatePanel>--%>
                                                         <br />
                                                         <label></label>
 
@@ -546,17 +548,17 @@
                                                 </tr>
                                             </table>
                                         </asp:Panel>
-                                    </ContentTemplate>
+                                 <%--   </ContentTemplate>
                                     <Triggers>
                                         <asp:AsyncPostBackTrigger ControlID="btnNewPluse" EventName="Click" />
                                         <asp:AsyncPostBackTrigger ControlID="btnNewMinus" EventName="Click" />
                                         <asp:AsyncPostBackTrigger ControlID="ddlstatus" EventName="SelectedIndexChanged" />
                                     </Triggers>
-                                </asp:UpdatePanel>
+                                </asp:UpdatePanel>--%>
                             </li>
                             <li style="width: 49%;">
-                                <asp:UpdatePanel ID="UpdatePanel5" runat="server">
-                                    <ContentTemplate>
+                                <%--<asp:UpdatePanel ID="UpdatePanel5" runat="server">
+                                    <ContentTemplate>--%>
                                         <asp:Panel ID="pnlNew2" runat="server">
                                             <table border="0" cellspacing="0" cellpadding="0">
                                                 <tr>
@@ -606,8 +608,8 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="auto-style15">
-                                                        <asp:UpdatePanel ID="UpdatePanel19" runat="server" UpdateMode="Conditional">
-                                                            <ContentTemplate>
+                                                        <%--<asp:UpdatePanel ID="UpdatePanel19" runat="server" UpdateMode="Conditional">
+                                                            <ContentTemplate>--%>
                                                                 <label>
                                                                     Extra Earnings</label>
                                                                 <asp:DropDownList ID="ddlExtraEarning" runat="server" Width="110px" > <%--TabIndex="158"--%>
@@ -642,11 +644,11 @@
                                                                 <br />
                                                                 <label>
                                                                 </label>
-                                                            </ContentTemplate>
+                                                <%--            </ContentTemplate>
                                                             <Triggers>
                                                                 <asp:AsyncPostBackTrigger ControlID="btnAddExtraIncome" EventName="Click" />
                                                             </Triggers>
-                                                        </asp:UpdatePanel>
+                                                        </asp:UpdatePanel>--%>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -656,8 +658,8 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="auto-style15">
-                                                        <asp:UpdatePanel ID="UpdatePanel17" runat="server" UpdateMode="Conditional">
-                                                            <ContentTemplate>
+                                                        <%--<asp:UpdatePanel ID="UpdatePanel17" runat="server" UpdateMode="Conditional">
+                                                            <ContentTemplate>--%>
                                                                 <label>
                                                                     Deduction: $</label>
                                                                 <asp:TextBox ID="txtDeduction" runat="server" onkeypress="return IsNumeric(event);" Width="113px" ></asp:TextBox> <%--TabIndex="161"--%>
@@ -666,11 +668,11 @@
                                                             Reason</label>
                                                                 <asp:TextBox ID="txtDeducReason" runat="server" Width="113px" ></asp:TextBox><%-- TabIndex="162"--%>
                                                                 &nbsp;
-                                                            </ContentTemplate>
+                                                            <%--</ContentTemplate>
                                                             <Triggers>
                                                                 <asp:AsyncPostBackTrigger ControlID="btnAddType" EventName="Click" />
                                                             </Triggers>
-                                                        </asp:UpdatePanel>
+                                                        </asp:UpdatePanel>--%>
                                                         <label>
                                                         </label>
                                                         <asp:RequiredFieldValidator ID="rqDeductionAmt" Display="Static" runat="server" ControlToValidate="txtDeduction"
@@ -688,20 +690,20 @@
                                                 </tr>
                                                 <tr>
                                                     <td class="auto-style15">
-                                                        <asp:UpdatePanel ID="UpdatePanel18" runat="server" UpdateMode="Conditional">
-                                                            <ContentTemplate>
+                                                        <%--<asp:UpdatePanel ID="UpdatePanel18" runat="server" UpdateMode="Conditional">
+                                                            <ContentTemplate>--%>
                                                                 <asp:Button ID="btnAddType" runat="server" Height="28px" OnClick="btnAddType_Click" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff;" Text="Add" ValidationGroup="Add" Width="55px" /><%--TabIndex="165" --%>
-                                                            </ContentTemplate>
+                                                            <%--</ContentTemplate>
                                                             <Triggers>
                                                                 <asp:AsyncPostBackTrigger ControlID="btnAddType" EventName="Click" />
                                                             </Triggers>
-                                                        </asp:UpdatePanel>
+                                                        </asp:UpdatePanel>--%>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="auto-style15">
-                                                        <asp:UpdatePanel ID="UpdatePanel20" runat="server">
-                                                            <ContentTemplate>
+                                                        <%--<asp:UpdatePanel ID="UpdatePanel20" runat="server">
+                                                            <ContentTemplate>--%>
                                                                 <asp:Panel runat="server" ID="Panel1">
                                                                     <div class="form_panel" style="padding-bottom: 0px; min-height: 100px;">
                                                                         <div class="grid">
@@ -750,35 +752,35 @@
                                                                         </div>
                                                                     </div>
                                                                 </asp:Panel>
-                                                            </ContentTemplate>
+                                                          <%--  </ContentTemplate>
                                                             <Triggers>
                                                                 <asp:AsyncPostBackTrigger ControlID="btnAddType" EventName="Click" />
                                                             </Triggers>
-                                                        </asp:UpdatePanel>
+                                                        </asp:UpdatePanel>--%>
                                                     </td>
                                                 </tr>
                                             </table>
                                         </asp:Panel>
-                                    </ContentTemplate>
+                                   <%-- </ContentTemplate>
                                     <Triggers>
                                         <asp:AsyncPostBackTrigger ControlID="btnNewPluse" EventName="Click" />
                                         <asp:AsyncPostBackTrigger ControlID="btnNewMinus" EventName="Click" />
                                         <asp:AsyncPostBackTrigger ControlID="ddlstatus" EventName="SelectedIndexChanged" />
                                     </Triggers>
-                                </asp:UpdatePanel>
+                                </asp:UpdatePanel>--%>
                             </li>
                         </ul>
                     </asp:Panel>
-                </ContentTemplate>
+                <%--</ContentTemplate>
                 <Triggers>
                     <asp:AsyncPostBackTrigger ControlID="ddlstatus" EventName="SelectedIndexChanged" />
                     <asp:AsyncPostBackTrigger ControlID="ddldesignation" EventName="SelectedIndexChanged" />
                 </Triggers>
-            </asp:UpdatePanel>
+            </asp:UpdatePanel>--%>
             <ul style="overflow-x: hidden; margin-bottom: 10px;">
                 <li style="width: 100%;">
-                    <asp:UpdatePanel ID="UpdatePanel6" runat="server">
-                        <ContentTemplate>
+                    <%--<asp:UpdatePanel ID="UpdatePanel6" runat="server">
+                        <ContentTemplate>--%>
                             <asp:Panel ID="pnlFngPrint" runat="server">
                                 <table id="table1" class="auto-style11">
                                     <tr>
@@ -840,15 +842,15 @@
                                     </tr>
                                 </table>
                             </asp:Panel>
-                        </ContentTemplate>
+                        <%--</ContentTemplate>
                         <Triggers>
                             <asp:AsyncPostBackTrigger ControlID="ddlstatus" EventName="SelectedIndexChanged" />
                         </Triggers>
-                    </asp:UpdatePanel>
+                    </asp:UpdatePanel>--%>
                 </li>
             </ul>
-            <asp:UpdatePanel ID="UpdatePanel7" runat="server">
-                <ContentTemplate>
+            <%--<asp:UpdatePanel ID="UpdatePanel7" runat="server">
+                <ContentTemplate>--%>
                     <asp:Panel runat="server" ID="pnlGrid">
                         <div class="form_panel" style="padding-bottom: 0px; min-height: 100px;">
                             <div class="grid">
@@ -943,11 +945,11 @@
                             </div>
                         </div>
                     </asp:Panel>
-                </ContentTemplate>
+              <%--  </ContentTemplate>
                 <Triggers>
                     <asp:AsyncPostBackTrigger ControlID="ddlstatus" EventName="SelectedIndexChanged" />
                 </Triggers>
-            </asp:UpdatePanel>
+            </asp:UpdatePanel>--%>
             <br />
             <br />
             <asp:Panel ID="Panel2" runat="server">
@@ -1488,8 +1490,8 @@
                     <table border="0" cellspacing="0" cellpadding="0">
                         <tr>
                             <td>
-                                <asp:UpdatePanel ID="upnl100" runat="server">
-                                    <ContentTemplate>
+                                <%--<asp:UpdatePanel ID="upnl100" runat="server">
+                                    <ContentTemplate>--%>
                                         <label>
                                             <asp:Label ID="lblTest" runat="server" ForeColor="Black">
                                     Designation</asp:Label><span>*</span></label>
@@ -1501,9 +1503,10 @@
                                             <asp:ListItem Text="Recruiter" Value="Recruiter"></asp:ListItem>
                                             <asp:ListItem Text="Sales Manager" Value="Sales Manager"></asp:ListItem>
                                             <asp:ListItem Text="Sr. Sales" Value="Sr. Sales"></asp:ListItem>
+                                            <asp:ListItem Text="IT Developer" Value="ITDeveloper"></asp:ListItem>
                                         </asp:DropDownList>
-                                    </ContentTemplate>
-                                </asp:UpdatePanel>
+                                    <%--</ContentTemplate>
+                                </asp:UpdatePanel>--%>
                                 <label>
                                 </label>
                                 <asp:RequiredFieldValidator ID="rqDesignition" runat="server" ControlToValidate="ddldesignation"
@@ -1513,8 +1516,8 @@
                                     ValidationGroup="Image" ForeColor="Red" Display="Dynamic" ErrorMessage="Please Select Designation"
                                     InitialValue="0"></asp:RequiredFieldValidator>
                                 <br />
-                                <asp:UpdatePanel ID="UpdatePanel21" runat="server">
-                                    <ContentTemplate>
+                                <%--<asp:UpdatePanel ID="UpdatePanel21" runat="server">
+                                    <ContentTemplate>--%>
                                         <label>
                                             <asp:Label ID="lblInstallerType" ForeColor="Black" runat="server" Text="Installer Type"></asp:Label></label>
                                         <asp:DropDownList ID="ddlInstallerType" runat="server" Width="252px" ><%--TabIndex="106"--%>
@@ -1525,11 +1528,11 @@
                                             <asp:ListItem Text="Mechanic" Value="Mechanic"></asp:ListItem>
                                             <asp:ListItem Text="Sub-contractor" Value="Sub-contractor"></asp:ListItem>
                                         </asp:DropDownList>
-                                    </ContentTemplate>
+                                    <%--</ContentTemplate>
                                     <Triggers>
                                         <asp:AsyncPostBackTrigger ControlID="ddldesignation" EventName="SelectedIndexChanged" />
                                     </Triggers>
-                                </asp:UpdatePanel>
+                                </asp:UpdatePanel>--%>
                             </td>
                         </tr>
                         <%--<tr>
@@ -1599,10 +1602,10 @@
                                 <br />
                                 <label></label>
                                 <asp:RequiredFieldValidator ID="rqEmail" Display="Dynamic" runat="server" ControlToValidate="txtemail"
-                                    ValidationGroup="submit" ForeColor="Red" ErrorMessage="Please Enter Email"></asp:RequiredFieldValidator>
+                                    ValidationGroup="OfferMade" ForeColor="Red" ErrorMessage="Please Enter Email"></asp:RequiredFieldValidator>
                                 <asp:RegularExpressionValidator ID="reEmail" ControlToValidate="txtemail" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"
                                     Display="Dynamic" runat="server" ForeColor="Red" ErrorMessage="Please Enter a valid Email"
-                                    ValidationGroup="submit">
+                                    ValidationGroup="OfferMade">
                                 </asp:RegularExpressionValidator>
                             </td>
                         </tr>
@@ -1626,18 +1629,18 @@
                         </tr>
                         <tr>
                             <td>
-                                <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-                                    <ContentTemplate>
+                                <%--<asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                                    <ContentTemplate>--%>
                                         <label>
                                             State
                                             <asp:Label ID="lblStateReq" runat="server" Text="*" ForeColor="Red"></asp:Label>
                                         </label>
                                         <asp:TextBox ID="txtState" runat="server" MaxLength="40"  onkeypress="return lettersOnly(event);" OnTextChanged="txtState_TextChanged" Width="242px" TabIndex="509"></asp:TextBox>
-                                    </ContentTemplate>
+                                   <%-- </ContentTemplate>
                                     <Triggers>
                                         <asp:AsyncPostBackTrigger ControlID="txtZip" EventName="TextChanged" />
                                     </Triggers>
-                                </asp:UpdatePanel>
+                                </asp:UpdatePanel>--%>
                                 <br />
                                 <label></label>
                                 <asp:RequiredFieldValidator ID="rqState" runat="server" ControlToValidate="txtState"
@@ -1646,18 +1649,18 @@
                         </tr>
                         <tr>
                             <td>
-                                <asp:UpdatePanel ID="UpdatePanel2" runat="server">
-                                    <ContentTemplate>
+                                <%--<asp:UpdatePanel ID="UpdatePanel2" runat="server">
+                                    <ContentTemplate>--%>
                                         <label>
                                             City
                                             <asp:Label ID="lblCityReq" runat="server" Text="*" ForeColor="Red"></asp:Label>
                                         </label>
                                         <asp:TextBox ID="txtCity" runat="server" MaxLength="40" onkeypress="return lettersOnly(event);" OnTextChanged="txtCity_TextChanged" Width="242px"  TabIndex="510"></asp:TextBox>
-                                    </ContentTemplate>
+                                   <%-- </ContentTemplate>
                                     <Triggers>
                                         <asp:AsyncPostBackTrigger ControlID="txtZip" EventName="TextChanged" />
                                     </Triggers>
-                                </asp:UpdatePanel>
+                                </asp:UpdatePanel>--%>
                                 <br />
                                 <label></label>
                                 <asp:RequiredFieldValidator ID="rqCity" runat="server" ControlToValidate="txtCity"
@@ -1691,7 +1694,7 @@
                                 <label>
                                 </label>
                                 <asp:RequiredFieldValidator ID="rqPass" runat="server" ControlToValidate="txtpassword"
-                                    ValidationGroup="submit" ForeColor="Red" Display="Dynamic" ErrorMessage="Please Enter Password"></asp:RequiredFieldValidator><br />
+                                    ValidationGroup="OfferMade" ForeColor="Red" Display="Dynamic" ErrorMessage="Please Enter Password"></asp:RequiredFieldValidator><br />
                             </td>
 
                         </tr>
@@ -1753,44 +1756,41 @@
                         </tr>
                         <tr>
                             <td>
-                                <asp:UpdatePanel ID="UpdatePanel23" runat="server">
-                                    <ContentTemplate>
+                                <%--<asp:UpdatePanel ID="UpdatePanel23" runat="server">
+                                    <ContentTemplate>--%>
                                 <label>Picture<span><asp:Label ID="lblReqPicture" runat="server" Text="*" ForeColor="Red" style="margin-top:-14px; margin-left:63px"></asp:Label></span></label>
 
-                                        </ContentTemplate>
+                                        <%--</ContentTemplate>
                                     <Triggers>
                                         <asp:AsyncPostBackTrigger ControlID="ddlstatus" EventName="SelectedIndexChanged" />
                                     </Triggers>
                                 </asp:UpdatePanel>
                                 <asp:UpdatePanel ID="UpdatepnlPic" ClientIDMode="Static" runat="server" UpdateMode="Conditional">
-                                    <ContentTemplate>
+                                    <ContentTemplate>--%>
                                         <ajaxToolkit:AsyncFileUpload ID="flpUplaodPicture" runat="server" TabIndex="518" ClientIDMode="AutoID"
                                             Width="88%" OnClientUploadStarted="" />
                                         <asp:Button ID="btn_UploadPicture" runat="server" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff;" OnClick="btn_UploadPicture_Click"
                                             width="10%" OnClientClick="return CheckFileExistence()" ValidationGroup="Image" Text="Upload"  /><%--TabIndex="140"--%>
                                         &nbsp;&nbsp;<%--<asp:Button ID="btndelete" runat="server" Text="Delete" OnClick="btndelete_Click1"
                                             TabIndex="20" /> --%>
-                                    </ContentTemplate>
+                                    <%--</ContentTemplate>
                                     <Triggers>
-                                        <%-- <asp:AsyncPostBackTrigger ControlID="lstboxUploadedImages" EventName="SelectedIndexChanged" />--%>
-                                        <%--<asp:AsyncPostBackTrigger ControlID="btndelete" EventName="Click" />--%>
                                         <asp:PostBackTrigger ControlID="btn_UploadPicture" />
-                                        <%--<asp:PostBackTrigger ControlID="btndelete" />--%>
                                     </Triggers>
-                                </asp:UpdatePanel>
+                                </asp:UpdatePanel>--%>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                 <asp:UpdatePanel ID="UpdatePanel4" runat="server">
-                                    <ContentTemplate>
+                                 <%--<asp:UpdatePanel ID="UpdatePanel4" runat="server">
+                                    <ContentTemplate>--%>
                                          <label>
                                              DL License<span><asp:Label ID="lblReqDL" runat="server" Text="*" ForeColor="Red" style="margin-top:-14px; margin-left:63px"></asp:Label></span></label>
-                                         </ContentTemplate>
+                                     <%--    </ContentTemplate>
                                     <Triggers>
                                         <asp:AsyncPostBackTrigger ControlID="ddlstatus" EventName="SelectedIndexChanged" />
                                     </Triggers>
-                                </asp:UpdatePanel>
+                                </asp:UpdatePanel>--%>
                                 <%--<asp:UpdatePanel ID="UpdatePanel3" runat="server" >
                                     <ContentTemplate>--%>
                                 <br />
@@ -1855,8 +1855,8 @@
                     <table border="0" cellspacing="0" cellpadding="0">
                         <tr>
                             <td class="style1">
-                                <asp:UpdatePanel ID="upnl1" runat="server">
-                                    <ContentTemplate>
+                                <%--<asp:UpdatePanel ID="upnl1" runat="server">
+                                    <ContentTemplate>--%>
                                         <label>
                                             <asp:Label ID="lblUser" runat="server" ForeColor="Black">
                                     User Status</asp:Label><span><asp:Label ID="lblReqDesig" ForeColor="Red" runat="server" Text="*"></asp:Label></span></label>
@@ -1881,8 +1881,8 @@
                                         <ajaxToolkit:CalendarExtender ID="CalendarExtender1" TargetControlID="dtInterviewDate" runat="server"></ajaxToolkit:CalendarExtender>
                                         <%--OnTextChanged="DOBdatepicker_TextChanged"--%>
                                         &nbsp;<br />
-                                    </ContentTemplate>
-                                </asp:UpdatePanel>
+                                    <%--</ContentTemplate>
+                                </asp:UpdatePanel>--%>
 
                             </td>
                         </tr>
@@ -1897,7 +1897,7 @@
                                 <label>
                                 </label>
                                 <asp:RequiredFieldValidator ID="rqLastName" runat="server" ControlToValidate="txtlastname"
-                                    ForeColor="Red" Display="Dynamic" ValidationGroup="submit">Enter Last Name</asp:RequiredFieldValidator>
+                                    ForeColor="Red" Display="Dynamic" ValidationGroup="submit" ErrorMessage="Enter Last Name"></asp:RequiredFieldValidator>
                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ControlToValidate="txtlastname"
                                     ForeColor="Red" Display="Dynamic" ValidationGroup="Image">Enter Last Name</asp:RequiredFieldValidator>
                                 <br />
@@ -1983,10 +1983,10 @@
                                 </label>
                                 <asp:CompareValidator ID="password" runat="server" ControlToValidate="txtpassword1"
                                     Display="Dynamic" ControlToCompare="txtpassword" ForeColor="Red" ErrorMessage="Password didn't matched"
-                                    ValidationGroup="submit">
+                                    ValidationGroup="OfferMade">
                                 </asp:CompareValidator>
                                 <asp:RequiredFieldValidator ID="rqConPass" runat="server" ControlToValidate="txtpassword1"
-                                    ForeColor="Red" ValidationGroup="submit" ErrorMessage="Enter Confirm Password"></asp:RequiredFieldValidator>
+                                    ForeColor="Red" ValidationGroup="OfferMade" ErrorMessage="Enter Confirm Password"></asp:RequiredFieldValidator>
                             </td>
                         </tr>
 
@@ -2064,7 +2064,7 @@
                                 <label>
                                 </label>
                                 <asp:RequiredFieldValidator ID="rqPhone" runat="server" ControlToValidate="txtPhone"
-                                    ForeColor="Red" Display="Dynamic" ValidationGroup="submit">Enter Phone No</asp:RequiredFieldValidator>
+                                    ForeColor="Red" Display="Dynamic" ValidationGroup="submit" ErrorMessage="Enter Phone No"></asp:RequiredFieldValidator>
                             </td>
                         </tr>
                         
@@ -2136,8 +2136,8 @@
                         </tr>
                         <tr>
                             <td class="style2">
-                                <asp:UpdatePanel ID="UpdatePanel9" runat="server">
-                                    <ContentTemplate>
+                                <%--<asp:UpdatePanel ID="UpdatePanel9" runat="server">
+                                    <ContentTemplate>--%>
                                         <asp:LinkButton ID="lnkw4Details" runat="server" CausesValidation="false" OnClick="lnkw4Details_Click" >Add W4 Details</asp:LinkButton><%--TabIndex="133"--%>
                                         <ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender1" runat="server" TargetControlID="lnkw4Details"
                                             PopupControlID="pnlpopup" CancelControlID="btnCancel" BackgroundCssClass="modalBackground"
@@ -2273,11 +2273,11 @@
                                                 </tr>
                                             </table>
                                         </asp:Panel>
-                                    </ContentTemplate>
+                                    <%--</ContentTemplate>
                                     <Triggers>
                                         <asp:AsyncPostBackTrigger ControlID="ddldesignation" EventName="SelectedIndexChanged" />
                                     </Triggers>
-                                </asp:UpdatePanel>
+                                </asp:UpdatePanel>--%>
                             </td>
                         </tr>
                         <tr>
@@ -2464,10 +2464,8 @@
                 <asp:Label ID="lblMessage" runat="server" Visible="False"></asp:Label>
             </ul>
             <div>
-                <asp:UpdatePanel ID="upnl3" runat="server">
-                    <ContentTemplate>
-
-
+                <%--<asp:UpdatePanel ID="upnl3" runat="server">
+                    <ContentTemplate>--%>
                         <asp:Panel runat="server" ID="pnlcolaps" Style="border: solid; border-color: black; border-width: 1px 1px 1px 1px;">
                             <table>
                                 <tr>
@@ -2476,17 +2474,17 @@
                                             <table>
                                                 <tr>
                                                     <td>
-                                                        <asp:UpdatePanel ID="UpdatePanel11" runat="server">
-                                                            <ContentTemplate>
+                                                        <%--<asp:UpdatePanel ID="UpdatePanel11" runat="server">
+                                                            <ContentTemplate>--%>
                                                                 <asp:Button ID="btnPluse" runat="server" Text="+" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff;" OnClick="btnPluse_Click" Font-Size="Medium" Width="23px"  /><%-- TabIndex="146"--%>
                                                                 <asp:Button ID="btnMinus" runat="server" Text="-" OnClick="btnMinus_Click" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff;" Font-Size="Medium" Width="20px"  /> <%--TabIndex="146"--%>
-                                                            </ContentTemplate>
+                                                            <%--</ContentTemplate>
                                                             <Triggers>
                                                                 <asp:AsyncPostBackTrigger ControlID="ddlstatus" EventName="SelectedIndexChanged" />
                                                                 <asp:AsyncPostBackTrigger ControlID="btnPluse" EventName="Click" />
                                                                 <asp:AsyncPostBackTrigger ControlID="btnMinus" EventName="Click" />
                                                             </Triggers>
-                                                        </asp:UpdatePanel>
+                                                        </asp:UpdatePanel>--%>
                                                     </td>
                                                     <td>
                                                         <h2>SubContract</h2>
@@ -3253,14 +3251,13 @@
                                 </tr>
                             </table>
                         </asp:Panel>
-                    </ContentTemplate>
+                    <%--</ContentTemplate>
                     <Triggers>
                         <asp:AsyncPostBackTrigger ControlID="ddlstatus" EventName="SelectedIndexChanged" />
                         <asp:AsyncPostBackTrigger ControlID="btnPluse" EventName="Click" />
                         <asp:AsyncPostBackTrigger ControlID="btnMinus" EventName="Click" />
-                        <%--<asp:AsyncPostBackTrigger ControlID="ddldesignation" EventName="SelectedIndexChanged" />--%>
                     </Triggers>
-                </asp:UpdatePanel>
+                </asp:UpdatePanel>--%>
                 <%--<ajaxToolkit:CollapsiblePanelExtender ID="CollapsiblePanelExtender1" runat="server"
                                 SuppressPostBack="true" ExpandedImage="~/img/minusicon.png" TargetControlID="pnl4"
                                 CollapseControlID="pnl3" ExpandControlID="pnl3" CollapsedImage="~/img/plusicon.png"

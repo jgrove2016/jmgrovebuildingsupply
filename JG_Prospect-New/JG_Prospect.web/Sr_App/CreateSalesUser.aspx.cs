@@ -95,7 +95,7 @@ namespace JG_Prospect.Sr_App
                 //rqPrimaryTrade.Enabled = true;
                 //rqSecondaryTrade.Enabled = true;
                 rqFirstName.Enabled = true;
-                rqEmail.Enabled = true;
+                //rqEmail.Enabled = true;
                 reEmail.Enabled = true;
                 rqZip.Enabled = true;
                 rqState.Enabled = true;
@@ -104,7 +104,7 @@ namespace JG_Prospect.Sr_App
                 lblCityReq.Visible = true;
                 lblCityReq.Visible = true;
                 password.Enabled = true;
-                rqConPass.Enabled = true;
+                //rqConPass.Enabled = true;
                 lblConfirmPass.Visible = true;
                 rqSign.Enabled = false;
                 lblReqSig.Visible = false;
@@ -120,7 +120,7 @@ namespace JG_Prospect.Sr_App
                 lblAddressReq.Visible = true;
                 rqPhone.Enabled = true;
                 lblPhoneReq.Visible = true;
-                rqPass.Enabled = true;
+                //rqPass.Enabled = true;
                 lblPassReq.Visible = true;
                 rqSSN1.Enabled = false;
                 lblReqSSN.Visible = false;
@@ -205,7 +205,7 @@ namespace JG_Prospect.Sr_App
                 lblNotesReq.Visible = false;
                 rqNotes.Enabled = false;
                 lblReqEmail.Visible = false;
-                rqEmail.Enabled = false;
+                //rqEmail.Enabled = false;
                 reEmail.Enabled = true;
                 lblReqZip.Visible = false;
                 rqZip.Enabled = false;
@@ -214,7 +214,7 @@ namespace JG_Prospect.Sr_App
                 lblCityReq.Visible = false;
                 rqCity.Enabled = false;
                 lblPassReq.Visible = false;
-                rqPass.Enabled = false;
+                //rqPass.Enabled = false;
                 lblReqSig.Visible = false;
                 rqSign.Enabled = false;
                 lblReqMarSt.Visible = false;
@@ -228,7 +228,7 @@ namespace JG_Prospect.Sr_App
                 Label1.Visible = false;
                 RequiredFieldValidator6.Enabled = false;
                 lblConfirmPass.Visible = true;
-                rqConPass.Enabled = false;
+                //rqConPass.Enabled = false;
                 lblReqSSN.Visible = false;
                 rqSSN1.Enabled = false;
                 rqSSN2.Enabled = false;
@@ -362,7 +362,7 @@ namespace JG_Prospect.Sr_App
                                 lblNotesReq.Visible = false;
                                 rqNotes.Enabled = false;
                                 lblReqEmail.Visible = false;
-                                rqEmail.Enabled = false;
+                                //rqEmail.Enabled = false;
                                 reEmail.Enabled = true;
                                 lblReqZip.Visible = false;
                                 rqZip.Enabled = false;
@@ -371,7 +371,7 @@ namespace JG_Prospect.Sr_App
                                 lblCityReq.Visible = false;
                                 rqCity.Enabled = false;
                                 lblPassReq.Visible = false;
-                                rqPass.Enabled = false;
+                                //rqPass.Enabled = false;
                                 lblReqSig.Visible = false;
                                 rqSign.Enabled = false;
                                 lblReqMarSt.Visible = false;
@@ -385,7 +385,7 @@ namespace JG_Prospect.Sr_App
                                 Label1.Visible = false;
                                 RequiredFieldValidator6.Enabled = false;
                                 lblConfirmPass.Visible = true;
-                                rqConPass.Enabled = false;
+                                //rqConPass.Enabled = false;
                                 lblReqSSN.Visible = false;
                                 rqSSN1.Enabled = false;
                                 rqSSN2.Enabled = false;
@@ -419,7 +419,7 @@ namespace JG_Prospect.Sr_App
                                 lblNotesReq.Visible = false;
                                 rqNotes.Enabled = false;
                                 lblReqEmail.Visible = false;
-                                rqEmail.Enabled = false;
+                                //rqEmail.Enabled = false;
                                 reEmail.Enabled = true;
                                 lblReqZip.Visible = false;
                                 rqZip.Enabled = false;
@@ -428,7 +428,7 @@ namespace JG_Prospect.Sr_App
                                 lblCityReq.Visible = false;
                                 rqCity.Enabled = false;
                                 lblPassReq.Visible = false;
-                                rqPass.Enabled = false;
+                                //rqPass.Enabled = false;
                                 lblReqSig.Visible = false;
                                 rqSign.Enabled = false;
                                 lblReqMarSt.Visible = false;
@@ -443,7 +443,7 @@ namespace JG_Prospect.Sr_App
                                 Label1.Visible = false;
                                 RequiredFieldValidator6.Enabled = false;
                                 lblConfirmPass.Visible = true;
-                                rqConPass.Enabled = false;
+                                //rqConPass.Enabled = false;
                                 lblReqSSN.Visible = false;
                                 rqSSN1.Enabled = false;
                                 rqSSN2.Enabled = false;
@@ -477,7 +477,7 @@ namespace JG_Prospect.Sr_App
                                 lblNotesReq.Visible = false;
                                 rqNotes.Enabled = false;
                                 lblReqEmail.Visible = false;
-                                rqEmail.Enabled = false;
+                                //rqEmail.Enabled = false;
                                 reEmail.Enabled = true;
                                 lblReqZip.Visible = true;
                                 rqZip.Enabled = true;
@@ -486,7 +486,7 @@ namespace JG_Prospect.Sr_App
                                 lblCityReq.Visible = true;
                                 rqCity.Enabled = true;
                                 lblPassReq.Visible = false;
-                                rqPass.Enabled = false;
+                                //rqPass.Enabled = false;
                                 lblReqSig.Visible = false;
                                 rqSign.Enabled = false;
                                 lblReqMarSt.Visible = false;
@@ -502,7 +502,7 @@ namespace JG_Prospect.Sr_App
                                 Label1.Visible = true;
                                 RequiredFieldValidator6.Enabled = true;
                                 lblConfirmPass.Visible = true;
-                                rqConPass.Enabled = false;
+                                //rqConPass.Enabled = false;
                                 lblReqSSN.Visible = false;
                                 rqSSN1.Enabled = false;
                                 rqSSN2.Enabled = false;
@@ -545,7 +545,7 @@ namespace JG_Prospect.Sr_App
                                 lblNotesReq.Visible = false;
                                 rqNotes.Enabled = false;
                                 lblReqEmail.Visible = false;
-                                rqEmail.Enabled = false;
+                                //rqEmail.Enabled = false;
                                 reEmail.Enabled = true;
                                 lblReqZip.Visible = true;
                                 rqZip.Enabled = true;
@@ -554,11 +554,11 @@ namespace JG_Prospect.Sr_App
                                 lblCityReq.Visible = true;
                                 rqCity.Enabled = true;
                                 lblPassReq.Visible = true;
-                                rqPass.Enabled = true;
+                                //rqPass.Enabled = true;
                                 lblReqSig.Visible = false;
                                 lblConfirmPass.Visible = true;
                                 password.Enabled = true;
-                                rqConPass.Enabled = true;
+                                //rqConPass.Enabled = true;
                                 rqSign.Enabled = false;
                                 lblReqMarSt.Visible = true;
                                 rqMaritalStatus.Enabled = true;
@@ -572,7 +572,7 @@ namespace JG_Prospect.Sr_App
                                 Label1.Visible = true;
                                 RequiredFieldValidator6.Enabled = true;
                                 lblConfirmPass.Visible = true;
-                                rqConPass.Enabled = false;
+                                //rqConPass.Enabled = false;
                                 lblReqSSN.Visible = true;
                                 rqSSN1.Enabled = true;
                                 rqSSN2.Enabled = true;
@@ -1915,14 +1915,16 @@ namespace JG_Prospect.Sr_App
         //Save functionality......
         protected void btncreate_Click(object sender, EventArgs e)
         {
+            if (!Page.IsValid)
+                return;
             string InstallId = string.Empty;
             string str_Status = string.Empty;
             string str_Reason = string.Empty;
-            if (Convert.ToString(Session["UploadedPictureName"]) == "" || Convert.ToString(Session["UploadedPictureName"]) == null)
-            {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please select image file');", true);
-                return;
-            }
+            //if (Convert.ToString(Session["UploadedPictureName"]) == "" || Convert.ToString(Session["UploadedPictureName"]) == null)
+            //{
+            //    ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please select image file');", true);
+            //    return;
+            //}
             btn_UploadFiles_Click(sender, e);
             if (chkboxcondition.Checked == true)
             {
@@ -2280,7 +2282,7 @@ namespace JG_Prospect.Sr_App
                 objuser.UserType = "SalesUser";
                 DataSet dsCheckDuplicate = InstallUserBLL.Instance.CheckInstallUser(txtemail.Text, txtPhone.Text);
               //  if (dsCheckDuplicate.Tables[0].Rows.Count > 0)
-                if (dsCheckDuplicate.Tables.Count > 0)
+                if (dsCheckDuplicate.Tables.Count > 0 && dsCheckDuplicate.Tables.Count > 0)
                 {
                     Session["EmailEdiId"] = Convert.ToInt32(dsCheckDuplicate.Tables[0].Rows[0][0]);
                     ScriptManager.RegisterStartupScript(this, GetType(), "overlay", "overlay();", true);
@@ -2321,16 +2323,16 @@ namespace JG_Prospect.Sr_App
                         //ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('User has been created successfully');", true);
                         ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('User has been created successfully');window.location ='EditUser.aspx';", true);
                         clearcontrols();
-                        if (ddldesignation.SelectedItem.Text == "Installer")
-                        {
-                            lblInstallerType.Visible = true;
-                            ddlInstallerType.Visible = true;
-                        }
-                        else
-                        {
-                            lblInstallerType.Visible = false;
-                            ddlInstallerType.Visible = false;
-                        }
+                        //if (ddldesignation.SelectedItem.Text == "Installer")
+                        //{
+                        //    lblInstallerType.Visible = true;
+                        //    ddlInstallerType.Visible = true;
+                        //}
+                        //else
+                        //{
+                        //    lblInstallerType.Visible = false;
+                        //    ddlInstallerType.Visible = false;
+                        //}
                     }
                     catch (Exception)
                     {
@@ -3887,6 +3889,7 @@ namespace JG_Prospect.Sr_App
 
         protected void ddlstatus_SelectedIndexChanged(object sender, EventArgs e)
         {
+            ValidationSummary1.ValidationGroup = btncreate.ValidationGroup = "submit";
             if (Convert.ToString(Session["PreviousStatusNew"]) == "Active" && (!(Convert.ToString(Session["usertype"]).Contains("Admin"))))
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Status cannot be changed to any other status other than Deactive once user is Active')", true);
@@ -4130,7 +4133,7 @@ namespace JG_Prospect.Sr_App
             //    //rqPrimaryTrade.Enabled = true;
             //    //rqSecondaryTrade.Enabled = true;
             //    rqFirstName.Enabled = true;
-            //    rqEmail.Enabled = true;
+            //    //rqEmail.Enabled = true;
             //    reEmail.Enabled = true;
             //    rqZip.Enabled = true;
             //    rqState.Enabled = true;
@@ -4139,7 +4142,7 @@ namespace JG_Prospect.Sr_App
             //    lblCityReq.Visible = true;
             //    lblCityReq.Visible = true;
             //    password.Enabled = true;
-            //    rqConPass.Enabled = true;
+            //    //rqConPass.Enabled = true;
             //    lblConfirmPass.Visible = true;
             //    rqSign.Enabled = true;
             //    lblReqSig.Visible = true;
@@ -4156,7 +4159,7 @@ namespace JG_Prospect.Sr_App
             //    lblAddressReq.Visible = true;
             //    rqPhone.Enabled = true;
             //    lblPhoneReq.Visible = true;
-            //    rqPass.Enabled = true;
+            //    //rqPass.Enabled = true;
             //    lblPassReq.Visible = true;
             //    lblPassReq.Visible = true;
             //    rqSSN1.Enabled = true;
@@ -4187,7 +4190,7 @@ namespace JG_Prospect.Sr_App
             //    //rqPrimaryTrade.Enabled = true;
             //    //rqSecondaryTrade.Enabled = true;
             //    rqFirstName.Enabled = true;
-            //    rqEmail.Enabled = true;
+            //    //rqEmail.Enabled = true;
             //    reEmail.Enabled = true;
             //    rqZip.Enabled = true;
             //    rqState.Enabled = true;
@@ -4196,7 +4199,7 @@ namespace JG_Prospect.Sr_App
             //    lblCityReq.Visible = true;
             //    lblCityReq.Visible = true;
             //    password.Enabled = true;
-            //    rqConPass.Enabled = true;
+            //    //rqConPass.Enabled = true;
             //    lblConfirmPass.Visible = false;
             //    rqSign.Enabled = false;
             //    lblReqSig.Visible = false;
@@ -4211,7 +4214,7 @@ namespace JG_Prospect.Sr_App
             //    lblAddressReq.Visible = true;
             //    rqPhone.Enabled = true;
             //    lblPhoneReq.Visible = true;
-            //    rqPass.Enabled = true;
+            //    //rqPass.Enabled = true;
             //    lblPassReq.Visible = true;
             //    rqSSN1.Enabled = false;
             //    lblReqSSN.Visible = false;
@@ -4270,7 +4273,7 @@ namespace JG_Prospect.Sr_App
             //    lblNotesReq.Visible = false;
             //    rqNotes.Enabled = false;
             //    lblReqEmail.Visible = false;
-            //    rqEmail.Enabled = false;
+            //    //rqEmail.Enabled = false;
             //    reEmail.Enabled = true;
             //    lblReqZip.Visible = false;
             //    rqZip.Enabled = false;
@@ -4279,7 +4282,7 @@ namespace JG_Prospect.Sr_App
             //    lblCityReq.Visible = false;
             //    rqCity.Enabled = false;
             //    lblPassReq.Visible = false;
-            //    rqPass.Enabled = false;
+            //    //rqPass.Enabled = false;
             //    lblReqSig.Visible = false;
             //    rqSign.Enabled = false;
             //    lblReqMarSt.Visible = false;
@@ -4291,7 +4294,7 @@ namespace JG_Prospect.Sr_App
             //    Label1.Visible = false;
             //    RequiredFieldValidator6.Enabled = false;
             //    lblConfirmPass.Visible = true;
-            //    rqConPass.Enabled = false;
+            //    //rqConPass.Enabled = false;
             //    lblReqSSN.Visible = false;
             //    rqSSN1.Enabled = false;
             //    rqSSN2.Enabled = false;
@@ -4327,7 +4330,7 @@ namespace JG_Prospect.Sr_App
                 lblNotesReq.Visible = false;
                 rqNotes.Enabled = false;
                 lblReqEmail.Visible = false;
-                rqEmail.Enabled = false;
+                //rqEmail.Enabled = false;
                 reEmail.Enabled = true;
                 lblReqZip.Visible = false;
                 rqZip.Enabled = false;
@@ -4336,7 +4339,7 @@ namespace JG_Prospect.Sr_App
                 lblCityReq.Visible = false;
                 rqCity.Enabled = false;
                 lblPassReq.Visible = false;
-                rqPass.Enabled = false;
+                //rqPass.Enabled = false;
                 lblReqSig.Visible = false;
                 rqSign.Enabled = false;
                 lblReqMarSt.Visible = false;
@@ -4352,7 +4355,7 @@ namespace JG_Prospect.Sr_App
                 Label1.Visible = false;
                 RequiredFieldValidator6.Enabled = false;
                 lblConfirmPass.Visible = true;
-                rqConPass.Enabled = false;
+                //rqConPass.Enabled = false;
                 lblReqSSN.Visible = false;
                 rqSSN1.Enabled = false;
                 rqSSN2.Enabled = false;
@@ -4366,6 +4369,7 @@ namespace JG_Prospect.Sr_App
             }
             else if (ddlstatus.SelectedValue == "OfferMade")
             {
+                ValidationSummary1.ValidationGroup = btncreate.ValidationGroup = "OfferMade";
                 rqDesignition.Enabled = true;
                 RequiredFieldValidator3.Enabled = true;
                 lblReqDesig.Visible = true;
@@ -4386,7 +4390,7 @@ namespace JG_Prospect.Sr_App
                 lblNotesReq.Visible = false;
                 rqNotes.Enabled = false;
                 lblReqEmail.Visible = false;
-                rqEmail.Enabled = false;
+                //rqEmail.Enabled = false;
                 reEmail.Enabled = true;
                 lblReqZip.Visible = true;
                 rqZip.Enabled = true;
@@ -4395,7 +4399,7 @@ namespace JG_Prospect.Sr_App
                 lblCityReq.Visible = true;
                 rqCity.Enabled = true;
                 lblPassReq.Visible = false;
-                rqPass.Enabled = false;
+                //rqPass.Enabled = false;
                 lblReqSig.Visible = false;
                 rqSign.Enabled = false;
                 lblReqMarSt.Visible = false;
@@ -4411,7 +4415,7 @@ namespace JG_Prospect.Sr_App
                 Label1.Visible = true;
                 RequiredFieldValidator6.Enabled = true;
                 lblConfirmPass.Visible = true;
-                rqConPass.Enabled = false;
+                //rqConPass.Enabled = false;
                 lblReqSSN.Visible = false;
                 rqSSN1.Enabled = false;
                 rqSSN2.Enabled = false;
@@ -4431,8 +4435,8 @@ namespace JG_Prospect.Sr_App
                 lblReqEmpType.Visible = true;
                 rqEmpType.Enabled = true;
                 #endregion
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Fill new hire section above')", true);
-                return;
+                //ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Fill new hire section above')", true);
+                //return;
             }
             else if (ddlstatus.SelectedValue == "Active")
             {
@@ -4456,7 +4460,7 @@ namespace JG_Prospect.Sr_App
                 lblNotesReq.Visible = false;
                 rqNotes.Enabled = false;
                 lblReqEmail.Visible = true;
-                rqEmail.Enabled = true;
+                //rqEmail.Enabled = true;
                 reEmail.Enabled = true;
                 lblReqZip.Visible = true;
                 rqZip.Enabled = true;
@@ -4465,11 +4469,11 @@ namespace JG_Prospect.Sr_App
                 lblCityReq.Visible = true;
                 rqCity.Enabled = true;
                 lblPassReq.Visible = true;
-                rqPass.Enabled = true;
+                //rqPass.Enabled = true;
                 lblReqSig.Visible = true;
                 lblConfirmPass.Visible = true;
                 password.Enabled = true;
-                rqConPass.Enabled = true;
+                //rqConPass.Enabled = true;
                 rqSign.Enabled = true;
                 lblReqMarSt.Visible = true;
                 rqMaritalStatus.Enabled = true;
@@ -4485,7 +4489,7 @@ namespace JG_Prospect.Sr_App
                 Label1.Visible = true;
                 RequiredFieldValidator6.Enabled = true;
                 lblConfirmPass.Visible = true;
-                rqConPass.Enabled = true;
+                //rqConPass.Enabled = true;
                 lblReqSSN.Visible = true;
                 rqSSN1.Enabled = true;
                 rqSSN2.Enabled = true;
@@ -4532,7 +4536,7 @@ namespace JG_Prospect.Sr_App
                 lblNotesReq.Visible = false;
                 rqNotes.Enabled = false;
                 lblReqEmail.Visible = false;
-                rqEmail.Enabled = false;
+                //rqEmail.Enabled = false;
                 reEmail.Enabled = false;
                 lblReqZip.Visible = false;
                 rqZip.Enabled = false;
@@ -4541,11 +4545,11 @@ namespace JG_Prospect.Sr_App
                 lblCityReq.Visible = false;
                 rqCity.Enabled = false;
                 lblPassReq.Visible = false;
-                rqPass.Enabled = false;
+                //rqPass.Enabled = false;
                 lblReqSig.Visible = false;
                 lblConfirmPass.Visible = false;
                 password.Enabled = false;
-                rqConPass.Enabled = false;
+                //rqConPass.Enabled = false;
                 rqSign.Enabled = false;
                 lblReqMarSt.Visible = false;
                 rqMaritalStatus.Enabled = false;
@@ -4560,7 +4564,7 @@ namespace JG_Prospect.Sr_App
                 Label1.Visible = false;
                 RequiredFieldValidator6.Enabled = false;
                 lblConfirmPass.Visible = false;
-                rqConPass.Enabled = false;
+                //rqConPass.Enabled = false;
                 lblReqSSN.Visible = false;
                 rqSSN1.Enabled = false;
                 rqSSN2.Enabled = false;
