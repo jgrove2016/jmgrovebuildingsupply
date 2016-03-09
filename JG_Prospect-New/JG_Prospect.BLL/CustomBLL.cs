@@ -35,6 +35,16 @@ namespace JG_Prospect.BLL
         {
             CustomDAL.Instance.DeleteCustomMaterialList(pID);
         }
+
+        public void UpdateProductTypeInMaterialList(int pProdCatID, int pOldProdCatID, string pSoldJobID)
+        {
+            CustomDAL.Instance.UpdateProductTypeInMaterialList(pProdCatID, pOldProdCatID, pSoldJobID);
+        }
+        public void DeleteCustomMaterialListByProductCatID(int pProdCatID)//,int productTypeId,int estimateId)
+        {
+            CustomDAL.Instance.DeleteCustomMaterialListByProductCatID(pProdCatID);
+        }
+
         public bool DeleteCustomMaterialList(string id)//, int productTypeId, int estimateId)
         {
             return CustomDAL.Instance.DeleteCustomMaterialList(id);//, productTypeId, estimateId);

@@ -96,7 +96,7 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@Quantity", DbType.Int32, Convert.ToInt32(cm.Quantity));
                     database.AddInParameter(command, "@UOM", DbType.String, cm.UOM);
                     //database.AddInParameter(command, "@VendorQuotesPath"	varchar(MAX) = '',
-                    database.AddInParameter(command, "@MaterialCost", DbType.Decimal, cm.Amount);
+                    database.AddInParameter(command, "@MaterialCost", DbType.Decimal, cm.MaterialCost);
                     database.AddInParameter(command, "@extend", DbType.String, cm.extend);
                     database.AddInParameter(command, "@Total", DbType.Decimal, cm.Total);
                     database.AddInParameter(command, "@JobSeqId", DbType.Int32, cm.JobSeqId);
@@ -118,6 +118,25 @@ namespace JG_Prospect.DAL
             return result > JGConstant.RETURN_ZERO ? JGConstant.RETURN_TRUE : JGConstant.RETURN_FALSE;
         }
 
+        public void UpdateProductTypeInMaterialList(int pProdCatID, int pOldProdCatID, string pSoldJobID) //, int productTypeId, int estimateId)
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_UpdateProdCatOfCustomMaterial");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@ProdCatID", DbType.Int32, pProdCatID);
+                    database.AddInParameter(command, "@OldProdCatID", DbType.Int32, pOldProdCatID);
+                    database.AddInParameter(command, "@SoldJobID", DbType.String, pSoldJobID);
+                    database.ExecuteNonQuery(command);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public void DeleteCustomMaterialList(int pID) //, int productTypeId, int estimateId)
         {
             try
@@ -127,6 +146,24 @@ namespace JG_Prospect.DAL
                     DbCommand command = database.GetStoredProcCommand("UDP_DeleteCustomMaterial");
                     command.CommandType = CommandType.StoredProcedure;
                     database.AddInParameter(command, "@ID", DbType.String, pID);
+                    database.ExecuteNonQuery(command);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void DeleteCustomMaterialListByProductCatID(int pProdCatID) //, int productTypeId, int estimateId)
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_DeleteCustomMaterialByProdCat");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@ProdCatID", DbType.String, pProdCatID);
                     database.ExecuteNonQuery(command);
                 }
             }

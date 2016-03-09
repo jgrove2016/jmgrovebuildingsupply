@@ -29,7 +29,7 @@ namespace JG_Prospect.Common
         public string Line { get; set; }
         public string JGSkuPartNo { get; set; }
         public string Description { get; set; }
-        public string Quantity { get; set; }
+        public int Quantity { get; set; }
         public string UOM { get; set; }
         public string VendorQuotesPath { get; set; }
         public Decimal MaterialCost { get; set; }
