@@ -463,13 +463,13 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.UpdatePanel updMaterialList;
         
         /// <summary>
-        /// ddlCategory control.
+        /// ddlCategoryH control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlCategory;
+        protected global::System.Web.UI.WebControls.DropDownList ddlCategoryH;
         
         /// <summary>
         /// btnAddProdLines control.
@@ -544,6 +544,15 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.Panel pnlEmailTemplateForVendorCategories;
         
         /// <summary>
+        /// txtVendorSubject control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtVendorSubject;
+        
+        /// <summary>
         /// HeaderEditor control.
         /// </summary>
         /// <remarks>
@@ -587,6 +596,15 @@ namespace JG_Prospect.Sr_App {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlEmailTemplateForVendors;
+        
+        /// <summary>
+        /// txtSubject control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtSubject;
         
         /// <summary>
         /// HeaderEditorVendor control.
