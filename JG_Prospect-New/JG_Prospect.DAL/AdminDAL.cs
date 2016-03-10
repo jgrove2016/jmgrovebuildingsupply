@@ -197,7 +197,7 @@ namespace JG_Prospect.DAL
             }
         }
 
-        public bool UpdateEmailVendorCategoryTemplate(string EmailTemplateHeader, string EmailTemplateFooter,String Attachment)
+        public bool UpdateEmailVendorCategoryTemplate(string EmailTemplateHeader, string EmailTemplateFooter,String Attachment, string subject = "")
         {
             bool result = false;
             try
@@ -210,6 +210,9 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@EmailTemplateHeader", DbType.String, EmailTemplateHeader);
                     database.AddInParameter(command, "@EmailTemplateFooter", DbType.String, EmailTemplateFooter);
                     database.AddInParameter(command, "@AttachmentPath", DbType.String, Attachment);
+                    database.AddInParameter(command, "@Subject", DbType.String, subject);
+
+                    
                     database.ExecuteNonQuery(command);
                     result = true;
                 }
@@ -225,7 +228,7 @@ namespace JG_Prospect.DAL
             }
 
         }
-        public bool UpdateEmailVendorTemplate(string EmailTemplateHeader, string EmailTemplateFooter)
+        public bool UpdateEmailVendorTemplate(string EmailTemplateHeader, string EmailTemplateFooter, string subject = "")
         {
             bool result = false;
             try
@@ -237,6 +240,7 @@ namespace JG_Prospect.DAL
                     command.CommandType = CommandType.StoredProcedure;
                     database.AddInParameter(command, "@EmailTemplateHeader", DbType.String, EmailTemplateHeader);
                     database.AddInParameter(command, "@EmailTemplateFooter", DbType.String, EmailTemplateFooter);
+                    database.AddInParameter(command, "@Subject", DbType.String, subject);
                     database.ExecuteNonQuery(command);
                     result = true;
                 }
@@ -252,6 +256,7 @@ namespace JG_Prospect.DAL
             }
 
         }
+       
         public bool UpdateEmailVendorTemplate2(string EmailTemplateHeader, string EmailTemplateFooter,string AttPath)
         {
             bool result = false;
@@ -1514,7 +1519,7 @@ namespace JG_Prospect.DAL
                 return null;
             }
         }
-        public bool UpdateEmailVendorCategoryTemplate(string EmailTemplateHeader, string EmailTemplateFooter)
+        public bool UpdateEmailVendorCategoryTemplate(string EmailTemplateHeader, string EmailTemplateFooter, string subject = "")
         {
             bool result = false;
             try
@@ -1526,6 +1531,7 @@ namespace JG_Prospect.DAL
                     command.CommandType = CommandType.StoredProcedure;
                     database.AddInParameter(command, "@EmailTemplateHeader", DbType.String, EmailTemplateHeader);
                     database.AddInParameter(command, "@EmailTemplateFooter", DbType.String, EmailTemplateFooter);
+                    database.AddInParameter(command, "@Subject", DbType.String, subject);
                     database.ExecuteNonQuery(command);
                     result = true;
                 }

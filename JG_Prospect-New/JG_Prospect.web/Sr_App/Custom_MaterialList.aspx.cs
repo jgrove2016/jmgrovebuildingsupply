@@ -93,10 +93,11 @@ namespace JG_Prospect.Sr_App
             if (!IsPostBack)
             {
                 InitialDataBind();
-                return;
+                
                 bindMaterialList();
                 SetButtonText();
                 bind();
+                
                 lnkVendorCategory.ForeColor = System.Drawing.Color.DarkGray;
                 lnkVendorCategory.Enabled = false;
                 lnkVendor.Enabled = true;
@@ -112,7 +113,7 @@ namespace JG_Prospect.Sr_App
             {
                 IsPageRefresh = true;
             }
-
+            btnSendMail.Text = "Send Mail To Vendors";
         }
 
         DataSet DS = new DataSet();
@@ -829,6 +830,7 @@ namespace JG_Prospect.Sr_App
                 HeaderEditorVendor.Content = ds.Tables[0].Rows[0][0].ToString();
                 lblMaterialsVendor.Text = ds.Tables[0].Rows[0][1].ToString();
                 FooterEditorVendor.Content = ds.Tables[0].Rows[0][2].ToString();
+                txtSubject.Text = ds.Tables[0].Rows[0][3].ToString();
             }
         }
         protected void lnkVendor_Click(object sender, EventArgs e)
@@ -1875,6 +1877,7 @@ namespace JG_Prospect.Sr_App
                 HeaderEditor.Content = ds.Tables[0].Rows[0][0].ToString();
                 lblMaterials.Text = ds.Tables[0].Rows[0][1].ToString();
                 FooterEditor.Content = ds.Tables[0].Rows[0][2].ToString();
+                txtVendorSubject.Text = ds.Tables[0].Rows[0]["HTMLSubject"].ToString();
             }
         }
 
@@ -1882,7 +1885,7 @@ namespace JG_Prospect.Sr_App
         {
             string Editor_contentHeader = HeaderEditor.Content;
             string Editor_contentFooter = FooterEditor.Content;
-            bool result = AdminBLL.Instance.UpdateEmailVendorCategoryTemplate(Editor_contentHeader, Editor_contentFooter);
+            bool result = AdminBLL.Instance.UpdateEmailVendorCategoryTemplate(Editor_contentHeader, Editor_contentFooter, txtVendorSubject.Text);
             if (result)
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('EmailVendor Template Updated Successfully');", true);
@@ -1899,13 +1902,14 @@ namespace JG_Prospect.Sr_App
                 HeaderEditorVendor.Content = ds.Tables[0].Rows[0][0].ToString();
                 lblMaterialsVendor.Text = ds.Tables[0].Rows[0][1].ToString();
                 FooterEditorVendor.Content = ds.Tables[0].Rows[0][2].ToString();
+                txtSubject.Text = ds.Tables[0].Rows[0]["HTMLSubject"].ToString();
             }
         }
         protected void btnUpdateVendor_Click(object sender, EventArgs e)
         {
             string Editor_contentHeader = HeaderEditorVendor.Content;
             string Editor_contentFooter = FooterEditorVendor.Content;
-            bool result = AdminBLL.Instance.UpdateEmailVendorTemplate(Editor_contentHeader, Editor_contentFooter);
+            bool result = AdminBLL.Instance.UpdateEmailVendorTemplate(Editor_contentHeader, Editor_contentFooter, txtSubject.Text);
             if (result)
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('EmailVendor Template Updated Successfully');", true);
@@ -2990,12 +2994,29 @@ namespace JG_Prospect.Sr_App
         {
 
             ProductDataset = UserBLL.Instance.GetAllProducts();
-            ddlCategory.DataSource = ProductDataset;
-            ddlCategory.DataTextField = "ProductName";
-            ddlCategory.DataValueField = "ProductId";
-            ddlCategory.DataBind();
+            ddlCategoryH.DataSource = ProductDataset;
+            ddlCategoryH.DataTextField = "ProductName";
+            ddlCategoryH.DataValueField = "ProductId";
+            ddlCategoryH.DataBind();
 
             PageDataset = CustomBLL.Instance.GetCustomMaterialList(jobId.ToString(), customerId);
+            if (PageDataset.Tables[1].Rows.Count <= 0)
+            {
+                CustomMaterialList cm = new CustomMaterialList();
+                cm.ProductCatId = 1;
+                cm.MaterialList = "";
+                cm.Id = 0;
+                cm.VendorName = "";
+                cm.VendorEmail = "";
+                cm.IsAdminPermission = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+                cm.IsSrSalemanPermissionA = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+                cm.IsForemanPermission = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+                cm.IsSrSalemanPermissionF = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+                cm.EmailStatus = JGConstant.EMAIL_STATUS_NONE;
+                bool result = CustomBLL.Instance.AddCustomMaterialList(cm, jobId);
+                InitialDataBind();
+                return;
+            }
             List<CustomMaterialList> cmList = new List<CustomMaterialList>();
             if (PageDataset.Tables[1].Rows.Count > 0)
             {
@@ -3083,7 +3104,7 @@ namespace JG_Prospect.Sr_App
             }
             else if (sender.GetType().Equals(typeof(TextBox)))
             {
-                r = ((GridViewRow)((TextBox)sender).Parent.Parent);
+                r = ((GridViewRow)((TextBox)sender).Parent.Parent.Parent.Parent);
             }
             else if (sender.GetType().Equals(typeof(DropDownList)))
             {
@@ -3222,7 +3243,7 @@ namespace JG_Prospect.Sr_App
         protected void btnAddProdLines_Click(object sender, EventArgs e)
         {
             CustomMaterialList cm = new CustomMaterialList();
-            cm.ProductCatId = Convert.ToInt32(ddlCategory.SelectedValue);
+            cm.ProductCatId = Convert.ToInt32(ddlCategoryH.SelectedValue);
             cm.MaterialList = "";
             cm.Id = 0;
             cm.VendorName = "";
@@ -3287,9 +3308,16 @@ namespace JG_Prospect.Sr_App
         protected void lnkDeleteProdCat_Click(object sender, EventArgs e)
         {
             LinkButton btnDelete = ((LinkButton)sender);
-            int lProdCatID = Convert.ToInt32(btnDelete.CommandArgument);
-            CustomBLL.Instance.DeleteCustomMaterialListByProductCatID(lProdCatID);
-            InitialDataBind();
+            if (PageDataset.Tables[0].Rows.Count == 1)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "ValidationMsg", "alert('Product category cannot be deleted. There should be at least one product category in the material list.')", true);
+            }
+            else
+            {
+                int lProdCatID = Convert.ToInt32(btnDelete.CommandArgument);
+                CustomBLL.Instance.DeleteCustomMaterialListByProductCatID(lProdCatID);
+                InitialDataBind();
+            }
         }
         protected void ddlCategory_SelectedIndexChanged(object sender, EventArgs e)
         {

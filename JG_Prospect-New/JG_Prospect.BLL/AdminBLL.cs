@@ -60,9 +60,9 @@ namespace JG_Prospect.BLL
             return AdminDAL.Instance.UpdateContractTemplate(ContracttemplateHeader, ContracttemplateBodyA, ContracttemplateBodyB, ContracttemplateFooter, ContractTemplateBody2, id);
         }
 
-        public bool UpdateEmailVendorCategoryTemplate(string EmailTemplateHeader, string EmailTemplateFooter, string EAttachment)
+        public bool UpdateEmailVendorCategoryTemplate(string EmailTemplateHeader, string EmailTemplateFooter, string EAttachment, string subject ="")
         {
-            return AdminDAL.Instance.UpdateEmailVendorCategoryTemplate(EmailTemplateHeader, EmailTemplateFooter, EAttachment);
+            return AdminDAL.Instance.UpdateEmailVendorCategoryTemplate(EmailTemplateHeader, EmailTemplateFooter, EAttachment, subject);
         }
 
         public void DisableCustomer(int Id, string Reason)
@@ -74,9 +74,9 @@ namespace JG_Prospect.BLL
         {
             return AdminDAL.Instance.UpdateEmailVendorTemplate2(EmailTemplateHeader, EmailTemplateFooter, AttPath);
         }
-        public bool UpdateEmailVendorTemplate(string EmailTemplateHeader, string EmailTemplateFooter)
+        public bool UpdateEmailVendorTemplate(string EmailTemplateHeader, string EmailTemplateFooter, string subject ="")
         {
-            return AdminDAL.Instance.UpdateEmailVendorTemplate(EmailTemplateHeader, EmailTemplateFooter);
+            return AdminDAL.Instance.UpdateEmailVendorTemplate(EmailTemplateHeader, EmailTemplateFooter, subject);
         }
         public bool UpdateWorkOrderTemplate(string WorkOrdertemplate)
         {
@@ -346,9 +346,9 @@ namespace JG_Prospect.BLL
         {
             return AdminDAL.Instance.UpdateCompanyAddress(Addressid, CompanyAddress, CompanyCity, CompanyState, CompanyZipCode);
         }
-        public bool UpdateEmailVendorCategoryTemplate(string EmailTemplateHeader, string EmailTemplateFooter)
+        public bool UpdateEmailVendorCategoryTemplate(string EmailTemplateHeader, string EmailTemplateFooter, string subject = "")
         {
-            return AdminDAL.Instance.UpdateEmailVendorCategoryTemplate(EmailTemplateHeader, EmailTemplateFooter);
+            return AdminDAL.Instance.UpdateEmailVendorCategoryTemplate(EmailTemplateHeader, EmailTemplateFooter, subject);
         }
 
         public DataSet GetProductCategory()
