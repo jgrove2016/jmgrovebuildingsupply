@@ -339,10 +339,188 @@
             btn_UploadFiles.click();
         }
     </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //On UpdatePanel Refresh
+            //debugger;
+            var prm = Sys.WebForms.PageRequestManager.getInstance();
+            if (prm != null) {
+                // debugger;
+                prm.add_beginRequest(function (sender, e) {
+                    if (sender._postBackSettings.panelsToUpdate != null) {
+                        $(".loading").show();
+                    }
+                });
+                prm.add_endRequest(function (sender, e) {
+                    if (sender._postBackSettings.panelsToUpdate != null) {
+                        $(".loading").hide();
+                    }
+                });
+            };
+        });
+    </script>
+    <style>
+        /* Absolute Center Spinner */
+        .loading {
+            position: fixed;
+            z-index: 999;
+            height: 2em;
+            width: 2em;
+            overflow: show;
+            margin: auto;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+        }
+
+            /* Transparent Overlay */
+            .loading:before {
+                content: '';
+                display: block;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0,0,0,0.1);
+            }
+
+            /* :not(:required) hides these rules from IE9 and below */
+            .loading:not(:required) {
+                /* hide "loading..." text */
+                font: 0/0 a;
+                color: transparent;
+                text-shadow: none;
+                background-color: transparent;
+                border: 0;
+            }
+
+                .loading:not(:required):after {
+                    content: '';
+                    display: block;
+                    font-size: 10px;
+                    width: 1em;
+                    height: 1em;
+                    margin-top: -0.5em;
+                    -webkit-animation: spinner 1500ms infinite linear;
+                    -moz-animation: spinner 1500ms infinite linear;
+                    -ms-animation: spinner 1500ms infinite linear;
+                    -o-animation: spinner 1500ms infinite linear;
+                    animation: spinner 1500ms infinite linear;
+                    border-radius: 0.5em;
+                    -webkit-box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.5) -1.5em 0 0 0, rgba(0, 0, 0, 0.5) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+                    box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) -1.5em 0 0 0, rgba(0, 0, 0, 0.75) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+                }
+
+        /* Animation */
+
+        @-webkit-keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @-moz-keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @-o-keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes spinner {
+            0% {
+                -webkit-transform: rotate(0deg);
+                -moz-transform: rotate(0deg);
+                -ms-transform: rotate(0deg);
+                -o-transform: rotate(0deg);
+                transform: rotate(0deg);
+            }
+
+            100% {
+                -webkit-transform: rotate(360deg);
+                -moz-transform: rotate(360deg);
+                -ms-transform: rotate(360deg);
+                -o-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <asp:ScriptManagerProxy ID="ScriptManagerProxy1" runat="server"></asp:ScriptManagerProxy>
+    <div class="loading" style="display: none">Loading&#8230;</div>
+    <asp:UpdatePanel ID="UpdatePanel8" runat="server">
+        <ContentTemplate>
     <div class="right_panel">
+        <asp:LinkButton ID="lnkDummy" runat="server"></asp:LinkButton>
+        <ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender2" BehaviorID="mpe" runat="server"
+            PopupControlID="pnlMandatoryFields" TargetControlID="lnkDummy" BackgroundCssClass="modalBackground" CancelControlID="btnHide">
+        </ajaxToolkit:ModalPopupExtender>
+        <asp:Panel ID="pnlMandatoryFields" runat="server" CssClass="modalPopup" BackColor="White" Height="200px" Width="600px" Style="display: none">
+            <table width="100%" style="border: Solid 3px #b04547; width: 100%; height: 100%" cellpadding="0" cellspacing="0">
+                <tr style="background-color: #b04547">
+                    <td colspan="2" style="height: 10%; color: white; font-weight: bold; font-size: larger;">
+                        <h2 style="color:white">Following fields are mandatory...</h2>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <ul style="list-style-type: square;font-weight: bold; font-size: larger;">
+                            <li>Please enter email address.</li>
+                            <li>Please enter password.</li>
+                            <li>Please enter confirm password.</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center">
+                        <asp:Button ID="btnHide" runat="server" Text="Cancel" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff;" />
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+        </asp:Panel>
         <!-- appointment tabs section start -->
         <ul class="appointment_tab">
             <li><a href="HRReports.aspx">HR Reports</a></li>
@@ -365,17 +543,10 @@
                         <table width="100%" style="height: 30px;">
                             <tr>
                                 <td class="auto-style10" style="width: 60px;">
-                                    <asp:UpdatePanel ID="UpdatePanel8" runat="server">
-                                        <ContentTemplate>
-                                            <asp:Button ID="btnNewPluse" runat="server" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff;" Text="+" OnClick="btnNewPluse_Click" TabIndex="149" />
-                                            <asp:Button ID="btnNewMinus" runat="server" Text="-" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff;" OnClick="btnNewMinus_Click" TabIndex="150" />
-                                        </ContentTemplate>
-                                        <Triggers>
-                                            <asp:AsyncPostBackTrigger ControlID="btnNewPluse" EventName="Click" />
-                                            <asp:AsyncPostBackTrigger ControlID="btnNewMinus" EventName="Click" />
-                                            <%--<asp:AsyncPostBackTrigger ControlID="ddlstatus" EventName="SelectedIndexChanged" />--%>
-                                        </Triggers>
-                                    </asp:UpdatePanel>
+
+                                    <asp:Button ID="btnNewPluse" runat="server" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff;" Text="+" OnClick="btnNewPluse_Click" TabIndex="149" />
+                                    <asp:Button ID="btnNewMinus" runat="server" Text="-" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff;" OnClick="btnNewMinus_Click" TabIndex="150" />
+
                                 </td>
                                 <td style="font-weight: bold; font-size: large">New Hire</td>
                             </tr>
@@ -629,6 +800,7 @@
 
 
                                                         <label>Extra Earnings</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                       
                                                         <asp:DropDownList ID="ddlExtraEarning" runat="server" TabIndex="158" Width="110px">
                                                             <asp:ListItem Text="Select" Value="0"></asp:ListItem>
                                                             <asp:ListItem Text="Test" Value="Test"></asp:ListItem>
@@ -690,6 +862,7 @@
                                                                     <asp:GridView ID="GridView2" Width="100%" ShowHeaderWhenEmpty="true" AutoGenerateColumns="False" AllowPaging="false" HeaderStyle-BackColor="#cccccc" AllowSorting="false" runat="server">
                                                                         <EmptyDataTemplate>
                                                                             No data to display
+                                                                       
                                                                         </EmptyDataTemplate>
                                                                         <Columns>
 
@@ -745,10 +918,12 @@
                                                             Deduction: $</label>
                                                         <asp:TextBox ID="txtDeduction" runat="server" onkeypress="return IsNumeric(event);" Width="113px" TabIndex="161"></asp:TextBox>
                                                         &nbsp;
+                                                       
                                                         <label style="width: 45px;">
                                                             Reason</label>
                                                         <asp:TextBox ID="txtDeducReason" runat="server" Width="113px" TabIndex="162"></asp:TextBox>
                                                         &nbsp;
+                                                   
                                                     </ContentTemplate>
                                                     <Triggers>
                                                         <asp:AsyncPostBackTrigger ControlID="btnAddType" EventName="Click" />
@@ -759,8 +934,9 @@
                                                 <asp:RequiredFieldValidator ID="rqDeductionAmt" Display="Static" runat="server" ControlToValidate="txtDeduction"
                                                     ForeColor="Red" ValidationGroup="Add" ErrorMessage="Enter Deduction"></asp:RequiredFieldValidator>
                                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                                        <asp:RequiredFieldValidator ID="rqDeduction" Display="Static" runat="server" ControlToValidate="txtDeducReason"
-                                                            ForeColor="Red" ValidationGroup="Add" ErrorMessage="Enter Deduction Reason"></asp:RequiredFieldValidator>
+                                                       
+                                                <asp:RequiredFieldValidator ID="rqDeduction" Display="Static" runat="server" ControlToValidate="txtDeducReason"
+                                                    ForeColor="Red" ValidationGroup="Add" ErrorMessage="Enter Deduction Reason"></asp:RequiredFieldValidator>
                                             </td>
                                         </tr>
                                         <tr>
@@ -794,6 +970,7 @@
                                                                     <asp:GridView ID="GridView1" Width="100%" ShowHeaderWhenEmpty="true" AutoGenerateColumns="False" AllowPaging="false" HeaderStyle-BackColor="#cccccc" AllowSorting="false" runat="server">
                                                                         <EmptyDataTemplate>
                                                                             No data to display
+                                                                       
                                                                         </EmptyDataTemplate>
                                                                         <Columns>
 
@@ -926,6 +1103,7 @@
                         <asp:GridView ID="gvYtd" Width="100%" ShowHeaderWhenEmpty="true" AutoGenerateColumns="False" AllowPaging="false" HeaderStyle-BackColor="#cccccc" AllowSorting="false" runat="server">
                             <EmptyDataTemplate>
                                 No data to display
+                           
                             </EmptyDataTemplate>
                             <Columns>
                                 <asp:TemplateField ShowHeader="True" HeaderText="Pay Period" ControlStyle-ForeColor="Black"
@@ -1006,6 +1184,7 @@
                         <br />
                         <label>
                             YTD :
+                       
                         </label>
                         <br />
                     </div>
@@ -1040,7 +1219,8 @@
                             <table border="0" cellspacing="0" cellpadding="0">
                                 <tr>
                                     <td style="height: 137px;">Assessment filled out online or skill assessment attached?
-                                                            <br />
+                                                           
+                                        <br />
                                         <br />
                                         <asp:RadioButton ID="rdoAttchmentYes" runat="server" Text="Yes" GroupName="SkillAssessment" AutoPostBack="True" OnCheckedChanged="rdoAttchmentYes_CheckedChanged" TabIndex="175" />
                                         <asp:RadioButton ID="rdoAttchmentNo" runat="server" Text="No" GroupName="SkillAssessment" AutoPostBack="True" OnCheckedChanged="rdoAttchmentNo_CheckedChanged" TabIndex="176" />
@@ -1051,7 +1231,8 @@
                                     Style="width: 22% !important;" OnClientUploadComplete="uploadComplete2" />--%>
                                         <asp:FileUpload ID="flpSkillAssessment" runat="server" Width="277px" TabIndex="177" />
                                         &nbsp;
-                                                        <asp:Button ID="btnUploadSkills" runat="server" ClientIDMode="Static" CssClass="cancel" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff;" Text="Upload" OnClick="btnUploadSkills_Click" Height="30px" TabIndex="178" />
+                                                       
+                                        <asp:Button ID="btnUploadSkills" runat="server" ClientIDMode="Static" CssClass="cancel" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff;" Text="Upload" OnClick="btnUploadSkills_Click" Height="30px" TabIndex="178" />
                                     </td>
                                 </tr>
                                 <asp:UpdatePanel ID="UpdatePanel22" runat="server">
@@ -1066,7 +1247,8 @@
                                         </tr>
                                         <tr>
                                             <td>Would you be able to pass a drug test, background check?
-                                                        <br />
+                                                       
+                                                <br />
                                                 <br />
                                                 <asp:RadioButton ID="rdoDrugtestYes" runat="server" Text="Yes" GroupName="drugTest" TabIndex="184" AutoPostBack="True" OnCheckedChanged="rdoDrugtestYes_CheckedChanged" />
                                                 <asp:RadioButton ID="rdoDrugtestNo" runat="server" Text="No" GroupName="drugTest" TabIndex="185" AutoPostBack="True" OnCheckedChanged="rdoDrugtestNo_CheckedChanged" />
@@ -1076,7 +1258,8 @@
                                         <tr>
                                             <td>Do you own unlettered truck, hand tools &amp; power tools?<br />
                                                 &nbsp;
-                                                        <br />
+                                                       
+                                                <br />
                                                 <asp:RadioButton ID="rdoTruckToolsYes" runat="server" Text="Yes" GroupName="truckTools" TabIndex="188" AutoPostBack="True" OnCheckedChanged="rdoTruckToolsYes_CheckedChanged" />
                                                 <asp:RadioButton ID="rdoTruckToolsNo" runat="server" Text="No" GroupName="truckTools" AutoPostBack="true" TabIndex="189" OnCheckedChanged="rdoTruckToolsNo_CheckedChanged" />
                                                 <br />
@@ -1156,7 +1339,8 @@
                                     <table border="0" cellspacing="0" cellpadding="0">
                                         <tr>
                                             <td class="auto-style14">How many full time positions have you had in the last 5 years?
-                                                            <br />
+                                                           
+                                                <br />
                                                 <br />
                                                 <asp:TextBox ID="txtFullTimePos" onkeypress="return IsNumeric(event);" MaxLength="2" runat="server" Width="222px" TabIndex="179" AutoPostBack="true" OnTextChanged="txtFullTimePos_TextChanged"></asp:TextBox>
                                                 <br />
@@ -1167,7 +1351,8 @@
                                         </tr>
                                         <tr>
                                             <td class="auto-style15">Please list major tools you own for your primary trade only!
-                                                        <asp:TextBox ID="txtMajorTools" runat="server" TextMode="MultiLine" Width="230px" Height="33px" TabIndex="183" AutoPostBack="True" OnTextChanged="txtMajorTools_TextChanged"></asp:TextBox>
+                                                       
+                                                <asp:TextBox ID="txtMajorTools" runat="server" TextMode="MultiLine" Width="230px" Height="33px" TabIndex="183" AutoPostBack="True" OnTextChanged="txtMajorTools_TextChanged"></asp:TextBox>
 
                                                 <br />
 
@@ -1175,7 +1360,8 @@
                                         </tr>
                                         <tr>
                                             <td class="auto-style15">Valid License and clean driving record?
-                                                        <br />
+                                                       
+                                                <br />
                                                 <br />
                                                 <asp:RadioButton ID="rdoDriveLicenseYes" runat="server" Text="Yes" GroupName="DriverLicense" TabIndex="186" AutoPostBack="True" OnCheckedChanged="rdoDriveLicenseYes_CheckedChanged" />
                                                 <asp:RadioButton ID="rdoDriveLicenseNo" runat="server" Text="No" GroupName="DriverLicense" TabIndex="187" AutoPostBack="True" OnCheckedChanged="rdoDriveLicenseNo_CheckedChanged" />
@@ -1183,7 +1369,8 @@
                                         </tr>
                                         <tr>
                                             <td class="auto-style15">Have you previously worked for or applied at j.m grove construction or supply? 
-                                                        <br />
+                                                       
+                                                <br />
                                                 <br />
                                                 <asp:RadioButton ID="rdoJMApplyYes" runat="server" Text="Yes" GroupName="JMApply" TabIndex="190" AutoPostBack="True" OnCheckedChanged="rdoJMApplyYes_CheckedChanged" />
                                                 <asp:RadioButton ID="rdoJMApplyNo" runat="server" Text="No" GroupName="JMApply" TabIndex="191" AutoPostBack="True" OnCheckedChanged="rdoJMApplyNo_CheckedChanged" />
@@ -1191,7 +1378,8 @@
                                         </tr>
                                         <tr>
                                             <td class="auto-style15">Have you ever plead guilty or been convicted of a crime?
-                                                        <br />
+                                                       
+                                                <br />
                                                 <br />
                                                 <asp:RadioButton ID="rdoGuiltyYes" runat="server" Text="Yes" GroupName="Guilty" TabIndex="192" AutoPostBack="True" OnCheckedChanged="rdoGuiltyYes_CheckedChanged" />
                                                 <asp:RadioButton ID="rdoGuiltyNo" runat="server" Text="No" GroupName="Guilty" TabIndex="193" AutoPostBack="True" OnCheckedChanged="rdoGuiltyNo_CheckedChanged" />
@@ -1201,7 +1389,8 @@
                                             <td class="auto-style15">
                                                 <label>Salary requirements</label>
                                                 &nbsp;&nbsp;
-                                                        <asp:TextBox ID="txtSalRequirement" onkeypress="return isNumericKey(event);" runat="server" Width="194px" TabIndex="197" AutoPostBack="True" OnTextChanged="txtSalRequirement_TextChanged"></asp:TextBox>
+                                                       
+                                                <asp:TextBox ID="txtSalRequirement" onkeypress="return isNumericKey(event);" runat="server" Width="194px" TabIndex="197" AutoPostBack="True" OnTextChanged="txtSalRequirement_TextChanged"></asp:TextBox>
                                             </td>
                                         </tr>
                                         <tr>
@@ -1210,17 +1399,20 @@
                                                     Resume:</label>
                                                 <asp:FileUpload ID="flpResume" runat="server" Width="221px" Height="25px" TabIndex="198" />
                                                 &nbsp;
-                                                        <asp:Button ID="btnResume" runat="server" CssClass="cancel" Width="10%" Text="Upload" Height="25px" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff;" OnClick="btnResume_Click" OnClientClick="return ValidateFileOne()" TabIndex="199" />
+                                                       
+                                                <asp:Button ID="btnResume" runat="server" CssClass="cancel" Width="10%" Text="Upload" Height="25px" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff;" OnClick="btnResume_Click" OnClientClick="return ValidateFileOne()" TabIndex="199" />
                                             </td>
                                         </tr>
                                         <tr>
                                             <td class="auto-style15">
                                                 <label>
                                                     Certification/training
+                                               
                                                 </label>
                                                 &nbsp;<asp:FileUpload ID="flpCirtification" runat="server" Width="221px" TabIndex="200" />
                                                 &nbsp;
-                                                        <asp:Button ID="btnCirtification" runat="server" CssClass="cancel" Width="10%" Text="Upload" Height="27px" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff;" OnClick="btnCirtification_Click" OnClientClick="return ValidateFileCirtificate()" TabIndex="201" />
+                                                       
+                                                <asp:Button ID="btnCirtification" runat="server" CssClass="cancel" Width="10%" Text="Upload" Height="27px" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff;" OnClick="btnCirtification_Click" OnClientClick="return ValidateFileCirtificate()" TabIndex="201" />
                                             </td>
                                         </tr>
                                         <%--<tr>
@@ -1333,7 +1525,8 @@
                                                 <asp:RadioButton ID="rdoWarrantyNo" runat="server" GroupName="Warranty" Text="No" AutoPostBack="True" OnCheckedChanged="rdoWarrantyNo_CheckedChanged" TabIndex="203" />
                                             </td>
                                             <td>How long have you been doing business under your present company name? Yrs.
-                                    <br />
+                                   
+                                                <br />
                                                 <asp:TextBox ID="txtCurrentComp" runat="server" MaxLength="2" onkeypress="return IsNumeric(event);" onkeyup="javascript:Numeric(this)" TabIndex="204" Width="223px" AutoPostBack="true" OnTextChanged="txtCurrentComp_TextChanged"></asp:TextBox>
                                             </td>
                                         </tr>
@@ -1513,13 +1706,15 @@
                                         <tr>
                                             <td class="auto-style17">Is your company a Minority Business Enterprise?<br />
                                                 (Must be 51 percent owned, controlled, and operated by minority individuals who are African American, Hispanic American, Asian Pacific American, Native American, or Asian Indian American).
-                                    <br />
+                                   
+                                                <br />
                                                 <asp:RadioButton ID="rdoBusinessMinorityYes" runat="server" GroupName="BusinessMInority" Text="Yes" TabIndex="208" />
                                                 <asp:RadioButton ID="rdoBusinessMinorityNo" runat="server" GroupName="BusinessMInority" Text="No" TabIndex="209" />
                                             </td>
                                             <td>Is your company a Women's Business Enterprise?<br />
                                                 (Must be 51 percent owned, controlled, and operated by women).
-                                    <br />
+                                   
+                                                <br />
                                                 <br />
                                                 <br />
                                                 <asp:RadioButton ID="rdoWomenYes" runat="server" GroupName="WomensBusiness" Text="Yes" TabIndex="210" />
@@ -1543,6 +1738,7 @@
                                                         <asp:GridView ID="grdCoverageArea" Width="100%" ShowHeaderWhenEmpty="true" AutoGenerateColumns="False" AllowPaging="false" HeaderStyle-BackColor="#cccccc" AllowSorting="false" runat="server">
                                                             <EmptyDataTemplate>
                                                                 No data to display
+                                                           
                                                             </EmptyDataTemplate>
                                                             <Columns>
                                                                 <asp:TemplateField ShowHeader="True" HeaderText="State" ControlStyle-ForeColor="Black"
@@ -1672,7 +1868,8 @@
                                 <label>
                                     Email<span style="color: darkblue">*<asp:Label ID="lblReqEmail" Text="*" runat="server" ForeColor="Red"></asp:Label></span></label>
                                 <asp:TextBox ID="txtemail" runat="server" MaxLength="40" TabIndex="222" OnTextChanged="txtemail_TextChanged" Width="242px"></asp:TextBox><br />
-                              <label></label>  <asp:RequiredFieldValidator ID="rqEmail" Display="Dynamic" runat="server" ControlToValidate="txtemail" SetFocusOnError="true"
+                                <label></label>
+                                <asp:RequiredFieldValidator ID="rqEmail" Display="Dynamic" runat="server" ControlToValidate="txtemail" SetFocusOnError="true"
                                     ValidationGroup="OfferMade" ForeColor="Red" ErrorMessage="Please enter email address."></asp:RequiredFieldValidator>
                                 <asp:RegularExpressionValidator ID="reEmail" ControlToValidate="txtemail" SetFocusOnError="true" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"
                                     Display="Dynamic" runat="server" ForeColor="Red" ErrorMessage="Please enter a valid email address."
@@ -1699,7 +1896,8 @@
                             <td>
                                 <label>
                                     State
-                                            <asp:Label ID="lblStateReq" runat="server" Text="*" ForeColor="Blue"></asp:Label>
+                                           
+                                    <asp:Label ID="lblStateReq" runat="server" Text="*" ForeColor="Blue"></asp:Label>
                                 </label>
                                 <asp:TextBox ID="txtState" runat="server" MaxLength="40" TabIndex="231" onkeypress="return lettersOnly(event);" OnTextChanged="txtState_TextChanged" Width="242px"></asp:TextBox>
                                 <asp:RequiredFieldValidator ID="rqState" runat="server" ControlToValidate="txtState" SetFocusOnError="true"
@@ -1710,7 +1908,8 @@
                             <td>
                                 <label>
                                     City
-                                            <asp:Label ID="lblCityReq" runat="server" Text="*" ForeColor="Blue"></asp:Label>
+                                           
+                                    <asp:Label ID="lblCityReq" runat="server" Text="*" ForeColor="Blue"></asp:Label>
                                 </label>
                                 <asp:TextBox ID="txtCity" runat="server" MaxLength="40" TabIndex="232" onkeypress="return lettersOnly(event);" OnTextChanged="txtCity_TextChanged" Width="242px"></asp:TextBox>
                                 <asp:RequiredFieldValidator ID="rqCity" runat="server" ControlToValidate="txtCity"
@@ -1723,7 +1922,8 @@
                                     Password<span style="color: darkblue">*</span><asp:Label ID="lblPassReq" runat="server" Text="*" ForeColor="Red"></asp:Label></label>
                                 <asp:TextBox ID="txtpassword" runat="server" TextMode="Password" MaxLength="30" TabIndex="234"
                                     autocomplete="off" Width="242px"></asp:TextBox>
-                              <label></label>  <asp:RequiredFieldValidator ID="rqPass" runat="server" ControlToValidate="txtpassword"
+                                <label></label>
+                                <asp:RequiredFieldValidator ID="rqPass" runat="server" ControlToValidate="txtpassword"
                                     ValidationGroup="OfferMade" ForeColor="Red" Display="Dynamic" ErrorMessage="Please Enter Password"></asp:RequiredFieldValidator><br />
                             </td>
                         </tr>
@@ -1830,7 +2030,7 @@
                                     <asp:ListItem Text="Deactive" Value="Deactive"></asp:ListItem>
                                 </asp:DropDownList>
                                 <br />
-                                
+
                                 <label></label>
                                 <asp:TextBox ID="txtReson" placeholder="Reason" runat="server" Height="28px" TextMode="MultiLine" Width="257px" TabIndex="103"></asp:TextBox>
                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator7" ControlToValidate="txtReson" runat="server" ErrorMessage="Enter Reason" ForeColor="Red" Display="Dynamic" ValidationGroup="submit"></asp:RequiredFieldValidator>
@@ -1855,7 +2055,7 @@
                                     Notes<asp:Label ID="lblNotesReq" runat="server" Text="*" ForeColor="Red"></asp:Label></label>
                                 <asp:TextBox ID="txtNotes" runat="server" MaxLength="40" TabIndex="219" autocomplete="off" Width="240px" Height="32px" TextMode="MultiLine"></asp:TextBox>
 
-                               <%-- <asp:RequiredFieldValidator ID="rqNotes" Display="Dynamic" runat="server" ControlToValidate="txtNotes" SetFocusOnError="true"
+                                <%-- <asp:RequiredFieldValidator ID="rqNotes" Display="Dynamic" runat="server" ControlToValidate="txtNotes" SetFocusOnError="true"
                                     ValidationGroup="submit" ForeColor="Red" ErrorMessage="Please enter the notes."></asp:RequiredFieldValidator>--%>
                             </td>
                         </tr>
@@ -1877,8 +2077,10 @@
                                     Source<asp:Label ID="lblSourceReq" runat="server" Text="*" ForeColor="Green"></asp:Label></label>
                                 <asp:DropDownList ID="ddlSource" runat="server" Width="249px" TabIndex="223">
                                 </asp:DropDownList>
-                               <label></label>  <asp:TextBox ID="txtSource" runat="server" Width="150px" TabIndex="224"></asp:TextBox>
-                               <asp:Button runat="server" ID="btnAddSource" Text="Add" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff;" OnClick="btnAddSource_Click" Height="30px" TabIndex="226" />&nbsp;
+                                <label></label>
+                                <asp:TextBox ID="txtSource" runat="server" Width="150px" TabIndex="224"></asp:TextBox>
+                                <asp:Button runat="server" ID="btnAddSource" Text="Add" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff;" OnClick="btnAddSource_Click" Height="30px" TabIndex="226" />&nbsp;
+                               
                                 <asp:Button runat="server" ID="btnDeleteSource" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff;" Text="Delete" OnClick="btnDeleteSource_Click" Height="30px" TabIndex="227" />
                                 <%--<br />
                                 &nbsp;&nbsp;&nbsp;&nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="ddlSource"
@@ -1889,6 +2091,7 @@
                             <td class="style2">
                                 <label>
                                     &nbsp;Address
+                                   
                                     <asp:Label ID="lblAddressReq" runat="server" Text="*" ForeColor="Blue"></asp:Label>
 
                                 </label>
@@ -1922,6 +2125,7 @@
                             <td class="style2">
                                 <label>
                                     &nbsp;Mailing Address
+                                   
                                     <asp:Label ID="Label1" runat="server" Text="*" ForeColor="Blue"></asp:Label>
 
                                 </label>
@@ -1932,7 +2136,7 @@
                             </td>
                         </tr>
 
-                        
+
                         <tr>
                             <td class="style2">
                                 <label>
@@ -2175,13 +2379,16 @@
                                 <asp:LinkButton ID="lnkW9" runat="server" OnClick="lnkW9_Click" ClientIDMode="Static"
                                     TabIndex="134">W9</asp:LinkButton>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                               
                                 <asp:LinkButton ID="lnkI9" runat="server" OnClick="lnkI9_Click" ClientIDMode="Static" Style="display: block !important;"
                                     TabIndex="135">I9</asp:LinkButton>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                               
                                 <asp:LinkButton ID="lnkW4" Text="W4" runat="server" OnClick="lnkW4_Click" ClientIDMode="Static" TabIndex="136"></asp:LinkButton>
                                 <br />
                                 <%--&nbsp;<asp:LinkButton ID="lnkFacePage" runat="server" ClientIDMode="Static" OnClick="lnkFacePage_Click" TabIndex="137">FacePage</asp:LinkButton>--%>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                               
                                 <%--<asp:LinkButton ID="lnkEscrow" runat="server" OnClick="lnkEscrow_Click" ClientIDMode="Static" TabIndex="138">Escrow</asp:LinkButton>--%>
                                 &nbsp;
                             </td>
@@ -2297,7 +2504,8 @@
                                     by JMG1 and J.M. Grove pursuant to a Change Order. Work order, and any Change Orders
                                     constitute an integral part of this SPA and are incorporated by reference. Work
                                     order and any Change Orders may be electronically transmitted
-                                    <br />
+                                   
+                                        <br />
                                         1.2 Relationship of the Parties Service Provider’s relationship to JMG1 and J.M.
                                     Grove and its affiliated companies for purposes of this SPA is that of an independent
                                     contractor. In no event will JMG1 and J.M. Grove and its affiliated companies be
@@ -2401,14 +2609,16 @@
                                     of this SPA will apply, The terms of the SPA will also apply over the terms of any
                                     bills of lading or any other shipping documents that may be issued by Service Provider
                                     to JMG1 and J.M. Grove in connection with its transportation service.
-                                    <br />
+                                   
+                                        <br />
                                         4.4 Permits. Service Provider must follow all legal requirements and obtain all
                                     required building and construction permits. And inceptions necessary to perform
                                     the Services. Service Provider will not request or require Customers to obtain permits
                                     unless permissible under applicable law and requested to do so in writing b\ JMG1
                                     and J.M. Grove Service Provider will maintain auditable records documenting its
                                     compliance with the requirements of this Section 4.4.
-                                    <br />
+                                   
+                                        <br />
                                         4.5 Taxes, Service Provider is solely responsible for all taxes related to the Services
                                     and fulfillment of its obligations to JMG1 and J.M. Grove under this SPA, Service
                                     Provider will pay accrue and remit an sales, use, ad valorem, franchise, income,
@@ -2442,7 +2652,8 @@
                                     Service Providers vehicular Equipment will be maintained consistent with the requirements
                                     of the Federal Motor Carrier Safety Regulations ("FMCSR") at` all times. Service
                                     Provider will comply with any additional vehicular specifications
-                                    <br />
+                                   
+                                        <br />
                                         as provided in the SPRG 4.8 Non-solicitation Service Provider will not use Confidential
                                     Information (defined in Section 8.1); information about Customers obtained as a
                                     consequence of Service Provider’s fulfillment of its obligations under this SPA,
@@ -2466,7 +2677,8 @@
                                     adjustments that may be appropriate for the pricing of services or compensation
                                     due Service Provider. Such arrangement regarding-the implementation of a promotion
                                     shall be agreed to by the Parties and reduced to a properly executed writing
-                                    <br />
+                                   
+                                        <br />
                                         4.10 Service Warranties. JMG1 and J.M. Grove will warrant to the Customer the workmanship
                                     of the Services pursuant to a Customer Contract. Service Provider will warrant its
                                     workmanship to JMG1 and J.M. Grove in accordance with this Section<br />
@@ -2522,7 +2734,8 @@
                                     access to or review the report, except to the extent JMG1 and J.M. Grove is required
                                     under applicable law to allow such access or review or unless the Service Provider
                                     is credentialed by the third-party agency. Later background investigations may
-                                    <br />
+                                   
+                                        <br />
                                         6.2 Prerequisite to Provision of Services. Until the requirements of this Section
                                     6 are fully satisfied, under no circumstances will Service Provider or its Service
                                     Provider Personnel provide any Services, have contact with any Customers, or have
@@ -2589,7 +2802,8 @@
                                     Service Provider will inform its Service Provider personnel about the confidential
                                     and proprietary nature of the Confidential Information to which they may be exposed
                                     and will
-                                    <br />
+                                   
+                                        <br />
                                         8.2-9.1 Ensure that Service Provider Personnel keep Confidential Information strictly
                                     confidential and comply with a terms of this Section 8. "Confidential Information"
                                     means information disclosed to, made available to obtained by Service Provider in
@@ -3024,6 +3238,7 @@
                                     upon not less than _____ (_____) calendar days prior written notice to the other
                                     party, terminate the SPA at any time. _____________________________________________
                                     Approval of The JMGrove Legal Department.
+                                   
                                     </asp:Panel>
                                 </div>
                             </td>
@@ -3150,5 +3365,6 @@
         <div id="fadePassword" class="black_overlay">
         </div>
     </div>
-    </div>
+       </ContentTemplate>
+    </asp:UpdatePanel>
 </asp:Content>

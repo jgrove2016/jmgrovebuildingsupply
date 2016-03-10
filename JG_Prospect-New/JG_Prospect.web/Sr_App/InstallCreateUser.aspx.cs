@@ -11066,6 +11066,11 @@ namespace JG_Prospect.Sr_App
             else if (ddlstatus.SelectedValue == "OfferMade")
             {
                 ValidationSummary1.ValidationGroup = lnkSubmit.ValidationGroup = "OfferMade";
+                string message = "Message from server side";
+                //ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
+                //ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
+                ModalPopupExtender2.Show();
+                //ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('User should be active to deactivate.')", true);
                 ddlInsteviewtime.Visible = false;
                 txtReson.Visible = false;
                 RequiredFieldValidator7.Enabled = false;
