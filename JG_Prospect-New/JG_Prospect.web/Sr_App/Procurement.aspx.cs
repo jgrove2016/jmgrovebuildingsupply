@@ -152,6 +152,7 @@ namespace JG_Prospect.Sr_App
         }
         protected void rdoRetailWholesale_CheckedChanged(object sender, EventArgs e)
         {
+            System.Threading.Thread.Sleep(2000);
             if (ddlprdtCategory.SelectedValue.ToString() != "Select")
                 BindVendorByProdCat(ddlprdtCategory.SelectedValue.ToString());
             else
@@ -375,6 +376,14 @@ namespace JG_Prospect.Sr_App
             // return "";
         }
 
+        [WebMethod]
+        public static string CheckVendorDetails()
+        {
+            DataTable dtEmail = (DataTable)(HttpContext.Current.Session["dtVendorEmail"]);
+            JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
+            string deserializedJson = jsSerializer.Serialize(dtEmail);
+            return deserializedJson;
+        }
 
 
         [WebMethod]
@@ -3120,6 +3129,15 @@ namespace JG_Prospect.Sr_App
             ddlmanufacturertype.SelectedValue = Convert.ToString(ds.Tables[0].Rows[0]["ManufacturerType"]);
             txtWebsite.Text = Convert.ToString(ds.Tables[0].Rows[0]["Website"]);
             txtBillingAddr.Text = Convert.ToString(ds.Tables[0].Rows[0]["BillingAddress"]);
+
+
+            //Vendor objVendor = new Vendor();
+
+            //objVendor.vendor_id = VendorIdToEdit;
+            //DataSet dsemail = VendorBLL.Instance.GetVendorEmail(objVendor);
+            //HttpContext.Current.Session["dtVendorEmail"] = ds.Tables[0];
+            //ScriptManager.RegisterStartupScript(this, this.GetType(), "vendor Email", "Addtemplate()", true);
+
 
             //txtExpenseCat.Text = ds.Tables[0].Rows[0]["ExpenseCategory"].ToString();
             //txtAutoInsurance.Text = ds.Tables[0].Rows[0]["AutoTruckInsurance"].ToString();

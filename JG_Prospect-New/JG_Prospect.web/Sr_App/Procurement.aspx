@@ -250,6 +250,8 @@
             });
         }
 
+
+       
     </script>
 
 
@@ -1649,9 +1651,21 @@
 
         $(document).ready(function () {
             SearchText();
+            //AddTemplate();
             $('.clsmaskphone').mask("(999) 999-9999");
             $('.clsmaskphoneexten').mask("999999");
         });
+
+        function AddTemplate() {
+            $.ajax({
+                type: "POST",
+                url: "Procurement.aspx/CheckVendorDetails",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    console.log(data.d);
+                }
+            });
+        }
 
         function SearchText() {
 

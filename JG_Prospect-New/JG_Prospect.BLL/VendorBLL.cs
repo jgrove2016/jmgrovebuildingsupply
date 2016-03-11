@@ -143,6 +143,10 @@ namespace JG_Prospect.BLL
         {
             return VendorDAL.Instance.InsertVendorEmail(objvendor);
         }
+        public DataSet GetVendorEmail(Vendor objVendor)
+        {
+            return VendorDAL.Instance.GetVendorEmail();
+        }
         public bool InsertVendorAddress(Vendor objvendor)
         {
             return VendorDAL.Instance.InsertVendorAddress(objvendor);

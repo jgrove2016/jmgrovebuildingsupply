@@ -704,6 +704,27 @@ namespace JG_Prospect.DAL
             }
         }
 
+
+        public DataSet GetVendorEmail(Vendor objVendor)
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("sp_VendorEmail");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@VendorId", DbType.Int16, objVendor.vendor_id);
+                    database.AddInParameter(command, "@action", DbType.Int16, 2);
+                    DS = database.ExecuteDataSet(command);
+                    return DS;
+           
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
         public DataTable SearchVendor(string searchString, string tableName)
         {
             //List<string> searchResult = new List<string>();
