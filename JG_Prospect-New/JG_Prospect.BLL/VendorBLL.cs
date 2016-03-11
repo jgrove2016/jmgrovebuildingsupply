@@ -145,7 +145,7 @@ namespace JG_Prospect.BLL
         }
         public DataSet GetVendorEmail(Vendor objVendor)
         {
-            return VendorDAL.Instance.GetVendorEmail();
+            return VendorDAL.Instance.GetVendorEmail(objVendor);
         }
         public bool InsertVendorAddress(Vendor objvendor)
         {

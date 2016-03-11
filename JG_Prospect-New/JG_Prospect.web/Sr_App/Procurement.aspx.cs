@@ -107,7 +107,7 @@ namespace JG_Prospect.Sr_App
                     BindVendorByProdCat(ddlprdtCategory.SelectedValue.ToString());
                     BindVendorSubCatByVendorCat(ddlVndrCategory.SelectedValue.ToString());
                     string ManufacturerType = GetManufacturerType();
-                    FilterVendors("", "ManufacturerType", ManufacturerType, "");
+                    //FilterVendors("", "ManufacturerType", ManufacturerType, "");
                 }
                 catch (Exception ex)
                 {

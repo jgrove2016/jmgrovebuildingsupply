@@ -1656,16 +1656,16 @@
             $('.clsmaskphoneexten').mask("999999");
         });
 
-        function AddTemplate() {
-            $.ajax({
-                type: "POST",
-                url: "Procurement.aspx/CheckVendorDetails",
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-                    console.log(data.d);
-                }
-            });
-        }
+        //function AddTemplate() {
+        //    $.ajax({
+        //        type: "POST",
+        //        url: "Procurement.aspx/CheckVendorDetails",
+        //        contentType: "application/json; charset=utf-8",
+        //        success: function (data) {
+        //            console.log(data.d);
+        //        }
+        //    });
+        //}
 
         function SearchText() {
 
