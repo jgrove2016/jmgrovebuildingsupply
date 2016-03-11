@@ -1,5 +1,3 @@
-insert into tblVendorCategory values ('wood',1,1),('aluminum',1,1),('vinyl',1,1),('iron',1,1)
-go
 insert into tblVendorSubCategory values ('Driveway Gates',1,1),('Fence Accessories',1,1),('Fence Gate Hardware',1,1),('Fence Gates',1,1),('Fence Hardware',0,1),('Fence Panels',1,1),('Fence Pickets',0,1),('Fence Post Caps',1,1),('Fence Post Sleeves',0,1),('Fence Posts',1,1),('Fence Rails',1,1) 
 go
 declare @pcatid int
@@ -19,7 +17,7 @@ DECLARE @getVCatID CURSOR
 SET @getVCatID = CURSOR FOR
 SELECT [VendorCategpryId]
 FROM tblVendorCategory
-where [VendorCategoryNm] in ('wood','aluminum','vinyl','iron')
+where [VendorCategoryNm] in ('Fencing Vinyl','Aluminum Fencing','Fencing Wood','Iron Fencing')
       and [IsRetail_Wholesale]=1
       and [IsManufacturer]=1
 OPEN @getVCatID
@@ -50,6 +48,10 @@ BEGIN
 	END
 	CLOSE @getVSCatID
 	DEALLOCATE @getVSCatID
+	INSERT INTO [dbo].[tbl_Vendor_VendorCat]
+           ([VendorId]
+           ,[VendorCatId])
+   select vendorid,@vCatID from tblVendors where VendorCategoryId=@vCatID
 FETCH NEXT
 FROM @getVCatID INTO @vCatID
 END
