@@ -74,9 +74,18 @@ namespace JG_Prospect.BLL
         {
             return AdminDAL.Instance.UpdateEmailVendorTemplate2(EmailTemplateHeader, EmailTemplateFooter, AttPath);
         }
-        public bool UpdateEmailVendorTemplate(string EmailTemplateHeader, string EmailTemplateFooter, string subject ="")
+        public bool UpdateEmailVendorTemplate(string EmailTemplateHeader, string EmailTemplateFooter, string subject, int pHTMLTemplateID, List<CustomerDocument> custList)
         {
-            return AdminDAL.Instance.UpdateEmailVendorTemplate(EmailTemplateHeader, EmailTemplateFooter, subject);
+            return AdminDAL.Instance.UpdateEmailVendorTemplate(EmailTemplateHeader, EmailTemplateFooter, subject, pHTMLTemplateID, custList);
+        }
+        /// <summary>
+        /// This method deletes the record and returns the path of physical file, so that it could be deleted from server.
+        /// </summary>
+        /// <param name="pAttachmentID"></param>
+        /// <returns></returns>
+        public DataSet DeleteEmailAttachment(int pAttachmentID)
+        {
+            return AdminDAL.Instance.DeleteEmailAttachment(pAttachmentID);
         }
         public bool UpdateWorkOrderTemplate(string WorkOrdertemplate)
         {
@@ -346,9 +355,14 @@ namespace JG_Prospect.BLL
         {
             return AdminDAL.Instance.UpdateCompanyAddress(Addressid, CompanyAddress, CompanyCity, CompanyState, CompanyZipCode);
         }
-        public bool UpdateEmailVendorCategoryTemplate(string EmailTemplateHeader, string EmailTemplateFooter, string subject = "")
+        public bool UpdateEmailVendorCategoryTemplate(string EmailTemplateHeader, string EmailTemplateFooter, string subject, int pHTMLTemplateID,  List<CustomerDocument> custList)
         {
-            return AdminDAL.Instance.UpdateEmailVendorCategoryTemplate(EmailTemplateHeader, EmailTemplateFooter, subject);
+            return AdminDAL.Instance.UpdateEmailVendorCategoryTemplate(EmailTemplateHeader, EmailTemplateFooter,subject,pHTMLTemplateID,custList);
+        }
+        
+        public DataSet GetHTMLTemplateAttachedFile(int pHTMLTemplateID)
+        {
+            return AdminDAL.Instance.GetHTMLTemplateAttachedFile(pHTMLTemplateID);
         }
 
         public DataSet GetProductCategory()

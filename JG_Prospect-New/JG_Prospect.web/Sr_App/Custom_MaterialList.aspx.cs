@@ -97,7 +97,7 @@ namespace JG_Prospect.Sr_App
                 bindMaterialList();
                 SetButtonText();
                 bind();
-                
+                BindUploadedFile(14);
                 lnkVendorCategory.ForeColor = System.Drawing.Color.DarkGray;
                 lnkVendorCategory.Enabled = false;
                 lnkVendor.Enabled = true;
@@ -820,6 +820,7 @@ namespace JG_Prospect.Sr_App
             lnkVendor.Enabled = true;
             lnkVendor.ForeColor = System.Drawing.Color.Blue;
             bind();
+            BindUploadedFile(14);
         }
         protected void bindVendorTemplate()
         {
@@ -842,6 +843,7 @@ namespace JG_Prospect.Sr_App
             lnkVendorCategory.Enabled = true;
             lnkVendorCategory.ForeColor = System.Drawing.Color.Blue;
             bindVendorTemplate();
+            BindUploadedFile(15);
         }
         protected void lnkdelete_Click(object sender, EventArgs e)
         {
@@ -1885,12 +1887,64 @@ namespace JG_Prospect.Sr_App
         {
             string Editor_contentHeader = HeaderEditor.Content;
             string Editor_contentFooter = FooterEditor.Content;
-            bool result = AdminBLL.Instance.UpdateEmailVendorCategoryTemplate(Editor_contentHeader, Editor_contentFooter, txtVendorSubject.Text);
+             List<CustomerDocument> custDocs = new List<CustomerDocument>();
+            int intFileSize = flVendCat.PostedFile.ContentLength;
+
+            if (flVendCat.HasFile)
+            {
+                if (flVendCat.PostedFile.FileName != "")
+                {
+                    if (Request.Files.Count > 0)
+                    {
+                        HttpFileCollection attachments = Request.Files;
+                        for (int i = 0; i < attachments.Count; i++)
+                        {
+
+                            HttpPostedFile attachment = attachments[i];
+                            if (attachment.ContentLength > 0 && !String.IsNullOrEmpty(attachment.FileName))
+                            {
+                                CustomerDocument cbc = new CustomerDocument();
+                                if (File.Exists(Server.MapPath("../CustomerDocs/VendorEmailDocument/") + attachment.FileName) == true)
+                                {
+                                    File.Delete(Server.MapPath("../CustomerDocs/VendorEmailDocument/") + attachment.FileName);
+                                    flVendCat.PostedFile.SaveAs(Server.MapPath("../CustomerDocs/VendorEmailDocument/") + attachment.FileName);
+                                }
+                                else
+                                {
+                                    flVendCat.PostedFile.SaveAs(Server.MapPath("../CustomerDocs/VendorEmailDocument/") + attachment.FileName);
+                                }
+                                string fPath;
+                                fPath = ("../CustomerDocs/VendorEmailDocument/") + attachment.FileName;
+                                cbc.DocumentName = attachment.FileName;
+                                cbc.DocumentPath = fPath;
+                                custDocs.Add(cbc);
+                            }
+                        }
+                    }
+                }
+            }
+            int lHTMLTemplateID = 14;
+            bool result = AdminBLL.Instance.UpdateEmailVendorCategoryTemplate(Editor_contentHeader, Editor_contentFooter, txtVendorSubject.Text, lHTMLTemplateID, custDocs);
             if (result)
             {
+                BindUploadedFile(lHTMLTemplateID);
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('EmailVendor Template Updated Successfully');", true);
             }
+        }
 
+        private void BindUploadedFile(int pHTMLTemplateID)
+        {
+            DataSet lDSAttachedFiles = AdminBLL.Instance.GetHTMLTemplateAttachedFile(pHTMLTemplateID);
+            if (pHTMLTemplateID == 14)
+            {
+                grdVendCatAtc.DataSource = lDSAttachedFiles;
+                grdVendCatAtc.DataBind();
+            }
+            else if (pHTMLTemplateID == 15)
+            {
+                grdVendAtc.DataSource = lDSAttachedFiles;
+                grdVendAtc.DataBind();
+            }
         }
 
         protected void bindVendor()
@@ -1909,12 +1963,65 @@ namespace JG_Prospect.Sr_App
         {
             string Editor_contentHeader = HeaderEditorVendor.Content;
             string Editor_contentFooter = FooterEditorVendor.Content;
-            bool result = AdminBLL.Instance.UpdateEmailVendorTemplate(Editor_contentHeader, Editor_contentFooter, txtSubject.Text);
+            List<CustomerDocument> custDocs = new List<CustomerDocument>();
+            int intFileSize = flVend.PostedFile.ContentLength;
+
+            if (flVend.HasFile)
+            {
+                if (flVend.PostedFile.FileName != "")
+                {
+                    if (Request.Files.Count > 0)
+                    {
+                        HttpFileCollection attachments = Request.Files;
+                        for (int i = 0; i < attachments.Count; i++)
+                        {
+
+                            HttpPostedFile attachment = attachments[i];
+                            if (attachment.ContentLength > 0 && !String.IsNullOrEmpty(attachment.FileName))
+                            {
+                                CustomerDocument cbc = new CustomerDocument();
+                                if (File.Exists(Server.MapPath("../CustomerDocs/VendorEmailDocument/") + attachment.FileName) == true)
+                                {
+                                    File.Delete(Server.MapPath("../CustomerDocs/VendorEmailDocument/") + attachment.FileName);
+                                    flVend.PostedFile.SaveAs(Server.MapPath("../CustomerDocs/VendorEmailDocument/") + attachment.FileName);
+                                }
+                                else
+                                {
+                                    flVend.PostedFile.SaveAs(Server.MapPath("../CustomerDocs/VendorEmailDocument/") + attachment.FileName);
+                                }
+                                string fPath;
+                                fPath = ("../CustomerDocs/VendorEmailDocument/") + attachment.FileName;
+                                cbc.DocumentName = attachment.FileName;
+                                cbc.DocumentPath = fPath;
+                                custDocs.Add(cbc);
+                            }
+                        }
+                    }
+                }
+            }
+            int lHTMLTemplateID = 15;
+
+            bool result = AdminBLL.Instance.UpdateEmailVendorTemplate(Editor_contentHeader, Editor_contentFooter, txtSubject.Text, lHTMLTemplateID,custDocs);
             if (result)
             {
+                BindUploadedFile(lHTMLTemplateID);
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('EmailVendor Template Updated Successfully');", true);
             }
         }
+
+        protected void DeleteFile(object sender, EventArgs e)
+        {
+            Int32 lAttachmentID = Convert.ToInt32((sender as LinkButton).CommandArgument);
+            DataSet lDsAttachment = AdminBLL.Instance.DeleteEmailAttachment(lAttachmentID);
+            string fileName = (Server.MapPath(lDsAttachment.Tables[0].Rows[0]["DocumentPath"].ToString()));
+            //bool res = AdminBLL.Instance.DeleteCustomerAttachment(fileName);
+            if (fileName != "")
+            {
+                File.Delete(fileName);
+            }
+            Response.Redirect(Request.Url.AbsoluteUri);
+        }
+
         protected void grdcustom_material_list_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             try

@@ -12,5 +12,6 @@ namespace JG_Prospect.Common.modal
         public string DocumentName { get; set; }
         public string DocumentPath { get; set; }
         public DateTime CreatedDate { get; set; }
+        public int HTMLTemplateID { get; set; }
     }
 }

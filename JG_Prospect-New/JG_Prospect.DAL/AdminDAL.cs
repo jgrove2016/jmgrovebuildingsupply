@@ -197,7 +197,7 @@ namespace JG_Prospect.DAL
             }
         }
 
-        public bool UpdateEmailVendorCategoryTemplate(string EmailTemplateHeader, string EmailTemplateFooter,String Attachment, string subject = "")
+        public bool UpdateEmailVendorCategoryTemplate(string EmailTemplateHeader, string EmailTemplateFooter,String Attachment, string subject)
         {
             bool result = false;
             try
@@ -211,9 +211,9 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@EmailTemplateFooter", DbType.String, EmailTemplateFooter);
                     database.AddInParameter(command, "@AttachmentPath", DbType.String, Attachment);
                     database.AddInParameter(command, "@Subject", DbType.String, subject);
-
-                    
                     database.ExecuteNonQuery(command);
+
+                   
                     result = true;
                 }
 
@@ -228,7 +228,7 @@ namespace JG_Prospect.DAL
             }
 
         }
-        public bool UpdateEmailVendorTemplate(string EmailTemplateHeader, string EmailTemplateFooter, string subject = "")
+        public bool UpdateEmailVendorTemplate(string EmailTemplateHeader, string EmailTemplateFooter, string subject, int pHTMLTemplateID, List<CustomerDocument> custList)
         {
             bool result = false;
             try
@@ -242,6 +242,16 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@EmailTemplateFooter", DbType.String, EmailTemplateFooter);
                     database.AddInParameter(command, "@Subject", DbType.String, subject);
                     database.ExecuteNonQuery(command);
+                    foreach (var item in custList)
+                    {
+                        DbCommand command2 = database.GetStoredProcCommand("UDP_AddCustomerFile");
+                        command2.CommandType = CommandType.StoredProcedure;
+                        database.AddInParameter(command2, "@DocumentName", DbType.String, item.DocumentName);
+                        database.AddInParameter(command2, "@DocumentPath", DbType.String, item.DocumentPath);
+                        database.AddInParameter(command2, "@HTMLTemplateID", DbType.String, pHTMLTemplateID);
+                        database.ExecuteNonQuery(command2);
+                    }
+
                     result = true;
                 }
 
@@ -256,7 +266,35 @@ namespace JG_Prospect.DAL
             }
 
         }
-       
+
+        /// <summary>
+        /// This method deletes the record and returns the path of physical file, so that it could be deleted from server.
+        /// </summary>
+        /// <param name="pAttachmentID"></param>
+        /// <returns></returns>
+        public DataSet DeleteEmailAttachment(int pAttachmentID)
+        {
+            DataSet result = new DataSet();
+            try
+            {
+
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_DeleteHTMLTemplateAttachment");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@ID", DbType.String, pAttachmentID);
+                    result = database.ExecuteDataSet(command);
+                }
+                return result;
+            }
+
+            catch (Exception ex)
+            {
+                return null;
+            }
+
+        }
+
         public bool UpdateEmailVendorTemplate2(string EmailTemplateHeader, string EmailTemplateFooter,string AttPath)
         {
             bool result = false;
@@ -345,6 +383,27 @@ namespace JG_Prospect.DAL
 
         }
 
+        public DataSet GetHTMLTemplateAttachedFile(int pHTMLTemplateID)
+        {
+            DataSet result = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_GetAttachedFile");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@HTMLTemplateID", DbType.Int32, pHTMLTemplateID);
+                    result = database.ExecuteDataSet(command);
+                    command.Dispose();
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+                return null;
+            }
+        }
 
         public DataSet GetShutterStyle()
         {
@@ -1393,6 +1452,7 @@ namespace JG_Prospect.DAL
                         command2.CommandType = CommandType.StoredProcedure;
                         database.AddInParameter(command2, "@DocumentName", DbType.String, item.DocumentName);
                         database.AddInParameter(command2, "@DocumentPath", DbType.String, item.DocumentPath);
+                        database.AddInParameter(command2, "@HTMLTemplateID", DbType.String, id);
                         database.ExecuteNonQuery(command2);
                         //custList.Add(new CustomerDocument
                         //{
@@ -1519,7 +1579,7 @@ namespace JG_Prospect.DAL
                 return null;
             }
         }
-        public bool UpdateEmailVendorCategoryTemplate(string EmailTemplateHeader, string EmailTemplateFooter, string subject = "")
+        public bool UpdateEmailVendorCategoryTemplate(string EmailTemplateHeader, string EmailTemplateFooter, string subject, int pHTMLTemplateID, List<CustomerDocument> custList)
         {
             bool result = false;
             try
@@ -1533,6 +1593,16 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@EmailTemplateFooter", DbType.String, EmailTemplateFooter);
                     database.AddInParameter(command, "@Subject", DbType.String, subject);
                     database.ExecuteNonQuery(command);
+                    foreach (var item in custList)
+                    {
+                        DbCommand command2 = database.GetStoredProcCommand("UDP_AddCustomerFile");
+                        command2.CommandType = CommandType.StoredProcedure;
+                        database.AddInParameter(command2, "@DocumentName", DbType.String, item.DocumentName);
+                        database.AddInParameter(command2, "@DocumentPath", DbType.String, item.DocumentPath);
+                        database.AddInParameter(command2, "@HTMLTemplateID", DbType.String, pHTMLTemplateID);
+                        database.ExecuteNonQuery(command2);
+                    }
+                    command.Dispose();
                     result = true;
                 }
 

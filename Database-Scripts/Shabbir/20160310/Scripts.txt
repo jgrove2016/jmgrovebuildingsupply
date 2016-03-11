@@ -507,3 +507,150 @@ GO
 
 
 
+/****** Object:  StoredProcedure [dbo].[UDP_FetchContractTemplate]    Script Date: 10-03-2016 20:09:30 ******/
+DROP PROCEDURE [dbo].[UDP_FetchContractTemplate]
+GO
+
+/****** Object:  StoredProcedure [dbo].[UDP_FetchContractTemplate]    Script Date: 10-03-2016 20:09:30 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE Proc [dbo].[UDP_FetchContractTemplate]  
+
+(
+
+	@ProductType int
+
+)
+
+AS  
+
+BEGIN  
+
+	IF(@ProductType = 4)
+
+	BEGIN
+
+	--	SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLBody2 from tblHTMLTemplates  
+		SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLBody2,HTMLBodyA,HTMLSubject from tblHTMLTemplates  
+		WHERE Html_Name =   'Custom_Template' --'temp'-- 
+
+	END
+
+	ELSE IF (@ProductType = 7)
+
+	BEGIN
+
+		--SELECT HTMLHeader,HTMLBody,HTMLFooter from tblHTMLTemplates  
+		SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLBody2,HTMLSubject from tblHTMLTemplates  
+		WHERE Html_Name = 'Soffit_Template'  
+
+	END
+
+	
+
+	
+
+	---OLD Logic to get cotracttemplate-----------
+
+	IF(@ProductType =1)
+
+	BEGIN
+
+		SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLBody2,HTMLBodyA,HTMLBodyB ,HTMLSubject
+
+		from tblHTMLTemplates  
+
+		WHERE Html_Name = 'Contract_Template'  
+
+	END
+
+	ELSE 
+
+	IF(@ProductType =0)
+
+	BEGIN
+
+		SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLSubject from tblHTMLTemplates  
+
+		WHERE Html_Name = 'VendorCategoryEmail_Template'  
+
+	END
+
+	ELSE IF(@ProductType =100)
+
+	BEGIN
+
+		SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLSubject from tblHTMLTemplates  
+
+		WHERE Html_Name = 'VendorEmail_Template'  
+
+	END
+
+	ELSE IF(@ProductType =20)
+
+	BEGIN
+
+		SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLSubject from tblHTMLTemplates  
+
+		WHERE Html_Name = 'CustomerEmail_Template' 
+
+		select * from tblCustomerAttachment 
+
+	END
+
+	ELSE
+
+	BEGIN
+
+		SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLBody2,HTMLSubject from tblHTMLTemplates  
+
+		WHERE Html_Name = 'Custom_Template'  
+
+	END
+
+
+
+	-----OLD Logic to get cotracttemplate-----------
+
+
+
+
+
+	--Added by Sandeep.....
+
+	--IF(@ProductType =1)
+
+	--BEGIN
+
+	--	SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLBody2,HTMLBodyA,HTMLBodyB 
+
+	--	from tblHTMLTemplates  
+
+	--	WHERE Html_Name = 'Contract_Template'  
+
+	--END
+
+	--ELSE 
+
+	--BEGIN
+
+	--	SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLBody2 from tblHTMLTemplates  
+
+	--	WHERE Html_Name IN (SELECT ProductName FROM [jgrove_JGP].[dbo].[tblProductMaster] WHERE ProductId = @ProductType)
+
+	--END
+
+
+
+
+
+END
+
+GO
+
+
+

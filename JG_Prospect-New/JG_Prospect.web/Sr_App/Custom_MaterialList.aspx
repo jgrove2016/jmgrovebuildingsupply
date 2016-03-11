@@ -706,6 +706,25 @@
                     <asp:Label ID="lblMaterials" runat="server"></asp:Label>
                     <h2>Footer Template</h2>
                     <cc1:Editor ID="FooterEditor" Width="1000px" Height="200px" runat="server" />
+                    <div>
+                        Attach File: <asp:FileUpload ID="flVendCat" runat="server" class="multi" />
+                        <asp:GridView ID="grdVendCatAtc" runat="server" AutoGenerateColumns="false" EmptyDataText="No files uploaded" CellSpacing="22">
+                            <Columns>
+                                <asp:BoundField DataField="DocumentName" HeaderText="File Name" />
+                                <asp:TemplateField HeaderStyle-Width="20%">
+                                    <ItemTemplate>
+                                        <asp:HyperLink ID="hypDownload"  Target="_blank" NavigateUrl='<%#Eval("DocumentPath") %>' runat="server">Download</asp:HyperLink>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField>
+                                    <ItemTemplate>
+                                        <asp:LinkButton ID="lnkDelete" Text="Delete" CommandArgument='<%#Eval("Id") %>' 
+                                            runat="server" OnClick="DeleteFile"/>  
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                            </Columns>
+                        </asp:GridView>
+                    </div>
                 </div>
                 <br />
                 <br />
@@ -725,6 +744,26 @@
                 <asp:Label ID="lblMaterialsVendor" runat="server"></asp:Label>
                 <h2>Footer Template</h2>
                 <cc1:Editor ID="FooterEditorVendor" Width="1000px" Height="200px" runat="server" />
+                <div>
+                    Attach File: <asp:FileUpload ID="flVend" runat="server" class="multi" />
+                    <asp:GridView ID="grdVendAtc" runat="server" AutoGenerateColumns="false" EmptyDataText="No files uploaded" CellSpacing="22">
+                        <Columns>
+                            <asp:BoundField DataField="DocumentName" HeaderText="File Name" />
+                            <asp:TemplateField HeaderStyle-Width="20%">
+                                <ItemTemplate>
+                                    <asp:HyperLink ID="hypDownload" Target="_blank" NavigateUrl='<%#Eval("DocumentPath") %>' runat="server">Download</asp:HyperLink>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField>
+                                <ItemTemplate>
+                                    <asp:LinkButton ID="lnkDelete" Text="Delete" CommandArgument='<%#Eval("Id") %>'
+                                        runat="server"  OnClick="DeleteFile"/>
+                                </ItemTemplate>
+                            </asp:TemplateField>
+                        </Columns>
+                    </asp:GridView>
+                </div>
+
             </div>
             <br />
             <br />

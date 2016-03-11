@@ -1,0 +1,116 @@
+IF NOT EXISTS(SELECT * FROM sys.columns WHERE Name = N'HTMLTemplateID' AND Object_ID = Object_ID(N'tblCustomerAttachment'))
+BEGIN
+	ALTER TABLE dbo.tblCustomerAttachment ADD
+	HTMLTemplateID INT NULL
+END
+GO
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_tblCustomerAttachment_tblHTMLTemplates]') AND parent_object_id = OBJECT_ID(N'[dbo].[tblCustomerAttachment]'))
+ALTER TABLE [dbo].[tblCustomerAttachment] DROP CONSTRAINT [FK_tblCustomerAttachment_tblHTMLTemplates]
+GO
+
+ALTER TABLE [dbo].[tblCustomerAttachment]  WITH CHECK ADD  CONSTRAINT [FK_tblCustomerAttachment_tblHTMLTemplates] FOREIGN KEY([HTMLTemplateID])
+REFERENCES [dbo].[tblHTMLTemplates] ([Id])
+GO
+
+ALTER TABLE [dbo].[tblCustomerAttachment] CHECK CONSTRAINT [FK_tblCustomerAttachment_tblHTMLTemplates]
+GO
+
+/****** Object:  StoredProcedure [dbo].[UDP_AddCustomerFile]    Script Date: 03/11/2016 13:57:13 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UDP_AddCustomerFile]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[UDP_AddCustomerFile]
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[UDP_AddCustomerFile]    Script Date: 03/11/2016 13:57:13 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE Proc [dbo].[UDP_AddCustomerFile]
+	@DocumentName varchar(200),
+	@DocumentPath varchar(500),
+	@HTMLTemplateID INT
+AS 
+BEGIN
+   if not exists (select Id from dbo.tblCustomerAttachment where DocumentName=@DocumentName)
+   BEGIN
+      Insert Into tblCustomerAttachment (DocumentName,DocumentPath,HTMLTemplateID) 
+    values (@DocumentName,@DocumentPath,@HTMLTemplateID)
+
+	END
+	ELSE --#Shabbir: This query does not make sense, but I will keep it here so that existing functionality does not get messed up
+       UPDATE tblCustomerAttachment set DocumentName=@DocumentName, DocumentPath=@DocumentPath
+                                     where DocumentName=@DocumentName AND HTMLTemplateID = @HTMLTemplateID
+ END
+
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[USP_GetAttachedFile]    Script Date: 03/11/2016 14:29:35 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_GetAttachedFile]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_GetAttachedFile]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_GetAttachedFile]    Script Date: 03/11/2016 14:29:35 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		Shabbir Kanchwa;a
+-- Create date: 2016-03-11
+-- Description:	This procedure will get attached file of Email Templates
+-- =============================================
+CREATE PROCEDURE [dbo].[USP_GetAttachedFile]
+(
+	@HTMLTemplateID INT 
+)
+AS
+BEGIN
+	SET NOCOUNT ON;
+	
+	SELECT * from tblCustomerAttachment WHERE HTMLTemplateID = @HTMLTemplateID
+
+END
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_DeleteHTMLTemplateAttachment]    Script Date: 03/11/2016 18:58:26 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_DeleteHTMLTemplateAttachment]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_DeleteHTMLTemplateAttachment]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_DeleteHTMLTemplateAttachment]    Script Date: 03/11/2016 18:58:26 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-03-11
+-- Description:	This procedure will delete the file
+-- =============================================
+CREATE PROCEDURE [dbo].[USP_DeleteHTMLTemplateAttachment]
+@ID INT
+AS
+BEGIN
+	
+	SET NOCOUNT ON;
+
+	SELECT * FROM tblCustomerAttachment WHERE ID = @ID -- We need the path to delete the physical file on server
+	DELETE FROM tblCustomerAttachment WHERE ID = @ID
+    
+END
+
+GO
+
+
+
+
