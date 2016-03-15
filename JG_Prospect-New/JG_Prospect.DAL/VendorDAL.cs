@@ -369,6 +369,32 @@ namespace JG_Prospect.DAL
                 return null;
             }
         }
+
+        /// <summary>
+        /// This method will return one or more Vendors/
+        /// </summary>
+        /// <param name="pVendorIDs">Command separated vendor ids</param>
+        /// <returns></returns>
+        public DataSet GetVendors(string pVendorIDs)
+        {
+            try
+            {
+                {
+                    SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                    DS = new DataSet();
+                    DbCommand command = database.GetStoredProcCommand("usp_GetVendors");
+                    database.AddInParameter(command, "@VendorIds", DbType.String, pVendorIDs);
+                    command.CommandType = CommandType.StoredProcedure;
+                    DS = database.ExecuteDataSet(command);
+                    return DS;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
         public bool deletevendor(int vendorid)
         {
             try

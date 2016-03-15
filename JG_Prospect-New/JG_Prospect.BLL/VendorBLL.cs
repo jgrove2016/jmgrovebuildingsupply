@@ -85,7 +85,15 @@ namespace JG_Prospect.BLL
         {
             return VendorDAL.Instance.fetchVendorListByCategoryForEmail(category);
         }
-
+         /// <summary>
+        /// This method will return one or more Vendors/
+        /// </summary>
+        /// <param name="pVendorIDs">Command separated vendor ids</param>
+        /// <returns></returns>
+        public DataSet GetVendors(string pVendorIDs)
+        {
+            return VendorDAL.Instance.GetVendors(pVendorIDs);
+        }
         public bool deletevendor(int vendorid)
         {
             return VendorDAL.Instance.deletevendor(vendorid);

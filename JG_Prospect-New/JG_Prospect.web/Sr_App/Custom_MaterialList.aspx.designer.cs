@@ -508,6 +508,15 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.Button btnSendMail;
         
         /// <summary>
+        /// btnSendEmailToVendors control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnSendEmailToVendors;
+        
+        /// <summary>
         /// btnClose control.
         /// </summary>
         /// <remarks>
@@ -553,6 +562,24 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.TextBox txtVendorSubject;
         
         /// <summary>
+        /// flVendCat control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload flVendCat;
+        
+        /// <summary>
+        /// grdVendCatAtc control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView grdVendCatAtc;
+        
+        /// <summary>
         /// HeaderEditor control.
         /// </summary>
         /// <remarks>
@@ -578,24 +605,6 @@ namespace JG_Prospect.Sr_App {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.HTMLEditor.Editor FooterEditor;
-        
-        /// <summary>
-        /// flVendCat control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload flVendCat;
-        
-        /// <summary>
-        /// grdVendCatAtc control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView grdVendCatAtc;
         
         /// <summary>
         /// btnUpdate control.
@@ -625,6 +634,24 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.TextBox txtSubject;
         
         /// <summary>
+        /// flVend control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FileUpload flVend;
+        
+        /// <summary>
+        /// grdVendAtc control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView grdVendAtc;
+        
+        /// <summary>
         /// HeaderEditorVendor control.
         /// </summary>
         /// <remarks>
@@ -650,24 +677,6 @@ namespace JG_Prospect.Sr_App {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.HTMLEditor.Editor FooterEditorVendor;
-        
-        /// <summary>
-        /// flVend control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload flVend;
-        
-        /// <summary>
-        /// grdVendAtc control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView grdVendAtc;
         
         /// <summary>
         /// btnUpdateVendor control.

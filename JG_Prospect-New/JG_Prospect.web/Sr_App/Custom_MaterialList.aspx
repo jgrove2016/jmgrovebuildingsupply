@@ -112,7 +112,8 @@
                             document.getElementById('lblForemanPermission').style.display = '';
                             document.getElementById('<%=txtForemanManPwd.ClientID %>').style.display = 'none';
                             document.getElementById('spnforemanelabel').style.display = 'none';
-                            location.reload();
+                            window.location = window.location.href;
+                           // location.reload();
                         }
                         else {
                             alert(flg);
@@ -139,8 +140,8 @@
                             document.getElementById('lblSalesmanPermission').style.display = '';
                             document.getElementById('<%=txtSrSalesManPwd.ClientID %>').style.display = 'none';
                             document.getElementById('spnsalesmanelabel').style.display = 'none';
-
-                            location.reload();
+                            window.location = window.location.href;
+                            //location.reload();
                         }
                         else {
                             alert(flg);
@@ -168,8 +169,8 @@
                             document.getElementById('lblAdminPermission').style.display = '';
                             document.getElementById('<%=txtAdminPwd.ClientID %>').style.display = 'none';
                             document.getElementById('spnadminlabel').style.display = 'none';
-
-                            location.reload();
+                            window.location = window.location.href;
+                            //location.reload();
                         }
                         else {
                             alert(flg);
@@ -196,8 +197,8 @@
                             document.getElementById('lblSrSalesmanPermission').style.display = '';
                             document.getElementById('<%=txtSrSales1Pwd.ClientID %>').style.display = 'none';
                             document.getElementById('spnsrsalesmanelabel').style.display = 'none';
-
-                            location.reload();
+                            window.location = window.location.href;
+                            //location.reload();
                         }
                         else {
                             alert(flg);
@@ -482,7 +483,7 @@
                                         <Columns>
                                             <asp:TemplateField HeaderText="Line - Image">
                                                 <ItemTemplate>
-                                                    <asp:TextBox ID="txtLine" Text='<%# Eval("Line") %>' Style="width: 40px" MaxLength="4" runat="server" ClientIDMode="Static" OnTextChanged="txtLine_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                                    <asp:TextBox ID="txtLine" Text='<%# Eval("Line") %>' Style="width: 40px" MaxLength="4" runat="server" ClientIDMode="Static" OnTextChanged="txtLine_TextChanged" Enabled="false"></asp:TextBox>
                                                     <asp:HiddenField ID="hdnMaterialListId" runat="server" Value='<%#Eval("Id")%>' />
                                                     <asp:HiddenField ID="hdnEmailStatus" runat="server" Value='<%#Eval("EmailStatus")%>' />
                                                     <asp:HiddenField ID="hdnForemanPermission" runat="server" Value='<%#Eval("IsForemanPermission")%>' />
@@ -508,7 +509,7 @@
                                                 <ItemTemplate>
                                                     <asp:UpdatePanel ID="updDesc" runat="server">
                                                         <ContentTemplate>
-                                                    <asp:TextBox ID="txtDescription" Text='<%# Eval("MaterialList") %>' runat="server" ClientIDMode="Static" OnTextChanged="txtDescription_TextChanged" AutoPostBack="false"></asp:TextBox>
+                                                    <asp:TextBox ID="txtDescription" Text='<%# Eval("MaterialList") %>' runat="server" ClientIDMode="Static" OnTextChanged="txtDescription_TextChanged" AutoPostBack="true"></asp:TextBox>
                                                              </ContentTemplate>
                                                         <Triggers >
                                                             <asp:AsyncPostBackTrigger ControlID="txtDescription" EventName="TextChanged" />
@@ -570,7 +571,7 @@
                                                 <ItemTemplate>
  <asp:UpdatePanel ID="updVend" runat="server">
                                                         <ContentTemplate>
-                                                    <asp:DropDownCheckBoxes ID="ddlVendorName" ClientIDMode="Static" runat="server" Style="margin: -2em 0 0; width: 180px" Width="180px" UseSelectAllNode="true" OnSelectedIndexChanged="ddlVendorName_SelectedIndexChanged1" AutoPostBack="true">
+                                                    <asp:DropDownCheckBoxes ID="ddlVendorName" ClientIDMode="AutoID" runat="server" Style="margin: -2em 0 0; width: 180px" Width="180px" UseSelectAllNode="true" OnSelectedIndexChanged="ddlVendorName_SelectedIndexChanged1" AutoPostBack="true">
                                                     </asp:DropDownCheckBoxes>
                                                             </ContentTemplate>
                                                         <Triggers >
@@ -676,7 +677,8 @@
         </div>
         <div class="btn_sec">
             <asp:Button ID="btnSendMail" runat="server" Text="Save" OnClick="btnSendMail_Click" OnClientClick="return ValidatePermissions()"
-                Style="background: url(../img/btn1.png) no-repeat;" Width="300" />
+                Style="background: url(../img/btn1.png) no-repeat;" Width="300" Visible="false" />
+            <asp:Button ID="btnSendEmailToVendors" runat="server" Text="Send Mail to Vendors" OnClick="btnSendEmailToVendors_Click" OnClientClick="return ValidatePermissions()" />
             <asp:Button ID="btnClose" runat="server" Text="Close" OnClick="btnClose_Click" CausesValidation="false" />
         </div>
         <h1>Edit Email Templates</h1>
@@ -700,13 +702,7 @@
                     <b>Email Template For Vendor Category</b></h2>
                 <div>
                      <h2>Subject: <asp:TextBox ID="txtVendorSubject" Width="500px" runat="server"></asp:TextBox></h2>
-                    <h2>Header Template</h2>
-                    <cc1:Editor ID="HeaderEditor" Width="1000px" Height="200px" runat="server" />
-                    <h2>Body Template</h2>
-                    <asp:Label ID="lblMaterials" runat="server"></asp:Label>
-                    <h2>Footer Template</h2>
-                    <cc1:Editor ID="FooterEditor" Width="1000px" Height="200px" runat="server" />
-                    <div>
+                      <div>
                         Attach File: <asp:FileUpload ID="flVendCat" runat="server" class="multi" />
                         <asp:GridView ID="grdVendCatAtc" runat="server" AutoGenerateColumns="false" EmptyDataText="No files uploaded" CellSpacing="22">
                             <Columns>
@@ -725,6 +721,13 @@
                             </Columns>
                         </asp:GridView>
                     </div>
+                    <h2>Header Template</h2>
+                    <cc1:Editor ID="HeaderEditor" Width="1000px" Height="200px" runat="server" />
+                    <h2>Body Template</h2>
+                    <asp:Label ID="lblMaterials" runat="server"></asp:Label>
+                    <h2>Footer Template</h2>
+                    <cc1:Editor ID="FooterEditor" Width="1000px" Height="200px" runat="server" />
+                  
                 </div>
                 <br />
                 <br />
@@ -738,12 +741,6 @@
                 <b>Email Template For Vendors</b></h2>
             <div>
                 <h2>Subject: <asp:TextBox ID="txtSubject" Width="500px" runat="server"></asp:TextBox></h2>
-                <h2>Header Template</h2>
-                <cc1:Editor ID="HeaderEditorVendor" Width="1000px" Height="200px" runat="server" />
-                <h2>Body Template</h2>
-                <asp:Label ID="lblMaterialsVendor" runat="server"></asp:Label>
-                <h2>Footer Template</h2>
-                <cc1:Editor ID="FooterEditorVendor" Width="1000px" Height="200px" runat="server" />
                 <div>
                     Attach File: <asp:FileUpload ID="flVend" runat="server" class="multi" />
                     <asp:GridView ID="grdVendAtc" runat="server" AutoGenerateColumns="false" EmptyDataText="No files uploaded" CellSpacing="22">
@@ -763,6 +760,13 @@
                         </Columns>
                     </asp:GridView>
                 </div>
+                <h2>Header Template</h2>
+                <cc1:Editor ID="HeaderEditorVendor" Width="1000px" Height="200px" runat="server" />
+                <h2>Body Template</h2>
+                <asp:Label ID="lblMaterialsVendor" runat="server"></asp:Label>
+                <h2>Footer Template</h2>
+                <cc1:Editor ID="FooterEditorVendor" Width="1000px" Height="200px" runat="server" />
+                
 
             </div>
             <br />
@@ -792,7 +796,7 @@
                     lIsValidated = false;
                 }
             }
-            if (document.getElementById('spnsrsalesmanelabel')) {
+           /* if (document.getElementById('spnsrsalesmanelabel')) {
                 if (document.getElementById('spnsrsalesmanelabel').style.display == '') {
                     lIsValidated = false;
                 }
@@ -801,7 +805,7 @@
                 if (document.getElementById('spnadminlabel').style.display == '') {
                     lIsValidated = false;
                 }
-            }
+            }*/
             if (!lIsValidated) {
                 alert('Please approve the custom material list first.');
             }
