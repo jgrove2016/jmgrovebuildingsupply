@@ -17,7 +17,7 @@
             });
             $('#txtSecondary2').datetimepicker({
                 format: 'm/d/Y h:00 a'
-           });
+            });
         });
     </script>
     <style type="text/css">
@@ -33,8 +33,8 @@
             font-family: 'barcode_fontregular';
             font-size: 37px;
         }
-         .black_overlay
-        {
+
+        .black_overlay {
             display: none;
             position: fixed;
             top: 0%;
@@ -48,8 +48,8 @@
             filter: alpha(opacity=80);
             overflow-y: hidden;
         }
-        .white_content
-        {
+
+        .white_content {
             display: none;
             position: absolute;
             top: 10%;
@@ -76,8 +76,7 @@
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    <h1>
-        Dashboard</h1>
+    <h1>Dashboard</h1>
     <div class="form_panel">
         <div class="clr">
         </div>
@@ -88,20 +87,20 @@
         <div class="grid">
             <asp:GridView ID="grdInstaller" runat="server" AutoGenerateColumns="false" CssClass="tableClass"
                 Width="100%" EmptyDataText="No Record Found" AllowSorting="true"
-                onrowdatabound="grdInstaller_RowDataBound" 
-                onsorting="grdInstaller_Sorting">
+                OnRowDataBound="grdInstaller_RowDataBound"
+                OnSorting="grdInstaller_Sorting">
                 <Columns>
-                 <asp:TemplateField HeaderText="Ref #" HeaderStyle-Width="5%" SortExpression="ReferenceId">
+                    <asp:TemplateField HeaderText="Ref #" HeaderStyle-Width="5%" SortExpression="ReferenceId">
                         <ItemTemplate>
                             <asp:Label ID="lblReferenceId" runat="server" Text='<%#Eval("ReferenceId") %>'></asp:Label>
                         </ItemTemplate>
                     </asp:TemplateField>
-                     <asp:TemplateField HeaderText="Customer Name" HeaderStyle-Width="10%" SortExpression="CustomerName">
+                    <asp:TemplateField HeaderText="Customer Name" HeaderStyle-Width="10%" SortExpression="CustomerName">
                         <ItemTemplate>
                             <asp:Label ID="lblCustomerName" runat="server" Text='<%#Eval("CustomerName") %>'></asp:Label>
                         </ItemTemplate>
                     </asp:TemplateField>
-                     <asp:TemplateField HeaderText="ZipCode" HeaderStyle-Width="5%" SortExpression="ZipCode">
+                    <asp:TemplateField HeaderText="ZipCode" HeaderStyle-Width="5%" SortExpression="ZipCode">
                         <ItemTemplate>
                             <asp:Label ID="lblZipCode" runat="server" Text='<%#Eval("ZipCode") %>'></asp:Label>
                         </ItemTemplate>
@@ -123,7 +122,7 @@
                             <asp:HiddenField ID="hdnColour" runat="server" Value='<%#Eval("Colour") %>' />
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Availability" HeaderStyle-Width="15%">
+                    <asp:TemplateField HeaderText="Availability" HeaderStyle-Width="15%" Visible="false">
                         <ItemTemplate>
                             <asp:LinkButton ID="lnkAvailability" runat="server" Text="Availability" OnClick="lnkAvailability_Click"></asp:LinkButton>
                         </ItemTemplate>
@@ -134,7 +133,7 @@
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:BoundField HeaderText="Status" DataField="Status" SortExpression="Status" HeaderStyle-Width="15%" />
-                    <asp:BoundField HeaderText="Notes" DataField="Notes" HeaderStyle-Width="15%" />
+                    <asp:BoundField HeaderText="Notes" DataField="Notes" HeaderStyle-Width="30%" />
                 </Columns>
             </asp:GridView>
             <button id="btnFake" style="display: none" runat="server">
@@ -147,9 +146,8 @@
                 <table style="border: Solid 3px #A33E3F; width: 100%; height: 100%;" cellpadding="0"
                     cellspacing="0">
                     <tr style="background-color: #A33E3F">
-                        <td colspan="3" style="height: 10%; color: White; font-weight: bold; font-size: larger;
-                            width: 100%;" align="center">
-                            Availability
+                        <td colspan="3" style="height: 10%; color: White; font-weight: bold; font-size: larger; width: 100%;"
+                            align="center">Availability
                         </td>
                     </tr>
                     <tr>
@@ -188,67 +186,124 @@
                     <tr>
                         <td colspan="3" align="center">
                             <asp:Button ID="btnSet" Style="width: 100px;" runat="server"
-                                Text="Set Availability" OnClick="btnSet_Click"/>
-                            <asp:Button ID="btnCancel" runat="server" Style="width: 100px;" Text="Cancel" />
+                                Text="Set Availability" OnClick="btnSet_Click" />
+                            <asp:Button ID="btnCancel" runat="server" Style="width: 100px;" Text="Cancel" OnClientClick="overlay();" />
                         </td>
                     </tr>
                 </table>
             </asp:Panel>
         </div>
-    
 
-    <asp:Panel ID="panelPopup" runat="server">
-        <div id="light" class="white_content">
-           <div class="container">
-        <h1>
-            Job Packets</h1> 
-               <a href="javascript:void(0)" onclick="document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">
-                Close</a>       
-            <div class="form_panel">   
-             <div class="scrollme">     
-                <div class="btn_sec" style="float: right; padding-right:10px; padding-top: 35px;">
-                    <asp:Button ID="btnGo" Text="Zip & Download" OnClick="btnGo_Click" runat="server" />
-                </div><span id="ErrorMessage" style="color: Red" runat="server"></span>
-              <div class="clr"></div>
-                <div id="divmain" class="target">
-                    <asp:GridView ID="Gridviewdocs" runat="server" AutoGenerateColumns="false" CssClass="grid"
-                        Width="100%" HeaderStyle-HorizontalAlign="Center" RowStyle-HorizontalAlign="Center"
-                        OnRowDataBound="Gridviewdocs_RowDataBound">
-                        <Columns>
-                            <asp:TemplateField HeaderText="Files" ItemStyle-HorizontalAlign="Center">
-                                <ItemTemplate>
-                                    <asp:HiddenField ID="Hiddenid" runat="server" Value='<%# Eval("srno")%>' />
-                                    <a href='<%# Eval("DocumentName","../CustomerDocs/{0}") %>' class="preview">
-                                        <asp:Image ID="Image1" runat="server" Width="60px" CssClass="preview" 
-                                            Height="90px" /></a>
-                                    <asp:Label ID="labelfile" ForeColor="Black" runat="server" Text='<%# Eval("DocumentName") %>' />
-                                   
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Description">
-                                <ItemTemplate>
-                                    <asp:Label ID="labeldesc" ForeColor="Black" runat="server" Text='<%# Eval("DocDescription") %>' />
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Select File to Archieve">
-                                <ItemTemplate>
-                                    <asp:CheckBox ID="checkbox1" runat="server" />
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                        </Columns>
-                    </asp:GridView>
+
+        <asp:Panel ID="panelPopup" runat="server">
+            <div id="light" class="white_content">
+                <div class="container">
+                    <h1>Job Packets</h1>
+                    <a href="javascript:void(0)" onclick="document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">Close</a>
+                    <div class="form_panel">
+                        <div class="scrollme">
+                            <div class="btn_sec" style="float: right; padding-right: 10px; padding-top: 35px;">
+                                <asp:Button ID="btnGo" Text="Zip & Download" OnClick="btnGo_Click" runat="server" />
+                            </div>
+                            <span id="ErrorMessage" style="color: Red" runat="server"></span>
+                            <div class="clr"></div>
+                            <div id="dvCustomMaterial">
+                                <asp:ListView ID="lstCustomMaterialList" runat="server" OnItemDataBound="lstCustomMaterialList_ItemDataBound" ItemPlaceholderID="itemPlaceHolder" GroupPlaceholderID="groupPlaceHolder">
+                                    <LayoutTemplate>
+                                        <div>
+                                            <asp:PlaceHolder ID="groupPlaceHolder" runat="server"></asp:PlaceHolder>
+                                        </div>
+                                    </LayoutTemplate>
+                                    <GroupTemplate>
+                                        <asp:PlaceHolder ID="itemPlaceHolder" runat="server"></asp:PlaceHolder>
+
+                                    </GroupTemplate>
+                                    <ItemTemplate>
+                                        <asp:UpdatePanel ID="updMaterialList2" runat="server">
+                                            <ContentTemplate>
+                                                <h5 align="left">Product Category: '<%#Eval("ProductName")%>' 
+                                                    <asp:HiddenField ID="hdnProductCatID" runat="server" Value='<%#Eval("ProductCatID")%>' />
+                                                </h5>
+
+                                                <asp:GridView ID="grdProdLines" Width="100%" runat="server"  AutoGenerateColumns="false">
+                                                    <Columns>
+                                                        <asp:TemplateField HeaderText="Line - Image">
+                                                            <ItemTemplate>
+                                                                <%# Eval("Line") %>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="JG sku- vendor part #">
+                                                            <ItemTemplate>
+                                                                <%# Eval("JGSkuPartNo") %>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="Description">
+                                                            <ItemTemplate>
+                                                                <%# Eval("MaterialList") %>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="Quantity">
+                                                            <ItemTemplate>
+                                                                <%# Eval("Quantity") %>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="UOM">
+                                                            <ItemTemplate>
+                                                                <%# Eval("UOM") %>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                    </Columns>
+                                                </asp:GridView>
+                                                
+                                            </ContentTemplate>
+
+                                        </asp:UpdatePanel>
+                                    </ItemTemplate>
+                                </asp:ListView>
+
+                            </div><br />
+                            <div id="divmain" class="target">
+                                <asp:GridView ID="Gridviewdocs" runat="server" AutoGenerateColumns="false" CssClass="grid"
+                                    Width="100%" HeaderStyle-HorizontalAlign="Center" RowStyle-HorizontalAlign="Center"
+                                    OnRowDataBound="Gridviewdocs_RowDataBound">
+                                    <Columns>
+                                        <asp:TemplateField HeaderText="Files" ItemStyle-HorizontalAlign="Center">
+                                            <ItemTemplate>
+                                                <asp:HiddenField ID="Hiddenid" runat="server" Value='<%# Eval("srno")%>' />
+                                                <a href='<%# Eval("DocumentName","../CustomerDocs/{0}") %>' class="preview">
+                                                    <asp:Image ID="Image1" runat="server" Width="60px" CssClass="preview"
+                                                        Height="90px" /></a>
+                                                <asp:Label ID="labelfile" ForeColor="Black" runat="server" Text='<%# Eval("DocumentName") %>' />
+
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Description">
+                                            <ItemTemplate>
+                                                <asp:Label ID="labeldesc" ForeColor="Black" runat="server" Text='<%# Eval("DocDescription") %>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField HeaderText="Select File to Archieve">
+                                            <ItemTemplate>
+                                                <asp:CheckBox ID="checkbox1" runat="server" />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                    </Columns>
+                                </asp:GridView>
+                            </div>
+                            <asp:HiddenField runat="server" ID="hdnReferenceID" Value="" />
+                            <asp:HiddenField runat="server" ID="hdnJobSeqID" Value="" />
+                            <asp:LinkButton ID="lnkAvailJobPckt" runat="server" Text="Availability" OnClick="lnkAvailJobPckt_Click"></asp:LinkButton>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </asp:Panel>
+        <div id="fade" class="black_overlay">
         </div>
-   </div>
-        </div>
-    </asp:Panel>
-    <div id="fade" class="black_overlay">
+
+
+
+
     </div>
-
-
-
-
-        </div>
 
 </asp:Content>

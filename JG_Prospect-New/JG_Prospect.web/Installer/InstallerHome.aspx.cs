@@ -34,6 +34,11 @@ namespace JG_Prospect.Installer
                 ViewState[JGConstant.SortExpression] = value;
             }
         }
+        protected DataSet PageDataset
+        {
+            get { return ViewState["PageDataSet"] != null ? ((DataSet)ViewState["PageDataSet"]) : new DataSet(); }
+            set { ViewState["PageDataSet"] = value; }
+        }
 
         public String GridViewSortDirection
         {
@@ -145,9 +150,19 @@ namespace JG_Prospect.Installer
             string path = "";
             string Extention = "";
             LinkButton lnkJobPackets = sender as LinkButton;
-            //GridViewRow gr = (GridViewRow)lnkJobPackets.Parent.Parent;
-            //HiddenField hdnproductid = (HiddenField)gr.FindControl("hdnproductid");
-            //HiddenField hdnProductTypeId = (HiddenField)gr.FindControl("hdnProductTypeId");
+            GridViewRow gr = (GridViewRow)lnkJobPackets.Parent.Parent;
+
+            //#- Shabbir Kanchwala. Added below 4 lines because Availability column functionality is moved out of grid.
+            Label lblReferenceID = (Label)gr.FindControl("lblReferenceId");
+            HiddenField hdnJobSequenceID = (HiddenField)gr.FindControl("hdnJobSequenceId");
+            hdnJobSeqID.Value = hdnJobSequenceID.Value;
+            hdnReferenceID.Value = lblReferenceID.Text;
+            
+            //#- Shabbir Kanchwala: This code will bind the custom material list on Job Packet Popup
+            String lJobID = ((Label)gr.FindControl("lblCustomerIdJobId")).Text.ToString().Replace("&", "-").Replace(" ", "");
+            Int32 lCustomerID = Convert.ToInt32(lJobID.Replace("C", "").Split('-')[0].ToString());
+            BindCustomMaterialList(lJobID, lCustomerID);
+
             //Label lblCustomerIdJobId = (Label)gr.FindControl("lblCustomerIdJobId");
             //string[] Id = lblCustomerIdJobId.Text.Trim().Split('&');
             //string customerString = Id[0].Trim();
@@ -173,6 +188,7 @@ namespace JG_Prospect.Installer
            //        }
            //    }
            //}
+            
            Gridviewdocs.DataSource = ds;
            Gridviewdocs.DataBind();
            ScriptManager.RegisterStartupScript(this, GetType(), "overlay", "overlay();", true);
@@ -326,7 +342,7 @@ namespace JG_Prospect.Installer
                 HiddenField hdnJobSequenceId = (HiddenField)e.Row.FindControl("hdnJobSequenceId");
                 int installerId = Convert.ToInt16(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()].ToString());
                 DataSet ds = InstallUserBLL.Instance.GetInstallerAvailability(lblReferenceId.Text.Trim(), installerId);
-
+              
                 string availability = string.Empty;
 
                 if (ds.Tables[0].Rows.Count > 0)
@@ -354,6 +370,68 @@ namespace JG_Prospect.Installer
             };
             BindGrid();
         }
+
+        #region "Shabbir Code"
+        protected void lnkAvailJobPckt_Click(object sender, EventArgs e)
+        {
+            ViewState[ViewStateKey.Key.ReferenceId.ToString()] = hdnReferenceID.Value;
+            ViewState[ViewStateKey.Key.JobSequenceId.ToString()] = Convert.ToInt16(hdnJobSeqID.Value);
+
+            int installerId = Convert.ToInt16(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()].ToString());
+            DataSet ds = InstallUserBLL.Instance.GetInstallerAvailability(hdnReferenceID.Value.Trim(), installerId);
+
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                lblPrimary.Text = ds.Tables[0].Rows[0]["Primary"].ToString();
+                lblSecondary1.Text = ds.Tables[0].Rows[0]["Secondary1"].ToString();
+                lblSecondary2.Text = ds.Tables[0].Rows[0]["Secondary2"].ToString();
+            }
+            else
+            {
+                txtPrimary.Text = "";
+                txtSecondary1.Text = "";
+                txtSecondary2.Text = "";
+                lblPrimary.Text = "";
+                lblSecondary1.Text = "";
+                lblSecondary2.Text = "";
+            }
+
+            mpe.Show();
+        }
+        private void BindCustomMaterialList(String pJobID, Int32 pCustomerID)
+        {
+            PageDataset = CustomBLL.Instance.GetCustomMaterialList(pJobID, pCustomerID);
+            lstCustomMaterialList.DataSource = PageDataset.Tables[0];
+            lstCustomMaterialList.DataBind();
+
+        }
+
+        protected void lstCustomMaterialList_ItemDataBound(object sender, ListViewItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListViewItemType.DataItem)
+            {
+
+                //DropDownList ddlCategory = (DropDownList)e.Item.FindControl("ddlCategory");
+                //ddlCategory.DataSource = ProductDataset;
+                //ddlCategory.DataTextField = "ProductName";
+                //ddlCategory.DataValueField = "ProductId";
+                //ddlCategory.DataBind();
+                ////ddlCategory.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select", "0)"));
+
+
+
+                DataRowView lDrView = (DataRowView)e.Item.DataItem;
+
+                int lProdCatID = Convert.ToInt32(lDrView["ProductCatID"]);
+                //ddlCategory.SelectedValue = lProdCatID.ToString();
+                GridView grdProdLines = (GridView)e.Item.FindControl("grdProdLines");
+                DataView lDvMaterialList = new DataView(PageDataset.Tables[1], "ProductCatID=" + lProdCatID, "id asc", DataViewRowState.OriginalRows);
+
+                grdProdLines.DataSource = lDvMaterialList;
+                grdProdLines.DataBind();
+            }
+        }
+        #endregion
 
     }
 }

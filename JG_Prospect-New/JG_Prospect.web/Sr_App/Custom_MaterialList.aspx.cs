@@ -3076,8 +3076,8 @@ namespace JG_Prospect.Sr_App
                 ddlVendorCategory.DataTextField = "VendorCategoryNm";
                 ddlVendorCategory.DataValueField = "VendorCategpryId";
                 ddlVendorCategory.DataBind();
-                ddlVendorCategory.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select", "0"));
-                ddlVendorCategory.SelectedIndex = 0;
+                //ddlVendorCategory.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select", "0"));
+                //ddlVendorCategory.SelectedIndex = 0;
 
                 DataRowView lDr = (DataRowView)e.Row.DataItem;
                 String lVendorIds = lDr["VendorIds"].ToString();
@@ -3391,7 +3391,7 @@ namespace JG_Prospect.Sr_App
             }
             
             bool result = CustomBLL.Instance.AddCustomMaterialList(cm, jobId);//,productTypeId,estimateId);
-            InitialDataBind();
+            
         }
 
 
