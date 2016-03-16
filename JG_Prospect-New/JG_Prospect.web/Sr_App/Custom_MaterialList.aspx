@@ -6,7 +6,28 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit.HTMLEditor"
     TagPrefix="cc1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <%-- <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js"></script>
+<style>
+    .grid td {
+        padding: 1px !important;
+        border-bottom: #ccc 1px solid;
+    }
+
+    #btnAddProdLines {
+        width: 200px !important;
+        padding: 0 10px !important;
+    }
+    #txtLine {
+        width:57px;
+    }
+    .text-style{
+        height:24px;
+        width:100%;
+    }
+    div.dd_chk_select{
+        height:24px !important;
+    }
+</style>   
+     <%-- <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js"></script>
       <script src="../js/jquery-latest.js" type="text/javascript"></script>
   <script type="text/javascript" src="../../Scripts/jquery.MultiFile.js"></script>--%>
     <%-- <script type="text/javascript">
@@ -481,9 +502,9 @@
 
                                     <asp:GridView ID="grdProdLines" Width="100%" runat="server" OnRowDataBound="grdProdLines_RowDataBound" AutoGenerateColumns="false">
                                         <Columns>
-                                            <asp:TemplateField HeaderText="Line - Image">
+                                            <asp:TemplateField HeaderText="Line" HeaderStyle-Width="4%">
                                                 <ItemTemplate>
-                                                    <asp:TextBox ID="txtLine" Text='<%# Eval("Line") %>' Style="width: 40px" MaxLength="4" runat="server" ClientIDMode="Static" OnTextChanged="txtLine_TextChanged" Enabled="false"></asp:TextBox>
+                                                    <asp:TextBox CssClass="text-style" ID="txtLine" Text='<%# Eval("Line") %>' MaxLength="4" runat="server" ClientIDMode="Static" OnTextChanged="txtLine_TextChanged" Enabled="false"></asp:TextBox>
                                                     <asp:HiddenField ID="hdnMaterialListId" runat="server" Value='<%#Eval("Id")%>' />
                                                     <asp:HiddenField ID="hdnEmailStatus" runat="server" Value='<%#Eval("EmailStatus")%>' />
                                                     <asp:HiddenField ID="hdnForemanPermission" runat="server" Value='<%#Eval("IsForemanPermission")%>' />
@@ -497,7 +518,7 @@
                                                 <ItemTemplate>
                                                      <asp:UpdatePanel ID="updSku" runat="server">
                                                         <ContentTemplate>
-                                                    <asp:TextBox ID="txtSkuPartNo" Text='<%# Eval("JGSkuPartNo") %>' Style="width: 120px" MaxLength="18" runat="server" ClientIDMode="Static" OnTextChanged="txtSkuPartNo_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                                    <asp:TextBox ID="txtSkuPartNo" CssClass="text-style" Text='<%# Eval("JGSkuPartNo") %>'  MaxLength="18" runat="server" ClientIDMode="Static" OnTextChanged="txtSkuPartNo_TextChanged" AutoPostBack="true"></asp:TextBox>
                                                      </ContentTemplate>
                                                         <Triggers >
                                                             <asp:AsyncPostBackTrigger ControlID="txtSkuPartNo" EventName="TextChanged" />
@@ -505,11 +526,11 @@
                                                     </asp:UpdatePanel>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Description">
+                                            <asp:TemplateField HeaderText="Description" HeaderStyle-Width="25%">
                                                 <ItemTemplate>
                                                     <asp:UpdatePanel ID="updDesc" runat="server">
                                                         <ContentTemplate>
-                                                    <asp:TextBox ID="txtDescription" Text='<%# Eval("MaterialList") %>' runat="server" ClientIDMode="Static" OnTextChanged="txtDescription_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                                    <asp:TextBox ID="txtDescription" CssClass="text-style" Text='<%# Eval("MaterialList") %>' runat="server" ClientIDMode="Static" OnTextChanged="txtDescription_TextChanged" AutoPostBack="true"></asp:TextBox>
                                                              </ContentTemplate>
                                                         <Triggers >
                                                             <asp:AsyncPostBackTrigger ControlID="txtDescription" EventName="TextChanged" />
@@ -521,7 +542,7 @@
                                                 <ItemTemplate>
                                                     <asp:UpdatePanel ID="updQty" runat="server">
                                                         <ContentTemplate>
-                                                        <asp:TextBox ID="txtQTY" runat="server" Style="width: 40px" MaxLength="4" ClientIDMode="Static" Text='<%# Eval("Quantity") %>' onkeypress="return isNumberKey(event)" OnTextChanged="txtQTY_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                                        <asp:TextBox ID="txtQTY" runat="server" CssClass="text-style"  MaxLength="4" ClientIDMode="Static" Text='<%# Eval("Quantity") %>' onkeypress="return isNumberKey(event)" OnTextChanged="txtQTY_TextChanged" AutoPostBack="true"></asp:TextBox>
                                                         </ContentTemplate>
                                                         <Triggers >
                                                             <asp:AsyncPostBackTrigger ControlID="txtQTY" EventName="TextChanged" />
@@ -533,7 +554,7 @@
                                                 <ItemTemplate>
                                                     <asp:UpdatePanel ID="updUOM" runat="server">
                                                         <ContentTemplate>
-                                                    <asp:TextBox ID="txtUOM" runat="server" Style="width: 50px" ClientIDMode="Static" Text='<%# Eval("UOM") %>' OnTextChanged="txtUOM_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                                    <asp:TextBox ID="txtUOM" runat="server" CssClass="text-style" ClientIDMode="Static" Text='<%# Eval("UOM") %>' OnTextChanged="txtUOM_TextChanged" AutoPostBack="true"></asp:TextBox>
                                                             </ContentTemplate>
                                                         <Triggers >
                                                             <asp:AsyncPostBackTrigger ControlID="txtUOM" EventName="TextChanged" />
@@ -546,7 +567,7 @@
                                                     <asp:UpdatePanel ID="updMC" runat="server">
                                                         <ContentTemplate>
                                                     
-                                                    <asp:TextBox ID="txtMaterialCost" AutoPostBack="true" Style="width: 50px" Text='<%# Eval("MaterialCost") %>' OnTextChanged="txtMaterialCost_TextChanged" runat="server" ClientIDMode="Static" onkeypress="return onlyDotsAndNumbers(event)"></asp:TextBox>
+                                                    <asp:TextBox ID="txtMaterialCost" CssClass="text-style" AutoPostBack="true" Text='<%# Eval("MaterialCost") %>' OnTextChanged="txtMaterialCost_TextChanged" runat="server" ClientIDMode="Static" onkeypress="return onlyDotsAndNumbers(event)"></asp:TextBox>
                                                      </ContentTemplate>
                                                         <Triggers >
                                                             <asp:AsyncPostBackTrigger ControlID="txtMaterialCost" EventName="TextChanged" />
@@ -559,7 +580,7 @@
                                                     <asp:UpdatePanel ID="updExt" runat="server">
                                                         <ContentTemplate>
                                                     
-                                                    <asp:TextBox ID="txtExtended" runat="server" Style="width: 50px" ClientIDMode="Static" Text='<%# Eval("Extend") %>' OnTextChanged="txtExtended_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                                    <asp:TextBox ID="txtExtended" runat="server" CssClass="text-style" ClientIDMode="Static" Text='<%# Eval("Extend") %>' OnTextChanged="txtExtended_TextChanged" AutoPostBack="true"></asp:TextBox>
                                                      </ContentTemplate>
                                                         <Triggers >
                                                             <asp:AsyncPostBackTrigger ControlID="txtExtended" EventName="TextChanged" />
@@ -571,7 +592,7 @@
                                                 <ItemTemplate>
  <asp:UpdatePanel ID="updVend" runat="server">
                                                         <ContentTemplate>
-                                                    <asp:DropDownCheckBoxes ID="ddlVendorName" ClientIDMode="AutoID" runat="server" Style="margin: -2em 0 0; width: 180px" Width="180px" UseSelectAllNode="true" OnSelectedIndexChanged="ddlVendorName_SelectedIndexChanged1" AutoPostBack="true">
+                                                    <asp:DropDownCheckBoxes ID="ddlVendorName" CssClass="text-style" ClientIDMode="AutoID" runat="server" Style="margin: -2em 0 0; " UseSelectAllNode="true" OnSelectedIndexChanged="ddlVendorName_SelectedIndexChanged1" AutoPostBack="true">
                                                     </asp:DropDownCheckBoxes>
                                                             </ContentTemplate>
                                                         <Triggers >
