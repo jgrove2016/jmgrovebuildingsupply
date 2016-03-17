@@ -1,0 +1,27 @@
+/****** Object:  StoredProcedure [dbo].[USP_GETActiveInstallerList]    Script Date: 03/17/2016 17:33:12 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_GETActiveInstallerList]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_GETActiveInstallerList]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_GETActiveInstallerList]    Script Date: 03/17/2016 17:33:12 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-03-17
+-- Description:	This procedure returns the active installer list
+-- =============================================
+CREATE PROCEDURE [dbo].[USP_GETActiveInstallerList]
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT * from tblInstallUsers Where Status = 'Active'
+END
+
+GO
+
+
