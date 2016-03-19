@@ -11065,21 +11065,26 @@ namespace JG_Prospect.Sr_App
             }
             else if (ddlstatus.SelectedValue == "OfferMade")
             {
-                ValidationSummary1.ValidationGroup = lnkSubmit.ValidationGroup = "OfferMade";
-                string message = "Message from server side";
-                //ClientScript.RegisterStartupScript(this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
-                //ScriptManager.RegisterStartupScript(this, this.GetType(), "Popup", "ShowPopup('" + message + "');", true);
-                ModalPopupExtender2.Show();
-                //ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('User should be active to deactivate.')", true);
-                ddlInsteviewtime.Visible = false;
-                txtReson.Visible = false;
-                RequiredFieldValidator7.Enabled = false;
-                // RequiredFieldValidator7.Enabled = true;
-                dtInterviewDate.Visible = false;
-                pnlnewHire.Visible = true;
-                pnlNew2.Visible = true;
-                btnNewPluse.Visible = false;
-                btnNewMinus.Visible = true;
+                if (!string.IsNullOrWhiteSpace(Convert.ToString(Request.QueryString["id"])) &&
+                    (string.IsNullOrWhiteSpace(txtemail.Text) || string.IsNullOrWhiteSpace(txtpassword.Text) || string.IsNullOrWhiteSpace(txtpassword1.Text)))
+                {
+                    ModalPopupExtender2.Show();
+                    ddlstatus.SelectedValue = "Applicant";
+                    return;
+                }
+                else
+                {
+                    ValidationSummary1.ValidationGroup = lnkSubmit.ValidationGroup = "OfferMade";
+                    ddlInsteviewtime.Visible = false;
+                    txtReson.Visible = false;
+                    RequiredFieldValidator7.Enabled = false;
+                    // RequiredFieldValidator7.Enabled = true;
+                    dtInterviewDate.Visible = false;
+                    pnlnewHire.Visible = true;
+                    pnlNew2.Visible = true;
+                    btnNewPluse.Visible = false;
+                    btnNewMinus.Visible = true;
+                }
             }
             else
             {

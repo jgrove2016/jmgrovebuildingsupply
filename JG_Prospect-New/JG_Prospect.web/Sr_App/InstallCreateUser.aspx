@@ -1833,7 +1833,7 @@
 
                                     Designation</asp:Label><span><asp:Label ID="lblReqDesig" ForeColor="Red" runat="server" Text="*"></asp:Label></span></label>
                                         <asp:DropDownList ID="ddldesignation" runat="server" Width="249px" TabIndex="101" ClientIDMode="Static" AutoPostBack="True" OnSelectedIndexChanged="ddldesignation_SelectedIndexChanged1">
-                                            <asp:ListItem Text="Installer" Value="Installer" Selected="True"></asp:ListItem>
+                                            <%--<asp:ListItem Text="Installer" Value="Installer" Selected="True"></asp:ListItem>--%>
                                             <asp:ListItem Text="Installer - Helper" Value="InstallerHelper"></asp:ListItem>
                                             <asp:ListItem Text="Installer - Journeyman" Value="InstallerJourneyman"></asp:ListItem>
                                             <asp:ListItem Text="Installer - Mechanic" Value="InstallerMechanic"></asp:ListItem>

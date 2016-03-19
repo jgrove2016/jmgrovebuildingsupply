@@ -5816,5 +5816,36 @@ namespace JG_Prospect.Sr_App
                 txtMailingAddress.Text = "";
             }
         }
+
+        protected void ddlstatus_PreRender(object sender, EventArgs e)
+        {
+            string imageURL = "";
+            for (int i = 0; i < ddlstatus.Items.Count; i++)
+            {
+                switch (ddlstatus.Items[i].Value)
+                {
+                    case "Applicant": imageURL = "../Sr_App/img/red-astrek.png";
+                        ddlstatus.Items[i].Attributes["data-image"] = imageURL;
+                        break;
+                    case "OfferMade": imageURL = "../Sr_App/img/dark-blue-astrek.png";
+                        ddlstatus.Items[i].Attributes["data-image"] = imageURL;
+                        break;
+                    case "PhoneScreened": imageURL = "../Sr_App/img/yellow-astrek.png";
+                        ddlstatus.Items[i].Attributes["data-image"] = imageURL;
+                        break;
+                    case "Active": imageURL = "../Sr_App/img/green-astrek.png";
+                        ddlstatus.Items[i].Attributes["data-image"] = imageURL;
+                        break;
+                    case "InterviewDate": imageURL = "../Sr_App/img/purple-astrek.png";
+                        ddlstatus.Items[i].Attributes["data-image"] = imageURL;
+                        break;
+                    default:
+                        ddlstatus.Items[i].Attributes["data-image"] = "../Sr_App/img/white-astrek.png";
+                        break;
+                }
+                //System.Web.UI.WebControls.ListItem item = ddlCountry.Items[i];
+                //item.Attributes["data-image"] = imageURL;
+            }
+        }
     }
 }
