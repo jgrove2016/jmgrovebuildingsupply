@@ -103,6 +103,8 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@VendorIds", DbType.String, cm.VendorIds);
                     database.AddInParameter(command, "@Visible", DbType.String, cm.DisplaDLL);
                     database.AddInParameter(command, "@ID", DbType.String, cm.Id);
+                    database.AddInParameter(command, "@InstallerID", DbType.String, cm.InstallerID);
+                    database.AddInParameter(command, "@RequestStatus", DbType.String, cm.RequestStatus);
 
 
                     //database.AddInParameter(command, "@productId", DbType.Int16, productTypeId);
@@ -738,6 +740,21 @@ namespace JG_Prospect.DAL
             }
             return lListOfCustomMaterial;
         }
+
+        public DataSet GetRequestMaterialList(string jobId, int pCustomerID)
+        {
+            DataSet lListOfCustomMaterial = new DataSet();
+            SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+            {
+
+                DbCommand command = database.GetStoredProcCommand("USP_GetCustomMaterialList");
+                command.CommandType = CommandType.StoredProcedure;
+                database.AddInParameter(command, "@soldJobId", DbType.String, jobId);
+                database.AddInParameter(command, "@customerID", DbType.String, pCustomerID);
+                lListOfCustomMaterial = database.ExecuteDataSet(command);
+            }
+            return lListOfCustomMaterial;
+        }
        
         public Customs GetCustomDetail(Customs custom)
         {
@@ -898,6 +915,49 @@ namespace JG_Prospect.DAL
             }
 
             return result;
+        }
+        public bool AddInstallerToMaterialList(String pSoldJobID, Int32 pInstallerID)
+        {
+            Int32 lRecordExisted = 0;
+            SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+            {
+                DbCommand command = database.GetStoredProcCommand("usp_AddInstallerToCustomMaterial");
+                command.CommandType = CommandType.StoredProcedure;
+
+                database.AddInParameter(command, "@InstallerID", DbType.Int32, pInstallerID);
+                database.AddInParameter(command, "@SoldJobID", DbType.String, pSoldJobID);
+                database.AddOutParameter(command, "@RecordExisted", DbType.Int32, lRecordExisted);
+                database.ExecuteNonQuery(command);
+            }
+            return (lRecordExisted != 1);
+        }
+
+        public Int32 UpdateInstallerPrmToMaterialList(String pSoldJobID, Int32 pInstallerID, String pInstallerPwd)
+        {
+            Int16 lPasswordCrt = -1;
+            SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+            {
+                DbCommand command = database.GetStoredProcCommand("usp_approveInstallerRequest");
+                command.CommandType = CommandType.StoredProcedure;
+                database.AddInParameter(command, "@InstallerID", DbType.Int32, pInstallerID);
+                database.AddInParameter(command, "@SoldJobID", DbType.String, pSoldJobID);
+                database.AddInParameter(command, "@InstallerPwd", DbType.String, pInstallerPwd);
+                database.AddOutParameter(command, "@PasswordCrt", DbType.Int32, lPasswordCrt);
+                database.ExecuteNonQuery(command);
+                lPasswordCrt = Convert.ToInt16(database.GetParameterValue(command, "@PasswordCrt"));
+            }
+            return lPasswordCrt;
+        }
+
+        public void RemoveInstallerFromMaterialList(Int32 ID)
+        {
+            SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+            {
+                DbCommand command = database.GetStoredProcCommand("usp_DeleteInstallerFromMaterialList");
+                command.CommandType = CommandType.StoredProcedure;
+                database.AddInParameter(command, "@ID", DbType.Int32, ID);
+                database.ExecuteNonQuery(command);
+            }
         }
     }
 }

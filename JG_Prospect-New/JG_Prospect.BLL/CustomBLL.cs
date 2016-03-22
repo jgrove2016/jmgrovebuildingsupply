@@ -194,6 +194,19 @@ namespace JG_Prospect.BLL
         {
             return CustomDAL.Instance.UpdateAdminPermissionOfCustomMaterialList(jobid, permissionStatus,updatedby);//, productTypeId, estimateId);
         }
-       
+
+        public bool AddInstallerToMaterialList(String pSoldJobID, Int32 pInstallerID)
+        {
+            return CustomDAL.Instance.AddInstallerToMaterialList(pSoldJobID, pInstallerID);
+        }
+
+        public Int32 UpdateInstallerPrmToMaterialList(String pSoldJobID, Int32 pInstallerID, String pInstallerPwd)
+        {
+            return CustomDAL.Instance.UpdateInstallerPrmToMaterialList(pSoldJobID, pInstallerID, pInstallerPwd);
+        }
+        public void RemoveInstallerFromMaterialList(Int32 ID)
+        {
+            CustomDAL.Instance.RemoveInstallerFromMaterialList(ID);
+        }
     }
 }

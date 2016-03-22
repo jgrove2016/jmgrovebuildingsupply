@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Installer/InstallerMaster.Master"
     AutoEventWireup="true" CodeBehind="InstallerHome.aspx.cs" Inherits="JG_Prospect.Installer.InstallerHome" %>
-
+<%@ Register TagPrefix="asp" Namespace="Saplin.Controls" Assembly="DropDownCheckBoxes" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link rel="stylesheet" type="text/css" href="../js/jquery.datetimepicker.css" />
@@ -207,6 +207,148 @@
                             </div>
                             <span id="ErrorMessage" style="color: Red" runat="server"></span>
                             <div class="clr"></div>
+                            <div id="dvRequestedMaterial">
+                                <fieldset>
+                                    <legend>Request Material</legend>
+                                    <asp:UpdatePanel ID="updMaterialList" runat="server">
+                                        <ContentTemplate>
+                                            <div class="btn_sec">
+                                                Select Product Category:
+                                                <asp:DropDownList ID="ddlCategoryH" Width="150px" runat="server">
+                                                </asp:DropDownList>
+                                                <asp:Button ID="btnAddProdLines" runat="server" Text="Add Product Category" OnClick="btnAddProdLines_Click" />
+
+                                            </div>
+                                            <asp:ListView ID="lstRequestMaterial" OnItemCommand="lstCustomMaterialList_ItemCommand" runat="server" OnItemDataBound="lstCustomMaterialList_ItemDataBound" ItemPlaceholderID="itemPlaceHolder" GroupPlaceholderID="groupPlaceHolder">
+                                                <LayoutTemplate>
+                                                    <div>
+                                                        <asp:PlaceHolder ID="groupPlaceHolder" runat="server"></asp:PlaceHolder>
+                                                    </div>
+                                                </LayoutTemplate>
+                                                <GroupTemplate>
+                                                    <asp:PlaceHolder ID="itemPlaceHolder" runat="server"></asp:PlaceHolder>
+
+                                                </GroupTemplate>
+                                                <ItemTemplate>
+                                                    <asp:UpdatePanel ID="updMaterialList2" runat="server">
+                                                        <ContentTemplate>
+                                                            <h3 align="left">Product Category: 
+                                        <asp:DropDownList ID="ddlCategory" Width="150px" runat="server" OnSelectedIndexChanged="ddlCategory_SelectedIndexChanged" AutoPostBack="true">
+                                        </asp:DropDownList>
+
+                                                                <asp:HiddenField ID="hdnProductCatIDReq" runat="server" Value='<%#Eval("ProductCatID")%>' />
+                                                                <asp:LinkButton ID="lnkAddProdCat" Visible="false" OnClick="lnkAddProdCat_Click" runat="server">Add</asp:LinkButton>
+                                                                <asp:LinkButton ID="lnkDeleteProdCat" CommandArgument='<%#Eval("ProductCatID") %>' OnClick="lnkDeleteProdCat_Click" runat="server" OnClientClick="return confirm('Deleting product category will delete all associated line items. Are you sure you want to delete?')">Delete</asp:LinkButton>
+                                                                <%--<asp:Button ID="btnDelete" runat="server" Text="Delete" CommandArgument='<%#Eval("ProductCatID") %>' onclick="btnDelete_Click" OnClientClick="return confirm('Deleting product category will delete all associated line items. Are you sure you want to delete?')" />--%>
+                                                                <div style="clear: both"></div>
+                                                            </h3>
+
+
+
+                                                            <asp:GridView ID="grdProdLinesReq" Width="100%" runat="server" OnRowDataBound="grdProdLines_RowDataBound" AutoGenerateColumns="false">
+                                                                <Columns>
+                                                                    <asp:TemplateField HeaderText="Line" HeaderStyle-Width="4%">
+                                                                        <ItemTemplate>
+                                                                            <asp:TextBox CssClass="text-style" ID="txtLine" Text='<%# Eval("Line") %>' MaxLength="4" runat="server" ClientIDMode="Static" Enabled="false"></asp:TextBox>
+                                                                            <asp:HiddenField ID="hdnMaterialListId" runat="server" Value='<%#Eval("Id")%>' />
+                                                                            <asp:HiddenField ID="hdnEmailStatus" runat="server" Value='<%#Eval("EmailStatus")%>' />
+                                                                            <asp:HiddenField ID="hdnForemanPermission" runat="server" Value='<%#Eval("IsForemanPermission")%>' />
+                                                                            <asp:HiddenField ID="hdnSrSalesmanPermissionF" runat="server" Value='<%#Eval("IsSrSalemanPermissionF")%>' />
+                                                                            <asp:HiddenField ID="hdnAdminPermission" runat="server" Value='<%#Eval("IsAdminPermission")%>' />
+                                                                            <asp:HiddenField ID="hdnSrSalesmanPermissionA" runat="server" Value='<%#Eval("IsSrSalemanPermissionA")%>' />
+                                                                            <asp:HiddenField ID="hdnProductCatID" runat="server" Value='<%#Eval("ProductCatID")%>' />
+                                                                        </ItemTemplate>
+                                                                    </asp:TemplateField>
+                                                                    <asp:TemplateField HeaderText="JG sku- vendor part #">
+                                                                        <ItemTemplate>
+                                                                            <asp:UpdatePanel ID="updSku" runat="server">
+                                                                                <ContentTemplate>
+                                                                                    <asp:TextBox ID="txtSkuPartNo" CssClass="text-style" Text='<%# Eval("JGSkuPartNo") %>' MaxLength="18" runat="server" ClientIDMode="Static" OnTextChanged="txtSkuPartNo_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                                                                </ContentTemplate>
+                                                                                <Triggers>
+                                                                                    <asp:AsyncPostBackTrigger ControlID="txtSkuPartNo" EventName="TextChanged" />
+                                                                                </Triggers>
+                                                                            </asp:UpdatePanel>
+                                                                        </ItemTemplate>
+                                                                    </asp:TemplateField>
+                                                                    <asp:TemplateField HeaderText="Description" HeaderStyle-Width="25%">
+                                                                        <ItemTemplate>
+                                                                            <asp:UpdatePanel ID="updDesc" runat="server">
+                                                                                <ContentTemplate>
+                                                                                    <asp:TextBox ID="txtDescription" CssClass="text-style" Text='<%# Eval("MaterialList") %>' runat="server" ClientIDMode="Static" OnTextChanged="txtDescription_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                                                                </ContentTemplate>
+                                                                                <Triggers>
+                                                                                    <asp:AsyncPostBackTrigger ControlID="txtDescription" EventName="TextChanged" />
+                                                                                </Triggers>
+                                                                            </asp:UpdatePanel>
+                                                                        </ItemTemplate>
+                                                                    </asp:TemplateField>
+                                                                    <asp:TemplateField HeaderText="Quantity">
+                                                                        <ItemTemplate>
+                                                                            <asp:UpdatePanel ID="updQty" runat="server">
+                                                                                <ContentTemplate>
+                                                                                    <asp:TextBox ID="txtQTY" runat="server" CssClass="text-style" MaxLength="4" ClientIDMode="Static" Text='<%# Eval("Quantity") %>' onkeypress="return isNumberKey(event)" OnTextChanged="txtQTY_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                                                                </ContentTemplate>
+                                                                                <Triggers>
+                                                                                    <asp:AsyncPostBackTrigger ControlID="txtQTY" EventName="TextChanged" />
+                                                                                </Triggers>
+                                                                            </asp:UpdatePanel>
+                                                                        </ItemTemplate>
+                                                                    </asp:TemplateField>
+                                                                    <asp:TemplateField HeaderText="UOM">
+                                                                        <ItemTemplate>
+                                                                            <asp:UpdatePanel ID="updUOM" runat="server">
+                                                                                <ContentTemplate>
+                                                                                    <asp:TextBox ID="txtUOM" runat="server" CssClass="text-style" ClientIDMode="Static" Text='<%# Eval("UOM") %>' OnTextChanged="txtUOM_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                                                                </ContentTemplate>
+                                                                                <Triggers>
+                                                                                    <asp:AsyncPostBackTrigger ControlID="txtUOM" EventName="TextChanged" />
+                                                                                </Triggers>
+                                                                            </asp:UpdatePanel>
+                                                                        </ItemTemplate>
+                                                                    </asp:TemplateField>
+                                                                    <asp:TemplateField HeaderText="Cost"><%--Material Cost Per Item--%>
+                                                                        <ItemTemplate>
+                                                                            <asp:UpdatePanel ID="updMC" runat="server">
+                                                                                <ContentTemplate>
+
+                                                                                    <asp:TextBox ID="txtMaterialCost" CssClass="text-style" AutoPostBack="true" Text='<%# Eval("MaterialCost") %>' OnTextChanged="txtMaterialCost_TextChanged" runat="server" ClientIDMode="Static" onkeypress="return onlyDotsAndNumbers(event)"></asp:TextBox>
+                                                                                </ContentTemplate>
+                                                                                <Triggers>
+                                                                                    <asp:AsyncPostBackTrigger ControlID="txtMaterialCost" EventName="TextChanged" />
+                                                                                </Triggers>
+                                                                            </asp:UpdatePanel>
+                                                                        </ItemTemplate>
+                                                                    </asp:TemplateField>
+                                                                    <asp:TemplateField HeaderText="Extended">
+                                                                        <ItemTemplate>
+                                                                            <asp:UpdatePanel ID="updExt" runat="server">
+                                                                                <ContentTemplate>
+
+                                                                                    <asp:TextBox ID="txtExtended" runat="server" CssClass="text-style" ClientIDMode="Static" Text='<%# Eval("Extend") %>' OnTextChanged="txtExtended_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                                                                </ContentTemplate>
+                                                                                <Triggers>
+                                                                                    <asp:AsyncPostBackTrigger ControlID="txtExtended" EventName="TextChanged" />
+                                                                                </Triggers>
+                                                                            </asp:UpdatePanel>
+                                                                        </ItemTemplate>
+                                                                    </asp:TemplateField>
+                                                                    <asp:TemplateField HeaderText="">
+                                                                        <ItemTemplate>
+                                                                            <asp:LinkButton ID="lnkDeleteLineItems" runat="server" CommandArgument='<%#Eval("Id") %>' CommandName="DeleteLine" OnClick="lnkDeleteLineItems_Click">Delete</asp:LinkButton>
+                                                                        </ItemTemplate>
+                                                                    </asp:TemplateField>
+                                                                </Columns>
+                                                            </asp:GridView>
+                                                            <asp:LinkButton ID="lnkAddLines" CommandName="AddLine" CommandArgument='<%#Eval("ProductCatId") %>' OnClick="lnkAddLines_Click1" runat="server">Add Line</asp:LinkButton>
+                                                        </ContentTemplate>
+                                                    </asp:UpdatePanel>
+                                                </ItemTemplate>
+                                            </asp:ListView>
+                                        </ContentTemplate>
+                                    </asp:UpdatePanel>
+                                </fieldset>
+                            </div>
                             <div id="dvCustomMaterial">
                                 <asp:ListView ID="lstCustomMaterialList" runat="server" OnItemDataBound="lstCustomMaterialList_ItemDataBound" ItemPlaceholderID="itemPlaceHolder" GroupPlaceholderID="groupPlaceHolder">
                                     <LayoutTemplate>
@@ -225,7 +367,7 @@
                                                     <asp:HiddenField ID="hdnProductCatID" runat="server" Value='<%#Eval("ProductCatID")%>' />
                                                 </h5>
 
-                                                <asp:GridView ID="grdProdLines" Width="100%" runat="server"  AutoGenerateColumns="false">
+                                                <asp:GridView ID="grdProdLines" Width="100%" runat="server" AutoGenerateColumns="false">
                                                     <Columns>
                                                         <asp:TemplateField HeaderText="Line - Image">
                                                             <ItemTemplate>
@@ -254,14 +396,15 @@
                                                         </asp:TemplateField>
                                                     </Columns>
                                                 </asp:GridView>
-                                                
+
                                             </ContentTemplate>
 
                                         </asp:UpdatePanel>
                                     </ItemTemplate>
                                 </asp:ListView>
 
-                            </div><br />
+                            </div>
+                            <br />
                             <div id="divmain" class="target">
                                 <asp:GridView ID="Gridviewdocs" runat="server" AutoGenerateColumns="false" CssClass="grid"
                                     Width="100%" HeaderStyle-HorizontalAlign="Center" RowStyle-HorizontalAlign="Center"

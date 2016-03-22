@@ -6,111 +6,30 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit.HTMLEditor"
     TagPrefix="cc1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-<style>
-    .grid td {
-        padding: 1px !important;
-        border-bottom: #ccc 1px solid;
-    }
-
-    #btnAddProdLines {
-        width: 200px !important;
-        padding: 0 10px !important;
-    }
-    #txtLine {
-        width:57px;
-    }
-    .text-style{
-        height:24px;
-        width:100%;
-    }
-    div.dd_chk_select{
-        height:24px !important;
-    }
-</style>   
-     <%-- <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js"></script>
-      <script src="../js/jquery-latest.js" type="text/javascript"></script>
-  <script type="text/javascript" src="../../Scripts/jquery.MultiFile.js"></script>--%>
-    <%-- <script type="text/javascript">
-        function IsExists(pagePath, dataString, textboxid, errorlableid) {
-            $.ajax({
-                type: "POST",
-                url: pagePath,
-                data: dataString,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                error:
-          function (XMLHttpRequest, textStatus, errorThrown) {
-              $(errorlableid).show();
-              $(errorlableid).html("Error");
-          },
-                success:
-          function (result) {
-              if (result != null) {
-                  var flg = (result.d);
-
-                  if (flg == "True") {
-                      $(errorlableid).show();
-                      $(errorlableid).html('Verified');
-                      document.getElementById('<%= txtauthpass.ClientID %>').value;
-                      SaveandSendMail();
-                  }
-                  else {
-                      $(errorlableid).show();
-                      $(errorlableid).html('failure');
-                  }
-              }
-          }
-            });
-        }
-        function focuslost() {
-            if (document.getElementById('<%= txtauthpass.ClientID%>').value == '') {
-                alert('Please enter admin code!');
-                return false;
-            }
-            else {
-                var pagePath = "Custom_MaterialList.aspx/Exists";
-                var dataString = "{ 'value':'" + document.getElementById('<%= txtauthpass.ClientID%>').value + "' }";
-                var textboxid = "#<%= txtauthpass.ClientID%>";
-                var errorlableid = "#<%= lblError.ClientID%>";
-
-                IsExists(pagePath, dataString, textboxid, errorlableid);
-                return true;
-            }
+    <style>
+        .grid td {
+            padding: 1px !important;
+            border-bottom: #ccc 1px solid;
         }
 
-        $(".btnClose").live('click', function () {
-
-
-            $('#<%=txtauthpass.ClientID %>, #<%=lblError.ClientID %>').val('');
-
-            HidePopup();
-        });
-
-    </script>--%>
-    <%--  var ddlCategory;
-        function GetVendorCategories() {
-            ddlCategory = document.getElementById("<%=ddlVendorCategory.ClientID %>");
-            ddlCategory.options.length = 0;
-            AddOption("Loading", "0");
-            PageMethods.GetVendorCategories(OnSuccess);
+        #btnAddProdLines {
+            width: 200px !important;
+            padding: 0 10px !important;
         }
 
-        window.onload = GetVendorCategories;
-
-        function OnSuccess(response) {
-            ddlCategory.options.length = 0;
-            AddOption("select", "0");
-            for (var i in response) {
-                AddOption(response[i].Name, response[i].value);
-            }
+        #txtLine {
+            width: 57px;
         }
-        function AddOption(text, value) {
-            var option = document.createElement('<option value="' + value + '">');
-            ddlCategory.options.add(option);
-            option.innerText = text;
-        }
-    </script>--%>
 
+        .text-style {
+            height: 24px;
+            width: 100%;
+        }
+
+        div.dd_chk_select {
+            height: 24px !important;
+        }
+    </style>
     <script type="text/javascript">
 
         function VerifyForemanManPwd() {
@@ -134,7 +53,7 @@
                             document.getElementById('<%=txtForemanManPwd.ClientID %>').style.display = 'none';
                             document.getElementById('spnforemanelabel').style.display = 'none';
                             window.location = window.location.href;
-                           // location.reload();
+                            // location.reload();
                         }
                         else {
                             alert(flg);
@@ -228,6 +147,32 @@
                 }
             });
         }
+
+        function AllowInstaller(InstID, InstPwd) {
+            $.ajax({
+                type: "POST",
+                url: "Custom_MaterialList.aspx/AllowPermissionToInstaller",
+                data: "{'pInstallerID':" + InstID + ", 'pPassword':'" + InstPwd.value + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "JSON",
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(errorThrown);
+                },
+                success: function (result) {
+                    if (result != null) {
+                        var flg = (result.d);
+                        if (flg == "1") {
+                            alert('Installer\'s material list request is approved');
+                            window.location = window.location.href;
+                        }
+                        else {
+                            alert('Installer password is incorrect');
+                            InstPwd.value = '';
+                        }
+                    }
+                }
+            });
+        }
     </script>
     <style type="text/css">
         .dd_chk_select {
@@ -246,7 +191,7 @@
         </ul>
         <h1 id="h1Heading" runat="server">Material List</h1>
 
-        <table>
+        <table width="100%" >
             <tr>
                 <td>&nbsp;
                 </td>
@@ -285,11 +230,54 @@
                         <span id="lblSalesmanPermission" style='display: <%=SalesmanPwdVisibility%>'><%=SalesmanMessage %></span>
                     </asp:Panel>
                 </td>
+                <td rowspan="2" align="right">
+                    <fieldset style="border-style: solid; border-width: 1px; padding: 5px;">
+                        <legend>Add Installer</legend>
+
+
+                        <asp:DropDownList ID="ddlInstaller" runat="server">
+                        </asp:DropDownList>
+                        <span class="btn_sec">
+                            <asp:Button ID="btnAddInstaller" runat="server" OnClick="btnAddInstaller_Click" Text="Add Installer" /></span>
+                        <div>
+                            <asp:Repeater ID="rptInstaller" runat="server" OnItemDataBound="rptInstaller_ItemDataBound" OnItemCommand="rptInstaller_ItemCommand">
+                                <HeaderTemplate>
+                                    <table class="grid">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Installer Name</th>
+                                            <th></th>
+                                            <th></th>
+                                        </tr>
+                                </HeaderTemplate>
+                                <ItemTemplate>
+                                    <tr>
+                                        <td><%#(((RepeaterItem)Container).ItemIndex+1).ToString() %></td>
+                                        <td><%#Eval("QualifiedName") %></td>
+                                        <td>
+                                            <asp:Literal ID="ltrStatus" runat="server"></asp:Literal>
+                                        </td>
+                                        <td>
+                                            <asp:LinkButton ID="lnkDeleteInstaller" CommandArgument='<%#Eval("ID") %>' CommandName="DeleteInstaller" runat="server" OnClientClick="return confirm('Are you sure you want to delete this record?');">Delete</asp:LinkButton>
+
+                                        </td>
+                                    </tr>
+
+
+                                </ItemTemplate>
+                                <FooterTemplate>
+                                    </table>
+                                </FooterTemplate>
+
+                            </asp:Repeater>
+                        </div>
+                    </fieldset>
+                </td>
             </tr>
             <tr id="trUpdatedRow">
                 <td>&nbsp;</td>
                 <td>&nbsp;</td>
-                <td>
+                <td valign="top">
                     <fieldset style="border-style: solid; border-width: 1px; padding: 5px;">
                         <legend>Job Details</legend>
                         <b>Job ID: </b><%=ElabJobID %><br />
@@ -297,7 +285,7 @@
                     </fieldset>
                 </td>
                 <td>&nbsp;</td>
-                <td>
+                <td valign="top">
                     <fieldset style='border-style: solid; border-width: 1px; padding: 5px; display: <%=(StaffID!=0?"":"none") %>'>
                         <legend>Last Edited By</legend>
                         <b>Staff Internal ID:</b> <%=StaffID %>
@@ -474,6 +462,7 @@
                         <asp:DropDownList ID="ddlCategoryH" Width="150px" runat="server">
                         </asp:DropDownList>
                         <asp:Button ID="btnAddProdLines" runat="server" Text="Add Product Category" OnClick="btnAddProdLines_Click" />
+
                     </div>
                     <asp:ListView ID="lstCustomMaterialList" OnItemCommand="lstCustomMaterialList_ItemCommand" runat="server" OnItemDataBound="lstCustomMaterialList_ItemDataBound" ItemPlaceholderID="itemPlaceHolder" GroupPlaceholderID="groupPlaceHolder">
                         <LayoutTemplate>
@@ -489,13 +478,26 @@
                             <asp:UpdatePanel ID="updMaterialList2" runat="server">
                                 <ContentTemplate>
                                     <h3 align="left">Product Category: 
-                                        <asp:DropDownList ID="ddlCategory"  Width="150px" runat="server" OnSelectedIndexChanged="ddlCategory_SelectedIndexChanged" AutoPostBack="true">
+                                        <asp:DropDownList ID="ddlCategory" Width="150px" runat="server" OnSelectedIndexChanged="ddlCategory_SelectedIndexChanged" AutoPostBack="true">
                                         </asp:DropDownList>
 
                                         <asp:HiddenField ID="hdnProductCatID" runat="server" Value='<%#Eval("ProductCatID")%>' />
                                         <asp:LinkButton ID="lnkAddProdCat" Visible="false" OnClick="lnkAddProdCat_Click" runat="server">Add</asp:LinkButton>
                                         <asp:LinkButton ID="lnkDeleteProdCat" CommandArgument='<%#Eval("ProductCatID") %>' OnClick="lnkDeleteProdCat_Click" runat="server" OnClientClick="return confirm('Deleting product category will delete all associated line items. Are you sure you want to delete?')">Delete</asp:LinkButton>
                                         <%--<asp:Button ID="btnDelete" runat="server" Text="Delete" CommandArgument='<%#Eval("ProductCatID") %>' onclick="btnDelete_Click" OnClientClick="return confirm('Deleting product category will delete all associated line items. Are you sure you want to delete?')" />--%>
+                                        <div style="float: right">
+                                            <asp:UpdatePanel ID="updVend" runat="server">
+                                                <ContentTemplate>
+                                                    Select Installer:
+                                                    <asp:DropDownCheckBoxes ID="ddlInstallerUser" ClientIDMode="AutoID" runat="server" Style="margin: -2em 0 0;" Width="250px" UseSelectAllNode="true" OnSelectedIndexChanged="ddlInstallerUser_SelectedIndexChanged" AutoPostBack="true">
+                                                    </asp:DropDownCheckBoxes>
+                                                </ContentTemplate>
+                                                <Triggers>
+                                                    <asp:AsyncPostBackTrigger ControlID="ddlInstallerUser" EventName="SelectedIndexChanged" />
+                                                </Triggers>
+                                            </asp:UpdatePanel>
+                                        </div>
+                                        <div style="clear: both"></div>
                                     </h3>
 
 
@@ -516,11 +518,11 @@
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="JG sku- vendor part #">
                                                 <ItemTemplate>
-                                                     <asp:UpdatePanel ID="updSku" runat="server">
+                                                    <asp:UpdatePanel ID="updSku" runat="server">
                                                         <ContentTemplate>
-                                                    <asp:TextBox ID="txtSkuPartNo" CssClass="text-style" Text='<%# Eval("JGSkuPartNo") %>'  MaxLength="18" runat="server" ClientIDMode="Static" OnTextChanged="txtSkuPartNo_TextChanged" AutoPostBack="true"></asp:TextBox>
-                                                     </ContentTemplate>
-                                                        <Triggers >
+                                                            <asp:TextBox ID="txtSkuPartNo" CssClass="text-style" Text='<%# Eval("JGSkuPartNo") %>' MaxLength="18" runat="server" ClientIDMode="Static" OnTextChanged="txtSkuPartNo_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                                        </ContentTemplate>
+                                                        <Triggers>
                                                             <asp:AsyncPostBackTrigger ControlID="txtSkuPartNo" EventName="TextChanged" />
                                                         </Triggers>
                                                     </asp:UpdatePanel>
@@ -530,9 +532,9 @@
                                                 <ItemTemplate>
                                                     <asp:UpdatePanel ID="updDesc" runat="server">
                                                         <ContentTemplate>
-                                                    <asp:TextBox ID="txtDescription" CssClass="text-style" Text='<%# Eval("MaterialList") %>' runat="server" ClientIDMode="Static" OnTextChanged="txtDescription_TextChanged" AutoPostBack="true"></asp:TextBox>
-                                                             </ContentTemplate>
-                                                        <Triggers >
+                                                            <asp:TextBox ID="txtDescription" CssClass="text-style" Text='<%# Eval("MaterialList") %>' runat="server" ClientIDMode="Static" OnTextChanged="txtDescription_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                                        </ContentTemplate>
+                                                        <Triggers>
                                                             <asp:AsyncPostBackTrigger ControlID="txtDescription" EventName="TextChanged" />
                                                         </Triggers>
                                                     </asp:UpdatePanel>
@@ -542,9 +544,9 @@
                                                 <ItemTemplate>
                                                     <asp:UpdatePanel ID="updQty" runat="server">
                                                         <ContentTemplate>
-                                                        <asp:TextBox ID="txtQTY" runat="server" CssClass="text-style"  MaxLength="4" ClientIDMode="Static" Text='<%# Eval("Quantity") %>' onkeypress="return isNumberKey(event)" OnTextChanged="txtQTY_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                                            <asp:TextBox ID="txtQTY" runat="server" CssClass="text-style" MaxLength="4" ClientIDMode="Static" Text='<%# Eval("Quantity") %>' onkeypress="return isNumberKey(event)" OnTextChanged="txtQTY_TextChanged" AutoPostBack="true"></asp:TextBox>
                                                         </ContentTemplate>
-                                                        <Triggers >
+                                                        <Triggers>
                                                             <asp:AsyncPostBackTrigger ControlID="txtQTY" EventName="TextChanged" />
                                                         </Triggers>
                                                     </asp:UpdatePanel>
@@ -554,9 +556,9 @@
                                                 <ItemTemplate>
                                                     <asp:UpdatePanel ID="updUOM" runat="server">
                                                         <ContentTemplate>
-                                                    <asp:TextBox ID="txtUOM" runat="server" CssClass="text-style" ClientIDMode="Static" Text='<%# Eval("UOM") %>' OnTextChanged="txtUOM_TextChanged" AutoPostBack="true"></asp:TextBox>
-                                                            </ContentTemplate>
-                                                        <Triggers >
+                                                            <asp:TextBox ID="txtUOM" runat="server" CssClass="text-style" ClientIDMode="Static" Text='<%# Eval("UOM") %>' OnTextChanged="txtUOM_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                                        </ContentTemplate>
+                                                        <Triggers>
                                                             <asp:AsyncPostBackTrigger ControlID="txtUOM" EventName="TextChanged" />
                                                         </Triggers>
                                                     </asp:UpdatePanel>
@@ -566,44 +568,44 @@
                                                 <ItemTemplate>
                                                     <asp:UpdatePanel ID="updMC" runat="server">
                                                         <ContentTemplate>
-                                                    
-                                                    <asp:TextBox ID="txtMaterialCost" CssClass="text-style" AutoPostBack="true" Text='<%# Eval("MaterialCost") %>' OnTextChanged="txtMaterialCost_TextChanged" runat="server" ClientIDMode="Static" onkeypress="return onlyDotsAndNumbers(event)"></asp:TextBox>
-                                                     </ContentTemplate>
-                                                        <Triggers >
+
+                                                            <asp:TextBox ID="txtMaterialCost" CssClass="text-style" AutoPostBack="true" Text='<%# Eval("MaterialCost") %>' OnTextChanged="txtMaterialCost_TextChanged" runat="server" ClientIDMode="Static" onkeypress="return onlyDotsAndNumbers(event)"></asp:TextBox>
+                                                        </ContentTemplate>
+                                                        <Triggers>
                                                             <asp:AsyncPostBackTrigger ControlID="txtMaterialCost" EventName="TextChanged" />
                                                         </Triggers>
-                                                        </asp:UpdatePanel>
+                                                    </asp:UpdatePanel>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Extended">
                                                 <ItemTemplate>
                                                     <asp:UpdatePanel ID="updExt" runat="server">
                                                         <ContentTemplate>
-                                                    
-                                                    <asp:TextBox ID="txtExtended" runat="server" CssClass="text-style" ClientIDMode="Static" Text='<%# Eval("Extend") %>' OnTextChanged="txtExtended_TextChanged" AutoPostBack="true"></asp:TextBox>
-                                                     </ContentTemplate>
-                                                        <Triggers >
+
+                                                            <asp:TextBox ID="txtExtended" runat="server" CssClass="text-style" ClientIDMode="Static" Text='<%# Eval("Extend") %>' OnTextChanged="txtExtended_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                                        </ContentTemplate>
+                                                        <Triggers>
                                                             <asp:AsyncPostBackTrigger ControlID="txtExtended" EventName="TextChanged" />
                                                         </Triggers>
-                                                        </asp:UpdatePanel>
+                                                    </asp:UpdatePanel>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Vendor Quotes/Invoice" Visible="true">
                                                 <ItemTemplate>
- <asp:UpdatePanel ID="updVend" runat="server">
+                                                    <asp:UpdatePanel ID="updVend" runat="server">
                                                         <ContentTemplate>
-                                                    <asp:DropDownCheckBoxes ID="ddlVendorName" CssClass="text-style" ClientIDMode="AutoID" runat="server" Style="margin: -2em 0 0; " UseSelectAllNode="true" OnSelectedIndexChanged="ddlVendorName_SelectedIndexChanged1" AutoPostBack="true">
-                                                    </asp:DropDownCheckBoxes>
-                                                            </ContentTemplate>
-                                                        <Triggers >
+                                                            <asp:DropDownCheckBoxes ID="ddlVendorName" CssClass="text-style" ClientIDMode="AutoID" runat="server" Style="margin: -2em 0 0;" UseSelectAllNode="true" OnSelectedIndexChanged="ddlVendorName_SelectedIndexChanged1" AutoPostBack="true">
+                                                            </asp:DropDownCheckBoxes>
+                                                        </ContentTemplate>
+                                                        <Triggers>
                                                             <asp:AsyncPostBackTrigger ControlID="ddlVendorName" EventName="SelectedIndexChanged" />
                                                         </Triggers>
-                                                        </asp:UpdatePanel>
+                                                    </asp:UpdatePanel>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="">
                                                 <ItemTemplate>
-                                                    
+
                                                     <asp:LinkButton ID="lnkDeleteLineItems" runat="server" CommandArgument='<%#Eval("Id") %>' CommandName="DeleteLine" OnClick="lnkDeleteLineItems_Click">Delete</asp:LinkButton>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
@@ -623,7 +625,7 @@
                                     </asp:GridView>
                                     <asp:LinkButton ID="lnkAddLines" CommandName="AddLine" CommandArgument='<%#Eval("ProductCatId") %>' OnClick="lnkAddLines_Click1" runat="server">Add Line</asp:LinkButton>
                                 </ContentTemplate>
-                                
+
                             </asp:UpdatePanel>
                         </ItemTemplate>
                     </asp:ListView>
@@ -722,21 +724,23 @@
                 <h2 style="text-align: center">
                     <b>Email Template For Vendor Category</b></h2>
                 <div>
-                     <h2>Subject: <asp:TextBox ID="txtVendorSubject" Width="500px" runat="server"></asp:TextBox></h2>
-                      <div>
-                        Attach File: <asp:FileUpload ID="flVendCat" runat="server" class="multi" />
+                    <h2>Subject:
+                        <asp:TextBox ID="txtVendorSubject" Width="500px" runat="server"></asp:TextBox></h2>
+                    <div>
+                        Attach File:
+                        <asp:FileUpload ID="flVendCat" runat="server" class="multi" />
                         <asp:GridView ID="grdVendCatAtc" runat="server" AutoGenerateColumns="false" EmptyDataText="No files uploaded" CellSpacing="22">
                             <Columns>
                                 <asp:BoundField DataField="DocumentName" HeaderText="File Name" />
                                 <asp:TemplateField HeaderStyle-Width="20%">
                                     <ItemTemplate>
-                                        <asp:HyperLink ID="hypDownload"  Target="_blank" NavigateUrl='<%#Eval("DocumentPath") %>' runat="server">Download</asp:HyperLink>
+                                        <asp:HyperLink ID="hypDownload" Target="_blank" NavigateUrl='<%#Eval("DocumentPath") %>' runat="server">Download</asp:HyperLink>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField>
                                     <ItemTemplate>
-                                        <asp:LinkButton ID="lnkDelete" Text="Delete" CommandArgument='<%#Eval("Id") %>' 
-                                            runat="server" OnClick="DeleteFile"/>  
+                                        <asp:LinkButton ID="lnkDelete" Text="Delete" CommandArgument='<%#Eval("Id") %>'
+                                            runat="server" OnClick="DeleteFile" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
                             </Columns>
@@ -748,7 +752,7 @@
                     <asp:Label ID="lblMaterials" runat="server"></asp:Label>
                     <h2>Footer Template</h2>
                     <cc1:Editor ID="FooterEditor" Width="1000px" Height="200px" runat="server" />
-                  
+
                 </div>
                 <br />
                 <br />
@@ -761,9 +765,11 @@
             <h2 style="text-align: center">
                 <b>Email Template For Vendors</b></h2>
             <div>
-                <h2>Subject: <asp:TextBox ID="txtSubject" Width="500px" runat="server"></asp:TextBox></h2>
+                <h2>Subject:
+                    <asp:TextBox ID="txtSubject" Width="500px" runat="server"></asp:TextBox></h2>
                 <div>
-                    Attach File: <asp:FileUpload ID="flVend" runat="server" class="multi" />
+                    Attach File:
+                    <asp:FileUpload ID="flVend" runat="server" class="multi" />
                     <asp:GridView ID="grdVendAtc" runat="server" AutoGenerateColumns="false" EmptyDataText="No files uploaded" CellSpacing="22">
                         <Columns>
                             <asp:BoundField DataField="DocumentName" HeaderText="File Name" />
@@ -775,7 +781,7 @@
                             <asp:TemplateField>
                                 <ItemTemplate>
                                     <asp:LinkButton ID="lnkDelete" Text="Delete" CommandArgument='<%#Eval("Id") %>'
-                                        runat="server"  OnClick="DeleteFile"/>
+                                        runat="server" OnClick="DeleteFile" />
                                 </ItemTemplate>
                             </asp:TemplateField>
                         </Columns>
@@ -787,7 +793,7 @@
                 <asp:Label ID="lblMaterialsVendor" runat="server"></asp:Label>
                 <h2>Footer Template</h2>
                 <cc1:Editor ID="FooterEditorVendor" Width="1000px" Height="200px" runat="server" />
-                
+
 
             </div>
             <br />
@@ -801,8 +807,8 @@
             runat="server" CancelControlID="btnClose1" PopupControlID="pnlpopup">
         </ajaxToolkit:ModalPopupExtender>--%>
 
-    
-    
+
+
     <script type="text/javascript">
 
         function ValidatePermissions() {
@@ -817,16 +823,16 @@
                     lIsValidated = false;
                 }
             }
-           /* if (document.getElementById('spnsrsalesmanelabel')) {
-                if (document.getElementById('spnsrsalesmanelabel').style.display == '') {
-                    lIsValidated = false;
-                }
-            }
-            if (document.getElementById('spnadminlabel')) {
-                if (document.getElementById('spnadminlabel').style.display == '') {
-                    lIsValidated = false;
-                }
-            }*/
+            /* if (document.getElementById('spnsrsalesmanelabel')) {
+                 if (document.getElementById('spnsrsalesmanelabel').style.display == '') {
+                     lIsValidated = false;
+                 }
+             }
+             if (document.getElementById('spnadminlabel')) {
+                 if (document.getElementById('spnadminlabel').style.display == '') {
+                     lIsValidated = false;
+                 }
+             }*/
             if (!lIsValidated) {
                 alert('Please approve the custom material list first.');
             }

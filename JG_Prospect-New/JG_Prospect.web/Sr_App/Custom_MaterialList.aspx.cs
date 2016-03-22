@@ -28,9 +28,6 @@ namespace JG_Prospect.Sr_App
 {
     public partial class Custom_MaterialList : System.Web.UI.Page
     {
-
-
-
         #region "Page Vairable"
         //#- Protected Vairables
         protected string ForemanPwdVisibility
@@ -98,6 +95,12 @@ namespace JG_Prospect.Sr_App
         {
             get { return ViewState["ProductDataset"] != null ? ((DataSet)ViewState["ProductDataset"]) : new DataSet(); }
             set { ViewState["ProductDataset"] = value; }
+        }
+
+        protected DataSet InstallerList
+        {
+            get { return ViewState["InstallerList"] != null ? ((DataSet)ViewState["InstallerList"]) : new DataSet(); }
+            set { ViewState["InstallerList"] = value; }
         }
 
         #endregion
@@ -2225,6 +2228,12 @@ namespace JG_Prospect.Sr_App
             return lResult;
         }
 
+        [WebMethod]
+        public static Int32 AllowPermissionToInstaller(Int32 pInstallerID, String pPassword) 
+        {
+           return CustomBLL.Instance.UpdateInstallerPrmToMaterialList(jobId, pInstallerID, pPassword);
+        }
+
         /// <summary>
         /// This method will verify Sr. Salesman permission.
         /// </summary>
@@ -3204,7 +3213,18 @@ namespace JG_Prospect.Sr_App
             ddlCategoryH.DataValueField = "ProductId";
             ddlCategoryH.DataBind();
 
+
+            InstallerList.Tables.Clear();
             PageDataset = CustomBLL.Instance.GetCustomMaterialList(jobId.ToString(), customerId);
+          
+            ddlInstaller.DataSource = PageDataset.Tables[3];
+            ddlInstaller.DataTextField = "QualifiedName";
+            ddlInstaller.DataValueField = "Id";
+            ddlInstaller.DataBind();
+
+            rptInstaller.DataSource = PageDataset.Tables[4];
+            rptInstaller.DataBind();
+
             if (PageDataset.Tables[1].Rows.Count <= 0) //#-Shabbir: If this is the new record.
             {
                 CustomMaterialList cm = new CustomMaterialList();
@@ -3418,9 +3438,10 @@ namespace JG_Prospect.Sr_App
                 ddlCategory.DataTextField = "ProductName";
                 ddlCategory.DataValueField = "ProductId";
                 ddlCategory.DataBind();
-                //ddlCategory.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select", "0)"));
 
 
+              
+              
 
                 DataRowView lDrView = (DataRowView)e.Item.DataItem;
 
@@ -3488,6 +3509,8 @@ namespace JG_Prospect.Sr_App
             cm.IsForemanPermission = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
             cm.IsSrSalemanPermissionF = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
             cm.EmailStatus = JGConstant.EMAIL_STATUS_NONE;
+            cm.InstallerID = 0;
+            cm.RequestStatus = 0;
             bool result = CustomBLL.Instance.AddCustomMaterialList(cm, jobId);
             InitialDataBind();
         }
@@ -3941,7 +3964,48 @@ namespace JG_Prospect.Sr_App
 
             }
         }
+        protected void ddlInstallerUser_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+        protected void btnAddInstaller_Click(object sender, EventArgs e)
+        {
+            CustomBLL.Instance.AddInstallerToMaterialList(jobId, Convert.ToInt32(ddlInstaller.SelectedValue));
+            InitialDataBind();
+        }
+        protected void rptInstaller_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                Literal ltrStatus = (Literal)e.Item.FindControl("ltrStatus");
+                DataRowView lDrInstallerRow = (DataRowView)e.Item.DataItem;
+                if (lDrInstallerRow["UpdatedDateTime"] != DBNull.Value && lDrInstallerRow["UpdatedDateTime"] != null)
+                {
+                    ltrStatus.Text = Convert.ToDateTime(lDrInstallerRow["UpdatedDateTime"].ToString()).ToString("MM/dd/yyyy HH:mm:ss");
+                }
+                else
+                {
+                    ltrStatus.Text = "<input type='password' id='txtInstPwd" + lDrInstallerRow["InstallerID"].ToString() + "' onblur='AllowInstaller(\"" + lDrInstallerRow["InstallerID"].ToString() + "\", this)' />";
+                }
+            }
+        }
+        protected void rptInstaller_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            if (e.CommandName == "DeleteInstaller")
+            {
+                CustomBLL.Instance.RemoveInstallerFromMaterialList(Convert.ToInt32(e.CommandArgument));
+                InitialDataBind();
+            }
+        }
         #endregion
+
+       
+
+       
+
+        
+
+       
 
       
 
