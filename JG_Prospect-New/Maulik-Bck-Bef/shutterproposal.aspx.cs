@@ -37,13 +37,9 @@ namespace JG_Prospect.Sr_App
         static int[] productIdList = new int[50];
         static int[] estimateIdList = new int[50];
         static string QuoteNumber = string.Empty;
-        decimal amount = 0;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
-
-
             if (Request.QueryString["success"] != null)
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alsert('Your Transaction is successfull')", true);
@@ -51,17 +47,6 @@ namespace JG_Prospect.Sr_App
             }
             if (!IsPostBack)
             {
-                #region DropDownList Databind
-
-                for (int i = 1; i <= 12; i++)
-                    ccExpireMonth.Items.Add(new System.Web.UI.WebControls.ListItem((new DateTime(1, i, 1)).ToString("MMMM"), i.ToString("00")));
-
-                for (int i = DateTime.Now.Year; i <= DateTime.Now.Year + 10; i++)
-                    ccExpireYear.Items.Add(new System.Web.UI.WebControls.ListItem(i.ToString(), i.ToString("0000")));
-
-                #endregion
-
-                decimal amount;
                 if (Request.QueryString["UserId"] != null && Request.QueryString["CustomerId"] != null && Request.QueryString["EstId"] != null && Request.QueryString["paymentMode"] != null && Request.QueryString["amount"] != null && Request.QueryString["checkNo"] != null && Request.QueryString["creditCardDetails"] != null && Request.QueryString["IsEmail"] != null && Request.QueryString["TransactionId"] != null)
                 {
                     TransactionComplete(true, Request.QueryString["UserId"], Request.QueryString["CustomerId"], Request.QueryString["EstId"], Request.QueryString["paymentMode"], Request.QueryString["amount"], Request.QueryString["checkNo"], Request.QueryString["creditCardDetails"], Request.QueryString["TransactionId"]);
@@ -514,10 +499,6 @@ namespace JG_Prospect.Sr_App
                 amountpart1 = Math.Round(amt1, 2).ToString();
                 amountpart2 = Math.Round(amt2, 2).ToString();
                 amountpart3 = Math.Round(amt3, 2).ToString();
-
-
-                Session["CCtxtAmount"] = amountpart1;
-                Label7.Text = Session["CCtxtAmount"].ToString();
                 //txtAmount.Text = amountpart1;
                 //txtAmount.ReadOnly = true;
             }
@@ -563,7 +544,6 @@ namespace JG_Prospect.Sr_App
             if (DS1 != null)
             {
                 Customername = DS1.Tables[0].Rows[0]["CustomerName"].ToString();
-                Session["Name"] = Customername;
                 customercellphone = DS1.Tables[0].Rows[0]["CellPh"].ToString();
                 customerhousePh = DS1.Tables[0].Rows[0]["HousePh"].ToString();
                 customeraddress = DS1.Tables[0].Rows[0]["CustomerAddress"].ToString();
@@ -728,7 +708,6 @@ namespace JG_Prospect.Sr_App
             result = result.Replace("lblProposalTerms", proposalTerm);
             result = result.Replace("lblWorkArea", WorkArea);
             result = result.Replace("lblCustomerSuppliedMaterial", CustomerSuppliedMaterial);
-
             result = result.Replace("lblMaterialDumpsterStorage", MaterialDumpsterStorage);
             result = result.Replace("lblPermitRequired", PermitRequired);
             result = result.Replace("lblHabitatForHumanityPickUp", HabitatForHumanityPickUp);
@@ -966,7 +945,7 @@ namespace JG_Prospect.Sr_App
                 //    }
                 //}
 
-                string filePath = Server.MapPath("/CustomerDocs/Pdfs/wkhtmltopdf.exe");
+                string filePath = Server.MapPath("~/CustomerDocs/Pdfs/wkhtmltopdf.exe");
                 byte[] byteData = ConvertHtmlToByte(strB.ToString(), "", "", filePath);
                 if (byteData != null)
                 {
@@ -1662,7 +1641,7 @@ namespace JG_Prospect.Sr_App
                         int count = EstID.Count();
 
                         string paymentMode = string.Empty, checkNo = string.Empty, creditCardDetails = string.Empty;
-
+                        decimal amount = 0;
                         if (ddlpaymode.SelectedIndex != -1)
                         {
                             paymentMode = ddlpaymode.SelectedItem.Text;
@@ -1683,17 +1662,7 @@ namespace JG_Prospect.Sr_App
                         }
                         checkNo = txtchequeno.Text.Trim();
                         Session["checkNo"] = checkNo;
-
-                        if (ddlpaymode.SelectedIndex == 2)
-                        {
-                            creditCardDetails = txtCardNumber.Text.Trim();
-                        }
-                        else
-                        {
-                            creditCardDetails = txtcardholderNm.Text.Trim();
-                        }
-
-                       // creditCardDetails = txtcardholderNm.Text.Trim();
+                        creditCardDetails = txtcardholderNm.Text.Trim();
                         Session["creditCardDetails"] = creditCardDetails;
                         foreach (TextBox textBox in pnlControls.Controls.OfType<TextBox>())
                         {
@@ -1729,7 +1698,7 @@ namespace JG_Prospect.Sr_App
                                 }
                             }
 
-                            // GenerateWorkOrder(soldJobID);
+                            GenerateWorkOrder(soldJobID);
 
                             if (IsEmail)
                             {
@@ -1757,7 +1726,7 @@ namespace JG_Prospect.Sr_App
                             Session["FilePath"] = completeFileName;
                             //string filename = tempInvoiceFileName.Replace(".pdf", "");
                             HidCV.Value = string.Empty;
-                            Response.Redirect("~/Sr_App/Procurement.aspx?FileToOpen=" + completeFileName, false);
+                            // Response.Redirect("~/Sr_App/Procurement.aspx?FileToOpen=" + completeFileName,false);
                             //string SynapsePay = System.Configuration.ConfigurationManager.AppSettings["SynapsePay"].ToString();
                             //SynapsePay = SynapsePay + // "?Email=" + txtSynapseEmail.Text.Trim()
                             // + "&Password=" + txtPassword.Text.Trim()
@@ -1822,8 +1791,8 @@ namespace JG_Prospect.Sr_App
         {
             try
             {
-                // string path = Server.MapPath("~/CustomerDocs/Pdfs/");
-                string path = "C:\\inetpub\\wwwroot\\TestPublishNew\\CustomerDocs\\Pdfs\\wkhtmltopdf.exe";
+                string path = Server.MapPath("~/CustomerDocs/Pdfs/");
+                //string path = "C:\\inetpub\\wwwroot\\TestPublishNew\\CustomerDocs\\Pdfs\\wkhtmltopdf.exe";
                 string tempWorkOrderFilename = string.Empty;
                 string originalWorkOrderFilename = "WorkOrder" + ".pdf";
 
@@ -1954,9 +1923,27 @@ namespace JG_Prospect.Sr_App
         protected void NotSoldTasks(bool IsEmail)
         {
             DateTime followupdate = (txtfollowupdate.Text != "") ? Convert.ToDateTime(txtfollowupdate.Text, JGConstant.CULTURE) : Convert.ToDateTime(DateTime.Now.ToString("MM/dd/yyyy"), JGConstant.CULTURE);
+            string tempInvoiceFileName = "Invoice" + DateTime.Now.Ticks + ".pdf";
             string status = ddlstatus.SelectedValue;
             int userId = Convert.ToInt16(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]);
-            new_customerBLL.Instance.AddCustomerFollowUp(Convert.ToInt32(Session["CustomerId"].ToString()), followupdate, status, userId, false, 0);
+
+            //# Changes by Shabbir, to add follow up entries in customer follow up.
+            if (productIdList.Count() >= 1)
+            {
+                for (int i = 0; i < estimateIdList.Length; i++)
+                {
+                    int outEstID = 0;
+                    if (int.TryParse(estimateIdList[i].ToString(), out outEstID))
+                    {
+                        if (outEstID > 0)
+                        {
+                            new_customerBLL.Instance.AddCustomerFollowUp(Convert.ToInt32(Session["CustomerId"].ToString()), followupdate, status, userId, false, 0, tempInvoiceFileName, outEstID);
+                        }
+                    }
+                }
+            }
+            
+            
             if (txtfollowupdate.Text.Trim() != "")
             {
                 new_customerBLL.Instance.UpdateCustomerFollowUpDate(followupdate, Convert.ToInt32(Session["CustomerId"].ToString()));
@@ -1964,7 +1951,7 @@ namespace JG_Prospect.Sr_App
             string mailid = ViewState["customeremail"].ToString();
             string path = Server.MapPath("/CustomerDocs/Pdfs/");
             string g = Guid.NewGuid().ToString().Substring(0, 5);
-            string tempInvoiceFileName = "Invoice" + DateTime.Now.Ticks + ".pdf";
+            
 
             GeneratePDF(path, tempInvoiceFileName, false, createEstimate("InvoiceNumber-" + Session["CustomerId"].ToString(), Convert.ToInt32(Session["CustomerId"].ToString())), true);
 
@@ -2045,12 +2032,12 @@ namespace JG_Prospect.Sr_App
                 {
                     HDAmountA.Value = DS1.Tables[0].Rows[0]["ProposalCost"].ToString();
                 }
-                if (Session["Proposal"] != null)
-                {
-                    LiteralBody.Text = Session["Proposal"].ToString();
-                }
-                else
-                    LiteralBody.Text = createBodyEstimateCustom("", int.Parse(hidstId.Value), productType);
+                //if (Session["Proposal"] != null)
+                //{
+                //    LiteralBody.Text = Session["Proposal"].ToString();
+                //}
+                //else
+                LiteralBody.Text = createBodyEstimateCustom("", int.Parse(hidstId.Value), productType);
             }
         }
 
@@ -2151,30 +2138,30 @@ namespace JG_Prospect.Sr_App
             }
         }
 
-        /*
-        protected void createcontract()
-        {
-            string fileName = string.Empty;
-            string path = Server.MapPath("/CustomerDocs/Pdfs/");
-            string workorder = string.Empty;
-            // Create and display the value of two GUIDs.
-            string g = Guid.NewGuid().ToString().Substring(0, 5);
-            fileName = "Contract" + g.ToString() + ".pdf";
-            workorder = "WorkOrder" + g.ToString() + ".pdf";
-            // Create Invoice with Pdf for Transaction.....
-            StringBuilder sbWork = new StringBuilder();
-            sbWork.Append(createWorkOrder("InvoiceNumber", int.Parse(ViewState["EstimateId"].ToString())));
-            string FileWorkText = sbWork.ToString();
-            GeneratePDF(path, workorder, false, FileWorkText);
+        
+        //protected void createcontract()
+        //{
+        //    string fileName = string.Empty;
+        //    string path = Server.MapPath("/CustomerDocs/Pdfs/");
+        //    string workorder = string.Empty;
+        //    // Create and display the value of two GUIDs.
+        //    string g = Guid.NewGuid().ToString().Substring(0, 5);
+        //    fileName = "Contract" + g.ToString() + ".pdf";
+        //    workorder = "WorkOrder" + g.ToString() + ".pdf";
+        //    // Create Invoice with Pdf for Transaction.....
+        //    StringBuilder sbWork = new StringBuilder();
+        //    sbWork.Append(createWorkOrder("InvoiceNumber", int.Parse(ViewState["EstimateId"].ToString())));
+        //    string FileWorkText = sbWork.ToString();
+        //    GeneratePDF(path, workorder, false, FileWorkText);
 
-            StringBuilder sbEstimate = new StringBuilder();
-            sbEstimate.Append(createHeaderEstimate("InvoiceNumber", int.Parse(arr[0].ToString())));
-            sbEstimate.Append(createBodyEstimate("InvoiceNumber", int.Parse(arr[0].ToString())));
-            sbEstimate.Append(createFooterEstimate("InvoiceNumber", int.Parse(arr[0].ToString())));
-            string FileText = sbEstimate.ToString();
-            GeneratePDF(path, fileName, false, FileText);
-        }
-        */
+        //    StringBuilder sbEstimate = new StringBuilder();
+        //    sbEstimate.Append(createHeaderEstimate("InvoiceNumber", int.Parse(arr[0].ToString())));
+        //    sbEstimate.Append(createBodyEstimate("InvoiceNumber", int.Parse(arr[0].ToString())));
+        //    sbEstimate.Append(createFooterEstimate("InvoiceNumber", int.Parse(arr[0].ToString())));
+        //    string FileText = sbEstimate.ToString();
+        //    GeneratePDF(path, fileName, false, FileText);
+        //}
+        
 
         protected void RadioButtonList1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -2223,10 +2210,10 @@ namespace JG_Prospect.Sr_App
             string[] Emails;
             int count = 0;
             DataSet ds = shuttersBLL.Instance.GetEmails(Convert.ToInt32(Session["CustomerId"].ToString()));
-            if (Convert.ToString(ds.Tables[0].Rows[0][1]) != "")
-            {
-                txtNotSoldEmail.Text = Convert.ToString(ds.Tables[0].Rows[0][1]);
-            }
+            //if (Convert.ToString(ds.Tables[0].Rows[0][1]) != "")
+            //{
+            //    txtNotSoldEmail.Text = Convert.ToString(ds.Tables[0].Rows[0][1]);
+            //}
             if (ds.Tables[0].Rows.Count > 0)
             {
                 if (Convert.ToString(ds.Tables[0].Rows[0][0]) != "")
@@ -2248,6 +2235,63 @@ namespace JG_Prospect.Sr_App
 
             mp_notsold.Show();
         }
+        protected void chkedit_CheckedChanged(object sender, EventArgs e)
+        {
+            if (chkedit.Checked == true)
+            {
+                txtAmount.ReadOnly = false;
+                trauthpass.Visible = true;
+            }
+            else
+            {
+                txtAmount.ReadOnly = true;
+                trauthpass.Visible = false;
+
+            }
+            if (txtAmount.Text == "")
+            {
+                txtAmount.Text = hidDownPayment.Value;
+            }
+            if (ddlpaymode.SelectedIndex==1)
+            {
+                txtPromotionalcode.Visible = true;
+                txtPwd.Visible = false;
+            }
+            else
+            {
+                txtPromotionalcode.Visible = false;
+                txtPwd.Visible = true;
+            }
+
+            string[] Emails;
+            int count = 0;
+            DataSet ds = shuttersBLL.Instance.GetEmails(Convert.ToInt32(Session["CustomerId"].ToString()));
+            //if (Convert.ToString(ds.Tables[0].Rows[0][1]) != "")
+            //{
+            //    txtEmailId.Text = Convert.ToString(ds.Tables[0].Rows[0][1]);
+            //}
+            if (Convert.ToString(ds.Tables[0].Rows[0][2]) != "")
+            {
+                txtDOB.Text = Convert.ToString(ds.Tables[0].Rows[0][2]);
+            }
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                if (Convert.ToString(ds.Tables[0].Rows[0][0]) != "")
+                {
+                    Emails = Convert.ToString(ds.Tables[0].Rows[0][0]).Split(',');
+                    count = Emails.Count();
+                    for (int i = 0; i < count; i++)
+                    {
+                        TextBox NewTextBox = new TextBox();
+                        NewTextBox.ID = "TextBoxE" + i.ToString();
+                        NewTextBox.Text = Emails[i];
+                        //form1 is a form in my .aspx file with runat=server attribute
+                        pnlControls.Controls.Add(NewTextBox);
+                    }
+                }
+            }
+            //txtPromotionalcode.Visible = false;
+        }
         protected void ddlstatus_SelectedIndexChanged(object sender, EventArgs e)
         {
             DropDownList ddlstatus = sender as DropDownList;
@@ -2260,6 +2304,29 @@ namespace JG_Prospect.Sr_App
             {
                 txtfollowupdate.Text = "";
                 mp_notsold.Show();
+            }
+            string[] Emails;
+            int count = 0;
+            DataSet ds = shuttersBLL.Instance.GetEmails(Convert.ToInt32(Session["CustomerId"].ToString()));
+            //if (Convert.ToString(ds.Tables[0].Rows[0][1]) != "")
+            //{
+            //    txtNotSoldEmail.Text = Convert.ToString(ds.Tables[0].Rows[0][1]);
+            //}
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                if (Convert.ToString(ds.Tables[0].Rows[0][0]) != "")
+                {
+                    Emails = Convert.ToString(ds.Tables[0].Rows[0][0]).Split(',');
+                    count = Emails.Count();
+                    for (int i = 0; i < count; i++)
+                    {
+                        TextBox NewTextBox = new TextBox();
+                        NewTextBox.ID = "TextBoxE" + i.ToString();
+                        NewTextBox.Text = Emails[i];
+                        //form1 is a form in my .aspx file with runat=server attribute
+                        NotSoldEmails.Controls.Add(NewTextBox);
+                    }
+                }
             }
         }
 
@@ -2306,10 +2373,10 @@ namespace JG_Prospect.Sr_App
             string[] Emails;
             int count = 0;
             DataSet ds = shuttersBLL.Instance.GetEmails(Convert.ToInt32(Session["CustomerId"].ToString()));
-            if (Convert.ToString(ds.Tables[0].Rows[0][1]) != "")
-            {
-                txtEmailId.Text = Convert.ToString(ds.Tables[0].Rows[0][1]);
-            }
+            //if (Convert.ToString(ds.Tables[0].Rows[0][1]) != "")
+            //{
+            //    txtEmailId.Text = Convert.ToString(ds.Tables[0].Rows[0][1]);
+            //}
             if (Convert.ToString(ds.Tables[0].Rows[0][2]) != "")
             {
                 txtDOB.Text = Convert.ToString(ds.Tables[0].Rows[0][2]);
@@ -2348,44 +2415,25 @@ namespace JG_Prospect.Sr_App
                 TxtBoxE.ID = "TextBoxE" + i.ToString();
                 //Add the labels and textboxes to the Panel.
                 NotSoldEmails.Controls.Add(TxtBoxE);
+                // txtNotSoldEmail.Visible = false;
             }
             mp_notsold.Show();
         }
 
         protected void ddlpaymode_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ddlpaymode.SelectedIndex == 2)
+            if (ddlpaymode.SelectedIndex == 0)
             {
-                otheramount.Visible = false;
-                labelAmount.Visible = true;
-                amountvalue.Visible = true;
                 lblPwd.Visible = false;
                 txtPwd.Visible = false;
-                btnsavesold.Visible = false;
-                btnSaveSold2.Visible = true;
-                btnSaveSold2.Style.Add("display", "block");
-                btnsavesold.Style.Add("display", "none");
-                txtPwd.Style.Add("display", "block");
-                PanelHide.Visible = false;
-                lblPro.Visible = false;
-                txtPromotionalcode.Visible = false;
-                txtccamount.Text = Session["CCtxtAmount"].ToString();
-                txtEmailId.Text = ViewState["customeremail"].ToString();
-                rdoChecking.Visible = false;
-                rdoSaving.Visible = false;
-                
-                string[] FN = Session["Name"].ToString().Split(' ');
-                txtFirstName.Text = FN[0];
-                txtLastName.Text = FN[1];
-
-               
-                Name.Visible = true;
-                Card.Visible = true;
-                Currency.Visible = true;
-                Address.Visible = true;
-                CountryState.Visible = true;
-                CityZip.Visible = true;
-                
+                btnsavesold.Visible = true;
+                btnSaveSold2.Visible = false;
+                btnSaveSold2.Style.Add("display", "none");
+                txtPwd.Style.Add("display", "none");
+                btnsavesold.Style.Add("display", "block");
+                PanelHide.Visible = true;
+                lblPro.Visible = true;
+                txtPromotionalcode.Visible = true;
             }
             else if (ddlpaymode.SelectedIndex == 1)
             {
@@ -2396,24 +2444,13 @@ namespace JG_Prospect.Sr_App
                 btnSaveSold2.Style.Add("display", "none");
                 txtPwd.Style.Add("display", "none");
                 btnsavesold.Style.Add("display", "block");
-
                 PanelHide.Visible = true;
                 lblPro.Visible = true;
                 txtPromotionalcode.Visible = true;
-                //PanelCC.Visible = false;
-                Name.Visible = false;
-                Card.Visible = false;
-                Currency.Visible = false;
-                Address.Visible = false;
-                CountryState.Visible = false;
-                CityZip.Visible = false;
-                otheramount.Visible = true;
-                labelAmount.Visible = false;
-                amountvalue.Visible = false;
-               
+                rdoChecking.Visible = true;
+                rdoSaving.Visible = true;
 
             }
-
             else
             {
                 lblPwd.Visible = true;
@@ -2426,17 +2463,81 @@ namespace JG_Prospect.Sr_App
                 PanelHide.Visible = false;
                 lblPro.Visible = false;
                 txtPromotionalcode.Visible = false;
+                rdoChecking.Visible = false;
+                rdoSaving.Visible = false;
 
-                Name.Visible = false;
-                Card.Visible = false;
-                Currency.Visible = false;
-                Address.Visible = false;
-                CountryState.Visible = false;
-                CityZip.Visible = false;
-                otheramount.Visible = true;
-                labelAmount.Visible = false;
-                amountvalue.Visible = false;
-               
+                /*
+                lblPerBus.Visible = false;
+                Label5.Visible = false;
+                lblDOB.Visible = false;
+                Label4.Visible = false;
+                lblSSN4.Visible = false;
+                Label6.Visible = false;
+                lblRouting.Visible = false;
+                Label3.Visible = false;
+                lblAccNo.Visible = false;
+                Label2.Visible = false;
+                lblBank.Visible = false;
+                Label1.Visible = false;
+                rdoChecking.Visible = false;
+                rdoSaving.Visible = false;
+                lblAmount.Visible = false;
+                chkedit.Visible = false;
+                lblA.Visible = false;
+                lblReqAmt.Visible = false;
+
+                txtAmount.Visible = false;
+                txtBank.Visible = false;
+                txtMFAATRT.Visible = false;
+                txtRoutingNo.Visible = false;
+                txtLASTSSN.Visible = false;
+                txtDOB.Visible = false;
+                ddlperbus.Visible = false;
+                txtAmount.Visible = false;
+                txtAmount.Visible = false;
+                 * */
+            }
+
+           
+            trauthpass.Visible = false;
+            //if (!string.IsNullOrEmpty(Session["PaymentAmount"] as string))
+            //{
+            // Session["PaymentAmount"]= hidDownPayment.Value;
+            if (txtAmount.Text == "")
+            {
+                txtAmount.Text = hidDownPayment.Value;
+            }
+
+            //txtAmount.Text = Session["PaymentAmount"].ToString();
+
+            //}
+
+            string[] Emails;
+            int count = 0;
+            DataSet ds = shuttersBLL.Instance.GetEmails(Convert.ToInt32(Session["CustomerId"].ToString()));
+            //if (Convert.ToString(ds.Tables[0].Rows[0][1]) != "")
+            //{
+            //    txtEmailId.Text = Convert.ToString(ds.Tables[0].Rows[0][1]);
+            //}
+            if (Convert.ToString(ds.Tables[0].Rows[0][2]) != "")
+            {
+                txtDOB.Text = Convert.ToString(ds.Tables[0].Rows[0][2]);
+            }
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                if (Convert.ToString(ds.Tables[0].Rows[0][0]) != "")
+                {
+                    Emails = Convert.ToString(ds.Tables[0].Rows[0][0]).Split(',');
+                    count = Emails.Count();
+                    for (int i = 0; i < count; i++)
+                    {
+                        TextBox NewTextBox = new TextBox();
+                        NewTextBox.ID = "TextBoxE" + i.ToString();
+                        NewTextBox.Text = Emails[i];
+                        //form1 is a form in my .aspx file with runat=server attribute
+                        pnlControls.Controls.Add(NewTextBox);
+                    }
+                }
             }
 
         }
@@ -2445,7 +2546,14 @@ namespace JG_Prospect.Sr_App
         {
 
         }
-
+        protected void btnCancelsold_Click(object sender, EventArgs e)
+        {
+            this.mp_sold.Hide();
+            //ddlpaymode.SelectedIndex = 0;
+            Response.Redirect("shutterproposal.aspx");
+            //txtPromotionalcode.Visible = false;
+            //txtPwd.Visible = false;
+        }
         protected void btnSaveAdminDetails_Click(object sender, EventArgs e)
         {
             Response.Redirect("~/Sr_App/CallSheet.aspx");
@@ -2453,75 +2561,35 @@ namespace JG_Prospect.Sr_App
 
         protected void btnSaveSold2_Click(object sender, EventArgs e)
         {
-
-            if (ddlpaymode.SelectedIndex == 2)
+            if (txtPwd.Text != "")
             {
-               
-                txtPwd.Visible = false;
-                decimal amt = Convert.ToDecimal(Session["CCtxtAmount"]);
-                Payline payline = new Payline();
-                payline = payline.Sale(txtFirstName.Text.ToString(), txtLastName.Text.ToString(), txtCardNumber.Text.ToString(), ccExpireMonth.Text.ToString(), ccExpireYear.Text.ToString(), txtSecurityCode.Text.ToString(), Convert.ToDecimal(Session["CCtxtAmount"]), ddlCurrency.SelectedValue.Trim(),txtAddress.InnerText.Trim(),Convert.ToInt32(txtZip.Text.Trim()),ddlCity.SelectedValue.Trim(),ddlState.SelectedValue.Trim(),ddlCountry.SelectedValue.Trim());
-                if (payline.IsApproved)
+                //Verify Password...
+                int isvaliduser = 0;
+                isvaliduser = UserBLL.Instance.chklogin("jgrove@jmgroveconstruction.com", txtPwd.Text);
+                //isvaliduser = UserBLL.Instance.chklogin("nitintold@custom-soft.com", txtPwd.Text);
+                if (isvaliduser == 1)
                 {
-                    //AuthorizationCode, PaylineTransectionId
-               
-                    bool res = ShutterPriceControlBLL.InsertTransaction(ShutterPriceControlBLL.Encode(txtCardNumber.Text.ToString()), ShutterPriceControlBLL.Encode(txtSecurityCode.Text.ToString()), txtFirstName.Text.ToString(), txtLastName.Text.ToString(), ccExpireMonth.Text.ToString() + ccExpireYear.Text.ToString(), Convert.ToDecimal(Session["CCtxtAmount"]), payline.IsApproved, payline.Message, payline.Response, payline.Request, customerId, productType, payline.AuthorizationCode, payline.AuthCaptureId);
-                    lblMsg.Text = "Success";
-                    lblMsg.Visible = false;
+                    Session["Sols"] = "Sold";
+                    Session["SaveEID"] = "SaveEmail";
+                    //NotSoldTasks(true);
                     SoldTasks(true);
-                    txtPromotionalcode.Visible = false;
                 }
                 else
                 {
-                    bool res = ShutterPriceControlBLL.InsertTransaction(ShutterPriceControlBLL.Encode(txtCardNumber.Text.ToString()), ShutterPriceControlBLL.Encode(txtSecurityCode.Text.ToString()), txtFirstName.Text.ToString(), txtLastName.Text.ToString(), ccExpireMonth.Text.ToString() + ccExpireYear.Text.ToString(), Convert.ToDecimal(Session["CCtxtAmount"]), payline.IsApproved, payline.Message, payline.Response, payline.Request, customerId, productType, payline.AuthorizationCode, payline.AuthCaptureId);
-                    lblMsg.Text = "Error";
-                    lblMsg.Visible = false;
-                    txtPromotionalcode.Visible = false;
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Enter correct password .');", true);
                 }
-                Response.Redirect("~/Sr_App/Customer_Profile.aspx");
+
             }
             else
             {
-
-                if (txtPwd.Text != "")
-                {
-                    //Verify Password...
-                    int isvaliduser = 0;
-                    isvaliduser = UserBLL.Instance.chklogin("jgrove@jmgroveconstruction.com", txtPwd.Text);
-                    //isvaliduser = UserBLL.Instance.chklogin("nitintold@custom-soft.com", txtPwd.Text);
-                    if (isvaliduser == 1)
-                    {
-                        Session["Sols"] = "Sold";
-                        Session["SaveEID"] = "SaveEmail";
-                        //NotSoldTasks(true);
-                        SoldTasks(true);
-                    }
-                    else
-                    {
-                        ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Enter correct password .');", true);
-                    }
-
-                }
-                else
-                {
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please Enter password .');", true);
-                }
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please Enter password .');", true);
             }
-
 
         }
 
         private void EntryOnProcurement()
         {
 
-        }
-
-        protected void btnCancelsold_Click(object sender, EventArgs e)
-        {
-            if (ddlpaymode.SelectedIndex == 2)
-            {
-                Response.Redirect("~/Sr_App/Shutterproposal.aspx");
-            }
         }
 
         //protected void txtauthpass_TextChanged(object sender, EventArgs e)

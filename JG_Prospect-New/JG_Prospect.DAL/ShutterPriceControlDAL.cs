@@ -15,13 +15,16 @@ namespace JG_Prospect.DAL
         private ShutterPriceControlDAL()
         {
         }
+
+
+
         public static ShutterPriceControlDAL Instance
         {
             get { return m_ShutterPriceControlDAL; }
             set { ;}
         }
         private DataSet DS = new DataSet();
-       
+
         public DataSet fetchshutterdetails()
         {
             try
@@ -40,6 +43,93 @@ namespace JG_Prospect.DAL
                 return null;
             }
         }
+
+        //DbCommand command = database.GetStoredProcCommand("UDP_saveshuttertop");
+        //           command.CommandType = CommandType.StoredProcedure;
+        //           database.AddInParameter(command, "@shuttertop_name", DbType.String, shuttertopname);
+        //           database.AddInParameter(command, "@price", DbType.Decimal, price);
+        //           DS = database.ExecuteDataSet(command);
+        //           return true;
+
+        public static bool InsertTransaction(string ccNumber, string ccSecurityCode, string ccFirstName, string ccLastName, string ExpirationDate,
+        decimal ccPriceValue, bool ccStatus, string ccMessage, string ccResponse, string ccRequest, int CustomerId, int ProductId, string AuthorizationCode, string PaylineTransectionId)
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DataSet DS = new DataSet();
+                    DbCommand cm = database.GetStoredProcCommand("InsertTransaction");
+                    cm.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(cm, "@ccNumber", DbType.String, ccNumber);
+                    database.AddInParameter(cm, "@ccSecurityCode", DbType.String, ccSecurityCode);
+                    database.AddInParameter(cm, "@ccFirstName", DbType.String, ccFirstName);
+                    database.AddInParameter(cm, "@ccLastName", DbType.String, ccLastName);
+                    database.AddInParameter(cm, "@ExpirationDate", DbType.Int32, ExpirationDate);
+                    database.AddInParameter(cm, "@ccPriceValue", DbType.Int32, ccPriceValue);
+                    database.AddInParameter(cm, "@ccStatus", DbType.Byte, ccStatus);
+                    database.AddInParameter(cm, "@ccMessage", DbType.String, ccMessage);
+                    database.AddInParameter(cm, "@ccResponse", DbType.String, ccResponse);
+                    database.AddInParameter(cm, "@ccRequest", DbType.String, ccRequest);
+                    database.AddInParameter(cm, "@CustomerId", DbType.Int32, CustomerId);
+                    database.AddInParameter(cm, "@ProductId", DbType.Int32, ProductId);
+                    database.AddInParameter(cm, "@AuthorizationCode", DbType.String, AuthorizationCode);
+                    database.AddInParameter(cm, "@PaylineTransectionId", DbType.String, PaylineTransectionId);
+
+                    //database.ExecuteDataSet(cm);
+
+                    //bool ans = database.ExecuteDataSet(cm);
+
+                    DS = database.ExecuteDataSet(cm);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+
+
+
+        //public static bool InsertTransaction(string ccNumber, string ccSecurityCode, string ccFirstName, string ccLastName, string ExpirationDate,
+        // decimal ccPriceValue, bool ccStatus, string ccMessage, string ccResponse, string ccRequest)
+        //{
+
+
+        //    SqlConnection cn = new SqlConnection(Database.PaylineConnection);
+        //    try
+        //    {
+        //        cn.Open();
+        //        using (SqlCommand cm = cn.CreateCommand())
+        //        {
+        //            cm.CommandType = CommandType.StoredProcedure;
+        //            cm.CommandText = "InsertTransaction";
+        //            //cm.Parameters.AddWithValue("@Id", id);
+        //            cm.Parameters.AddWithValue("@ccNumber", ccNumber);
+        //            cm.Parameters.AddWithValue("@ccSecurityCode", ccSecurityCode);
+        //            cm.Parameters.AddWithValue("@ccFirstName", ccFirstName);
+        //            cm.Parameters.AddWithValue("@ccLastName", ccLastName);
+        //            cm.Parameters.AddWithValue("@ExpirationDate", ExpirationDate);
+        //            cm.Parameters.AddWithValue("@ccPriceValue", ccPriceValue);
+        //            cm.Parameters.AddWithValue("@ccStatus", ccStatus);
+        //            cm.Parameters.AddWithValue("@ccMessage", ccMessage);
+        //            cm.Parameters.AddWithValue("@ccResponse", ccResponse);
+        //            cm.Parameters.AddWithValue("@ccRequest", ccRequest);
+        //            cm.ExecuteNonQuery();
+        //            return true;
+
+        //        }//using
+        //        //cn.Close();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return false;
+        //    }
+
+        //}
+
         public DataSet fetchtopshutterdetails()
         {
             try
