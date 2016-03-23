@@ -116,6 +116,9 @@
             <h3>
                 <a href="CustomerEmailTemplate.aspx">Default Customer Email</a>
             </h3>
+             <h3>
+                 <a href="EditEmailTemplate.aspx?ProductId=1">Edit Email Template</a>
+             </h3>
          </div>
             <div class="clr">
             </div>
