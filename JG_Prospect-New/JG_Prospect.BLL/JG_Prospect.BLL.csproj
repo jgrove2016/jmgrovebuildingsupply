@@ -76,6 +76,7 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -96,6 +97,7 @@
     <Compile Include="ImproperCalendarEvent.cs" />
     <Compile Include="InstallUserBLL.cs" />
     <Compile Include="new_customerBLL.cs" />
+    <Compile Include="Payline.cs" />
     <Compile Include="pdf_BLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShutterPriceControlBLL.cs" />
