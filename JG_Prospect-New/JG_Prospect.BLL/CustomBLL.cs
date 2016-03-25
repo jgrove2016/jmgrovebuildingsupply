@@ -175,6 +175,10 @@ namespace JG_Prospect.BLL
         {
             return CustomDAL.Instance.GetCustomMaterialList(pJobID, pCustomerID);
         }
+        public DataSet GetRequestMaterialList(string jobId, int pCustomerID, int pInstallerID)
+        {
+            return CustomDAL.Instance.GetRequestMaterialList(jobId, pCustomerID, pInstallerID);
+        }
 
         public string GetEmailStatusOfCustomMaterialList(string jobId)//, int productTypeId, int estimateId)
         {
@@ -207,6 +211,24 @@ namespace JG_Prospect.BLL
         public void RemoveInstallerFromMaterialList(Int32 ID)
         {
             CustomDAL.Instance.RemoveInstallerFromMaterialList(ID);
+        }
+
+        public string GetRequestStatusText(int pRequestStatusID)
+        {
+            String lRequestStatus = "";
+            switch (pRequestStatusID)
+            {
+                case 1:
+                    lRequestStatus = "Pending";
+                    break;
+                case 2:
+                    lRequestStatus = "Approved";
+                    break;
+                case 3:
+                    lRequestStatus = "Rejected";
+                    break;
+            }
+            return lRequestStatus;
         }
     }
 }

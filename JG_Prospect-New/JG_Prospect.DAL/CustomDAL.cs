@@ -741,16 +741,18 @@ namespace JG_Prospect.DAL
             return lListOfCustomMaterial;
         }
 
-        public DataSet GetRequestMaterialList(string jobId, int pCustomerID)
+        public DataSet GetRequestMaterialList(string jobId, int pCustomerID, int pInstallerID)
         {
             DataSet lListOfCustomMaterial = new DataSet();
             SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
             {
 
-                DbCommand command = database.GetStoredProcCommand("USP_GetCustomMaterialList");
+                DbCommand command = database.GetStoredProcCommand("USP_GetRequestMaterialList");
                 command.CommandType = CommandType.StoredProcedure;
                 database.AddInParameter(command, "@soldJobId", DbType.String, jobId);
                 database.AddInParameter(command, "@customerID", DbType.String, pCustomerID);
+                database.AddInParameter(command, "@InstallerID", DbType.String, pInstallerID);
+                
                 lListOfCustomMaterial = database.ExecuteDataSet(command);
             }
             return lListOfCustomMaterial;

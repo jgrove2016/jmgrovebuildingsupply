@@ -20,6 +20,7 @@
             });
         });
     </script>
+
     <style type="text/css">
         .modalBackground {
             background-color: Gray;
@@ -61,6 +62,33 @@
             background-color: white;
             z-index: 1002;
             overflow: auto;
+        }
+
+        .grid td {
+          /*  padding: 1px !important;
+            border-bottom: #ccc 1px solid;*/
+        }
+
+        #btnAddProdLines {
+            width: 200px !important;
+            padding: 0 10px !important;
+        }
+
+        #txtLine {
+            width: 57px;
+        }
+
+        .text-style {
+            height: 24px;
+            width: 100%;
+        }
+
+        div.dd_chk_select {
+            height: 24px !important;
+        }
+        fieldset{
+            border:solid 1px;
+            padding:5px;
         }
     </style>
     <script type="text/javascript">
@@ -219,7 +247,7 @@
                                                 <asp:Button ID="btnAddProdLines" runat="server" Text="Add Product Category" OnClick="btnAddProdLines_Click" />
 
                                             </div>
-                                            <asp:ListView ID="lstRequestMaterial" OnItemCommand="lstCustomMaterialList_ItemCommand" runat="server" OnItemDataBound="lstCustomMaterialList_ItemDataBound" ItemPlaceholderID="itemPlaceHolder" GroupPlaceholderID="groupPlaceHolder">
+                                            <asp:ListView ID="lstRequestMaterial" OnItemCommand="lstRequestMaterial_ItemCommand" runat="server" OnItemDataBound="lstRequestMaterial_ItemDataBound" ItemPlaceholderID="itemPlaceHolder" GroupPlaceholderID="groupPlaceHolder">
                                                 <LayoutTemplate>
                                                     <div>
                                                         <asp:PlaceHolder ID="groupPlaceHolder" runat="server"></asp:PlaceHolder>
@@ -232,24 +260,25 @@
                                                 <ItemTemplate>
                                                     <asp:UpdatePanel ID="updMaterialList2" runat="server">
                                                         <ContentTemplate>
-                                                            <h3 align="left">Product Category: 
-                                        <asp:DropDownList ID="ddlCategory" Width="150px" runat="server" OnSelectedIndexChanged="ddlCategory_SelectedIndexChanged" AutoPostBack="true">
-                                        </asp:DropDownList>
+                                                            <h6 align="left">Product Category: 
+                                                                <asp:DropDownList ID="ddlCategory" Width="150px" runat="server" OnSelectedIndexChanged="ddlCategory_SelectedIndexChanged" AutoPostBack="true">
+                                                                </asp:DropDownList>
 
                                                                 <asp:HiddenField ID="hdnProductCatIDReq" runat="server" Value='<%#Eval("ProductCatID")%>' />
                                                                 <asp:LinkButton ID="lnkAddProdCat" Visible="false" OnClick="lnkAddProdCat_Click" runat="server">Add</asp:LinkButton>
                                                                 <asp:LinkButton ID="lnkDeleteProdCat" CommandArgument='<%#Eval("ProductCatID") %>' OnClick="lnkDeleteProdCat_Click" runat="server" OnClientClick="return confirm('Deleting product category will delete all associated line items. Are you sure you want to delete?')">Delete</asp:LinkButton>
                                                                 <%--<asp:Button ID="btnDelete" runat="server" Text="Delete" CommandArgument='<%#Eval("ProductCatID") %>' onclick="btnDelete_Click" OnClientClick="return confirm('Deleting product category will delete all associated line items. Are you sure you want to delete?')" />--%>
                                                                 <div style="clear: both"></div>
-                                                            </h3>
+                                                            </h6>
 
 
 
-                                                            <asp:GridView ID="grdProdLinesReq" Width="100%" runat="server" OnRowDataBound="grdProdLines_RowDataBound" AutoGenerateColumns="false">
+                                                            <asp:GridView ID="grdProdLinesReq" Width="100%" runat="server"  AutoGenerateColumns="false">
                                                                 <Columns>
                                                                     <asp:TemplateField HeaderText="Line" HeaderStyle-Width="4%">
                                                                         <ItemTemplate>
-                                                                            <asp:TextBox CssClass="text-style" ID="txtLine" Text='<%# Eval("Line") %>' MaxLength="4" runat="server" ClientIDMode="Static" Enabled="false"></asp:TextBox>
+                                                                            <asp:TextBox CssClass="text-style" ID="txtLine" Text='<%# Eval("Line") %>' Visible="false" MaxLength="4" runat="server" ClientIDMode="Static" Enabled="false"></asp:TextBox>
+                                                                            <%# Eval("Line") %>
                                                                             <asp:HiddenField ID="hdnMaterialListId" runat="server" Value='<%#Eval("Id")%>' />
                                                                             <asp:HiddenField ID="hdnEmailStatus" runat="server" Value='<%#Eval("EmailStatus")%>' />
                                                                             <asp:HiddenField ID="hdnForemanPermission" runat="server" Value='<%#Eval("IsForemanPermission")%>' />
@@ -259,7 +288,7 @@
                                                                             <asp:HiddenField ID="hdnProductCatID" runat="server" Value='<%#Eval("ProductCatID")%>' />
                                                                         </ItemTemplate>
                                                                     </asp:TemplateField>
-                                                                    <asp:TemplateField HeaderText="JG sku- vendor part #">
+                                                                    <asp:TemplateField HeaderText="JG sku- vendor part #" Visible="false">
                                                                         <ItemTemplate>
                                                                             <asp:UpdatePanel ID="updSku" runat="server">
                                                                                 <ContentTemplate>
@@ -342,10 +371,18 @@
                                                             </asp:GridView>
                                                             <asp:LinkButton ID="lnkAddLines" CommandName="AddLine" CommandArgument='<%#Eval("ProductCatId") %>' OnClick="lnkAddLines_Click1" runat="server">Add Line</asp:LinkButton>
                                                         </ContentTemplate>
+                                                        <Triggers>
+                                                            <asp:AsyncPostBackTrigger ControlID="lnkAddLines" EventName="Click" />
+                                                            <asp:AsyncPostBackTrigger ControlID="lnkDeleteProdCat" EventName="Click" />
+                                                            <asp:AsyncPostBackTrigger ControlID="ddlCategory" EventName="SelectedIndexChanged" />
+                                                        </Triggers>
                                                     </asp:UpdatePanel>
                                                 </ItemTemplate>
                                             </asp:ListView>
                                         </ContentTemplate>
+                                        <Triggers>
+                                            <asp:AsyncPostBackTrigger ControlID="btnAddProdLines" EventName="Click" />
+                                        </Triggers>
                                     </asp:UpdatePanel>
                                 </fieldset>
                             </div>

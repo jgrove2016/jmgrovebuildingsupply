@@ -173,14 +173,54 @@
                 }
             });
         }
+        function endRequestHandler() {
+            if (g_CurrentTextBox != null) {
+                
+                $get(g_CurrentTextBox).focus();
+                $get(g_CurrentTextBox).select();
+            }
+        }
+
+       
     </script>
     <style type="text/css">
         .dd_chk_select {
             width: 180px;
         }
+       
+         .modal {
+            position: fixed;
+            z-index: 999;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            background-color: Black;
+            filter: alpha(opacity=60);
+            opacity: 0.6;
+            -moz-opacity: 0.8;
+        }
+
+        .center {
+            z-index: 1000;
+            margin: 250px 100px 250px 450px;
+            padding: 10px;
+            width: 120px;
+            height: 120px;
+            background-color: White;
+            border-radius: 10px;
+             background: url(../img/loader.gif) no-repeat;
+            filter: alpha(opacity=100);
+            opacity: 1;
+            -moz-opacity: 1;
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    
+    <div id="cover" class="modal">
+        <div id="dvLoader" class="center">&nbsp;</div>
+
+    </div>
     <div class="right_panel">
         <!-- appointment tabs section start -->
         <ul class="appointment_tab">
@@ -191,7 +231,7 @@
         </ul>
         <h1 id="h1Heading" runat="server">Material List</h1>
 
-        <table width="100%" >
+        <table width="100%">
             <tr>
                 <td>&nbsp;
                 </td>
@@ -520,7 +560,7 @@
                                                 <ItemTemplate>
                                                     <asp:UpdatePanel ID="updSku" runat="server">
                                                         <ContentTemplate>
-                                                            <asp:TextBox ID="txtSkuPartNo" CssClass="text-style" Text='<%# Eval("JGSkuPartNo") %>' MaxLength="18" runat="server" ClientIDMode="Static" OnTextChanged="txtSkuPartNo_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                                            <asp:TextBox ID="txtSkuPartNo" CssClass="text-style" Text='<%# Eval("JGSkuPartNo") %>' MaxLength="18" runat="server" onfocus="document.getElementById('__LASTFOCUS').value=this.id;"  OnTextChanged="txtSkuPartNo_TextChanged" onblur="ShowProgress()" AutoPostBack="true"></asp:TextBox>
                                                         </ContentTemplate>
                                                         <Triggers>
                                                             <asp:AsyncPostBackTrigger ControlID="txtSkuPartNo" EventName="TextChanged" />
@@ -532,7 +572,7 @@
                                                 <ItemTemplate>
                                                     <asp:UpdatePanel ID="updDesc" runat="server">
                                                         <ContentTemplate>
-                                                            <asp:TextBox ID="txtDescription" CssClass="text-style" Text='<%# Eval("MaterialList") %>' runat="server" ClientIDMode="Static" OnTextChanged="txtDescription_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                                            <asp:TextBox ID="txtDescription" CssClass="text-style" Text='<%# Eval("MaterialList") %>' onblur="ShowProgress()" runat="server" onfocus="document.getElementById('__LASTFOCUS').value=this.id;"  OnTextChanged="txtDescription_TextChanged" AutoPostBack="true"></asp:TextBox>
                                                         </ContentTemplate>
                                                         <Triggers>
                                                             <asp:AsyncPostBackTrigger ControlID="txtDescription" EventName="TextChanged" />
@@ -544,7 +584,7 @@
                                                 <ItemTemplate>
                                                     <asp:UpdatePanel ID="updQty" runat="server">
                                                         <ContentTemplate>
-                                                            <asp:TextBox ID="txtQTY" runat="server" CssClass="text-style" MaxLength="4" ClientIDMode="Static" Text='<%# Eval("Quantity") %>' onkeypress="return isNumberKey(event)" OnTextChanged="txtQTY_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                                            <asp:TextBox ID="txtQTY" runat="server" CssClass="text-style" MaxLength="4" onblur="ShowProgress()" onfocus="document.getElementById('__LASTFOCUS').value=this.id;" Text='<%# Eval("Quantity") %>' onkeypress="return isNumberKey(event)" OnTextChanged="txtQTY_TextChanged" AutoPostBack="true"></asp:TextBox>
                                                         </ContentTemplate>
                                                         <Triggers>
                                                             <asp:AsyncPostBackTrigger ControlID="txtQTY" EventName="TextChanged" />
@@ -556,7 +596,7 @@
                                                 <ItemTemplate>
                                                     <asp:UpdatePanel ID="updUOM" runat="server">
                                                         <ContentTemplate>
-                                                            <asp:TextBox ID="txtUOM" runat="server" CssClass="text-style" ClientIDMode="Static" Text='<%# Eval("UOM") %>' OnTextChanged="txtUOM_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                                            <asp:TextBox ID="txtUOM" runat="server" CssClass="text-style" onblur="ShowProgress()" onfocus="document.getElementById('__LASTFOCUS').value=this.id;"  Text='<%# Eval("UOM") %>' OnTextChanged="txtUOM_TextChanged" AutoPostBack="true"></asp:TextBox>
                                                         </ContentTemplate>
                                                         <Triggers>
                                                             <asp:AsyncPostBackTrigger ControlID="txtUOM" EventName="TextChanged" />
@@ -568,8 +608,7 @@
                                                 <ItemTemplate>
                                                     <asp:UpdatePanel ID="updMC" runat="server">
                                                         <ContentTemplate>
-
-                                                            <asp:TextBox ID="txtMaterialCost" CssClass="text-style" AutoPostBack="true" Text='<%# Eval("MaterialCost") %>' OnTextChanged="txtMaterialCost_TextChanged" runat="server" ClientIDMode="Static" onkeypress="return onlyDotsAndNumbers(event)"></asp:TextBox>
+                                                            <asp:TextBox ID="txtMaterialCost" onblur="ShowProgress()" CssClass="text-style" onfocus="document.getElementById('__LASTFOCUS').value=this.id;"  AutoPostBack="true" Text='<%# Eval("MaterialCost") %>' OnTextChanged="txtMaterialCost_TextChanged" runat="server"  onkeypress="return onlyDotsAndNumbers(event)"></asp:TextBox>
                                                         </ContentTemplate>
                                                         <Triggers>
                                                             <asp:AsyncPostBackTrigger ControlID="txtMaterialCost" EventName="TextChanged" />
@@ -582,7 +621,7 @@
                                                     <asp:UpdatePanel ID="updExt" runat="server">
                                                         <ContentTemplate>
 
-                                                            <asp:TextBox ID="txtExtended" runat="server" CssClass="text-style" ClientIDMode="Static" Text='<%# Eval("Extend") %>' OnTextChanged="txtExtended_TextChanged" AutoPostBack="true"></asp:TextBox>
+                                                            <asp:TextBox ID="txtExtended" onblur="ShowProgress()" runat="server" onfocus="document.getElementById('__LASTFOCUS').value=this.id;" CssClass="text-style"  Text='<%# Eval("Extend") %>' OnTextChanged="txtExtended_TextChanged" AutoPostBack="true"></asp:TextBox>
                                                         </ContentTemplate>
                                                         <Triggers>
                                                             <asp:AsyncPostBackTrigger ControlID="txtExtended" EventName="TextChanged" />
@@ -594,7 +633,7 @@
                                                 <ItemTemplate>
                                                     <asp:UpdatePanel ID="updVend" runat="server">
                                                         <ContentTemplate>
-                                                            <asp:DropDownCheckBoxes ID="ddlVendorName" CssClass="text-style" ClientIDMode="AutoID" runat="server" Style="margin: -2em 0 0;" UseSelectAllNode="true" OnSelectedIndexChanged="ddlVendorName_SelectedIndexChanged1" AutoPostBack="true">
+                                                            <asp:DropDownCheckBoxes ID="ddlVendorName" onblur="ShowProgress()" CssClass="text-style" ClientIDMode="AutoID" runat="server" Style="margin: -2em 0 0;" UseSelectAllNode="true" OnSelectedIndexChanged="ddlVendorName_SelectedIndexChanged1" AutoPostBack="true">
                                                             </asp:DropDownCheckBoxes>
                                                         </ContentTemplate>
                                                         <Triggers>
@@ -624,6 +663,8 @@
                                         </Columns>
                                     </asp:GridView>
                                     <asp:LinkButton ID="lnkAddLines" CommandName="AddLine" CommandArgument='<%#Eval("ProductCatId") %>' OnClick="lnkAddLines_Click1" runat="server">Add Line</asp:LinkButton>
+                                    
+
                                 </ContentTemplate>
 
                             </asp:UpdatePanel>
@@ -838,5 +879,27 @@
             }
             return lIsValidated;
         }
+
+        function ShowProgress() {
+            document.getElementById('cover').style.display = '';
+            document.getElementById('dvLoader').style.display = '';
+            setTimeout(function () { HideProgress();  }, 5000);
+        }
+
+        function HideProgress() {
+            document.getElementById('cover').style.display = 'none';
+            document.getElementById('dvLoader').style.display = 'none';
+        }
+
+        function jsFunctions() {
+            HideProgress();
+            endRequestHandler();
+            document.getElementById(document.getElementById("__LASTFOCUS").value).focus();
+            
+        }
+        Sys.WebForms.PageRequestManager.getInstance().add_endRequest(jsFunctions);
+        HideProgress();
     </script>
+   
+    
 </asp:Content>

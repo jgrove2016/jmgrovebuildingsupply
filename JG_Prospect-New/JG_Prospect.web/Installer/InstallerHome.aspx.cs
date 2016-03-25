@@ -45,6 +45,11 @@ namespace JG_Prospect.Installer
             get { return ViewState["ProductDataset"] != null ? ((DataSet)ViewState["ProductDataset"]) : new DataSet(); }
             set { ViewState["ProductDataset"] = value; }
         }
+        protected DataSet RequestMaterialDataSet
+        {
+            get { return ViewState["RequestMaterialDataSet"] != null ? ((DataSet)ViewState["RequestMaterialDataSet"]) : new DataSet(); }
+            set { ViewState["RequestMaterialDataSet"] = value; }
+        }
         protected String JobID {
             get { return ViewState["JobID"] != null ? ViewState["JobID"].ToString() : ""; }
             set { ViewState["JobID"] = value; }
@@ -54,7 +59,7 @@ namespace JG_Prospect.Installer
             get { return ViewState["CustomerID"] != null ? Convert.ToInt32(ViewState["CustomerID"].ToString()) : 0; }
             set { ViewState["CustomerID"] = value; }
         }
-
+        protected Int32 InstallerID;
         public String GridViewSortDirection
         {
             get
@@ -69,6 +74,7 @@ namespace JG_Prospect.Installer
        
         protected void Page_Load(object sender, EventArgs e)
         {
+            InstallerID = Convert.ToInt32(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()].ToString());
             if (!IsPostBack)
             {
                 BindGrid();
@@ -107,8 +113,8 @@ namespace JG_Prospect.Installer
             ViewState[ViewStateKey.Key.ReferenceId.ToString()] = lblReferenceId.Text;
             ViewState[ViewStateKey.Key.JobSequenceId.ToString()] = Convert.ToInt16(hdnJobSequenceId.Value);
 
-            int installerId = Convert.ToInt16(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()].ToString());
-            DataSet ds = InstallUserBLL.Instance.GetInstallerAvailability(lblReferenceId.Text.Trim(), installerId);
+            
+            DataSet ds = InstallUserBLL.Instance.GetInstallerAvailability(lblReferenceId.Text.Trim(), InstallerID);
 
             if (ds.Tables[0].Rows.Count > 0)
             {
@@ -425,6 +431,9 @@ namespace JG_Prospect.Installer
             lstCustomMaterialList.DataSource = PageDataset.Tables[0];
             lstCustomMaterialList.DataBind();
 
+            RequestMaterialDataSet = CustomBLL.Instance.GetRequestMaterialList(JobID, CustomerID, InstallerID);
+            lstRequestMaterial.DataSource = RequestMaterialDataSet.Tables[0];
+            lstRequestMaterial.DataBind();
         }
 
         protected void lstCustomMaterialList_ItemDataBound(object sender, ListViewItemEventArgs e)
@@ -490,13 +499,13 @@ namespace JG_Prospect.Installer
         {
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
-                ////DropDownList ddlCategory = (DropDownList)e.Row.FindControl("ddlCategory");
-                ////DataSet ds = UserBLL.Instance.GetAllProducts();
-                ////ddlCategory.DataSource = ds;
-                ////ddlCategory.DataTextField = "ProductName";
-                ////ddlCategory.DataValueField = "ProductId";
-                ////ddlCategory.DataBind();
-                ////ddlCategory.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select", "0)"));
+                //DropDownList ddlCategory = (DropDownList)e.Row.FindControl("ddlCategory");
+                //DataSet ds = UserBLL.Instance.GetAllProducts();
+                //ddlCategory.DataSource = ds;
+                //ddlCategory.DataTextField = "ProductName";
+                //ddlCategory.DataValueField = "ProductId";
+                //ddlCategory.DataBind();
+                //ddlCategory.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select", "0)"));
 
 
                 //DropDownCheckBoxes ddlVendorCategory = (DropDownCheckBoxes)e.Row.FindControl("ddlVendorName");
@@ -751,6 +760,50 @@ namespace JG_Prospect.Installer
                 BindCustomMaterialList();
             }
         }
+
+        protected void lstRequestMaterial_ItemDataBound(object sender, ListViewItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListViewItemType.DataItem)
+            {
+
+                GridView grdProdLinesReq = (GridView)e.Item.FindControl("grdProdLinesReq");
+                DropDownList ddlCategory = (DropDownList)e.Item.FindControl("ddlCategory");
+                DataRowView lDrView = (DataRowView)e.Item.DataItem;
+                int lProdCatID = Convert.ToInt32(lDrView["ProductCatID"]);
+                DataView lDvMaterialList = new DataView(PageDataset.Tables[1], "ProductCatID=" + lProdCatID, "id asc", DataViewRowState.OriginalRows);
+               
+                ddlCategory.DataSource = ProductDataset;
+                ddlCategory.DataTextField = "ProductName";
+                ddlCategory.DataValueField = "ProductId";
+                ddlCategory.DataBind();
+                ddlCategory.SelectedValue = lProdCatID.ToString();
+                
+
+                grdProdLinesReq.DataSource = lDvMaterialList;
+                grdProdLinesReq.DataBind();
+            }
+        }
+
+        protected void lstRequestMaterial_ItemCommand(object sender, ListViewCommandEventArgs e)
+        {
+            if (e.CommandName == "AddLine")
+            {
+                CustomMaterialList cm = new CustomMaterialList();
+                cm.ProductCatId = Convert.ToInt32(e.CommandArgument);
+                cm.MaterialList = "";
+                cm.Id = 0;
+                cm.VendorName = "";
+                cm.VendorEmail = "";
+                cm.IsAdminPermission = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+                cm.IsSrSalemanPermissionA = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+                cm.IsForemanPermission = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+                cm.IsSrSalemanPermissionF = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
+                cm.EmailStatus = JGConstant.EMAIL_STATUS_NONE;
+                bool result = CustomBLL.Instance.AddCustomMaterialList(cm, JobID);
+                BindCustomMaterialList();
+            }
+        }
+        
         #endregion
         #endregion
 

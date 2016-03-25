@@ -1289,11 +1289,11 @@ namespace JG_Prospect.Sr_App
             //    Response.Redirect("Custom.aspx?ProductTypeId=" + Convert.ToInt16(lblProductType.Text) + "&ProductId=" + productId + "&CustomerId=" + customerId);
 
             //}
-            if (hdnProductTypeId.Value == JGConstant.ONE.ToString())
-            {
+           // if (hdnProductTypeId.Value == JGConstant.ONE.ToString())
+            //{
                 Response.Redirect("Custom.aspx?ProductTypeId=" + Convert.ToInt16(hdnProductTypeId.Value) + "&ProductId=" + productId + "&CustomerId=" + customerId);
 
-            }
+            //}
 
         }
         protected void lnkmateriallist_Click(object sender, EventArgs e)

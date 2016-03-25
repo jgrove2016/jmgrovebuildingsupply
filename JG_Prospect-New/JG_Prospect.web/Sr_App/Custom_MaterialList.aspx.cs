@@ -149,6 +149,7 @@ namespace JG_Prospect.Sr_App
                 IsPageRefresh = true;
             }
             btnSendMail.Text = "Send Mail To Vendors";
+          
         }
 
         DataSet DS = new DataSet();
@@ -2999,6 +3000,7 @@ namespace JG_Prospect.Sr_App
 
             flag = "Autosave";
             SaveMaterialList(sender, e);
+      
         }
 
         protected void ddlExtent_SelectedIndexChanged(object sender, EventArgs e)
