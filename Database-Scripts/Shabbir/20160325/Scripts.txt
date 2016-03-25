@@ -1,0 +1,104 @@
+/****** Object:  StoredProcedure [dbo].[UDP_GEtMaxId]    Script Date: 03/25/2016 14:26:39 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UDP_GEtMaxId]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[UDP_GEtMaxId]
+GO
+
+/****** Object:  StoredProcedure [dbo].[UDP_GEtMaxId]    Script Date: 03/25/2016 14:26:39 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		Unknown
+-- Create date: Unknown
+-- Update By:   Shabbir Kanchwala
+-- Updated On:  2016-03-25
+-- Description:	This procedure will give latest Install ID/Code
+-- =============================================
+CREATE PROCEDURE [dbo].[UDP_GEtMaxId]
+(
+ @designation varchar(50),  
+ @status varchar(20)
+)
+AS
+BEGIN
+DECLARE @Id AS INT
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+
+	IF (@designation = 'InstallerHelper' 
+	OR @designation = 'InstallerJourneyman' 
+	OR @designation = 'InstallerMechanic' 
+	OR @designation = 'InstallerLeadMechanic' 
+	OR @designation = 'InstallerForeman' 
+	)
+	BEGIN
+	 SELECT @Id = MAX(Id) FROM tblInstallUsers WHERE designation in ('InstallerHelper','InstallerJourneyman','InstallerMechanic','InstallerLeadMechanic','InstallerForeman')
+	END
+	ELSE IF (@designation = 'CommercialOnly' 
+		OR @designation = 'SubContractor' 
+	)
+	BEGIN
+	  SELECT @Id = MAX(Id) FROM tblInstallUsers WHERE  designation in ('CommercialOnly','SubContractor')
+	END
+	
+	SELECT InstallId FROM tblInstallUsers WHERE Id = @Id
+END
+GO
+
+
+
+
+/****** Object:  StoredProcedure [dbo].[UDP_GetallInstallusersdataNew]    Script Date: 03/25/2016 13:55:19 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UDP_GetallInstallusersdataNew]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[UDP_GetallInstallusersdataNew]
+GO
+
+/****** Object:  StoredProcedure [dbo].[UDP_GetallInstallusersdataNew]    Script Date: 03/25/2016 13:55:19 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE ProcEDURE [dbo].[UDP_GetallInstallusersdataNew] 
+
+AS
+
+BEGIN
+
+	
+
+	SELECT t.Id,t.FristName,t.LastName,t.Phone,t.Zip,t.Designation,t.Status,t.PrimeryTradeId,d.TradeName AS 'PTradeName',t.HireDate,t.InstallId,t.picture
+	  FROM tblInstallUsers t LEFT OUTER JOIN Trades d
+	  ON d.Id = t.PrimeryTradeId
+	 --WHERE usertype = 'installer' OR usertype = 'Prospect' OR (usertype IS NULL AND Designation = 'SubContractor') OR (usertype IS NULL AND Designation = 'Installer') OR (usertype IS NULL AND (Designation = 'ForeMan' OR Designation = 'Fore Man'))
+	  order by Id desc
+	  
+
+
+	   --WHERE t.UserType <> 'SalesUser' AND t.UserType <> 'sales' 
+
+	--SELECT Id,FristName,Lastname,Email,Address,Designation,[Status],[Password],[Address],Phone,Picture,Attachements,Source,Notes,StatusReason 
+
+	--from tblInstallUsers 
+
+	--order by Id desc
+
+	
+
+END
+
+--modified/created by Other Party
+
+
+
+
+GO
+
+

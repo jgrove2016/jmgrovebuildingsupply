@@ -450,7 +450,7 @@
                                         <asp:TemplateField HeaderText="Files" ItemStyle-HorizontalAlign="Center">
                                             <ItemTemplate>
                                                 <asp:HiddenField ID="Hiddenid" runat="server" Value='<%# Eval("srno")%>' />
-                                                <a href='<%# Eval("DocumentName","../CustomerDocs/{0}") %>' class="preview">
+                                                <a href='<%# Eval("DocumentName","../{0}") %>' class="preview">
                                                     <asp:Image ID="Image1" runat="server" Width="60px" CssClass="preview"
                                                         Height="90px" /></a>
                                                 <asp:Label ID="labelfile" ForeColor="Black" runat="server" Text='<%# Eval("DocumentName") %>' />

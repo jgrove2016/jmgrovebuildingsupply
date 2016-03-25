@@ -1837,7 +1837,7 @@
                                             <asp:ListItem Text="Installer - Helper" Value="InstallerHelper"></asp:ListItem>
                                             <asp:ListItem Text="Installer - Journeyman" Value="InstallerJourneyman"></asp:ListItem>
                                             <asp:ListItem Text="Installer - Mechanic" Value="InstallerMechanic"></asp:ListItem>
-                                            <asp:ListItem Text="Installer - Lead mechanic" Value="InstallerLead mechanic"></asp:ListItem>
+                                            <asp:ListItem Text="Installer - Lead mechanic" Value="InstallerLeadMechanic"></asp:ListItem>
                                             <asp:ListItem Text="Installer - Foreman" Value="InstallerForeman"></asp:ListItem>
                                             <asp:ListItem Text="Commercial Only" Value="CommercialOnly"></asp:ListItem>
                                             <asp:ListItem Text="SubContractor" Value="SubContractor"></asp:ListItem>

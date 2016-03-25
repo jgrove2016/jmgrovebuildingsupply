@@ -298,7 +298,7 @@ namespace JG_Prospect.Installer
                 }
                 else
                 {
-                    img.ImageUrl = DataBinder.Eval(e.Row.DataItem, "DocumentName").ToString().Replace("/CustomerDocs/CustomerDocs", "/CustomerDocs");
+                    img.ImageUrl = DataBinder.Eval(e.Row.DataItem, "DocumentName").ToString().Replace("LocationPics/../CustomerDocs/CustomerDocs", "/CustomerDocs");
                 }
                 if (DataBinder.Eval(e.Row.DataItem, "DocumentName").ToString().Contains("VendorQuotes") == true)
                 {

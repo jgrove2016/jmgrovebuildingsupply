@@ -3139,7 +3139,7 @@ namespace JG_Prospect.Sr_App
         }
 
 
-        private string GetId(string UserType, string UserStatus)
+        private string GetId_old(string UserType, string UserStatus)
         {
             DataTable dtId;
             string LastInt = string.Empty;
@@ -3196,6 +3196,46 @@ namespace JG_Prospect.Sr_App
             {
                 installId = installId + "-X";
             }
+
+            if (UserType.Contains("Installer"))
+            {
+                if (UserStatus == "Deactive")
+                {
+                    installId = installId + "-X";
+                }
+                else
+                {
+                    if (installId != "")
+                    {
+                        LastInt = (Convert.ToInt32(installId.Replace("INS", "")) + 1).ToString(); //This will remove leading zeros
+                        installId = "INS" + (LastInt.Length == 1 ? "00" : (LastInt.Length == 2 ? "0" : (LastInt.Length == 3 ? "0" : ""))) + LastInt;
+                    }
+                    else
+                    {
+                        installId = "INS001";
+                    }
+                }
+            }
+            else
+            {
+                if (UserStatus == "Deactive")
+                {
+                    installId = installId + "-X";
+                }
+                else
+                {
+                    if (installId != "")
+                    {
+                        LastInt = (Convert.ToInt32(installId.Replace("SUB", "")) + 1).ToString(); //This will remove leading zeros
+                        installId = "SUB" + (LastInt.Length == 1 ? "00" : (LastInt.Length == 2 ? "0" : (LastInt.Length == 3 ? "0" : ""))) + LastInt;
+                    }
+                    else
+                    {
+                        installId = "SUB001";
+                    }
+                }
+            }
+
             if (UserType == "Installer" && UserStatus != "Deactive")
             {
                 if (installId != "")
@@ -3455,7 +3495,60 @@ namespace JG_Prospect.Sr_App
             Session["IdGenerated"] = installId;
             return installId;
         }
+        private string GetId(string UserType, string UserStatus)
+        {
+            DataTable dtId;
+            string LastInt = string.Empty;
+            string installId = string.Empty;
 
+            dtId = InstallUserBLL.Instance.getMaxId(UserType, UserStatus);
+            if (dtId.Rows.Count > 0)
+            {
+                installId = Convert.ToString(dtId.Rows[0][0]);
+            }
+            if (UserType.Contains("Installer"))
+            {
+                if (UserStatus == "Deactive")
+                {
+                    installId = installId + "-X";
+                }
+                else
+                {
+                    if (installId != "")
+                    {
+                        LastInt = (Convert.ToInt32(installId.Replace("INS", "")) + 1).ToString(); //This will remove leading zeros
+                        installId = "INS" + (LastInt.Length == 1 ? "00" : (LastInt.Length == 2 ? "0" : (LastInt.Length == 3 ? "0" : ""))) + LastInt;
+                    }
+                    else
+                    {
+                        installId = "INS001";
+                    }
+                }
+            }
+            else
+            {
+                if (UserStatus == "Deactive")
+                {
+                    installId = installId + "-X";
+                }
+                else
+                {
+                    if (installId != "")
+                    {
+                        LastInt = (Convert.ToInt32(installId.Replace("SUB", "")) + 1).ToString(); //This will remove leading zeros
+                        installId = "SUB" + (LastInt.Length == 1 ? "00" : (LastInt.Length == 2 ? "0" : (LastInt.Length == 3 ? "0" : ""))) + LastInt;
+                    }
+                    else
+                    {
+                        installId = "SUB001";
+                    }
+                }
+            }
+
+            Session["installId"] = installId;
+            Session["IdGenerated"] = installId;
+            return installId;
+        }
         private void SendEmail(string emailId, string FName, string LName, string status, string Reason)
         {
             try
@@ -4241,7 +4334,7 @@ namespace JG_Prospect.Sr_App
                     Session["installId"] = GetUpdatedId(Convert.ToString(Session["installId"]));
                     objuser.InstallId = Convert.ToString(Session["installId"]);
                 }
-                DataSet dsCheckDuplicate = InstallUserBLL.Instance.CheckInstallUserOnEdit(txtemail.Text, txtPhone.Text, Convert.ToInt32(Session["ID"]));
+                DataSet dsCheckDuplicate = InstallUserBLL.Instance.CheckInstallUserOnEdit(txtemail.Text, txtPhone.Text, id);
                 if (dsCheckDuplicate.Tables[0].Rows.Count > 0)
                 {
                     ScriptManager.RegisterStartupScript(this, GetType(), "overlay", "alert('Record with same email or phone number already exists.')", true);
