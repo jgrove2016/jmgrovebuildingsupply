@@ -11638,6 +11638,28 @@ namespace JG_Prospect.Sr_App
                 lblReqEmpType.Visible = true;
                 rqEmpType.Enabled = true;
                 #endregion
+                string lMessage = "";
+                if (txtemail.Text == "")
+                {
+                    lMessage += "Email is required\n";
+                }
+                if (txtpassword.Text == "")
+                {
+                    lMessage += "Password is required\n";
+                }
+                else
+                {
+                    if(txtpassword1.Text != txtpassword.Text){
+                        lMessage += "Password and Confirm password does not match\n";
+                    }
+                }
+                if (lMessage!="")
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('" + lMessage + "')", true);
+                    return;
+                }
+                
+
                 //ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Fill new hire section above')", true);
                 //return;
             }
@@ -11860,7 +11882,8 @@ namespace JG_Prospect.Sr_App
                 lblConfirmPass.Visible = false;
             }
             #endregion
-
+            InstallUserBLL.Instance.UpdateInstallUserStatus(ddlstatus.SelectedValue,  Convert.ToInt32(Session["ID"]));
+            
         }
 
         //protected void btnPassword_Click(object sender, EventArgs e)

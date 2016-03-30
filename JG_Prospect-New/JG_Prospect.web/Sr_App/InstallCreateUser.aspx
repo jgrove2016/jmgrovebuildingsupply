@@ -7,8 +7,7 @@
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <link href="../Styles/dd.css" rel="stylesheet" />
-    <script src="../js/jquery.dd.min.js"></script>
+  
     <script src="~/Scripts/jquery.MultiFile.js" type="text/javascript"></script>
 
     <script type="text/javascript">
@@ -86,13 +85,7 @@
             document.getElementById('fade').style.display = 'block';
         }
         $(document).ready(function () {
-            $("#ddlstatus").click(function () {
-                if ($('#ddlstatus').val() == "Active") {
-                    $('#pnlcolaps').show(500);
-                } else {
-                    $("#pnlcolaps").hide(500);
-                }
-            });
+         
         });
     </script>
     <script type="text/javascript">
@@ -156,36 +149,7 @@
     </script>
     <script language="javascript" type="text/javascript">
         $(document).ready(function () {
-            var des = $("#ddldesignation").val();
-            $("#lnkW9").hide();
-            $("#lnkw4").hide();
-            $("#lnkI9").hide();
-            $("#lnkEsrow").hide();
-            $("#lnkface").hide();
-            if (des == "ForeMan") {
-                $("#lnkW9").hide();
-                $("#lnkw4").show();
-                $("#lnkI9").show();
-                $("#lnkEsrow").hide();
-                $("#lnkface").hide();
-                //Installer();
-            }
-            else if (des == "Installer") {
-                $("#lnkW9").hide();
-                $("#lnkw4").show();
-                $("#lnkI9").show();
-                $("#lnkEsrow").hide();
-                $("#lnkface").hide();
-
-            }
-            else if (des == "SubContractor") {
-                $("#lnkW9").show();
-                $("#lnkw4").hide();
-                $("#lnkI9").show();
-                $("#lnkEsrow").show();
-                $("#lnkface").show();
-
-            }
+            
 
         });
 
@@ -353,30 +317,49 @@
     </script>
     <script type="text/javascript">
         $(document).ready(function () {
-            try {
-                $("body select").msDropDown();
-            } catch (e) {
-                alert(e.message);
+            $("#ddlstatus").click(function () {
+                if ($('#ddlstatus').val() == "Active") {
+                    $('#pnlcolaps').show(500);
+                } else {
+                    $("#pnlcolaps").hide(500);
+                }
+            });
+
+            var des = $("#ddldesignation").val();
+            $("#lnkW9").hide();
+            $("#lnkw4").hide();
+            $("#lnkI9").hide();
+            $("#lnkEsrow").hide();
+            $("#lnkface").hide();
+            if (des == "ForeMan") {
+                $("#lnkW9").hide();
+                $("#lnkw4").show();
+                $("#lnkI9").show();
+                $("#lnkEsrow").hide();
+                $("#lnkface").hide();
+                //Installer();
             }
-            //On UpdatePanel Refresh
-            //debugger;
-            var prm = Sys.WebForms.PageRequestManager.getInstance();
-            if (prm != null) {
-                // debugger;
-                prm.add_beginRequest(function (sender, e) {
-                    if (sender._postBackSettings.panelsToUpdate != null) {
-                        $(".loading").show();
-                    }
-                });
-                prm.add_endRequest(function (sender, e) {
-                    if (sender._postBackSettings.panelsToUpdate != null) {
-                        $(".loading").hide();
-                        $("body select").msDropDown();
-                    }
-                });
-            };
+            else if (des == "Installer") {
+                $("#lnkW9").hide();
+                $("#lnkw4").show();
+                $("#lnkI9").show();
+                $("#lnkEsrow").hide();
+                $("#lnkface").hide();
+
+            }
+            else if (des == "SubContractor") {
+                $("#lnkW9").show();
+                $("#lnkw4").hide();
+                $("#lnkI9").show();
+                $("#lnkEsrow").show();
+                $("#lnkface").show();
+
+            }
+          
         });
+     
     </script>
+    <link href="../Styles/dd.css" rel="stylesheet" />
     <style>
         /* Absolute Center Spinner */
         .loading {
@@ -508,8 +491,10 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="loading" style="display: none">Loading&#8230;</div>
-    <asp:UpdatePanel ID="UpdatePanel8" runat="server">
+   <%-- <asp:UpdatePanel ID="UpdatePanel8" runat="server">
         <ContentTemplate>
+              --%>
+    
             <div class="right_panel">
                 <%--<asp:DropDownList runat="server" CssClass="form-control" ID="ddlCountry" Width="200px" OnPreRender="ddlCountry_PreRender">
                     <asp:ListItem Text="Install Prospect" Value="InstallProspect"></asp:ListItem>
@@ -3402,6 +3387,38 @@
                 <div id="fadePassword" class="black_overlay">
                 </div>
             </div>
-        </ContentTemplate>
-    </asp:UpdatePanel>
+  <%--      </ContentTemplate>
+    </asp:UpdatePanel>--%>
+    <script src="../js/jquery.dd.min.js"></script>
+    <script type="text/javascript">
+        try {
+            $("#<%=ddlstatus.ClientID%>").msDropDown();
+        } catch (e) {
+            alert(e.message);
+        }
+
+        //On UpdatePanel Refresh
+        //debugger;
+        var prm = Sys.WebForms.PageRequestManager.getInstance();
+        if (prm != null) {
+            // debugger;
+            prm.add_beginRequest(function (sender, e) {
+                if (sender._postBackSettings.panelsToUpdate != null) {
+                    $(".loading").show();
+                }
+            });
+            prm.add_endRequest(function (sender, e) {
+                if (sender._postBackSettings.panelsToUpdate != null) {
+                    $(".loading").hide();
+                    try {
+                        $("#<%=ddlstatus.ClientID%>").msDropDown();
+                     } catch (e) {
+                         alert(e.message);
+                     }
+
+                    alert('hi3');
+                }
+            });
+        }
+    </script>
 </asp:Content>

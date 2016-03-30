@@ -989,7 +989,7 @@ namespace JG_Prospect.DAL
             {
                 SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
                 {
-                    DbCommand command = database.GetStoredProcCommand("UDP_UpdateStatus");
+                    DbCommand command = database.GetStoredProcCommand("jgrov_User.UDP_UpdateStatus ");
                     command.CommandType = CommandType.StoredProcedure;
                     database.AddInParameter(command, "@id", DbType.String, Convert.ToInt32(id));
                     database.AddInParameter(command, "@status", DbType.String, Status);

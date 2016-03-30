@@ -9957,7 +9957,7 @@ namespace JG_Prospect.Sr_App
             }
             #endregion
 
-
+            InstallUserBLL.Instance.UpdateInstallUserStatus(ddlstatus.SelectedValue, Convert.ToInt32(Session["ID"]));
         }
 
         protected void btnPassword_Click(object sender, EventArgs e)

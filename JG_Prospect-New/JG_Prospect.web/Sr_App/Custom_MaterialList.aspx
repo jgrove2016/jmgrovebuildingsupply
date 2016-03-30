@@ -213,6 +213,7 @@
             opacity: 1;
             -moz-opacity: 1;
         }
+       
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -495,6 +496,29 @@
             </table>
         </asp:Panel>
         <div class="grid">
+            <fieldset >
+                <legend>Material requested by Installer</legend>
+                <asp:ListView ID="lstRequestedMaterial" runat="server"  ItemPlaceholderID="itemPlaceHolder" GroupPlaceholderID="groupPlaceHolder">
+                    <LayoutTemplate>
+                            <div>
+                                <asp:PlaceHolder ID="groupPlaceHolder" runat="server"></asp:PlaceHolder>
+                            </div>
+                        </LayoutTemplate>
+                        <GroupTemplate>
+                            <asp:PlaceHolder ID="itemPlaceHolder" runat="server"></asp:PlaceHolder>
+
+                        </GroupTemplate>
+                        <ItemTemplate>
+                            <h3 align="left">Product Category: 
+                                <asp:Label ID="lblProductCategory" runat="server" Text="Label"></asp:Label>
+                                <asp:HiddenField ID="hdnProductCatID" runat="server" Value='<%#Eval("ProductCatID")%>' />
+                                <div style="clear: both"></div>
+                            </h3>
+                        </ItemTemplate>
+                </asp:ListView>
+            </fieldset>
+        </div>
+        <div class="grid">
             <asp:UpdatePanel ID="updMaterialList" runat="server">
                 <ContentTemplate>
                     <div class="btn_sec">
@@ -504,6 +528,7 @@
                         <asp:Button ID="btnAddProdLines" runat="server" Text="Add Product Category" OnClick="btnAddProdLines_Click" />
 
                     </div>
+
                     <asp:ListView ID="lstCustomMaterialList" OnItemCommand="lstCustomMaterialList_ItemCommand" runat="server" OnItemDataBound="lstCustomMaterialList_ItemDataBound" ItemPlaceholderID="itemPlaceHolder" GroupPlaceholderID="groupPlaceHolder">
                         <LayoutTemplate>
                             <div>
@@ -525,18 +550,6 @@
                                         <asp:LinkButton ID="lnkAddProdCat" Visible="false" OnClick="lnkAddProdCat_Click" runat="server">Add</asp:LinkButton>
                                         <asp:LinkButton ID="lnkDeleteProdCat" CommandArgument='<%#Eval("ProductCatID") %>' OnClick="lnkDeleteProdCat_Click" runat="server" OnClientClick="return confirm('Deleting product category will delete all associated line items. Are you sure you want to delete?')">Delete</asp:LinkButton>
                                         <%--<asp:Button ID="btnDelete" runat="server" Text="Delete" CommandArgument='<%#Eval("ProductCatID") %>' onclick="btnDelete_Click" OnClientClick="return confirm('Deleting product category will delete all associated line items. Are you sure you want to delete?')" />--%>
-                                        <div style="float: right">
-                                            <asp:UpdatePanel ID="updVend" runat="server">
-                                                <ContentTemplate>
-                                                    Select Installer:
-                                                    <asp:DropDownCheckBoxes ID="ddlInstallerUser" ClientIDMode="AutoID" runat="server" Style="margin: -2em 0 0;" Width="250px" UseSelectAllNode="true" OnSelectedIndexChanged="ddlInstallerUser_SelectedIndexChanged" AutoPostBack="true">
-                                                    </asp:DropDownCheckBoxes>
-                                                </ContentTemplate>
-                                                <Triggers>
-                                                    <asp:AsyncPostBackTrigger ControlID="ddlInstallerUser" EventName="SelectedIndexChanged" />
-                                                </Triggers>
-                                            </asp:UpdatePanel>
-                                        </div>
                                         <div style="clear: both"></div>
                                     </h3>
 

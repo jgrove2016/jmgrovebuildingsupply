@@ -302,11 +302,7 @@
     
     <script type="text/javascript">
         $(document).ready(function () {
-            try {
-                $("body select").msDropDown();
-            } catch (e) {
-                alert(e.message);
-            }
+           
             //On UpdatePanel Refresh
             //debugger;
             var prm = Sys.WebForms.PageRequestManager.getInstance();
@@ -457,8 +453,8 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="loading" style="display: none">Loading&#8230;</div>
-    <asp:UpdatePanel ID="UpdatePanel8" runat="server">
-        <ContentTemplate>
+   <%-- <asp:UpdatePanel ID="UpdatePanel8" runat="server">
+        <Conten--tTemplate>--%>
             <div class="right_panel">
                 <!-- appointment tabs section start -->
                 <ul class="appointment_tab">
@@ -3347,6 +3343,13 @@
                 <div id="fadePassword" class="black_overlay">
                 </div>
             </div>
-        </ContentTemplate>
-    </asp:UpdatePanel>
+       <%-- </ContentTemplate>
+    </asp:Updat--%>ePanel>
+    <script type="text/javascript">
+        try {
+            $("#<%=ddlstatus.ClientID%>").msDropDown();
+        } catch (e) {
+            alert(e.message);
+        }
+    </script>
 </asp:Content>

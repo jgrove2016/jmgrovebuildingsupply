@@ -157,7 +157,7 @@ namespace JG_Prospect.Installer
             Availability a = new Availability();
             a.ReferenceId = ViewState[ViewStateKey.Key.ReferenceId.ToString()].ToString();
             //a.JobSequenceId = Convert.ToInt16(ViewState[ViewStateKey.Key.JobSequenceId.ToString()].ToString());
-            a.InstallerId = Convert.ToInt16(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()].ToString());
+            a.InstallerId = InstallerID;
             a.Primary = primary;
             a.Secondary1 = secondary1;
             a.Secondary2 = secondary2;
@@ -361,8 +361,8 @@ namespace JG_Prospect.Installer
                 Label lblReferenceId = (Label)e.Row.FindControl("lblReferenceId");
                 HiddenField hdnColour = (HiddenField)e.Row.FindControl("hdnColour");
                 HiddenField hdnJobSequenceId = (HiddenField)e.Row.FindControl("hdnJobSequenceId");
-                int installerId = Convert.ToInt16(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()].ToString());
-                DataSet ds = InstallUserBLL.Instance.GetInstallerAvailability(lblReferenceId.Text.Trim(), installerId);
+                
+                DataSet ds = InstallUserBLL.Instance.GetInstallerAvailability(lblReferenceId.Text.Trim(), InstallerID);
               
                 string availability = string.Empty;
 
@@ -398,8 +398,7 @@ namespace JG_Prospect.Installer
             ViewState[ViewStateKey.Key.ReferenceId.ToString()] = hdnReferenceID.Value;
             ViewState[ViewStateKey.Key.JobSequenceId.ToString()] = Convert.ToInt16(hdnJobSeqID.Value);
 
-            int installerId = Convert.ToInt16(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()].ToString());
-            DataSet ds = InstallUserBLL.Instance.GetInstallerAvailability(hdnReferenceID.Value.Trim(), installerId);
+            DataSet ds = InstallUserBLL.Instance.GetInstallerAvailability(hdnReferenceID.Value.Trim(), InstallerID);
 
             if (ds.Tables[0].Rows.Count > 0)
             {
@@ -475,7 +474,7 @@ namespace JG_Prospect.Installer
             cm.IsSrSalemanPermissionF = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
             cm.EmailStatus = JGConstant.EMAIL_STATUS_NONE;
             cm.RequestStatus = 0;
-            cm.InstallerID = Convert.ToInt32(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()].ToString());
+            cm.InstallerID = InstallerID;
             bool result = CustomBLL.Instance.AddCustomMaterialList(cm, JobID);
             BindCustomMaterialList();
         }
@@ -599,10 +598,10 @@ namespace JG_Prospect.Installer
             TextBox txtQTY = (TextBox)r.FindControl("txtQTY");
             TextBox txtUOM = (TextBox)r.FindControl("txtUOM");
             TextBox txtExtended = (TextBox)r.FindControl("txtExtended");
-            DropDownCheckBoxes ddlVendorList = (DropDownCheckBoxes)r.FindControl("ddlVendorName");
-            TextBox txtMaterialCost = (TextBox)r.FindControl("txtMaterialCost");
-            DropDownList ddlExtent = (DropDownList)r.FindControl("ddlExtent");
-            TextBox txtAmount = (TextBox)r.FindControl("txtAmount");
+            
+            //TextBox txtMaterialCost = (TextBox)r.FindControl("txtMaterialCost");
+            
+            
 
             HiddenField hdnMaterialListId = (HiddenField)r.FindControl("hdnMaterialListId");
             HiddenField hdnEmailStatus = (HiddenField)r.FindControl("hdnEmailStatus");
@@ -619,18 +618,8 @@ namespace JG_Prospect.Installer
             cm.MaterialList = txtDescription.Text;
             cm.Quantity = txtQTY.Text != "" ? Convert.ToInt32(txtQTY.Text) : 0;
             cm.UOM = txtUOM.Text;
-            cm.MaterialCost = txtMaterialCost.Text != "" ? Convert.ToInt32(txtMaterialCost.Text) : 0;
-            cm.extend = txtExtended.Text;
-
-            string lVendorIDs = "";
-            foreach (System.Web.UI.WebControls.ListItem item in ddlVendorList.Items)
-            {
-                if (item.Selected == true)
-                {
-                    lVendorIDs += item.Value + ",";
-                }
-            }
-            cm.VendorIds = lVendorIDs.TrimEnd(',');
+            //cm.MaterialCost = txtMaterialCost.Text != "" ? Convert.ToInt32(txtMaterialCost.Text) : 0;
+            //cm.extend = txtExtended.Text;
 
             if (status == "C") //mail was already sent to vendor categories
             {
@@ -646,6 +635,7 @@ namespace JG_Prospect.Installer
                 cm.IsSrSalemanPermissionA = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
                 cm.EmailStatus = JGConstant.EMAIL_STATUS_NONE;
             }
+            cm.RequestStatus = 1;
 
             bool result = CustomBLL.Instance.AddCustomMaterialList(cm, JobID);//,productTypeId,estimateId);
 
@@ -736,8 +726,8 @@ namespace JG_Prospect.Installer
             cm.IsForemanPermission = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
             cm.IsSrSalemanPermissionF = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
             cm.EmailStatus = JGConstant.EMAIL_STATUS_NONE;
-            cm.InstallerID = 0;
-            cm.RequestStatus = 0;
+            cm.InstallerID = InstallerID;
+            cm.RequestStatus = 1;
             bool result = CustomBLL.Instance.AddCustomMaterialList(cm, JobID);
             BindCustomMaterialList();
         }
@@ -770,7 +760,7 @@ namespace JG_Prospect.Installer
                 DropDownList ddlCategory = (DropDownList)e.Item.FindControl("ddlCategory");
                 DataRowView lDrView = (DataRowView)e.Item.DataItem;
                 int lProdCatID = Convert.ToInt32(lDrView["ProductCatID"]);
-                DataView lDvMaterialList = new DataView(PageDataset.Tables[1], "ProductCatID=" + lProdCatID, "id asc", DataViewRowState.OriginalRows);
+                DataView lDvMaterialList = new DataView(RequestMaterialDataSet.Tables[1], "ProductCatID=" + lProdCatID, "id asc", DataViewRowState.OriginalRows);
                
                 ddlCategory.DataSource = ProductDataset;
                 ddlCategory.DataTextField = "ProductName";
@@ -803,8 +793,43 @@ namespace JG_Prospect.Installer
                 BindCustomMaterialList();
             }
         }
-        
+        protected void grdProdLinesReq_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                DataRowView lDrProdLine = (DataRowView)e.Row.DataItem;
+                Label lblDescription = (Label)e.Row.FindControl("lblDescription");
+                TextBox txtDescription = (TextBox)e.Row.FindControl("txtDescription");
+                LinkButton lnkDeleteLineItems = (LinkButton)e.Row.FindControl("lnkDeleteLineItems");
+                if (lDrProdLine["RequestStatus"].ToString() == "1")
+                {
+                    txtDescription.Visible = true;
+                    lblDescription.Visible = false;
+                    lnkDeleteLineItems.Enabled = true;
+                    if (Convert.ToString(lDrProdLine["InstallerID"]) != InstallerID.ToString())
+                    {
+                        lnkDeleteLineItems.OnClientClick = "alert('You cannot delete this item, it was not requested by you.');return false;";
+                    }
+                }
+                else
+                {
+                    txtDescription.Visible = false;
+                    lblDescription.Visible = true;
+                    if (Convert.ToString(lDrProdLine["InstallerID"]) != InstallerID.ToString())
+                    {
+                        lnkDeleteLineItems.OnClientClick = "alert('You cannot delete this item, it was not requested by you.');return false;";
+                    }
+                    else
+                    {
+                        lnkDeleteLineItems.OnClientClick = "return confirm('This item is approved by admin. Do you wish to delete it?');";
+                    }
+                }
+                
+            }
+        }
         #endregion
+
+      
         #endregion
 
     }

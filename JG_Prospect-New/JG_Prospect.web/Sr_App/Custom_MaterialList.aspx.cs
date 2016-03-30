@@ -3250,46 +3250,49 @@ namespace JG_Prospect.Sr_App
                 for (int j = 0; j < PageDataset.Tables[1].Rows.Count; j++)
                 {
                     DataRow dr = PageDataset.Tables[1].Rows[j];
-                    CustomMaterialList cm = new CustomMaterialList();
-                    cm.Id = Convert.ToInt16(dr["Id"]);
-                    cm.MaterialList = dr["MaterialList"].ToString();
-                    cm.VendorCategoryId = Convert.ToInt16(dr["VendorCategoryId"]);
-                    cm.VendorCategoryName = dr["VendorCategoryNm"].ToString();
-                    if (dr["VendorId"].ToString() != "")
-                        cm.VendorId = Convert.ToInt16(dr["VendorId"]);
-                    cm.VendorName = dr["VendorName"].ToString();
-                    if (dr["Amount"].ToString() != "")
-                        cm.Amount = Convert.ToDecimal(dr["Amount"]);
-                    cm.DocName = dr["DocName"].ToString();
-                    cm.TempName = dr["TempName"].ToString();
-                    cm.IsForemanPermission = dr["IsForemanPermission"].ToString();
-                    cm.IsSrSalemanPermissionF = dr["IsSrSalemanPermissionF"].ToString();
-                    cm.IsAdminPermission = dr["IsAdminPermission"].ToString();
-                    cm.IsSrSalemanPermissionA = dr["IsSrSalemanPermissionA"].ToString();
-                    cm.Status = JGConstant.CustomMaterialListStatus.Unchanged;
+                    if (dr["RequestStatus"].ToString() != "1")
+                    {
+                        CustomMaterialList cm = new CustomMaterialList();
+                        cm.Id = Convert.ToInt16(dr["Id"]);
+                        cm.MaterialList = dr["MaterialList"].ToString();
+                        cm.VendorCategoryId = Convert.ToInt16(dr["VendorCategoryId"]);
+                        cm.VendorCategoryName = dr["VendorCategoryNm"].ToString();
+                        if (dr["VendorId"].ToString() != "")
+                            cm.VendorId = Convert.ToInt16(dr["VendorId"]);
+                        cm.VendorName = dr["VendorName"].ToString();
+                        if (dr["Amount"].ToString() != "")
+                            cm.Amount = Convert.ToDecimal(dr["Amount"]);
+                        cm.DocName = dr["DocName"].ToString();
+                        cm.TempName = dr["TempName"].ToString();
+                        cm.IsForemanPermission = dr["IsForemanPermission"].ToString();
+                        cm.IsSrSalemanPermissionF = dr["IsSrSalemanPermissionF"].ToString();
+                        cm.IsAdminPermission = dr["IsAdminPermission"].ToString();
+                        cm.IsSrSalemanPermissionA = dr["IsSrSalemanPermissionA"].ToString();
+                        cm.Status = JGConstant.CustomMaterialListStatus.Unchanged;
 
-                    cm.ForemaneID = Convert.ToInt32(dr["foremanID"].ToString());
-                    cm.ForemanFirstName = dr["foremanFirstName"].ToString();
-                    cm.ForemanLastName = dr["foremanLastName"].ToString();
-                    cm.ForemanUserName = dr["foremanUserName"].ToString();
+                        cm.ForemaneID = Convert.ToInt32(dr["foremanID"].ToString());
+                        cm.ForemanFirstName = dr["foremanFirstName"].ToString();
+                        cm.ForemanLastName = dr["foremanLastName"].ToString();
+                        cm.ForemanUserName = dr["foremanUserName"].ToString();
 
-                    cm.SrSaleManFID = Convert.ToInt32(dr["SLFID"].ToString());
-                    cm.SrSaleManFFirstName = dr["SLFFirstName"].ToString();
-                    cm.SrSaleManFLastName = dr["SLFLastName"].ToString();
-                    cm.SrSaleManFUserName = dr["SLFUserName"].ToString();
+                        cm.SrSaleManFID = Convert.ToInt32(dr["SLFID"].ToString());
+                        cm.SrSaleManFFirstName = dr["SLFFirstName"].ToString();
+                        cm.SrSaleManFLastName = dr["SLFLastName"].ToString();
+                        cm.SrSaleManFUserName = dr["SLFUserName"].ToString();
 
-                    cm.SrSaleManAID = Convert.ToInt32(dr["SLAID"].ToString());
-                    cm.SrSaleManAFirstName = dr["SLAFirstName"].ToString();
-                    cm.SrSaleManALastName = dr["SLALastName"].ToString();
-                    cm.SrSaleManAUserName = dr["SLAUserName"].ToString();
+                        cm.SrSaleManAID = Convert.ToInt32(dr["SLAID"].ToString());
+                        cm.SrSaleManAFirstName = dr["SLAFirstName"].ToString();
+                        cm.SrSaleManALastName = dr["SLALastName"].ToString();
+                        cm.SrSaleManAUserName = dr["SLAUserName"].ToString();
 
-                    cm.AdminID = Convert.ToInt32(dr["ADID"].ToString());
-                    cm.AdminFirstName = dr["ADFirstName"].ToString();
-                    cm.AdminLastName = dr["ADLastName"].ToString();
-                    cm.AdminUserName = dr["ADUserName"].ToString();
-                    cmList.Add(cm);
-                    StaffID = Convert.ToInt32(dr["lastUpdatedByID"].ToString());
-                    StaffName = dr["lastUpdatedByfirstname"].ToString().Trim() != "" ? (dr["lastUpdatedByfirstName"] + " " + dr["lastUpdatedBylastname"]) : dr["lastUpdatedByusername"].ToString();
+                        cm.AdminID = Convert.ToInt32(dr["ADID"].ToString());
+                        cm.AdminFirstName = dr["ADFirstName"].ToString();
+                        cm.AdminLastName = dr["ADLastName"].ToString();
+                        cm.AdminUserName = dr["ADUserName"].ToString();
+                        cmList.Add(cm);
+                        StaffID = Convert.ToInt32(dr["lastUpdatedByID"].ToString());
+                        StaffName = dr["lastUpdatedByfirstname"].ToString().Trim() != "" ? (dr["lastUpdatedByfirstName"] + " " + dr["lastUpdatedBylastname"]) : dr["lastUpdatedByusername"].ToString();
+                    }
                 }
             }
 
@@ -3303,15 +3306,25 @@ namespace JG_Prospect.Sr_App
                     CustomerName = PageDataset.Tables[2].Rows[0]["CustomerName"].ToString() + " " + PageDataset.Tables[2].Rows[0]["LastName"].ToString();
                 }
             }
-
+            for (int j = 0; j < PageDataset.Tables[0].Rows.Count; j++)
+            {
+                DataView lDvFilter = new DataView(PageDataset.Tables[1], "ProductCatID=" + PageDataset.Tables[0].Rows[j]["ProductCatID"].ToString() + " and RequestStatus=1", "id desc", DataViewRowState.None);
+                if (lDvFilter.Table.Rows.Count > 0)
+                {
+                    PageDataset.Tables[0].Rows[j]["RequestStatus"] = "1";
+                }
+            }
 
             //cmList.Add(CreateSkeletonRecord());
 
             ViewState["CustomMaterialList"] = cmList;
             BindCustomMaterialList(cmList);
             SetAccessLevel();
-            lstCustomMaterialList.DataSource = PageDataset.Tables[0];
+            lstCustomMaterialList.DataSource = PageDataset.Tables[0].Select("RequestStatus<>'1'");
             lstCustomMaterialList.DataBind();
+
+            lstRequestedMaterial.DataSource = PageDataset.Tables[0].Select("RequestStatus='1'");
+            lstRequestedMaterial.DataBind();
 
         }
 
@@ -3965,10 +3978,6 @@ namespace JG_Prospect.Sr_App
             {
 
             }
-        }
-        protected void ddlInstallerUser_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
         protected void btnAddInstaller_Click(object sender, EventArgs e)
         {

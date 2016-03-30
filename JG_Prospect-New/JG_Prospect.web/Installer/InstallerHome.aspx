@@ -65,8 +65,8 @@
         }
 
         .grid td {
-          /*  padding: 1px !important;
-            border-bottom: #ccc 1px solid;*/
+            padding: 1px !important;
+            border-bottom: #ccc 1px solid;
         }
 
         #btnAddProdLines {
@@ -89,6 +89,10 @@
         fieldset{
             border:solid 1px;
             padding:5px;
+        }
+         .form_panel ul li table tr td, .form_panel table tr td {
+            padding: 3px;
+
         }
     </style>
     <script type="text/javascript">
@@ -237,7 +241,7 @@
                             <div class="clr"></div>
                             <div id="dvRequestedMaterial">
                                 <fieldset>
-                                    <legend>Request Material</legend>
+                                    <legend>Installer Edit / Request Material</legend>
                                     <asp:UpdatePanel ID="updMaterialList" runat="server">
                                         <ContentTemplate>
                                             <div class="btn_sec">
@@ -273,7 +277,7 @@
 
 
 
-                                                            <asp:GridView ID="grdProdLinesReq" Width="100%" runat="server"  AutoGenerateColumns="false">
+                                                            <asp:GridView GridLines="Both" CellPadding="0" ID="grdProdLinesReq" Width="100%" runat="server"  AutoGenerateColumns="false" OnRowDataBound="grdProdLinesReq_RowDataBound">
                                                                 <Columns>
                                                                     <asp:TemplateField HeaderText="Line" HeaderStyle-Width="4%">
                                                                         <ItemTemplate>
@@ -288,9 +292,10 @@
                                                                             <asp:HiddenField ID="hdnProductCatID" runat="server" Value='<%#Eval("ProductCatID")%>' />
                                                                         </ItemTemplate>
                                                                     </asp:TemplateField>
-                                                                    <asp:TemplateField HeaderText="JG sku- vendor part #" Visible="false">
+                                                                    <asp:TemplateField HeaderText="JG sku- vendor part #" >
                                                                         <ItemTemplate>
-                                                                            <asp:UpdatePanel ID="updSku" runat="server">
+                                                                            <asp:Label ID="lblSkuPartNo" runat="server" Text='<%# Eval("JGSkuPartNo") %>'></asp:Label>
+                                                                            <asp:UpdatePanel ID="updSku" runat="server" Visible="true">
                                                                                 <ContentTemplate>
                                                                                     <asp:TextBox ID="txtSkuPartNo" CssClass="text-style" Text='<%# Eval("JGSkuPartNo") %>' MaxLength="18" runat="server" ClientIDMode="Static" OnTextChanged="txtSkuPartNo_TextChanged" AutoPostBack="true"></asp:TextBox>
                                                                                 </ContentTemplate>
@@ -302,6 +307,7 @@
                                                                     </asp:TemplateField>
                                                                     <asp:TemplateField HeaderText="Description" HeaderStyle-Width="25%">
                                                                         <ItemTemplate>
+                                                                            <asp:Label ID="lblDescription" runat="server" Text='<%# Eval("MaterialList") %>'></asp:Label>
                                                                             <asp:UpdatePanel ID="updDesc" runat="server">
                                                                                 <ContentTemplate>
                                                                                     <asp:TextBox ID="txtDescription" CssClass="text-style" Text='<%# Eval("MaterialList") %>' runat="server" ClientIDMode="Static" OnTextChanged="txtDescription_TextChanged" AutoPostBack="true"></asp:TextBox>
@@ -312,7 +318,7 @@
                                                                             </asp:UpdatePanel>
                                                                         </ItemTemplate>
                                                                     </asp:TemplateField>
-                                                                    <asp:TemplateField HeaderText="Quantity">
+                                                                    <asp:TemplateField HeaderText="Quantity" HeaderStyle-Width="10%">
                                                                         <ItemTemplate>
                                                                             <asp:UpdatePanel ID="updQty" runat="server">
                                                                                 <ContentTemplate>
@@ -324,7 +330,7 @@
                                                                             </asp:UpdatePanel>
                                                                         </ItemTemplate>
                                                                     </asp:TemplateField>
-                                                                    <asp:TemplateField HeaderText="UOM">
+                                                                    <asp:TemplateField HeaderText="UOM" HeaderStyle-Width="15%">
                                                                         <ItemTemplate>
                                                                             <asp:UpdatePanel ID="updUOM" runat="server">
                                                                                 <ContentTemplate>
@@ -336,9 +342,9 @@
                                                                             </asp:UpdatePanel>
                                                                         </ItemTemplate>
                                                                     </asp:TemplateField>
-                                                                    <asp:TemplateField HeaderText="Cost"><%--Material Cost Per Item--%>
+                                                                    <asp:TemplateField HeaderText="Cost" Visible="false"><%--Material Cost Per Item--%>
                                                                         <ItemTemplate>
-                                                                            <asp:UpdatePanel ID="updMC" runat="server">
+                                                                            <asp:UpdatePanel ID="updMC" runat="server" Visible="false">
                                                                                 <ContentTemplate>
 
                                                                                     <asp:TextBox ID="txtMaterialCost" CssClass="text-style" AutoPostBack="true" Text='<%# Eval("MaterialCost") %>' OnTextChanged="txtMaterialCost_TextChanged" runat="server" ClientIDMode="Static" onkeypress="return onlyDotsAndNumbers(event)"></asp:TextBox>
@@ -349,7 +355,7 @@
                                                                             </asp:UpdatePanel>
                                                                         </ItemTemplate>
                                                                     </asp:TemplateField>
-                                                                    <asp:TemplateField HeaderText="Extended">
+                                                                    <asp:TemplateField HeaderText="Extended" Visible="false">
                                                                         <ItemTemplate>
                                                                             <asp:UpdatePanel ID="updExt" runat="server">
                                                                                 <ContentTemplate>
@@ -360,6 +366,11 @@
                                                                                     <asp:AsyncPostBackTrigger ControlID="txtExtended" EventName="TextChanged" />
                                                                                 </Triggers>
                                                                             </asp:UpdatePanel>
+                                                                        </ItemTemplate>
+                                                                    </asp:TemplateField>
+                                                                      <asp:TemplateField HeaderText="Request Status">
+                                                                        <ItemTemplate>
+                                                                            <asp:Label ID="lblReqStatus" runat="server" Text='<%#(Eval("RequestStatus").ToString() == "1" ? "Pending": (Eval("RequestStatus").ToString() == "3" ?"Rejected":"Accepted" )) %>'></asp:Label>
                                                                         </ItemTemplate>
                                                                     </asp:TemplateField>
                                                                     <asp:TemplateField HeaderText="">
@@ -386,7 +397,7 @@
                                     </asp:UpdatePanel>
                                 </fieldset>
                             </div>
-                            <div id="dvCustomMaterial">
+                            <div id="dvCustomMaterial" style="display:none">
                                 <asp:ListView ID="lstCustomMaterialList" runat="server" OnItemDataBound="lstCustomMaterialList_ItemDataBound" ItemPlaceholderID="itemPlaceHolder" GroupPlaceholderID="groupPlaceHolder">
                                     <LayoutTemplate>
                                         <div>
