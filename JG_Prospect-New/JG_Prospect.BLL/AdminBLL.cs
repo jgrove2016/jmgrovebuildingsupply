@@ -102,6 +102,38 @@ namespace JG_Prospect.BLL
             return AdminDAL.Instance.GetProductLineForGrid();
         }
 
+
+        public DataSet InsertProduct_PriceControl(string ProductLineName)
+        {
+            return AdminDAL.Instance.InsertProduct_PriceControl(ProductLineName);
+        }
+
+        public DataSet UpdateProduct_PriceControl(string ProductLineName, int ProdId)
+        {
+            return AdminDAL.Instance.UpdateProduct_PriceControl(ProductLineName, ProdId);
+        }
+
+        public DataSet SelectProduct_PriceControl(int ProductId)
+        {
+            return AdminDAL.Instance.SelectProduct_PriceControl(ProductId);
+        }
+
+        public DataSet DeleteProduct_PriceControl(int ProductId)
+        {
+            return AdminDAL.Instance.DeleteProduct_PriceControl(ProductId);
+        }
+        public DataSet CheckDuplicateProduct_PriceControl(string Productname)
+        {
+            return AdminDAL.Instance.CheckDuplicateProduct_PriceControl(Productname);
+        }
+
+        public DataSet CheckDuplicateProduct_Update_PriceControl(string Productname, int ProdId)
+        {
+            return AdminDAL.Instance.CheckDuplicateProduct_Update_PriceControl(Productname, ProdId);
+        }
+
+
+
         public DataSet GetContractTemplate(string ProductLineName)
         {
             return AdminDAL.Instance.GetContractTemplateByName(ProductLineName);

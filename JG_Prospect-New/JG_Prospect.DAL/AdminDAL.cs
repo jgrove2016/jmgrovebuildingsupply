@@ -449,6 +449,99 @@ namespace JG_Prospect.DAL
         }
 
 
+
+        public DataSet SelectProduct_PriceControl(int ProductId)
+        {
+            DataSet result = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_SelectProduct_PriceControl");
+                    database.AddInParameter(command, "@ProductId", DbType.Int32, ProductId);
+                    database.AddInParameter(command, "@Type", DbType.String, "S");
+                    command.CommandType = CommandType.StoredProcedure;
+                    result = database.ExecuteDataSet(command);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+                return null;
+            }
+        }
+
+
+        public DataSet DeleteProduct_PriceControl(int ProductId)
+        {
+            DataSet result = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_SelectProduct_PriceControl");
+                    database.AddInParameter(command, "@ProductId", DbType.Int32, ProductId);
+                    database.AddInParameter(command, "@Type", DbType.String, "D");
+                    command.CommandType = CommandType.StoredProcedure;
+                    result = database.ExecuteDataSet(command);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+                return null;
+            }
+        }
+
+
+        public DataSet CheckDuplicateProduct_PriceControl(string Productname)
+        {
+            DataSet result = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_SelectProduct_PriceControl");
+                    database.AddInParameter(command, "@ProductName", DbType.String, Productname);
+                    database.AddInParameter(command, "@Type", DbType.String, "Dup");
+                    command.CommandType = CommandType.StoredProcedure;
+                    result = database.ExecuteDataSet(command);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+                return null;
+            }
+        }
+
+
+        public DataSet CheckDuplicateProduct_Update_PriceControl(string Productname, int ProdId)
+        {
+            DataSet result = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_SelectProduct_PriceControl");
+                    database.AddInParameter(command, "@ProductName", DbType.String, Productname);
+                    database.AddInParameter(command, "@ProductId", DbType.Int32, ProdId);
+                    database.AddInParameter(command, "@Type", DbType.String, "DupU");
+                    command.CommandType = CommandType.StoredProcedure;
+                    result = database.ExecuteDataSet(command);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+                return null;
+            }
+        }
+
         public DataSet GetContractTemplateByName(string ProductLineName)
         {
             DataSet result = new DataSet();
@@ -458,6 +551,54 @@ namespace JG_Prospect.DAL
                 {
                     DbCommand command = database.GetStoredProcCommand("USP_GetContractTemplateByNameNew");
                     database.AddInParameter(command, "@Html_Name", DbType.String, ProductLineName);
+                    command.CommandType = CommandType.StoredProcedure;
+                    result = database.ExecuteDataSet(command);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+                return null;
+            }
+        }
+
+
+        public DataSet InsertProduct_PriceControl(string ProductLineName)
+        {
+            DataSet result = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_InsertProduct_PriceControl");
+                    database.AddInParameter(command, "@ProductName", DbType.String, ProductLineName);
+                    database.AddInParameter(command, "@Type", DbType.String, "I");
+
+                    command.CommandType = CommandType.StoredProcedure;
+                    result = database.ExecuteDataSet(command);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+                return null;
+            }
+        }
+
+        public DataSet UpdateProduct_PriceControl(string ProductLineName, int ProdId)
+        {
+            DataSet result = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_InsertProduct_PriceControl");
+                    database.AddInParameter(command, "@ProductName", DbType.String, ProductLineName);
+                    database.AddInParameter(command, "@ProductId", DbType.Int32, ProdId);
+                    database.AddInParameter(command, "@Type", DbType.String, "U");
+
                     command.CommandType = CommandType.StoredProcedure;
                     result = database.ExecuteDataSet(command);
                 }
