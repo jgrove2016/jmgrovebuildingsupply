@@ -3320,7 +3320,7 @@ namespace JG_Prospect.Sr_App
             ViewState["CustomMaterialList"] = cmList;
             BindCustomMaterialList(cmList);
             SetAccessLevel();
-            lstCustomMaterialList.DataSource = PageDataset.Tables[0].Select("RequestStatus<>'1'");
+            lstCustomMaterialList.DataSource = PageDataset.Tables[0];//PageDataset.Tables[0].Select("RequestStatus<>'1'");
             lstCustomMaterialList.DataBind();
 
             lstRequestedMaterial.DataSource = PageDataset.Tables[0].Select("RequestStatus='1'");

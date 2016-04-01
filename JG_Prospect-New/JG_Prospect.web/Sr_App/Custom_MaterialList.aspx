@@ -495,7 +495,7 @@
                 </tr>
             </table>
         </asp:Panel>
-        <div class="grid">
+        <div class="grid" style="display:none">
             <fieldset >
                 <legend>Material requested by Installer</legend>
                 <asp:ListView ID="lstRequestedMaterial" runat="server"  ItemPlaceholderID="itemPlaceHolder" GroupPlaceholderID="groupPlaceHolder">
@@ -511,7 +511,7 @@
                         <ItemTemplate>
                             <h3 align="left">Product Category: 
                                 <asp:Label ID="lblProductCategory" runat="server" Text="Label"></asp:Label>
-                                <asp:HiddenField ID="hdnProductCatID" runat="server" Value='<%#Eval("ProductCatID")%>' />
+                                <%--<asp:HiddenField ID="hdnProductCatID" runat="server" Value='<%#Eval("ProductCatID")%>' />--%>
                                 <div style="clear: both"></div>
                             </h3>
                         </ItemTemplate>
