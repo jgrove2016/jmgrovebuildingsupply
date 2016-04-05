@@ -21,6 +21,7 @@ using System.Drawing;
 using System.Web.Script.Serialization;
 using System.Data.SqlClient;
 using Org.BouncyCastle.Asn1.Ocsp;
+using Newtonsoft.Json;
 
 namespace JG_Prospect.Sr_App
 {
@@ -96,7 +97,7 @@ namespace JG_Prospect.Sr_App
                     strerror.Append("before folder delete vendors category");
                     bindfordeletevender();
                     strerror.Append("after folder delete vendors category");
-                    ScriptManager.RegisterStartupScript(this, GetType(), "initialize", "initialize();", true);
+                    //ScriptManager.RegisterStartupScript(this, GetType(), "initialize", "initialize();", true);
                     //lnkVendorCategory.ForeColor = System.Drawing.Color.DarkGray;
                     //lnkVendorCategory.Enabled = false;
                     //lnkVendor.Enabled = true;
@@ -118,6 +119,7 @@ namespace JG_Prospect.Sr_App
             {
                 IsPageRefresh = true;
             }
+            ScriptManager.RegisterStartupScript(this, GetType(), "initialize", "initialize();", true);
         }
 
         // Modification
@@ -150,9 +152,27 @@ namespace JG_Prospect.Sr_App
                 MType = rdoManufacturer.Text;
             return MType;
         }
+        public void SetManufacturerType(string Mtype)
+        {
+            if (Mtype == "Retail/Wholesale")
+            {
+                rdoRetailWholesale.Checked = true;
+                rdoManufacturer.Checked = false;
+            }
+            else if (Mtype == "Manufacturer")
+            {
+                rdoRetailWholesale.Checked = false;
+                rdoManufacturer.Checked = true;
+            }
+            else
+            {
+                rdoRetailWholesale.Checked = true;
+                rdoManufacturer.Checked = false;
+            }
+        }
         protected void rdoRetailWholesale_CheckedChanged(object sender, EventArgs e)
         {
-            System.Threading.Thread.Sleep(2000);
+            //System.Threading.Thread.Sleep(2000);
             if (ddlprdtCategory.SelectedValue.ToString() != "Select")
                 BindVendorByProdCat(ddlprdtCategory.SelectedValue.ToString());
             else
@@ -276,8 +296,11 @@ namespace JG_Prospect.Sr_App
             grdVendorList.DataBind();
             DataSet ds = new DataSet();
             ds = VendorBLL.Instance.GetVendorList(FilterParams, FilterBy, ManufacturerType, VendorCategoryId);
-            grdVendorList.DataSource = ds;
-            grdVendorList.DataBind();
+            if (ds.Tables.Count > 0)
+            {
+                grdVendorList.DataSource = ds;
+                grdVendorList.DataBind();
+            }
         }
 
         public class NameValue
@@ -296,10 +319,14 @@ namespace JG_Prospect.Sr_App
         public class EmailClass
         {
             public string EmailType { get; set; }
-            public string Email { get; set; }
+            public List<EmailCls> Email { get; set; }
             public string FirstName { get; set; }
             public string LastName { get; set; }
             public List<ContactClass> Contact { get; set; }
+        }
+        public class EmailCls
+        {
+            public string Email { get; set; }
         }
         public class ContactClass
         {
@@ -330,7 +357,9 @@ namespace JG_Prospect.Sr_App
                     drow["VendorId"] = vendorid;
                     drow["EmailType"] = VendorEmails[i].EmailType.ToString();
                     drow["SeqNo"] = i + 1;
-                    drow["Email"] = VendorEmails[i].Email.ToString();
+                    JavaScriptSerializer jsEmailSerializer = new JavaScriptSerializer();
+                    string serializedEmailJson = jsEmailSerializer.Serialize(VendorEmails[i].Email);
+                    drow["Email"] = serializedEmailJson;
                     drow["FName"] = VendorEmails[i].FirstName.ToString();
                     drow["LName"] = VendorEmails[i].LastName.ToString();
                     JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
@@ -438,16 +467,48 @@ namespace JG_Prospect.Sr_App
 
                 objvendor.vendor_category_id = Convert.ToInt32(ddlVndrCategory.SelectedValue);
 
+                string primaryEmail = "", fName = "", lName = "", contactNo = "", contactExten = "", BillingAddress = "";
+                DataTable dtEmails = (DataTable)HttpContext.Current.Session["dtVendorEmail"];
+                if (dtEmails.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dtEmails.Rows.Count; i++)
+                    {
+                        if (dtEmails.Rows[i]["EmailType"].ToString() == "Primary")
+                        {
+                            List<EmailCls> primEmailList = JsonConvert.DeserializeObject<List<EmailCls>>(dtEmails.Rows[i]["Email"].ToString());
+                            //dynamic primEmailList = new JavaScriptSerializer().DeserializeObject(dtEmails.Rows[i]["Email"].ToString());
+                            primaryEmail = primEmailList[0].Email;
+                            fName = dtEmails.Rows[i]["FName"].ToString();
+                            lName = dtEmails.Rows[i]["LName"].ToString();
+                            List<ContactClass> primContactList = JsonConvert.DeserializeObject<List<ContactClass>>(dtEmails.Rows[i]["Contact"].ToString());
+                            contactNo = primContactList[0].Number;
+                            contactExten = primContactList[0].Extension;
+                            break;
+                        }
+                    }
+                }
 
+                DataTable dtAddress = (DataTable)HttpContext.Current.Session["dtVendorAddress"];
+                if (dtAddress.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dtAddress.Rows.Count; i++)
+                    {
+                        if (dtAddress.Rows[i]["AddressType"].ToString() == "Billing")
+                        {
+                            BillingAddress = dtAddress.Rows[i]["Address"].ToString();
+                            break;
+                        }
+                    }
+                }
                 objvendor.fax = txtVendorFax.Text;
-                objvendor.mail = txtprimaryemail.Text;
-                objvendor.contract_person = txtFName.Text + " " + txtLName.Text;
-                objvendor.contract_number = txtContact1.Text;
-                objvendor.ContactExten = txtContactExten1.Text;
+                objvendor.mail = primaryEmail;
+                objvendor.contract_person = fName + " " + lName;
+                objvendor.contract_number = contactNo;
+                objvendor.ContactExten = contactExten;
                 objvendor.address = txtPrimaryAddress.Text;
                 objvendor.notes = "";
-                objvendor.ManufacturerType = (ddlmanufacturertype.SelectedValue == "Select") ? "" : ddlmanufacturertype.SelectedValue;
-                objvendor.BillingAddress = txtBillingAddr.Text;
+                objvendor.ManufacturerType = GetManufacturerType();
+                objvendor.BillingAddress = BillingAddress;
                 objvendor.TaxId = txtTaxId.Text;
                 objvendor.ExpenseCategory = "";
                 objvendor.AutoTruckInsurance = "";
@@ -473,14 +534,13 @@ namespace JG_Prospect.Sr_App
         }
         protected void clear()
         {
-            txtContact1.Text = txtContactExten1.Text = txtFName.Text = txtLName.Text = txtVendorFax.Text = txtprimaryemail.Text = txtVendorNm.Text = txtVendorId.Text = null;
-            txtWebsite.Text = txtTaxId.Text = txtPrimaryAddress.Text = txtPrimaryCity.Text = txtPrimaryZip.Text = null;
-            txtSecAddress.Text = txtSecCity.Text = txtSeczip.Text = null;
-            txtBillingAddr.Text = txtBillingCity.Text = txtBillingZip.Text = null;
+            //txtContact1.Text = txtContactExten1.Text = txtFName.Text = txtLName.Text = txtVendorFax.Text = txtprimaryemail.Text = txtVendorNm.Text = txtVendorId.Text = null;
+            //txtWebsite.Text = txtTaxId.Text = txtPrimaryAddress.Text = txtPrimaryCity.Text = txtPrimaryZip.Text = null;
+            //txtSecAddress.Text = txtSecCity.Text = txtSeczip.Text = null;
+            //txtBillingAddr.Text = txtBillingCity.Text = txtBillingZip.Text = null;
             txtPrimaryContactExten0.Text = txtPrimaryContact0.Text = txtSecContactExten0.Text = txtSecContact0.Text = txtAltContactExten0.Text = txtAltContact0.Text = null;
             //ddlVndrCategory.ClearSelection();
             ddlVendorStatus.ClearSelection();
-            ddlmanufacturertype.ClearSelection();
             btnSave.Text = "Save";
         }
         protected void lnkVendorName_Click(object sender, EventArgs e)
@@ -1289,9 +1349,9 @@ namespace JG_Prospect.Sr_App
             //    Response.Redirect("Custom.aspx?ProductTypeId=" + Convert.ToInt16(lblProductType.Text) + "&ProductId=" + productId + "&CustomerId=" + customerId);
 
             //}
-           // if (hdnProductTypeId.Value == JGConstant.ONE.ToString())
+            // if (hdnProductTypeId.Value == JGConstant.ONE.ToString())
             //{
-                Response.Redirect("Custom.aspx?ProductTypeId=" + Convert.ToInt16(hdnProductTypeId.Value) + "&ProductId=" + productId + "&CustomerId=" + customerId);
+            Response.Redirect("Custom.aspx?ProductTypeId=" + Convert.ToInt16(hdnProductTypeId.Value) + "&ProductId=" + productId + "&CustomerId=" + customerId);
 
             //}
 
@@ -3110,25 +3170,25 @@ namespace JG_Prospect.Sr_App
             string[] splittedName = Name.Split(' ');
             if (splittedName.Length > 1)
             {
-                txtFName.Text = Convert.ToString(splittedName[0]);
-                txtLName.Text = Convert.ToString(splittedName[1]);
+                //txtFName.Text = Convert.ToString(splittedName[0]);
+                // txtLName.Text = Convert.ToString(splittedName[1]);
             }
             else
             {
-                txtFName.Text = Convert.ToString(splittedName[0]);
+                //txtFName.Text = Convert.ToString(splittedName[0]);
             }
-            txtContact1.Text = Convert.ToString(ds.Tables[0].Rows[0]["ContactNumber"]);
-            txtContactExten1.Text = Convert.ToString(ds.Tables[0].Rows[0]["ContactExten"]);
+            // txtContact1.Text = Convert.ToString(ds.Tables[0].Rows[0]["ContactNumber"]);
+            //txtContactExten1.Text = Convert.ToString(ds.Tables[0].Rows[0]["ContactExten"]);
 
             txtVendorFax.Text = Convert.ToString(ds.Tables[0].Rows[0]["Fax"]);
-            txtprimaryemail.Text = Convert.ToString(ds.Tables[0].Rows[0]["Email"]);
+            //txtprimaryemail.Text = Convert.ToString(ds.Tables[0].Rows[0]["Email"]);
             txtPrimaryAddress.Text = Convert.ToString(ds.Tables[0].Rows[0]["Address"]);
             //txtNotes.Text = ds.Tables[0].Rows[0]["Notes"].ToString();
             ddlVendorStatus.SelectedValue = Convert.ToString(ds.Tables[0].Rows[0]["VendorStatus"]);
             txtTaxId.Text = Convert.ToString(ds.Tables[0].Rows[0]["TaxId"]);
-            ddlmanufacturertype.SelectedValue = Convert.ToString(ds.Tables[0].Rows[0]["ManufacturerType"]);
+            SetManufacturerType(Convert.ToString(ds.Tables[0].Rows[0]["ManufacturerType"]));
             txtWebsite.Text = Convert.ToString(ds.Tables[0].Rows[0]["Website"]);
-            txtBillingAddr.Text = Convert.ToString(ds.Tables[0].Rows[0]["BillingAddress"]);
+            //txtBillingAddr.Text = Convert.ToString(ds.Tables[0].Rows[0]["BillingAddress"]);
 
 
             //Vendor objVendor = new Vendor();
