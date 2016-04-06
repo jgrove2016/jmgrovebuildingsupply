@@ -1559,14 +1559,29 @@
     <script src="../Scripts/jquery.maskedinput.min.js" type="text/javascript"></script>
     <script type="text/javascript">
 
-        $(document).ready(function () {
-            SearchText();
-            //AddTemplate();
-            console.log("test");
-            $('.clsmaskphone').mask("(999) 999-9999");
-            $('.clsmaskphoneexten').mask("999999");
-        });
+        //$(document).ready(function () {
+        //    SearchText();
+        //    //AddTemplate();
+        //    console.log("testaa");
+        //    $('.clsmaskphone').mask("(999) 999-9999");
+        //    $('.clsmaskphoneexten').mask("999999");
+        //});
 
+
+        SearchText();
+        //AddTemplate();
+        $('.clsmaskphone').mask("(999) 999-9999");
+        $('.clsmaskphoneexten').mask("999999");
+
+        var mapProp;
+        function initialize() {
+            mapProp = {
+                center: new google.maps.LatLng(40.748492, -73.985496),
+                zoom: 5,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+        }
         //On UpdatePanel Refresh.
         //var prm = Sys.WebForms.PageRequestManager.getInstance();
         //if (prm != null) {
@@ -1576,33 +1591,6 @@
         //        }
         //    });
         //};
-        //On UpdatePanel Refresh.
-        //var prm = Sys.WebForms.PageRequestManager.getInstance();
-        //if (prm != null) {
-        //    prm.add_endRequest(function (sender, e) {
-        //        if (sender._postBackSettings.panelsToUpdate != null) {
-        //            var mapProp;
-        //            function initialize() {
-        //                mapProp = {
-        //                    center: new google.maps.LatLng(40.748492, -73.985496),
-        //                    zoom: 5,
-        //                    mapTypeId: google.maps.MapTypeId.ROADMAP
-        //                };
-        //                var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-        //            }
-        //        }
-        //    });
-        //};
-        var mapProp;
-        function initialize() {
-            mapProp = {
-                center: new google.maps.LatLng(40.748492, -73.985496),
-                zoom: 5,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-            console.log(mapProp);
-            var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-        }
         function SearchText() {
             $(".VendorSearchBox").autocomplete({
                 minLength: 0,
@@ -1620,10 +1608,6 @@
                             console.log("No Match");
                         }
                     });
-                },
-                focus: function (event, ui) {
-                    $(".VendorSearchBox").val(ui.item.value);
-                    return false;
                 },
                 select: function (event, ui) {
                     $(".VendorSearchBox").val(ui.item.value);
