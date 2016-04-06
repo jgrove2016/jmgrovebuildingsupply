@@ -105,6 +105,7 @@ namespace JG_Prospect.Sr_App
             }
             switch (ddlproductlines.SelectedValue)
             {
+                    //New code added
                 case "1":
                     Response.Redirect("Shutters.aspx?ProductTypeId=" + ddlproductlines.SelectedValue.Trim() + "&CustomerId=" + CustomerID);
                     break;
