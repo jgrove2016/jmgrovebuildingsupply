@@ -55,6 +55,7 @@
                                     <div class="filter_section" style="height:54px !important;">
                                         Customer: <asp:TextBox ID="txtProspectsearch" runat="server" OnTextChanged="txtProspectsearch_TextChanged" Width="60%" AutoPostBack="True"></asp:TextBox>
                                         <br />
+                                        <asp:Label ID="temp" runat="server" Visible="false"></asp:Label>
                                         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" InitialValue="0" ValidationGroup="Add"
                                     ErrorMessage="Please Enter Customer Name." ControlToValidate="txtProspectsearch" ForeColor="Red"></asp:RequiredFieldValidator>
                                         <br />
