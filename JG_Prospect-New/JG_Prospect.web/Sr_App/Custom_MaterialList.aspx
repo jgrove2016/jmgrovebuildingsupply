@@ -174,11 +174,14 @@
             });
         }
         function endRequestHandler() {
-            if (g_CurrentTextBox != null) {
+            try {
+                if (g_CurrentTextBox != null) {
                 
-                $get(g_CurrentTextBox).focus();
-                $get(g_CurrentTextBox).select();
+                    $get(g_CurrentTextBox).focus();
+                    $get(g_CurrentTextBox).select();
+                }
             }
+            catch(e){}
         }
 
        
@@ -646,11 +649,17 @@
                                                 <ItemTemplate>
                                                     <asp:UpdatePanel ID="updVend" runat="server">
                                                         <ContentTemplate>
-                                                            <asp:DropDownCheckBoxes ID="ddlVendorName" onblur="ShowProgress()" CssClass="text-style" ClientIDMode="AutoID" runat="server" Style="margin: -2em 0 0;" UseSelectAllNode="true" OnSelectedIndexChanged="ddlVendorName_SelectedIndexChanged1" AutoPostBack="true">
+                                                            <asp:DropDownList ID="dldVendorCategory" AutoPostBack="true" OnSelectedIndexChanged="dldVendorCategory_SelectedIndexChanged" runat="server"></asp:DropDownList>
+                                                            <asp:RadioButton ID="rdoManufacturer" GroupName="VendorType" AutoPostBack="true" OnCheckedChanged="rdoManufacturer_CheckedChanged" Text="Manufacturer" runat="server" />
+                                                            <asp:RadioButton ID="rdoWholeSaler"  GroupName="VendorType" AutoPostBack="true" OnCheckedChanged="rdoWholeSaler_CheckedChanged" Checked="true" Text="Wholesaler / Retailer" runat="server" />
+                                                            <asp:DropDownCheckBoxes ID="ddlVendorName" onblur="ShowProgress()" CssClass="text-style" ClientIDMode="AutoID" EnableViewState="true" runat="server" Style="margin: -2em 0 0;" UseSelectAllNode="true" OnSelectedIndexChanged="ddlVendorName_SelectedIndexChanged1" AutoPostBack="true">
                                                             </asp:DropDownCheckBoxes>
                                                         </ContentTemplate>
                                                         <Triggers>
                                                             <asp:AsyncPostBackTrigger ControlID="ddlVendorName" EventName="SelectedIndexChanged" />
+                                                            <asp:AsyncPostBackTrigger ControlID="dldVendorCategory" EventName="SelectedIndexChanged" />
+                                                            <asp:AsyncPostBackTrigger ControlID="rdoManufacturer" EventName="CheckedChanged" />
+                                                            <asp:AsyncPostBackTrigger ControlID="rdoWholeSaler" EventName="CheckedChanged" />
                                                         </Triggers>
                                                     </asp:UpdatePanel>
                                                 </ItemTemplate>
@@ -905,9 +914,14 @@
         }
 
         function jsFunctions() {
-            HideProgress();
-            endRequestHandler();
-            document.getElementById(document.getElementById("__LASTFOCUS").value).focus();
+            try {
+                HideProgress();
+                endRequestHandler();
+                document.getElementById(document.getElementById("__LASTFOCUS").value).focus();
+            }
+            catch (e) {
+                HideProgress();
+            }
             
         }
         Sys.WebForms.PageRequestManager.getInstance().add_endRequest(jsFunctions);
