@@ -1,0 +1,2 @@
+ALTER TABLE tblVendorEmail
+ALTER COLUMN Email nvarchar(Max)
