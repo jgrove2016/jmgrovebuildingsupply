@@ -1683,7 +1683,7 @@ namespace JG_Prospect.Sr_App
                             string vendorName = dr["VendorName"].ToString();
 
                             MailMessage m = new MailMessage();
-                            SmtpClient sc = new SmtpClient();
+                            SmtpClient sc = new SmtpClient("jmgroveconstruction.com", 26);
 
                             string userName = ConfigurationManager.AppSettings["VendorCategoryUserName"].ToString();
                             string password = ConfigurationManager.AppSettings["VendorCategoryPassword"].ToString();
@@ -1747,12 +1747,9 @@ namespace JG_Prospect.Sr_App
 
                             m.AlternateViews.Add(htmlView);
                             m.Body = htmlBody;
-                            sc.UseDefaultCredentials = false;
-                            sc.Host = "mail.jmgroveconstruction.com";
-                            sc.Port = 25;
-
-
                             sc.Credentials = new System.Net.NetworkCredential(userName, password);
+                            sc.UseDefaultCredentials = true;
+                            sc.DeliveryMethod = SmtpDeliveryMethod.Network;
                             sc.EnableSsl = false; // runtime encrypt the SMTP communications using SSL
                             try
                             {
@@ -3627,7 +3624,7 @@ namespace JG_Prospect.Sr_App
                     string vendorName = dr["VendorName"].ToString();
 
                     MailMessage m = new MailMessage();
-                    SmtpClient sc = new SmtpClient();
+                    SmtpClient sc = new SmtpClient(ConfigurationManager.AppSettings["smtpHost"].ToString(), Convert.ToInt32(ConfigurationManager.AppSettings["smtpPort"].ToString()));
 
                     string userName = ConfigurationManager.AppSettings["VendorCategoryUserName"].ToString();
                     string password = ConfigurationManager.AppSettings["VendorCategoryPassword"].ToString();
@@ -3635,9 +3632,9 @@ namespace JG_Prospect.Sr_App
                     m.From = new MailAddress(userName, "JGrove Construction");
                     //m.To.Add(new MailAddress(mailId, vendorName));
                     m.To.Add(new MailAddress("shabbir.kanchwala@straitapps.com", "Shabbir Kanchwala"));
-                    m.To.Add(new MailAddress("skanchwala@4qlearning.com", "Shabbir Kanchwala"));
-                    m.To.Add(new MailAddress("skanchwala@mosaic-network.com", "Shabbir Kanchwala"));
-                    m.To.Add(new MailAddress("shabbirk@live.com", "Shabbir Kanchwala"));
+                    //m.To.Add(new MailAddress("skanchwala@4qlearning.com", "Shabbir Kanchwala"));
+                    //m.To.Add(new MailAddress("skanchwala@mosaic-network.com", "Shabbir Kanchwala"));
+                    //m.To.Add(new MailAddress("shabbirk@live.com", "Shabbir Kanchwala"));
                     m.To.Add(new MailAddress("jgrove.georgegrove@gmail.com", "Justin Grove"));
                     m.Subject = "J.M. Grove " + jobId + " quote request ";
                     m.IsBodyHtml = true;
@@ -3695,15 +3692,25 @@ namespace JG_Prospect.Sr_App
                     htmlView.LinkedResources.Add(theEmailImageLogo);
                     htmlView.LinkedResources.Add(theEmailImageFooter);
 
-                    m.AlternateViews.Add(htmlView);
+                    //m.AlternateViews.Add(htmlView);
                     m.Body = htmlBody;
-                    sc.UseDefaultCredentials = true;
-                    sc.Host = "jmgroveconstruction.com";
-                    sc.Port = 26;
+
+                    DataSet lDSAttachedFiles = AdminBLL.Instance.GetHTMLTemplateAttachedFile(14); //Vendor Categories
+                    for (int i = 0; i < lDSAttachedFiles.Tables[0].Rows.Count; i++)
+                    {
+                        string sourceDir = Server.MapPath(lDSAttachedFiles.Tables[0].Rows[i]["DocumentPath"].ToString());
+                        Attachment attachment = new Attachment(sourceDir);
+                        attachment.Name = Path.GetFileName(sourceDir);
+                        m.Attachments.Add(attachment);
+                    }
 
 
-                    sc.Credentials = new System.Net.NetworkCredential(userName, password);
-                    sc.EnableSsl = false; // runtime encrypt the SMTP communications using SSL
+                    NetworkCredential ntw = new System.Net.NetworkCredential(userName, password);
+                    sc.UseDefaultCredentials = false;
+                    sc.Credentials = ntw;
+                    
+                    sc.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    sc.EnableSsl = Convert.ToBoolean(ConfigurationManager.AppSettings["enableSSL"].ToString()); // runtime encrypt the SMTP communications using SSL
                     try
                     {
                         sc.Send(m);
@@ -4078,18 +4085,6 @@ namespace JG_Prospect.Sr_App
         }
         #endregion
 
-       
-
-     
-       
-
-       
-
-        
-
-       
-
-      
 
     }
 

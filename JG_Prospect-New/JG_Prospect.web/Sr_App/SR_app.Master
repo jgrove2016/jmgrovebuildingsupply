@@ -38,9 +38,9 @@
 
  
         $(function () {
-            // Tabs
-            $('#tabs').tabs();
-       //     $("#qfront").Watermark("Google Web Search");
+            try {
+                $('#tabs').tabs();
+            }catch(e){}
         });
         $(document).ready(function () {
             $('#searchbutton').click(function () {
