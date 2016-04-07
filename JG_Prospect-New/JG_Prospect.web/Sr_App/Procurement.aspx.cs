@@ -30,6 +30,9 @@ namespace JG_Prospect.Sr_App
         string flag = "";
         private Boolean IsPageRefresh = false;
         int estimateId = 0, customerId = 0, productTypeId = 0;
+
+        private static string UserType = string.Empty;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             Session["VendorId"] = "1";
@@ -106,6 +109,7 @@ namespace JG_Prospect.Sr_App
                     BindProductCategory();
                     GetAllVendorSubCat();
                     BindVendorByProdCat(ddlprdtCategory.SelectedValue.ToString());
+                    BindVendorByProdCat1(ddlprdtCategory1.SelectedValue.ToString());
                     BindVendorSubCatByVendorCat(ddlVndrCategory.SelectedValue.ToString());
                     string ManufacturerType = GetManufacturerType();
                     //FilterVendors("", "ManufacturerType", ManufacturerType, "");
@@ -114,6 +118,21 @@ namespace JG_Prospect.Sr_App
                 {
                     lblerrornew.Text = ex.Message + ex.StackTrace;
                 }
+
+
+                //added by harshit
+                //7-april-2016
+                UserType = Session[JG_Prospect.Common.SessionKey.Key.usertype.ToString()].ToString();
+                DataSet dsCurrentPeriod = UserBLL.Instance.Getcurrentperioddates();
+                DateTime fromDate = Convert.ToDateTime(dsCurrentPeriod.Tables[0].Rows[0]["FromDate"].ToString());
+                DateTime toDate = Convert.ToDateTime(dsCurrentPeriod.Tables[0].Rows[0]["ToDate"].ToString());
+                
+                bindPayPeriod(dsCurrentPeriod);
+
+                grdtransations.DataSource = new List<JG_Prospect.BLL.clsProcurementData>();
+                grdtransations.DataBind();
+                grdprimaryvendor.DataSource = new List<JG_Prospect.BLL.clsProcurementDataAll>();
+                grdprimaryvendor.DataBind();
             }
             else
             {
@@ -123,6 +142,43 @@ namespace JG_Prospect.Sr_App
         }
 
         // Modification
+
+        protected void drpPayPeriod_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (drpPayPeriod.SelectedIndex != -1)
+            {
+                DataSet ds = UserBLL.Instance.getperioddetails(Convert.ToInt16(drpPayPeriod.SelectedValue));
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    txtfrmdate.Text = Convert.ToDateTime(ds.Tables[0].Rows[0]["FromDate"].ToString()).ToString("MM/dd/yyyy");
+                    txtTodate.Text = Convert.ToDateTime(ds.Tables[0].Rows[0]["ToDate"].ToString()).ToString("MM/dd/yyyy");
+                }
+            }
+        }
+
+        private void bindPayPeriod(DataSet dsCurrentPeriod)
+        {
+            DataSet ds = UserBLL.Instance.getallperiod();
+
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                drpPayPeriod.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select", "0"));
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    DataRow dr = ds.Tables[0].Rows[i];
+                    drpPayPeriod.Items.Add(new System.Web.UI.WebControls.ListItem(dr["Periodname"].ToString(), dr["Id"].ToString()));
+                }
+                drpPayPeriod.SelectedValue = dsCurrentPeriod.Tables[0].Rows[0]["Id"].ToString();
+                txtfrmdate.Text = Convert.ToDateTime(dsCurrentPeriod.Tables[0].Rows[0]["FromDate"].ToString()).ToString("MM/dd/yyyy");
+                txtTodate.Text = Convert.ToDateTime(dsCurrentPeriod.Tables[0].Rows[0]["ToDate"].ToString()).ToString("MM/dd/yyyy");
+            }
+            else
+            {
+                drpPayPeriod.DataSource = null;
+                drpPayPeriod.DataBind();
+            }
+
+        }
 
         protected void BindProductCategory()
         {
@@ -140,6 +196,12 @@ namespace JG_Prospect.Sr_App
             ddlProductCatgoryPopup.DataValueField = "ProductId";
             ddlProductCatgoryPopup.DataBind();
             ddlProductCatgoryPopup.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select", "Select"));
+
+            ddlprdtCategory1.DataSource = ds;
+            ddlprdtCategory1.DataTextField = "ProductName";
+            ddlprdtCategory1.DataValueField = "ProductId";
+            ddlprdtCategory1.DataBind();
+            ddlprdtCategory1.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select", "Select"));
 
         }
 
@@ -217,6 +279,25 @@ namespace JG_Prospect.Sr_App
 
         }
 
+        protected void ddlprdtCategory1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ddlVndrCategory1.SelectedIndex = -1;
+            ddlVendorSubCategory1.SelectedIndex = -1;
+            BindVendorByProdCat1(ddlprdtCategory1.SelectedValue.ToString());
+            //BindVendorCatPopup();
+            //if (ddlprdtCategory1.SelectedValue.ToString() != "Select")
+            //{
+            //    //ddlProductCatgoryPopup.SelectedValue = ddlprdtCategory.SelectedValue;
+            //    FilterVendorByProductCategory();
+            //}
+            //else
+            //{
+            //    string ManufacturerType = GetManufacturerType();
+            //    FilterVendors("", "ManufacturerType", ManufacturerType, "");
+            //}
+
+        }
+
         public void BindVendorByProdCat(string ProductId)
         {
             DataSet ds = new DataSet();
@@ -226,6 +307,17 @@ namespace JG_Prospect.Sr_App
             ddlVndrCategory.DataValueField = "VendorCategoryId";
             ddlVndrCategory.DataBind();
             ddlVndrCategory.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select", "Select"));
+        }
+
+        public void BindVendorByProdCat1(string ProductId)
+        {
+            DataSet ds = new DataSet();
+            ds = AdminBLL.Instance.GetVendorCategory(ProductId, rdoRetailWholesale1.Checked, rdoManufacturer1.Checked);
+            ddlVndrCategory1.DataSource = ds;
+            ddlVndrCategory1.DataTextField = "VendorCategoryName";
+            ddlVndrCategory1.DataValueField = "VendorCategoryId";
+            ddlVndrCategory1.DataBind();
+            ddlVndrCategory1.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select", "Select"));
         }
 
         public void FilterVendorByProductCategory()
@@ -266,6 +358,23 @@ namespace JG_Prospect.Sr_App
             }
         }
 
+        protected void ddlVndrCategory1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ddlVendorSubCategory1.SelectedIndex = -1;
+            BindVendorSubCatByVendorCat1(ddlVndrCategory1.SelectedValue.ToString());
+            //string ManufacturerType = GetManufacturerType();
+
+            //if (ddlVndrCategory1.SelectedValue.ToString() != "Select")
+            //{
+            //    ddlVendorCatPopup.SelectedValue = ddlVndrCategory.SelectedValue;
+            //    FilterVendors(ddlVndrCategory.SelectedValue.ToString(), "VendorCategory", ManufacturerType, "");
+            //}
+            //else
+            //{
+            //    FilterVendorByProductCategory();
+            //}
+        }
+
         public void BindVendorSubCatByVendorCat(string VendorCatId)
         {
             DataSet ds = new DataSet();
@@ -275,6 +384,18 @@ namespace JG_Prospect.Sr_App
             ddlVendorSubCategory.DataValueField = "VendorSubCategoryId";
             ddlVendorSubCategory.DataBind();
             ddlVendorSubCategory.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select", "Select"));
+
+        }
+
+        public void BindVendorSubCatByVendorCat1(string VendorCatId)
+        {
+            DataSet ds = new DataSet();
+            ds = AdminBLL.Instance.GetVendorSubCategory(VendorCatId, rdoRetailWholesale1.Checked, rdoManufacturer1.Checked);
+            ddlVendorSubCategory1.DataSource = ds;
+            ddlVendorSubCategory1.DataTextField = "VendorSubCategoryName";
+            ddlVendorSubCategory1.DataValueField = "VendorSubCategoryId";
+            ddlVendorSubCategory1.DataBind();
+            ddlVendorSubCategory1.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select", "Select"));
 
         }
 

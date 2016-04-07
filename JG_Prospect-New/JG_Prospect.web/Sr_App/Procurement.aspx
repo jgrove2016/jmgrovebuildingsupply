@@ -65,12 +65,12 @@
             document.getElementById('fade').style.display = 'block';
         }
 
-       
 
-       
+
+
         //google.maps.event.addDomListener(window, 'load', initialize);
 
-       
+
         function AddLocation(e) {
             var dataTypeValue = $(e).attr("data-type");
             var subCount = $(e).closest('table').find('tr').length - 1;
@@ -232,7 +232,7 @@
 
 
 
-       
+
     </script>
 
 
@@ -772,9 +772,9 @@
                                     <tr>
                                         <td>
                                             <div style="width: 100%">
-                                               
-                                         <div class="grid_h" style="width: 47%; float:left">
-                                              Vendor List
+
+                                                <div class="grid_h" style="width: 47%; float: left">
+                                                    Vendor List
                                              <div class="grid">
                                                  <asp:GridView ID="grdVendorList" runat="server" AutoGenerateColumns="false" CssClass="tableClass" Width="100%">
                                                      <Columns>
@@ -791,11 +791,11 @@
                                                  </asp:GridView>
                                              </div>
 
-                                         </div>
-                                                <div style="width: 450px; float:left">
+                                                </div>
+                                                <div style="width: 450px; float: left">
                                                     <div id="googleMap" style="width: 100%; height: 254px;"></div>
-                                                </div> 
-                                                
+                                                </div>
+
                                             </div>
                                         </td>
                                     </tr>
@@ -924,7 +924,7 @@
                                                                     <br />
                                                                     <a style="cursor: pointer" data-emailtype="Primary" onclick="AddEmailRow(this)">Add New Row</a> &nbsp;&nbsp;
                                                                     <a onclick="AddEmail(this)" style="cursor: pointer" data-emailtype="Primary" data-type="0">Add Email</a>
-                                                                    </div>
+                                                                </div>
                                                             </td>
                                                             <td>
                                                                 <label>
@@ -967,7 +967,7 @@
                                                                 <div class="newEmaildiv">
                                                                     <input type='text' id="txtSecEmail0" name="nametxtSecEmail0" maxlength="50" class="clsemail" clientidmode='Static' />
                                                                     <br />
-                                                                     <a style="cursor: pointer" data-emailtype="Sec" onclick="AddEmailRow(this)">Add New Row</a> &nbsp;&nbsp;
+                                                                    <a style="cursor: pointer" data-emailtype="Sec" onclick="AddEmailRow(this)">Add New Row</a> &nbsp;&nbsp;
                                                                     <a onclick="AddEmail(this)" style="cursor: pointer" data-emailtype="Sec" data-type="0">Add Email</a>
                                                                 </div>
                                                             </td>
@@ -1014,7 +1014,7 @@
                                                                 <div class="newEmaildiv">
                                                                     <input type='text' id="txtAltEmail0" name="nametxtAltEmail0" maxlength="50" class="clsemail" clientidmode='Static' />
                                                                     <br />
-                                                                     <a style="cursor: pointer" data-emailtype="Alt" onclick="AddEmailRow(this)">Add New Row</a> &nbsp;&nbsp;
+                                                                    <a style="cursor: pointer" data-emailtype="Alt" onclick="AddEmailRow(this)">Add New Row</a> &nbsp;&nbsp;
                                                                     <a onclick="AddEmail(this)" style="cursor: pointer" data-emailtype="Alt" data-type="0">Add Email</a>
                                                                 </div>
                                                             </td>
@@ -1304,12 +1304,161 @@
                                     <li style="width: 100%"></li>
                                 </ul>--%>
                                 <div class="btn_sec">
-                                    <asp:Button ID="btnSave" runat="server" Text="Save" OnClientClick="GetVendorDetails(this)"  OnClick="btnSave_Click" ValidationGroup="addvendor" TabIndex="8" /><%--OnClick="btnSave_Click" ValidationGroup="addvendor"--%>
+                                    <asp:Button ID="btnSave" runat="server" Text="Save" OnClientClick="GetVendorDetails(this)" OnClick="btnSave_Click" ValidationGroup="addvendor" TabIndex="8" /><%--OnClick="btnSave_Click" ValidationGroup="addvendor"--%>
                                 </div>
                             </div>
 
                         </ContentTemplate>
                     </asp:UpdatePanel>
+
+
+                    <div class="form_panel_custom vendorFilter">
+                        <table id="Table1" cellpadding="0" cellspacing="0" border="0" runat="server">
+                            <tr>
+                                <td>
+                                    <label>
+                                        <strong>Select Period: </strong><span>*</span>
+                                    </label>
+                                </td>
+                                <td>
+                                    &nbsp;
+                                </td>
+                                <td>
+                                    <label style="width: 50%;">
+                                        <strong>Select Pay Period : </strong>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label>
+                                         From :
+                                    </label>
+                                    <%-- <label style="width: 50px; text-align: right;">
+                                    <span>*</span> From : </label>--%>
+                                    <asp:TextBox ID="txtfrmdate" runat="server" TabIndex="2" CssClass="date"
+                                        onkeypress="return false" MaxLength="10" AutoPostBack="true"
+                                        Style="width: 150px;"></asp:TextBox>
+                                    <label></label>
+                                    <asp:RequiredFieldValidator ID="requirefrmdate" ControlToValidate="txtfrmdate"
+                                        runat="server" ErrorMessage=" Select From date" ForeColor="Red" ValidationGroup="display">
+                                    </asp:RequiredFieldValidator>
+                                </td>
+                                <td>
+                                    <label style="width: 50px; text-align: right;">
+                                        <span>
+                                            *</span> To :
+                                    </label>
+                                    <asp:TextBox ID="txtTodate" CssClass="date" onkeypress="return false"
+                                        MaxLength="10" runat="server" TabIndex="3" AutoPostBack="true"
+                                        Style="width: 150px;"></asp:TextBox>
+                                    <%-- <ajaxToolkit:CalendarExtender ID="CalendarExtender2" runat="server" TargetControlID="txtTodate">
+                                </ajaxToolkit:CalendarExtender>  --%>
+                                    <asp:RequiredFieldValidator ID="Requiretodate" ControlToValidate="txtTodate"
+                                        runat="server" ErrorMessage=" Select To date" ForeColor="Red" ValidationGroup="display">
+                                    </asp:RequiredFieldValidator>
+                                    <%-- <asp:CompareValidator runat ="server" ID ="CompareToDate" ControlToValidate ="txtTodate" ControlToCompare ="txtfrmdate" 
+                                Operator="GreaterThanEqual" Type="Date" ErrorMessage ="Please select a date greater than or equal to From Date"
+                                ForeColor="Red" ValidationGroup="display"></asp:CompareValidator>--%>
+                                </td>
+                                <td>
+                                    
+                                    <asp:DropDownList ID="drpPayPeriod" runat="server" Width="250px" AutoPostBack="true"
+                                        OnSelectedIndexChanged="drpPayPeriod_SelectedIndexChanged">
+                                    </asp:DropDownList>
+                                </td>
+                            </tr>
+                        </table>
+                        <br />
+                        <br />
+                        <div class="grid">
+
+                            <asp:GridView ID="grdtransations" runat="server" AutoGenerateColumns="false" Width="100%"
+                                CssClass="tableClass" HeaderStyle-Wrap="true" ShowHeaderWhenEmpty="true">
+                                <Columns>
+                                    <asp:BoundField HeaderText="Date" DataField="Date" />
+                                    <asp:BoundField HeaderText="Total Amount" DataField="TotalAmount" />
+                                    <asp:BoundField HeaderText="Description" DataField="Description" />
+                                    <asp:BoundField HeaderText="Payment Method" DataField="PaymentMethod" />
+                                    <asp:BoundField HeaderText="Transaction # - Transaction type" DataField="Transations" />
+                                    <asp:BoundField HeaderText="Status" DataField="Status" />
+                                    <asp:BoundField HeaderText="Invoice Attachement" DataField="InvoiceAttach" />
+                                </Columns>
+                            </asp:GridView>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="grid">
+                            <div style="float: left; width: 32%;">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <asp:CheckBox ID="rdoRetailWholesale1" runat="server" Text="Retail/Wholesale" GroupName="MT" />
+                                        </td>
+                                        <td>
+                                            <asp:CheckBox ID="rdoManufacturer1" runat="server" Text="Manufacturer" GroupName="MT"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Product Category
+                                        </td>
+                                        <td>
+                                            <asp:DropDownList ID="ddlprdtCategory1" runat="server" Width="150px" AutoPostBack="true" OnSelectedIndexChanged="ddlprdtCategory1_SelectedIndexChanged"></asp:DropDownList>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            Vendor Category
+                                        </td>
+                                        <td>
+                                            <asp:DropDownList ID="ddlVndrCategory1" runat="server" Width="150px" AutoPostBack="True" OnSelectedIndexChanged="ddlVndrCategory1_SelectedIndexChanged"></asp:DropDownList>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                           Vendor Sub Category
+                                        </td>
+                                        <td>
+                                            <asp:DropDownList ID="ddlVendorSubCategory1" runat="server" Width="150px" AutoPostBack="True"></asp:DropDownList>
+                                            <%--OnSelectedIndexChanged="ddlVendorSubCategory1_SelectedIndexChanged"--%>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                           SKU
+                                        </td>
+                                        <td>
+                                            <asp:DropDownList ID="DrpSku" runat="server">
+                                                <asp:ListItem>--Select</asp:ListItem>
+                                                <asp:ListItem Value="SOF001">SOF001</asp:ListItem>
+                                            </asp:DropDownList>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                           Description
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="TxtDescription" runat="server"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div style="float:right;width: 64%;vertical-align: top;">
+                                <asp:GridView ID="grdprimaryvendor" runat="server" AutoGenerateColumns="false" Width="100%"
+                                    CssClass="tableClass" HeaderStyle-Wrap="true" ShowHeaderWhenEmpty="true">
+                                    <Columns>
+                                        <asp:BoundField HeaderText="Primary vendor - Vendor List" DataField="PrimaryVendor" />
+                                        <asp:BoundField HeaderText="Total Cost:$ - Notes & fees " DataField="TotalCost" />
+                                        <asp:BoundField HeaderText="UOM - $Unit Cost - $Bulk Cost" DataField="UnitCost" />
+                                        <asp:BoundField HeaderText="Vendor Part#- Model#" DataField="VendorPart" />
+                                    </Columns>
+                                </asp:GridView>
+                            </div>
+                        </div>
+                    </div>
+
                     <br />
                     <%--<asp:Panel runat="server" ID="pnlMaterialList">--%>
                     <asp:Panel ID="pnlpopupMaterialList" runat="server" BackColor="White" Height="175px" Width="300px"
