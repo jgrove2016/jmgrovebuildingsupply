@@ -468,38 +468,38 @@ namespace JG_Prospect.Sr_App
                 objvendor.vendor_category_id = Convert.ToInt32(ddlVndrCategory.SelectedValue);
 
                 string primaryEmail = "", fName = "", lName = "", contactNo = "", contactExten = "", BillingAddress = "";
-                //DataTable dtEmails = (DataTable)HttpContext.Current.Session["dtVendorEmail"];
-                //if (dtEmails.Rows.Count > 0)
-                //{
-                //    for (int i = 0; i < dtEmails.Rows.Count; i++)
-                //    {
-                //        if (dtEmails.Rows[i]["EmailType"].ToString() == "Primary")
-                //        {
-                //            List<EmailCls> primEmailList = JsonConvert.DeserializeObject<List<EmailCls>>(dtEmails.Rows[i]["Email"].ToString());
-                //            //dynamic primEmailList = new JavaScriptSerializer().DeserializeObject(dtEmails.Rows[i]["Email"].ToString());
-                //            primaryEmail = primEmailList[0].Email;
-                //            fName = dtEmails.Rows[i]["FName"].ToString();
-                //            lName = dtEmails.Rows[i]["LName"].ToString();
-                //            List<ContactClass> primContactList = JsonConvert.DeserializeObject<List<ContactClass>>(dtEmails.Rows[i]["Contact"].ToString());
-                //            contactNo = primContactList[0].Number;
-                //            contactExten = primContactList[0].Extension;
-                //            break;
-                //        }
-                //    }
-                //}
+                DataTable dtEmails = (DataTable)HttpContext.Current.Session["dtVendorEmail"];
+                if (dtEmails.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dtEmails.Rows.Count; i++)
+                    {
+                        if (dtEmails.Rows[i]["EmailType"].ToString() == "Primary")
+                        {
+                            List<EmailCls> primEmailList = JsonConvert.DeserializeObject<List<EmailCls>>(dtEmails.Rows[i]["Email"].ToString());
+                            //dynamic primEmailList = new JavaScriptSerializer().DeserializeObject(dtEmails.Rows[i]["Email"].ToString());
+                            primaryEmail = primEmailList.Count > 0 ? primEmailList[0].Email : "";
+                            fName = dtEmails.Rows[i]["FName"] != null ? dtEmails.Rows[i]["FName"].ToString() : "";
+                            lName = dtEmails.Rows[i]["LName"] != null ? dtEmails.Rows[i]["LName"].ToString() : "";
+                            List<ContactClass> primContactList = JsonConvert.DeserializeObject<List<ContactClass>>(dtEmails.Rows[i]["Contact"].ToString());
+                            contactNo = primContactList.Count > 0 ? primContactList[0].Number : "";
+                            contactExten = primContactList.Count > 0 ? primContactList[0].Extension : "";
+                            break;
+                        }
+                    }
+                }
 
-                //DataTable dtAddress = (DataTable)HttpContext.Current.Session["dtVendorAddress"];
-                //if (dtAddress.Rows.Count > 0)
-                //{
-                //    for (int i = 0; i < dtAddress.Rows.Count; i++)
-                //    {
-                //        if (dtAddress.Rows[i]["AddressType"].ToString() == "Billing")
-                //        {
-                //            BillingAddress = dtAddress.Rows[i]["Address"].ToString();
-                //            break;
-                //        }
-                //    }
-                //}
+                DataTable dtAddress = (DataTable)HttpContext.Current.Session["dtVendorAddress"];
+                if (dtAddress.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dtAddress.Rows.Count; i++)
+                    {
+                        if (dtAddress.Rows[i]["AddressType"].ToString() == "Billing")
+                        {
+                            BillingAddress = dtAddress.Rows[i]["Address"].ToString();
+                            break;
+                        }
+                    }
+                }
                 objvendor.fax = txtVendorFax.Text;
                 objvendor.mail = primaryEmail;
                 objvendor.contract_person = fName + " " + lName;
