@@ -25,7 +25,10 @@
             height: 24px;
             width: 100%;
         }
-
+        .chk-style {
+            height: 24px;
+            width: 70%!important;
+        }
         div.dd_chk_select {
             height: 24px !important;
         }
@@ -545,22 +548,29 @@
                         <ItemTemplate>
                             <asp:UpdatePanel ID="updMaterialList2" runat="server">
                                 <ContentTemplate>
-                                    <h3 align="left">Product Category: 
-                                        <asp:DropDownList ID="ddlCategory" Width="150px" runat="server" OnSelectedIndexChanged="ddlCategory_SelectedIndexChanged" AutoPostBack="true">
-                                        </asp:DropDownList>
+                                    <div style="padding-bottom:2px;">
+                                        <div style="float:left" align="left">
+                                            Product Category: 
+                                            <asp:DropDownList ID="ddlCategory" Width="150px" runat="server" OnSelectedIndexChanged="ddlCategory_SelectedIndexChanged" AutoPostBack="true">
+                                            </asp:DropDownList>
 
-                                        <asp:HiddenField ID="hdnProductCatID" runat="server" Value='<%#Eval("ProductCatID")%>' />
-                                        <asp:LinkButton ID="lnkAddProdCat" Visible="false" OnClick="lnkAddProdCat_Click" runat="server">Add</asp:LinkButton>
-                                        <asp:LinkButton ID="lnkDeleteProdCat" CommandArgument='<%#Eval("ProductCatID") %>' OnClick="lnkDeleteProdCat_Click" runat="server" OnClientClick="return confirm('Deleting product category will delete all associated line items. Are you sure you want to delete?')">Delete</asp:LinkButton>
-                                        <%--<asp:Button ID="btnDelete" runat="server" Text="Delete" CommandArgument='<%#Eval("ProductCatID") %>' onclick="btnDelete_Click" OnClientClick="return confirm('Deleting product category will delete all associated line items. Are you sure you want to delete?')" />--%>
+                                            <asp:HiddenField ID="hdnProductCatID" runat="server" Value='<%#Eval("ProductCatID")%>' />
+                                            <asp:LinkButton ID="lnkAddProdCat" Visible="false" OnClick="lnkAddProdCat_Click" runat="server">Add</asp:LinkButton>
+                                            <asp:LinkButton ID="lnkDeleteProdCat" CommandArgument='<%#Eval("ProductCatID") %>' OnClick="lnkDeleteProdCat_Click" runat="server" OnClientClick="return confirm('Deleting product category will delete all associated line items. Are you sure you want to delete?')">Delete</asp:LinkButton>
+                                      
+                                        </div>
+                                        <div style="float:right">
+                                            Vendor Category:
+                                            <asp:DropDownList ID="dldVendorCategory" AutoPostBack="false" OnSelectedIndexChanged="dldVendorCategory_SelectedIndexChanged" runat="server"></asp:DropDownList>
+                                            <asp:RadioButton ID="rdoManufacturer" GroupName="VendorType" AutoPostBack="false" OnCheckedChanged="rdoManufacturer_CheckedChanged" Text="Manufacturer" runat="server" />
+                                            <asp:RadioButton ID="rdoWholeSaler"  GroupName="VendorType" AutoPostBack="false" OnCheckedChanged="rdoWholeSaler_CheckedChanged" Checked="true" Text="Wholesaler / Retailer" runat="server" />
+                                        </div>
                                         <div style="clear: both"></div>
-                                    </h3>
-
-
+                                    </div>
 
                                     <asp:GridView ID="grdProdLines" Width="100%" runat="server" OnRowDataBound="grdProdLines_RowDataBound" AutoGenerateColumns="false">
                                         <Columns>
-                                            <asp:TemplateField HeaderText="Line" HeaderStyle-Width="4%">
+                                            <asp:TemplateField HeaderText="Line" HeaderStyle-Width="4%" ItemStyle-Width="4%">
                                                 <ItemTemplate>
                                                     <asp:TextBox CssClass="text-style" ID="txtLine" Text='<%# Eval("Line") %>' MaxLength="4" runat="server" ClientIDMode="Static" OnTextChanged="txtLine_TextChanged" Enabled="false"></asp:TextBox>
                                                     <asp:HiddenField ID="hdnMaterialListId" runat="server" Value='<%#Eval("Id")%>' />
@@ -584,7 +594,7 @@
                                                     </asp:UpdatePanel>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Description" HeaderStyle-Width="25%">
+                                            <asp:TemplateField HeaderText="Description" HeaderStyle-Width="25%" ItemStyle-Width="25%">
                                                 <ItemTemplate>
                                                     <asp:UpdatePanel ID="updDesc" runat="server">
                                                         <ContentTemplate>
@@ -645,23 +655,21 @@
                                                     </asp:UpdatePanel>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Vendor Quotes/Invoice" Visible="true">
+                                            <asp:TemplateField HeaderText="Vendor Quotes/Invoice" Visible="true" ItemStyle-Width="30%" ItemStyle-Wrap="false" >
                                                 <ItemTemplate>
-                                                    <asp:UpdatePanel ID="updVend" runat="server">
-                                                        <ContentTemplate>
-                                                            <asp:DropDownList ID="dldVendorCategory" AutoPostBack="true" OnSelectedIndexChanged="dldVendorCategory_SelectedIndexChanged" runat="server"></asp:DropDownList>
-                                                            <asp:RadioButton ID="rdoManufacturer" GroupName="VendorType" AutoPostBack="true" OnCheckedChanged="rdoManufacturer_CheckedChanged" Text="Manufacturer" runat="server" />
-                                                            <asp:RadioButton ID="rdoWholeSaler"  GroupName="VendorType" AutoPostBack="true" OnCheckedChanged="rdoWholeSaler_CheckedChanged" Checked="true" Text="Wholesaler / Retailer" runat="server" />
-                                                            <asp:DropDownCheckBoxes ID="ddlVendorName" onblur="ShowProgress()" CssClass="text-style" ClientIDMode="AutoID" EnableViewState="true" runat="server" Style="margin: -2em 0 0;" UseSelectAllNode="true" OnSelectedIndexChanged="ddlVendorName_SelectedIndexChanged1" AutoPostBack="true">
+                                                   <%-- <asp:UpdatePanel ID="updVend" runat="server">
+                                                        <ContentTemplate>--%>
+                                                            
+                                                            <asp:DropDownCheckBoxes ID="ddlVendorName" onblur="ShowProgress()" CssClass="chk-style" ClientIDMode="AutoID" EnableViewState="true" runat="server" Style="margin: -2em 0 0;" UseSelectAllNode="true" OnSelectedIndexChanged="ddlVendorName_SelectedIndexChanged1" AutoPostBack="true">
                                                             </asp:DropDownCheckBoxes>
-                                                        </ContentTemplate>
+                                                            <asp:CheckBox ID="chkApplyFilter" Text="Apply Filter" runat="server" AutoPostBack="true" OnCheckedChanged="chkApplyFilter_CheckedChanged" />
+                                                       <%-- </ContentTemplate>
                                                         <Triggers>
                                                             <asp:AsyncPostBackTrigger ControlID="ddlVendorName" EventName="SelectedIndexChanged" />
-                                                            <asp:AsyncPostBackTrigger ControlID="dldVendorCategory" EventName="SelectedIndexChanged" />
-                                                            <asp:AsyncPostBackTrigger ControlID="rdoManufacturer" EventName="CheckedChanged" />
-                                                            <asp:AsyncPostBackTrigger ControlID="rdoWholeSaler" EventName="CheckedChanged" />
+                                                            <asp:AsyncPostBackTrigger ControlID="chkApplyFilter" EventName="CheckedChanged" />
+                                                            
                                                         </Triggers>
-                                                    </asp:UpdatePanel>
+                                                    </asp:UpdatePanel>--%>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="">
@@ -686,6 +694,7 @@
                                     </asp:GridView>
                                     <asp:LinkButton ID="lnkAddLines" CommandName="AddLine" CommandArgument='<%#Eval("ProductCatId") %>' OnClick="lnkAddLines_Click1" runat="server">Add Line</asp:LinkButton>
                                     
+                                    <hr style="border:solid 1px; margin-top:5px;margin-bottom:5px" />
 
                                 </ContentTemplate>
 
@@ -924,6 +933,7 @@
             }
             
         }
+ 
         Sys.WebForms.PageRequestManager.getInstance().add_endRequest(jsFunctions);
         HideProgress();
     </script>
