@@ -379,6 +379,7 @@ display:none!important;
             <Services>
                <%-- <asp:ServiceReference Path="~/SuggestSearch.asmx" />--%>
             </Services>
+         
         </ajaxToolkit:ToolkitScriptManager>
    <%-- <asp:ScriptManager ID="scriptmanager1" EnablePageMethods="true" runat="server">
     </asp:ScriptManager>--%>

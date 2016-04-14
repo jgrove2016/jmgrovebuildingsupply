@@ -234,6 +234,49 @@
                     <a href="javascript:void(0)" onclick="document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">Close</a>
                     <div class="form_panel">
                         <div class="scrollme">
+                            <div style="float:right">
+                                <fieldset style="border-style: solid; border-width: 1px; padding: 5px;">
+                                    <legend>Add Installer</legend>
+                                    <asp:DropDownList ID="ddlInstaller" runat="server">
+                                    </asp:DropDownList>
+                                    <span class="btn_sec">
+                                        <asp:Button ID="btnAddInstaller" runat="server" OnClick="btnAddInstaller_Click" Text="Add Installer" /></span>
+                                    <div>
+                                        <asp:Repeater ID="rptInstaller" runat="server" OnItemDataBound="rptInstaller_ItemDataBound" OnItemCommand="rptInstaller_ItemCommand">
+                                            <HeaderTemplate>
+                                                <table class="grid">
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Installer Name</th>
+                                                        <th></th>
+                                                        <th></th>
+                                                    </tr>
+                                            </HeaderTemplate>
+                                            <ItemTemplate>
+                                                <tr>
+                                                    <td><%#(((RepeaterItem)Container).ItemIndex+1).ToString() %></td>
+                                                    <td><%#Eval("QualifiedName") %></td>
+                                                    <td>
+                                                        <asp:Literal ID="ltrStatus" runat="server"></asp:Literal>
+                                                    </td>
+                                                    <td>
+                                                        <asp:LinkButton ID="lnkDeleteInstaller" CommandArgument='<%#Eval("ID") %>' CommandName="DeleteInstaller" runat="server" OnClientClick="return confirm('Are you sure you want to delete this record?');">Delete</asp:LinkButton>
+
+                                                    </td>
+                                                </tr>
+
+
+                                            </ItemTemplate>
+                                            <FooterTemplate>
+                                                </table>
+                                            </FooterTemplate>
+
+                                        </asp:Repeater>
+                                    </div>
+                                </fieldset>
+
+                            </div>
+                            <div class="clr"></div>
                             <div class="btn_sec" style="float: right; padding-right: 10px; padding-top: 35px;">
                                 <asp:Button ID="btnGo" Text="Zip & Download" OnClick="btnGo_Click" runat="server" />
                             </div>

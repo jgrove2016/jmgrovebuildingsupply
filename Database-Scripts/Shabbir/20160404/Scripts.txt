@@ -1,15 +1,17 @@
+USE [jgrove_JGP]
+GO
 
-/****** Object:  StoredProcedure [dbo].[USP_GetCustomMaterialList]    Script Date: 04/04/2016 15:04:15 ******/
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_GetCustomMaterialList]') AND type in (N'P', N'PC'))
+/****** Object:  StoredProcedure [dbo].[USP_GetCustomMaterialList]    Script Date: 4/13/2016 11:19:59 AM ******/
 DROP PROCEDURE [dbo].[USP_GetCustomMaterialList]
 GO
 
-/****** Object:  StoredProcedure [dbo].[USP_GetCustomMaterialList]    Script Date: 04/04/2016 15:04:15 ******/
+/****** Object:  StoredProcedure [dbo].[USP_GetCustomMaterialList]    Script Date: 4/13/2016 11:19:59 AM ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 
 -- =============================================
@@ -85,7 +87,7 @@ SELECT cm.MaterialList
 	
 	EXEC UDP_GetSoldJobsForProcurementBySoldJobID @soldJobId   
     
-    SELECT IU.Id,IU.FristName +' '+ IU.LastName  as QualifiedName from tblInstallUsers IU Where IU.Status IN ('Active', 'Offer Made') 
+    SELECT IU.Id,IU.FristName +' '+ IU.LastName  as QualifiedName from tblInstallUsers IU Where IU.Status IN ('Active', 'Offer Made', 'OfferMade') 
 	AND NOT EXISTS (Select 1 from tblCustomMaterialInstaller CSI WHERE CSI.SoldJobID = @soldJobId AND IU.Id = CSI.InstallerID)
 
 	SELECT 
@@ -122,6 +124,7 @@ SELECT cm.MaterialList
 	INNER JOIN tblProductVendorCat PC ON PC.VendorCategoryId = VC.VendorCategpryId
 
 END
+
 GO
 
 

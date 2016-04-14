@@ -33,6 +33,9 @@
             height: 24px !important;
         }
     </style>
+    
+    <link href="../css/jquery.multiselect.css" rel="stylesheet" />
+    <script src="../js/jquery.multiselect.js"></script>
     <script type="text/javascript">
 
         function VerifyForemanManPwd() {
@@ -221,6 +224,30 @@
         }
        
     </style>
+    <style>
+
+ul,li { margin:0; padding:0; list-style:none;}
+.label { color:#000; font-size:16px;}
+.grid td .container { max-width:728px; margin-top:150px; max-height:250px;}
+.form-control {
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+</style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     
@@ -559,9 +586,9 @@
                                             <asp:LinkButton ID="lnkDeleteProdCat" CommandArgument='<%#Eval("ProductCatID") %>' OnClick="lnkDeleteProdCat_Click" runat="server" OnClientClick="return confirm('Deleting product category will delete all associated line items. Are you sure you want to delete?')">Delete</asp:LinkButton>
                                       
                                         </div>
-                                        <div style="float:right">
+                                        <div style="float:right;width:34%">
                                             Vendor Category:
-                                            <asp:DropDownList ID="dldVendorCategory" AutoPostBack="false" OnSelectedIndexChanged="dldVendorCategory_SelectedIndexChanged" runat="server"></asp:DropDownList>
+                                            <asp:DropDownList ID="dldVendorCategory" Width="70%" AutoPostBack="false" OnSelectedIndexChanged="dldVendorCategory_SelectedIndexChanged" runat="server"></asp:DropDownList><br />
                                             <asp:RadioButton ID="rdoManufacturer" GroupName="VendorType" AutoPostBack="false" OnCheckedChanged="rdoManufacturer_CheckedChanged" Text="Manufacturer" runat="server" />
                                             <asp:RadioButton ID="rdoWholeSaler"  GroupName="VendorType" AutoPostBack="false" OnCheckedChanged="rdoWholeSaler_CheckedChanged" Checked="true" Text="Wholesaler / Retailer" runat="server" />
                                         </div>
@@ -570,7 +597,7 @@
 
                                     <asp:GridView ID="grdProdLines" Width="100%" runat="server" OnRowDataBound="grdProdLines_RowDataBound" AutoGenerateColumns="false">
                                         <Columns>
-                                            <asp:TemplateField HeaderText="Line" HeaderStyle-Width="4%" ItemStyle-Width="4%">
+                                            <asp:TemplateField HeaderText="Line" HeaderStyle-Width="2%" ItemStyle-Width="2%">
                                                 <ItemTemplate>
                                                     <asp:TextBox CssClass="text-style" ID="txtLine" Text='<%# Eval("Line") %>' MaxLength="4" runat="server" ClientIDMode="Static" OnTextChanged="txtLine_TextChanged" Enabled="false"></asp:TextBox>
                                                     <asp:HiddenField ID="hdnMaterialListId" runat="server" Value='<%#Eval("Id")%>' />
@@ -582,7 +609,7 @@
                                                     <asp:HiddenField ID="hdnProductCatID" runat="server" Value='<%#Eval("ProductCatID")%>' />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="JG sku- vendor part #">
+                                            <asp:TemplateField HeaderText="JG sku- vendor part #" ItemStyle-Width="4%" HeaderStyle-Width="4%" >
                                                 <ItemTemplate>
                                                     <asp:UpdatePanel ID="updSku" runat="server">
                                                         <ContentTemplate>
@@ -605,8 +632,8 @@
                                                         </Triggers>
                                                     </asp:UpdatePanel>
                                                 </ItemTemplate>
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Quantity">
+                                            </asp:TemplateField> 
+                                            <asp:TemplateField HeaderText="Quantity" HeaderStyle-Width="9%"  ItemStyle-Width="9%">
                                                 <ItemTemplate>
                                                     <asp:UpdatePanel ID="updQty" runat="server">
                                                         <ContentTemplate>
@@ -618,7 +645,7 @@
                                                     </asp:UpdatePanel>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="UOM">
+                                            <asp:TemplateField HeaderText="UOM" HeaderStyle-Width="5%"  ItemStyle-Width="5%">
                                                 <ItemTemplate>
                                                     <asp:UpdatePanel ID="updUOM" runat="server">
                                                         <ContentTemplate>
@@ -630,7 +657,7 @@
                                                     </asp:UpdatePanel>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Cost"><%--Material Cost Per Item--%>
+                                            <asp:TemplateField HeaderText="Cost" HeaderStyle-Width="5%" ItemStyle-Width="5%"><%--Material Cost Per Item--%>
                                                 <ItemTemplate>
                                                     <asp:UpdatePanel ID="updMC" runat="server">
                                                         <ContentTemplate>
@@ -642,7 +669,7 @@
                                                     </asp:UpdatePanel>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Extended">
+                                            <asp:TemplateField HeaderText="Extended" HeaderStyle-Width="10%" ItemStyle-Width="10%">
                                                 <ItemTemplate>
                                                     <asp:UpdatePanel ID="updExt" runat="server">
                                                         <ContentTemplate>
@@ -655,24 +682,26 @@
                                                     </asp:UpdatePanel>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Vendor Quotes/Invoice" Visible="true" ItemStyle-Width="30%" ItemStyle-Wrap="false" >
+                                            <asp:TemplateField HeaderText="Vendor Quotes/Invoice" Visible="true" HeaderStyle-Width="250px" ItemStyle-Width="250px" ItemStyle-Height="20px"  >
                                                 <ItemTemplate>
-                                                   <%-- <asp:UpdatePanel ID="updVend" runat="server">
-                                                        <ContentTemplate>--%>
+                                                    <asp:UpdatePanel ID="updVend" runat="server">
+                                                        <ContentTemplate>
                                                             
-                                                            <asp:DropDownCheckBoxes ID="ddlVendorName" onblur="ShowProgress()" CssClass="chk-style" ClientIDMode="AutoID" EnableViewState="true" runat="server" Style="margin: -2em 0 0;" UseSelectAllNode="true" OnSelectedIndexChanged="ddlVendorName_SelectedIndexChanged1" AutoPostBack="true">
+                                                            <asp:ListBox ID="lstVendorName" Width="30%" SelectionMode="Multiple" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="lstVendorName_SelectedIndexChanged" runat="server"></asp:ListBox>
+                                                            <asp:DropDownCheckBoxes Visible="false" ID="ddlVendorName" onblur="ShowProgress()" CssClass="chk-style" ClientIDMode="AutoID" EnableViewState="true" runat="server" Style="margin: -2em 0 0;" UseSelectAllNode="true" OnSelectedIndexChanged="ddlVendorName_SelectedIndexChanged1" AutoPostBack="true">
                                                             </asp:DropDownCheckBoxes>
                                                             <asp:CheckBox ID="chkApplyFilter" Text="Apply Filter" runat="server" AutoPostBack="true" OnCheckedChanged="chkApplyFilter_CheckedChanged" />
-                                                       <%-- </ContentTemplate>
+                                                        </ContentTemplate>
                                                         <Triggers>
                                                             <asp:AsyncPostBackTrigger ControlID="ddlVendorName" EventName="SelectedIndexChanged" />
+                                                            <asp:AsyncPostBackTrigger ControlID="lstVendorName" EventName="SelectedIndexChanged" />
                                                             <asp:AsyncPostBackTrigger ControlID="chkApplyFilter" EventName="CheckedChanged" />
                                                             
                                                         </Triggers>
-                                                    </asp:UpdatePanel>--%>
+                                                    </asp:UpdatePanel>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="">
+                                            <asp:TemplateField HeaderText="" HeaderStyle-Width="5%" ItemStyle-Width="5%">
                                                 <ItemTemplate>
 
                                                     <asp:LinkButton ID="lnkDeleteLineItems" runat="server" CommandArgument='<%#Eval("Id") %>' CommandName="DeleteLine" OnClick="lnkDeleteLineItems_Click">Delete</asp:LinkButton>
@@ -694,15 +723,14 @@
                                     </asp:GridView>
                                     <asp:LinkButton ID="lnkAddLines" CommandName="AddLine" CommandArgument='<%#Eval("ProductCatId") %>' OnClick="lnkAddLines_Click1" runat="server">Add Line</asp:LinkButton>
                                     
-                                    <hr style="border:solid 1px; margin-top:5px;margin-bottom:5px" />
+                                    <hr style="border:none; background:#ccc; height:2px; margin-top:10px;margin-bottom:20px" />
 
                                 </ContentTemplate>
 
                             </asp:UpdatePanel>
                         </ItemTemplate>
                     </asp:ListView>
-
-
+                 
                     <asp:GridView ID="grdcustom_material_list" runat="server" Width="108%" AutoGenerateColumns="false" Visible="false"
                         OnRowDataBound="grdcustom_material_list_RowDataBound" OnRowDeleting="grdcustom_material_list_RowDeleting" OnRowCommand="grdcustom_material_list_RowCommand">
                         <Columns>
@@ -770,6 +798,7 @@
                 </ContentTemplate>
             </asp:UpdatePanel>
         </div>
+          
         <div class="btn_sec">
             <asp:Button ID="btnSendMail" runat="server" Text="Save" OnClick="btnSendMail_Click" OnClientClick="return ValidatePermissions()"
                 Style="background: url(../img/btn1.png) no-repeat;" Width="300" Visible="false" />
@@ -879,8 +908,7 @@
             runat="server" CancelControlID="btnClose1" PopupControlID="pnlpopup">
         </ajaxToolkit:ModalPopupExtender>--%>
 
-
-
+     <script src="../js/jquery.multiselect.js"></script>
     <script type="text/javascript">
 
         function ValidatePermissions() {
@@ -920,6 +948,7 @@
         function HideProgress() {
             document.getElementById('cover').style.display = 'none';
             document.getElementById('dvLoader').style.display = 'none';
+        
         }
 
         function jsFunctions() {
@@ -937,6 +966,6 @@
         Sys.WebForms.PageRequestManager.getInstance().add_endRequest(jsFunctions);
         HideProgress();
     </script>
-   
+    
     
 </asp:Content>

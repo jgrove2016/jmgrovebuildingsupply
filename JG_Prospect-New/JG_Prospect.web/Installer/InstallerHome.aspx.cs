@@ -430,6 +430,14 @@ namespace JG_Prospect.Installer
             lstCustomMaterialList.DataSource = PageDataset.Tables[0];
             lstCustomMaterialList.DataBind();
 
+            ddlInstaller.DataSource = PageDataset.Tables[3];
+            ddlInstaller.DataTextField = "QualifiedName";
+            ddlInstaller.DataValueField = "Id";
+            ddlInstaller.DataBind();
+
+            rptInstaller.DataSource = PageDataset.Tables[4];
+            rptInstaller.DataBind();
+
             RequestMaterialDataSet = CustomBLL.Instance.GetRequestMaterialList(JobID, CustomerID, InstallerID);
             lstRequestMaterial.DataSource = RequestMaterialDataSet.Tables[0];
             lstRequestMaterial.DataBind();
@@ -826,10 +834,42 @@ namespace JG_Prospect.Installer
                 }
                 
             }
+
         }
         #endregion
 
-      
+        #region "Add Installer"
+        protected void btnAddInstaller_Click(object sender, EventArgs e)
+        {
+            CustomBLL.Instance.AddInstallerToMaterialList(JobID, Convert.ToInt32(ddlInstaller.SelectedValue));
+            BindCustomMaterialList();
+        }
+        protected void rptInstaller_ItemDataBound(object sender, RepeaterItemEventArgs e)
+        {
+            if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
+            {
+                Literal ltrStatus = (Literal)e.Item.FindControl("ltrStatus");
+                DataRowView lDrInstallerRow = (DataRowView)e.Item.DataItem;
+                if (lDrInstallerRow["UpdatedDateTime"] != DBNull.Value && lDrInstallerRow["UpdatedDateTime"] != null)
+                {
+                    ltrStatus.Text = Convert.ToDateTime(lDrInstallerRow["UpdatedDateTime"].ToString()).ToString("MM/dd/yyyy HH:mm:ss");
+                }
+                else
+                {
+                    ltrStatus.Text = "<input type='password' id='txtInstPwd" + lDrInstallerRow["InstallerID"].ToString() + "' onblur='AllowInstaller(\"" + lDrInstallerRow["InstallerID"].ToString() + "\", this)' />";
+                }
+            }
+        }
+        protected void rptInstaller_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            if (e.CommandName == "DeleteInstaller")
+            {
+                CustomBLL.Instance.RemoveInstallerFromMaterialList(Convert.ToInt32(e.CommandArgument));
+                BindCustomMaterialList();
+            }
+        }
+        #endregion
+
         #endregion
 
     }
