@@ -151,6 +151,25 @@
                 <br />
                 <asp:Label ID="Label1" runat="server" />
             </div>
+            <div id="divTest">
+                <asp:Label ID="lblPrimaryTrade" Text="Primary Trade" runat="server" />
+                <asp:DropDownList ID="ddlPrimaryTrade" runat="server" Width="140px" OnSelectedIndexChanged="ddlUserStatus_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>&nbsp;
+                <asp:Label ID="lblUserStatus" Text="User Status" runat="server" /><span style="color: red">*</span>
+                <asp:DropDownList ID="ddlUserStatus" runat="server" Width="140px" AutoPostBack="true" OnSelectedIndexChanged="ddlUserStatus_SelectedIndexChanged">
+                    <asp:ListItem Text="--Select--" Value="--Select--"></asp:ListItem>
+                    <asp:ListItem Text="Applicant" Value="Applicant"></asp:ListItem>
+                    <asp:ListItem Text="Phone/Video Screened" Value="PhoneScreened"></asp:ListItem>
+                    <asp:ListItem Text="Rejected" Value="Rejected"></asp:ListItem>
+                    <asp:ListItem Text="Interview Date" Value="InterviewDate"></asp:ListItem>
+                    <asp:ListItem Text="Offer Made" Value="OfferMade"></asp:ListItem>
+                    <asp:ListItem Text="Active" Value="Active"></asp:ListItem>
+                    <asp:ListItem Text="Deactive" Value="Deactive"></asp:ListItem>
+                    <asp:ListItem Text="Install Prospect" Value="Install Prospect"></asp:ListItem>
+                </asp:DropDownList>&nbsp;
+                <asp:Label ID="lblDesignation" Text="Designation" runat="server" />
+                <asp:DropDownList ID="ddlDesignation" runat="server" Width="140px" OnSelectedIndexChanged="ddlUserStatus_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+            </div>
+            <br />
             <asp:LinkButton ID="lnkDownload" Text="Download Sample Format For Bulk Upload" CommandArgument='../UserFile/sample.xlsx' runat="server" OnClick="DownloadFile"></asp:LinkButton>
             <div class="grid">
                 <%-- <asp:UpdatePanel ID="updatepanel" runat="server">
@@ -191,12 +210,11 @@
                             <ControlStyle ForeColor="Black" />
                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                         </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Picture" SortExpression="picture">
+                       <%-- <asp:TemplateField HeaderText="Picture" SortExpression="picture">
                             <ItemTemplate>
-                                <asp:LinkButton ID="lbtnPicture" Text="Picture" CommandName="ShowPicture" runat="server"
-                                    CommandArgument='<%#Eval("picture")%>'></asp:LinkButton>
+                                <asp:LinkButton ID="lbtnPicture" Text="Picture" CommandName="ShowPicture" runat="server" CommandArgument='<%#Eval("picture")%>'></asp:LinkButton>
                             </ItemTemplate>
-                        </asp:TemplateField>
+                        </asp:TemplateField>--%>
                         <asp:TemplateField ShowHeader="True" HeaderText="First Name" SortExpression="FristName" ControlStyle-ForeColor="Black"
                             ItemStyle-HorizontalAlign="Center">
                             <EditItemTemplate>

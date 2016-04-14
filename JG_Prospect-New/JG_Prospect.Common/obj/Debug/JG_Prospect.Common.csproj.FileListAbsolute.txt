@@ -141,3 +141,4 @@ D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\De
 D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.Unity.Interception.dll
 D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.dll
 D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.pdb
+D:\Personal\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.csprojResolveAssemblyReference.cache

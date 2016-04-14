@@ -71,3 +71,12 @@ D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug
 D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll
 D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\JG_Prospect.Common.pdb
 D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\obj\Debug\JG_Prospect.DAL.pdb
+D:\Personal\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\JG_Prospect.DAL.dll
+D:\Personal\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\JG_Prospect.DAL.pdb
+D:\Personal\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\JG_Prospect.Common.dll
+D:\Personal\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\Microsoft.Practices.Unity.dll
+D:\Personal\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\Microsoft.Practices.Unity.Interception.dll
+D:\Personal\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\JG_Prospect.Common.pdb
+D:\Personal\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\obj\Debug\JG_Prospect.DAL.csprojResolveAssemblyReference.cache
+D:\Personal\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\obj\Debug\JG_Prospect.DAL.dll
+D:\Personal\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\obj\Debug\JG_Prospect.DAL.pdb

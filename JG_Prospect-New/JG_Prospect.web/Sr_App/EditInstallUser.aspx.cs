@@ -65,6 +65,16 @@ namespace JG_Prospect.Sr_App
                     Session["GridDataSort"] = dsNew.Tables[0];
                     GridViewUser.DataSource = dsNew.Tables[0];
                     GridViewUser.DataBind();
+                    ddlPrimaryTrade.DataSource = (from ptrade in dsNew.Tables[0].AsEnumerable()
+                                                  where !string.IsNullOrEmpty(ptrade.Field<string>("PTradeName"))
+                                                  select Convert.ToString(ptrade["PTradeName"])).Distinct().ToList();
+                    ddlPrimaryTrade.DataBind();
+                    ddlPrimaryTrade.Items.Insert(0, "--Select--");
+                    ddlDesignation.DataSource = (from ptrade in dsNew.Tables[0].AsEnumerable()
+                                                 where !string.IsNullOrEmpty(ptrade.Field<string>("Designation"))
+                                                 select Convert.ToString(ptrade["Designation"])).Distinct().ToList();
+                    ddlDesignation.DataBind();
+                    ddlDesignation.Items.Insert(0, "--Select--");
                 }
                 else
                 {
@@ -223,7 +233,7 @@ namespace JG_Prospect.Sr_App
             else if (e.CommandName == "ShowPicture")
             {
                 string ImagePath = "";
-                string ImageName = e.CommandArgument.ToString();
+                string ImageName = Convert.ToString(e.CommandArgument);
                 ImagePath = "UploadedFile/" + Path.GetFileName(ImageName);
                 img_InstallerImage.ImageUrl = ImagePath;
                 mp1.Show();
@@ -1693,6 +1703,32 @@ namespace JG_Prospect.Sr_App
                 binddata();
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Enter Correct password to change status.')", true);
             }
+        }
+
+        protected void ddlUserStatus_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BindGrid(ddlPrimaryTrade.SelectedItem.Text, ddlUserStatus.SelectedItem.Text, ddlDesignation.SelectedItem.Text);
+        }
+        private void BindGrid(string PTrade, string UStatus, string Designation)
+        {
+            DataTable dt = (DataTable)(Session["GridData"]);
+            EnumerableRowCollection<DataRow> query = null;
+            if (ddlUserStatus.SelectedIndex != 0 || ddlUserStatus.SelectedIndex != 0 || ddlPrimaryTrade.SelectedIndex != 0)
+            {
+                query = from userdata in dt.AsEnumerable()
+                        where (userdata.Field<string>("Status") == UStatus || ddlUserStatus.SelectedIndex == 0)
+                        && (userdata.Field<string>("PTradeName") == PTrade || ddlPrimaryTrade.SelectedIndex == 0)
+                        && (userdata.Field<string>("Designation") == Designation || ddlDesignation.SelectedIndex == 0)
+                        select userdata;
+                if (query.Count() > 0)
+                {
+                    dt = query.CopyToDataTable();
+                }
+                else
+                    dt = null;
+            }
+            GridViewUser.DataSource = dt;
+            GridViewUser.DataBind();
         }
     }
 }
