@@ -237,6 +237,7 @@
     <Content Include="Controls\LeftMenu_home.ascx" />
     <Content Include="CreateUser.aspx" />
     <Content Include="css\jquery-ui.css" />
+    <Content Include="css\jquery.multiselect.css" />
     <Content Include="css\pgwslideshow.min.css" />
     <Content Include="CustomerDocs\LocationPics\017aaf2f-442b-4408-bfb6-4f9eb50edd95-Hydrangeas.jpg" />
     <Content Include="CustomerDocs\LocationPics\01cc5970-1d8a-43b8-9e44-ee8e8c00596d-Jellyfish.jpg" />
@@ -463,6 +464,7 @@
     <Content Include="js\jquery.dd.min.js" />
     <Content Include="js\jquery.js" />
     <Content Include="js\jquery.MultiFile.js" />
+    <Content Include="js\jquery.multiselect.js" />
     <Content Include="js\jquery.ui.core.js" />
     <Content Include="Location_img\Jellyfish.jpg" />
     <Content Include="Location_img\Lighthouse.jpg" />

@@ -3077,6 +3077,8 @@ namespace JG_Prospect.Sr_App
                 DataRowView lDr = (DataRowView)e.Row.DataItem;
                 int lProdCatID = Convert.ToInt32(lDr["ProductCatID"].ToString());
 
+                
+
                 DropDownCheckBoxes ddlVendorCategory = (DropDownCheckBoxes)e.Row.FindControl("ddlVendorName");
                 DataView lDvVendor = new DataView(VendorList, " ProductCategoryId=" + lProdCatID, "VendorName asc", DataViewRowState.CurrentRows);
                 ddlVendorCategory.DataSource = lDvVendor;
@@ -3084,7 +3086,11 @@ namespace JG_Prospect.Sr_App
                 ddlVendorCategory.DataValueField = "VendorId";
                 ddlVendorCategory.DataBind();
 
-                
+                ListBox lstVendorName = (ListBox)e.Row.FindControl("lstVendorName");
+                lstVendorName.DataSource = lDvVendor;
+                lstVendorName.DataTextField = "VendorName";
+                lstVendorName.DataValueField = "VendorId";
+                lstVendorName.DataBind();
                 
                 String lVendorIds = lDr["VendorIds"].ToString();
                 foreach (System.Web.UI.WebControls.ListItem lItem in ddlVendorCategory.Items)
@@ -4110,6 +4116,13 @@ namespace JG_Prospect.Sr_App
             FilterVendors(sender, e);
         }
         #endregion
+
+        protected void lstVendorName_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdatePanel updVend = (UpdatePanel)(((ListBox)sender).Parent.Parent);
+            ScriptManager.RegisterClientScriptInclude(updVend, updVend.GetType(), "Jquery", "../js/jquery.multiselect.js");
+            ScriptManager.RegisterStartupScript(updVend, updVend.GetType(), "TransformList", " <script src=\"../js/jquery.multiselect.js\"></script> <script>   $('select[multiple]').multiselect({columns: 4,placeholder: 'Select options'});</script>", false);
+        }
 
       
 
