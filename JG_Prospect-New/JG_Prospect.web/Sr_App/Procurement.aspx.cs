@@ -112,7 +112,23 @@ namespace JG_Prospect.Sr_App
                     BindVendorByProdCat1(ddlprdtCategory1.SelectedValue.ToString());
                     BindVendorSubCatByVendorCat(ddlVndrCategory.SelectedValue.ToString());
                     string ManufacturerType = GetManufacturerType();
-                    //FilterVendors("", "ManufacturerType", ManufacturerType, "");
+                    FilterVendors("", "ProductCategoryAll", ManufacturerType, "");
+                    DataSet dsSource;
+                    dsSource = InstallUserBLL.Instance.GetSource();
+                    if (dsSource.Tables[0].Rows.Count > 0)
+                    {
+                        ddlSource.DataSource = dsSource.Tables[0];
+                        ddlSource.DataTextField = "Source";
+                        ddlSource.DataValueField = "Source";
+                        ddlSource.DataBind();
+                        ddlSource.Items.Insert(0, "Select Source");
+                        ddlSource.SelectedIndex = 0;
+                    }
+                    else
+                    {
+                        ddlSource.Items.Add("Select Source");
+                        ddlSource.SelectedIndex = 0;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -274,7 +290,9 @@ namespace JG_Prospect.Sr_App
             else
             {
                 string ManufacturerType = GetManufacturerType();
-                FilterVendors("", "ManufacturerType", ManufacturerType, "");
+                //FilterVendors("", "ManufacturerType", ManufacturerType, "");
+                //Added by harshit
+                FilterVendors("", "ProductCategoryAll", ManufacturerType, "");
             }
 
         }
@@ -3328,7 +3346,91 @@ namespace JG_Prospect.Sr_App
         }
 
 
+        protected void btnAddSource_Click(object sender, EventArgs e)
+        {
+            if (txtSource.Text != "")
+            {
+                string source = txtSource.Text;
+                DataSet ds = InstallUserBLL.Instance.CheckSource(source);
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Source already exists.')", true);
+                }
+                else
+                {
+                    DataSet dsadd = InstallUserBLL.Instance.AddSource(source);
+                    if (dsadd.Tables[0].Rows.Count > 0)
+                    {
+                        ddlSource.DataSource = dsadd.Tables[0];
+                        ddlSource.DataTextField = "Source";
+                        ddlSource.DataValueField = "Source";
+                        ddlSource.DataBind();
+                        ddlSource.Items.Insert(0, "Select Source");
+                        ddlSource.SelectedValue = source;
+                    }
+                }
+                txtSource.Text = "";
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Record added successfully.')", true);
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Enter value to add.')", true);
+            }
+            //if (ddldesignation.SelectedItem.Text == "Installer")
+            //{
+            //    lblInstallerType.Visible = true;
+            //    ddlInstallerType.Visible = true;
+            //}
+            //else
+            //{
+            //    lblInstallerType.Visible = false;
+            //    ddlInstallerType.Visible = false;
+            //}
+            //btnPluse.Visible = true;
+            //btnMinus.Visible = false;
+            //pnl4.Visible = false;
+        }
 
+
+        protected void btnDeleteSource_Click(object sender, EventArgs e)
+        {
+            if (ddlSource.SelectedItem.Text != "Select Source")
+            {
+                string source = ddlSource.SelectedItem.Text;
+                DataSet ds = InstallUserBLL.Instance.CheckSource(source);
+                if (ds.Tables[0].Rows.Count == 0)
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Source does not exists.')", true);
+                }
+                else
+                {
+                    InstallUserBLL.Instance.DeleteSource(ddlSource.SelectedItem.Text);
+                    DataSet dsadd = InstallUserBLL.Instance.GetSource();
+                    if (dsadd.Tables[0].Rows.Count > 0)
+                    {
+                        ddlSource.DataSource = dsadd.Tables[0];
+                        ddlSource.DataTextField = "Source";
+                        ddlSource.DataValueField = "Source";
+                        ddlSource.DataBind();
+                        ddlSource.Items.Insert(0, "Select Source");
+                        ddlSource.SelectedIndex = 0;
+                        txtSource.Text = "";
+                    }
+                    else
+                    {
+                        ddlSource.DataSource = dsadd;
+                        ddlSource.DataBind();
+                        ddlSource.Items.Add("Select Source");
+                        ddlSource.SelectedIndex = 0;
+                    }
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Record deleted successfully.')", true);
+                }
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Select source to delete.')", true);
+            }
+        }
 
         //protected void txtVendorNm_TextChanged(object sender, EventArgs e)
         //{

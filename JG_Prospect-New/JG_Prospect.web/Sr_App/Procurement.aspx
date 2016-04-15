@@ -792,7 +792,7 @@
                                              </div>
 
                                                 </div>
-                                                <div style="width: 450px; float: left">
+                                                <div style="width: 450px; float: left; margin-left: 25px; margin-top: 20px;">
                                                     <div id="googleMap" style="width: 100%; height: 254px;"></div>
                                                 </div>
 
@@ -804,8 +804,13 @@
                         </asp:UpdatePanel>
                     </div>
 
-
-                    <asp:UpdatePanel ID="updtpnlAddVender" UpdateMode="Conditional" runat="server">
+                    <div id="tabs">
+                        <ul>
+                            <li><a href="#tabs-1">Add/Edit Vendor</a></li>
+                            <li><a href="#tabs-2">Add Product</a></li>
+                        </ul>
+                        <div id="tabs-1">
+                            <asp:UpdatePanel ID="updtpnlAddVender" UpdateMode="Conditional" runat="server">
                         <ContentTemplate>
                             <div id="divVendor" class="vendorForm">
                                 <ul style="padding: 0px;">
@@ -834,18 +839,31 @@
 
                                                 <td>
                                                     <label>Vendor Status:</label><br />
-                                                    <asp:DropDownList ID="ddlVendorStatus" runat="server">
+                                                    <asp:DropDownList ID="ddlVendorStatus" runat="server" Style="width: 180px;">
                                                         <asp:ListItem>Select</asp:ListItem>
                                                         <asp:ListItem>Prospect</asp:ListItem>
                                                         <asp:ListItem>Active-Past</asp:ListItem>
-                                                        <asp:ListItem>No Transactions</asp:ListItem>
+                                                        <%--<asp:ListItem>No Transactions</asp:ListItem>--%>
                                                         <asp:ListItem>Deactivate</asp:ListItem>
                                                     </asp:DropDownList>
                                                 </td>
-
+                                                <td class="style1">
+                                                    <label>
+                                                        Vendor Source<asp:Label ID="lblSourceReq" runat="server" Text="*" ForeColor="Green"></asp:Label></label>
+                                                    <asp:DropDownList ID="ddlSource" runat="server" Width="250px">
+                                                    </asp:DropDownList>
+                                                    <asp:TextBox ID="txtSource" runat="server" Width="125px"></asp:TextBox>
+                                                    <asp:Button runat="server" ID="btnAddSource" Text="Add" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff;" OnClick="btnAddSource_Click" Height="30px" />&nbsp;
+                               
+                                <asp:Button runat="server" ID="btnDeleteSource" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff;" Text="Delete" OnClick="btnDeleteSource_Click" Height="30px" />
+                                                    <%--<br />
+                                &nbsp;&nbsp;&nbsp;&nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="ddlSource"
+                                    ForeColor="Green" Display="Dynamic" ValidationGroup="submit" ErrorMessage="Please select the source." InitialValue="Select Source"></asp:RequiredFieldValidator>--%>
+                                                </td>
 
                                             </tr>
                                             <tr>
+
                                                 <td>
                                                     <label>
                                                         Tax Id:</label><br />
@@ -863,7 +881,35 @@
                                                     <asp:TextBox ID="txtVendorFax" runat="server" MaxLength="20"></asp:TextBox>
                                                     <br />
                                                 </td>
+                                                <td>
+                                                    <label>
+                                                        Payment Terms
+                                                    </label>
+                                                    <asp:DropDownList ID="DrpPaymentTerms" runat="server" Style="width: 180px;">
+                                                        <asp:ListItem>Select</asp:ListItem>
+                                                        <asp:ListItem>Pay In Advance</asp:ListItem>
+                                                        <asp:ListItem>COD</asp:ListItem>
+                                                        <asp:ListItem>NET 15</asp:ListItem>
+                                                        <asp:ListItem>Net 30</asp:ListItem>
+                                                        <asp:ListItem>Net 60</asp:ListItem>
+                                                        <asp:ListItem>1% 10 Net 30</asp:ListItem>
+                                                    </asp:DropDownList>
+                                                </td>
 
+                                            </tr>
+                                            <tr>
+
+                                                <td>
+                                                    <label>
+                                                        Payment Method:</label><br />
+                                                    <asp:DropDownList ID="DrpPaymentMode" runat="server" Style="width: 180px;">
+                                                        <asp:ListItem>Select</asp:ListItem>
+                                                        <asp:ListItem>amex2343</asp:ListItem>
+                                                        <asp:ListItem>Discover3494</asp:ListItem>
+                                                        <asp:ListItem>echeck101</asp:ListItem>
+                                                    </asp:DropDownList>
+
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td colspan="4" style="padding: 0px;">
@@ -1311,6 +1357,15 @@
                         </ContentTemplate>
                     </asp:UpdatePanel>
 
+                        </div>
+                        <div id="tabs-2">
+                            <p>&nbsp</p>
+                        </div>
+                       
+                    </div>
+
+                    <%--Add tabs--%>
+                    
 
                     <div class="form_panel_custom vendorFilter">
                         <table id="Table1" cellpadding="0" cellspacing="0" border="0" runat="server">
@@ -1320,8 +1375,7 @@
                                         <strong>Select Period: </strong><span>*</span>
                                     </label>
                                 </td>
-                                <td>
-                                    &nbsp;
+                                <td>&nbsp;
                                 </td>
                                 <td>
                                     <label style="width: 50%;">
@@ -1332,7 +1386,7 @@
                             <tr>
                                 <td>
                                     <label>
-                                         From :
+                                        From :
                                     </label>
                                     <%-- <label style="width: 50px; text-align: right;">
                                     <span>*</span> From : </label>--%>
@@ -1346,8 +1400,7 @@
                                 </td>
                                 <td>
                                     <label style="width: 50px; text-align: right;">
-                                        <span>
-                                            *</span> To :
+                                        <span>*</span> To :
                                     </label>
                                     <asp:TextBox ID="txtTodate" CssClass="date" onkeypress="return false"
                                         MaxLength="10" runat="server" TabIndex="3" AutoPostBack="true"
@@ -1362,7 +1415,7 @@
                                 ForeColor="Red" ValidationGroup="display"></asp:CompareValidator>--%>
                                 </td>
                                 <td>
-                                    
+
                                     <asp:DropDownList ID="drpPayPeriod" runat="server" Width="250px" AutoPostBack="true"
                                         OnSelectedIndexChanged="drpPayPeriod_SelectedIndexChanged">
                                     </asp:DropDownList>
@@ -1389,46 +1442,37 @@
                         <br />
                         <br />
                         <div class="grid">
-                            <div style="float: left; width: 32%;">
-                                <table>
+                            <div style="float: left; width: 23%;">
+                                <table style="width: 100%;">
                                     <tr>
                                         <td>
                                             <asp:CheckBox ID="rdoRetailWholesale1" runat="server" Text="Retail/Wholesale" GroupName="MT" />
-                                        </td>
-                                        <td>
-                                            <asp:CheckBox ID="rdoManufacturer1" runat="server" Text="Manufacturer" GroupName="MT"/>
+                                            <br />
+                                            <asp:CheckBox ID="rdoManufacturer1" runat="server" Text="Manufacturer" GroupName="MT" />
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                            Product Category
-                                        </td>
-                                        <td>
+                                        <td>Product Category
+                                            <br />
                                             <asp:DropDownList ID="ddlprdtCategory1" runat="server" Width="150px" AutoPostBack="true" OnSelectedIndexChanged="ddlprdtCategory1_SelectedIndexChanged"></asp:DropDownList>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                            Vendor Category
-                                        </td>
-                                        <td>
+                                        <td>Vendor Category
+                                            <br />
                                             <asp:DropDownList ID="ddlVndrCategory1" runat="server" Width="150px" AutoPostBack="True" OnSelectedIndexChanged="ddlVndrCategory1_SelectedIndexChanged"></asp:DropDownList>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                           Vendor Sub Category
-                                        </td>
-                                        <td>
+                                        <td>Vendor Sub Category
+                                            <br />
                                             <asp:DropDownList ID="ddlVendorSubCategory1" runat="server" Width="150px" AutoPostBack="True"></asp:DropDownList>
                                             <%--OnSelectedIndexChanged="ddlVendorSubCategory1_SelectedIndexChanged"--%>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                           SKU
-                                        </td>
-                                        <td>
+                                        <td>SKU
+                                            <br />
                                             <asp:DropDownList ID="DrpSku" runat="server">
                                                 <asp:ListItem>--Select</asp:ListItem>
                                                 <asp:ListItem Value="SOF001">SOF001</asp:ListItem>
@@ -1436,16 +1480,14 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>
-                                           Description
-                                        </td>
-                                        <td>
+                                        <td>Description
+                                            <br />
                                             <asp:TextBox ID="TxtDescription" runat="server"></asp:TextBox>
                                         </td>
                                     </tr>
                                 </table>
                             </div>
-                            <div style="float:right;width: 64%;vertical-align: top;">
+                            <div style="float: right; width: 76%; vertical-align: top;">
                                 <asp:GridView ID="grdprimaryvendor" runat="server" AutoGenerateColumns="false" Width="100%"
                                     CssClass="tableClass" HeaderStyle-Wrap="true" ShowHeaderWhenEmpty="true">
                                     <Columns>
@@ -1706,6 +1748,32 @@
     <link href="../css/jquery-ui.css" rel="stylesheet" />
     <script src="../js/jquery-ui.js"></script>
     <script src="../Scripts/jquery.maskedinput.min.js" type="text/javascript"></script>
+    <style type="text/css">
+        #tabs.ui-tabs {
+            background: transparent;
+        }
+
+            #tabs.ui-tabs .ui-tabs-nav {
+                height: auto;
+                margin-left: 0;
+            }
+
+        .ui-tabs .ui-tabs-nav li {
+            width: 20%;
+        }
+
+        #tabs.ui-tabs .ui-tabs-nav li.ui-tabs-selected {
+            background: #ffffff;
+        }
+
+        .ui-tabs.ui-widget-content {
+            border: 1px solid #aaaaaa !important;
+        }
+
+        .ui-tabs .ui-tabs-panel {
+            padding: 10px 0px !important;
+        }
+    </style>
     <script type="text/javascript">
 
         //$(document).ready(function () {
@@ -1766,5 +1834,7 @@
                 }
             });
         }
+
+        $('#tabs').tabs();
     </script>
 </asp:Content>
