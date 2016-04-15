@@ -2283,6 +2283,32 @@ namespace JG_Prospect.Sr_App
         }
 
         /// <summary>
+        /// This method will save vendor ids
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        [WebMethod]
+        public static string SaveVendorIds(string pExcMaterialListId, Int32 pProductCatID, String pVendorIds)
+        {
+            string lResult = "1";
+            CustomBLL.Instance.UpdateVendorIDs(pVendorIds, pProductCatID, pExcMaterialListId, jobId);
+            return lResult;
+        }
+
+        /// <summary>
+        /// This method will save vendor ids
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        [WebMethod]
+        public static string SaveVendorIdsForSpecificMaterial(Int32 pMaterialListID, String pVendorIds)
+        {
+            string lResult = "1";
+            CustomBLL.Instance.UpdateVendorIDForSpecMaterial(pVendorIds, pMaterialListID);
+            return lResult;
+        }
+
+        /// <summary>
         /// This method will auto save the custom material list.
         /// </summary>
         /// <param name="sender"></param>
@@ -3103,7 +3129,18 @@ namespace JG_Prospect.Sr_App
                         }
                     }
                 }
-                
+
+                foreach (System.Web.UI.WebControls.ListItem lItem in lstVendorName.Items)
+                {
+                    foreach (string lVendorId in lVendorIds.Split(','))
+                    {
+                        if (lItem.Value == lVendorId)
+                        {
+                            lItem.Selected = true;
+                        }
+                    }
+                }
+
 
             }
         }
@@ -3179,13 +3216,13 @@ namespace JG_Prospect.Sr_App
                     else                //if permissions were granted for categories
                     {
                         btnSendEmailToVendors.Enabled = true;
-                        btnSendEmailToVendors.Text = "Send Mail to Vendors";
+                        btnSendEmailToVendors.Text = "Send Mail to All Vendors";
                     }
                 }
                 else if (EmailStatus == JGConstant.EMAIL_STATUS_VENDOR)    //if both mails are sent
                 {
                     btnSendEmailToVendors.Enabled = true;
-                    btnSendEmailToVendors.Text = "Resend Mail to Vendors";
+                    btnSendEmailToVendors.Text = "Resend Mail to All Vendors";
                 }
                 else        //if mails were sent to categories
                 {
@@ -4117,11 +4154,89 @@ namespace JG_Prospect.Sr_App
         }
         #endregion
 
-        protected void lstVendorName_SelectedIndexChanged(object sender, EventArgs e)
+        protected void btnSendEmailToVendorsForProd_Click(object sender, EventArgs e)
         {
-            UpdatePanel updVend = (UpdatePanel)(((ListBox)sender).Parent.Parent);
-            ScriptManager.RegisterClientScriptInclude(updVend, updVend.GetType(), "Jquery", "../js/jquery.multiselect.js");
-            ScriptManager.RegisterStartupScript(updVend, updVend.GetType(), "TransformList", " <script src=\"../js/jquery.multiselect.js\"></script> <script>   $('select[multiple]').multiselect({columns: 4,placeholder: 'Select options'});</script>", false);
+            try
+            {
+                //PageDataset = CustomBLL.Instance.GetCustomMaterialList(jobId.ToString(), customerId);
+                //string status = CustomBLL.Instance.GetEmailStatusOfCustomMaterialList(jobId);//, productTypeId, estimateId);
+                Button btnSendVendorEmails = (Button )sender;
+                Int32 lProductCatID = Convert.ToInt32(Convert.ToInt32(btnSendVendorEmails.CommandArgument));
+                    StringBuilder lStrbHTMLTable = new StringBuilder();
+                    lStrbHTMLTable.Append("<table  rules='all' style='width:80%;margin:auto auto;border:solid 1px;border-collapse:collapse;' cellpadding='0' cellspacing='0'>");
+                    lStrbHTMLTable.Append("<tr>");
+                    lStrbHTMLTable.Append("<th>#</th>");
+                    // lStrbHTMLTable.Append("<th>JG SKU - Vendor Part #</th>");
+                    lStrbHTMLTable.Append("<th>Material</th>");
+                    lStrbHTMLTable.Append("<th>Quantity</th>");
+                    lStrbHTMLTable.Append("<th>UOM</th>");
+                    lStrbHTMLTable.Append("<th>Cost</th>");
+                    lStrbHTMLTable.Append("<th>Extended</th>");
+                    lStrbHTMLTable.Append("</tr>");
+
+                    DataView lDvMaterialList = new DataView(PageDataset.Tables[1]);
+                    lDvMaterialList = new DataView(PageDataset.Tables[1], "ProductCatID=" + lProductCatID, "id asc", DataViewRowState.ModifiedCurrent);
+                    lDvMaterialList.Table = PageDataset.Tables[1];
+                    lDvMaterialList.RowFilter = "ProductCatID=" + lProductCatID;
+                    lDvMaterialList.RowStateFilter = DataViewRowState.ModifiedCurrent;
+                    String lVendorIds = "";
+                    int y =1;
+                    foreach (DataRow lRow in  PageDataset.Tables[1].Select("ProductCatID=" + lProductCatID))
+                    {
+                        lStrbHTMLTable.Append("<tr>");
+                        lStrbHTMLTable.Append("<td>" + (y ) + "</td>");
+                        // lStrbHTMLTable.Append("<td>" + (lDvMaterialList.Table.Rows[x]["JGSkuPartNo"].ToString().Trim() == "" ? "-" : lDvMaterialList.Table.Rows[x]["JGSkuPartNo"].ToString().Trim()) + "</td>");
+                        lStrbHTMLTable.Append("<td>" + (lRow["MaterialList"].ToString().Trim() == "" ? "-" : lRow["MaterialList"].ToString().Trim()) + "</td>");
+                        lStrbHTMLTable.Append("<td>" + (lRow["Quantity"].ToString().Trim() == "" ? "-" : lRow["Quantity"].ToString().Trim()) + "</td>");
+                        lStrbHTMLTable.Append("<td>" + (lRow["UOM"].ToString().Trim() == "" ? "-" : lRow["UOM"].ToString().Trim()) + "</td>");
+                        lStrbHTMLTable.Append("<td>" + (lRow["MaterialCost"].ToString().Trim() == "" ? "-" : lRow["MaterialCost"].ToString().Trim()) + "</td>");
+                        lStrbHTMLTable.Append("<td>" + (lRow["extend"].ToString().Trim() == "" ? "-" : lRow["extend"].ToString().Trim()) + "</td>");
+                        lStrbHTMLTable.Append("</tr>");
+                        lVendorIds = lRow["vendorids"].ToString().Trim() + ",";
+                        y += 1;
+                    }
+
+                        //for (int x = 0; x < lDvMaterialList.ToTable().Rows.Count; x++)
+                        //{
+                        //    lStrbHTMLTable.Append("<tr>");
+                        //    lStrbHTMLTable.Append("<td>" + (x + 1) + "</td>");
+                        //    // lStrbHTMLTable.Append("<td>" + (lDvMaterialList.Table.Rows[x]["JGSkuPartNo"].ToString().Trim() == "" ? "-" : lDvMaterialList.Table.Rows[x]["JGSkuPartNo"].ToString().Trim()) + "</td>");
+                        //    lStrbHTMLTable.Append("<td>" + (lDvMaterialList.ToTable().Rows[x]["MaterialList"].ToString().Trim() == "" ? "-" : lDvMaterialList.ToTable().Rows[x]["MaterialList"].ToString().Trim()) + "</td>");
+                        //    lStrbHTMLTable.Append("<td>" + (lDvMaterialList.ToTable().Rows[x]["Quantity"].ToString().Trim() == "" ? "-" : lDvMaterialList.ToTable().Rows[x]["Quantity"].ToString().Trim()) + "</td>");
+                        //    lStrbHTMLTable.Append("<td>" + (lDvMaterialList.ToTable().Rows[x]["UOM"].ToString().Trim() == "" ? "-" : lDvMaterialList.ToTable().Rows[x]["UOM"].ToString().Trim()) + "</td>");
+                        //    lStrbHTMLTable.Append("<td>" + (lDvMaterialList.ToTable().Rows[x]["MaterialCost"].ToString().Trim() == "" ? "-" : lDvMaterialList.ToTable().Rows[x]["MaterialCost"].ToString().Trim()) + "</td>");
+                        //    lStrbHTMLTable.Append("<td>" + (lDvMaterialList.ToTable().Rows[x]["extend"].ToString().Trim() == "" ? "-" : lDvMaterialList.ToTable().Rows[x]["extend"].ToString().Trim()) + "</td>");
+                        //    lStrbHTMLTable.Append("</tr>");
+                        //    lVendorIds = lDvMaterialList.ToTable().Rows[x]["vendorids"].ToString().Trim() + ",";
+                        //}
+
+                    lStrbHTMLTable.Append("</table>");
+                    int permissionStatus = CustomBLL.Instance.CheckPermissionsForCategories(jobId, lProductCatID);//, productTypeId, estimateId);
+                    if (permissionStatus == 1)
+                    {
+                        bool emailStatusVendorCategory = SendEmailToVendors(lVendorIds.TrimEnd(','), lStrbHTMLTable); //sendEmailToVendorCategories(cmList);
+
+                        if (emailStatusVendorCategory == true)
+                        {
+                            bool result = CustomBLL.Instance.UpdateEmailStatusOfCustomMaterialList(jobId, JGConstant.EMAIL_STATUS_VENDORCATEGORIES);//, productTypeId, estimateId);
+                            UpdateEmailStatus(JGConstant.EMAIL_STATUS_VENDORCATEGORIES.ToString());
+                            btnSendEmailToVendors.Text = "Resend Mail to Vendors";
+                            ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Quote request send to selected vendors');window.location = window.location.href;", true);
+
+                        }
+                    }
+                    else
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('First grant Foreman and Sr. Salesman permission');", true);
+                    }
+                    Response.Redirect(Request.Url.AbsoluteUri);
+                    return;
+                
+            }
+            catch (Exception)
+            {
+
+            }
         }
 
       

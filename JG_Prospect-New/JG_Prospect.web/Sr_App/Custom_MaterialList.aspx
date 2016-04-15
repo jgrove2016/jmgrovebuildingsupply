@@ -33,9 +33,9 @@
             height: 24px !important;
         }
     </style>
-    
-    <link href="../css/jquery.multiselect.css" rel="stylesheet" />
+        <link href="../css/jquery.multiselect.css" rel="stylesheet" />
     <script src="../js/jquery.multiselect.js"></script>
+    
     <script type="text/javascript">
 
         function VerifyForemanManPwd() {
@@ -179,6 +179,116 @@
                 }
             });
         }
+        var onload = false;
+        function SaveVendor(sender) {
+            
+            
+                $("." + sender.parentElement.className).each(function (idx, elm) {
+                    if (idx == 0) {
+                        $(elm).children().each(function (indx, elem) {
+                            if (elem.id == 'chkDefault') {
+                                elem.style.display = 'none';
+                            }
+                            if (elem.id == 'lblDefault') {
+                                elem.style.display = 'none';
+                            }
+
+                        });
+                    }
+                });
+                
+                
+            
+            var lProdCatID = sender.parentElement.className;
+            var lID = sender.parentElement.id;
+            var excList = '';
+            var lVendorIDs = '';
+            var lExcVendorID = '';
+            var lFirstServiceCall = false;
+            var lSecondServiceCall = false;
+            $("." + sender.parentElement.className).each(function (index, elem) {
+                if ( index == 0) {
+                    $(elem).children().each(function (idx, elm) {
+                        if (sender.id == elm.id && index == 0) {
+                            lFirstServiceCall = true;
+                            if (elm.id.indexOf('lstVendor') > 0) {
+                                for (var i = 0; i < elm.options.length; i++) {
+                                    if (elm.options[i].selected == true) {
+                                        lVendorIDs += (elm.options[i].value) + ",";
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    if (lFirstServiceCall) {
+                        $.ajax({
+                            type: "POST",
+                            url: "Custom_MaterialList.aspx/SaveVendorIds",
+                            data: "{'pExcMaterialListId':'" + (excList == ''?'0': excList) + "', 'pProductCatID':'" + lProdCatID + "', 'pVendorIds': '"+ lVendorIDs.substr(0, lVendorIDs.length-1) +"'}",
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "JSON",
+                            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                alert('in error');
+                                alert(errorThrown);
+                            },
+                            success: function (result) {
+                                if (result != null) {
+                                    var flg = (result.d);
+                                    if (flg == "1") {
+                                       // alert('Installer\'s material list request is approved');
+                                        //window.location = window.location.href;
+                                    }
+                                    else {
+                                        alert('Transaction failed');
+                                        //InstPwd.value = '';
+                                    }
+                                }
+                            }
+                        });
+                    }
+                }
+                else {
+                    lExcVendorID = '';
+                    $(elem).children().each(function (idx, elm) {
+                        lID = elm.parentElement.id;
+                        if (elm.id.indexOf('lstVendor')>0) {
+                            for (var i = 0; i < elm.options.length; i++) {
+                                if (elm.options[i].selected == true) {
+                                    lExcVendorID += (elm.options[i].value) + ",";
+                                }
+                            }
+                        }
+                        
+                        if (elm.id == 'chkDefault') {
+                            if (!elm.checked) {
+                                $.ajax({
+                                    type: "POST",
+                                    url: "Custom_MaterialList.aspx/SaveVendorIdsForSpecificMaterial",
+                                    data: "{'pMaterialListID':" + lID + ", 'pVendorIds':'" + lExcVendorID.substr(0, lExcVendorID.length - 1) + "'}",
+                                    contentType: "application/json; charset=utf-8",
+                                    dataType: "JSON",
+                                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                        alert(errorThrown);
+                                    },
+                                    success: function (result) {
+                                        if (result != null) {
+                                            var flg = (result.d);
+                                            if (flg == "1") {
+
+                                            }
+                                            else {
+                                                alert('Installer password is incorrect');
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+
+        }
         function endRequestHandler() {
             try {
                 if (g_CurrentTextBox != null) {
@@ -190,7 +300,9 @@
             catch(e){}
         }
 
-       
+        function TransformList() {
+            $('.form-control').multiselect({ columns: 4, placeholder: 'Select options' });
+        }
     </script>
     <style type="text/css">
         .dd_chk_select {
@@ -226,7 +338,7 @@
     </style>
     <style>
 
-ul,li { margin:0; padding:0; list-style:none;}
+ul,li { margin:0; padding:0; list-style:none;max-height:300px;}
 .label { color:#000; font-size:16px;}
 .grid td .container { max-width:728px; margin-top:150px; max-height:250px;}
 .form-control {
@@ -686,18 +798,18 @@ ul,li { margin:0; padding:0; list-style:none;}
                                                 <ItemTemplate>
                                                     <asp:UpdatePanel ID="updVend" runat="server">
                                                         <ContentTemplate>
-                                                            
-                                                            <asp:ListBox ID="lstVendorName" Width="30%" SelectionMode="Multiple" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="lstVendorName_SelectedIndexChanged" runat="server"></asp:ListBox>
-                                                            <asp:DropDownCheckBoxes Visible="false" ID="ddlVendorName" onblur="ShowProgress()" CssClass="chk-style" ClientIDMode="AutoID" EnableViewState="true" runat="server" Style="margin: -2em 0 0;" UseSelectAllNode="true" OnSelectedIndexChanged="ddlVendorName_SelectedIndexChanged1" AutoPostBack="true">
+                                                            <div id='<%#Eval("id")   %>' class='<%#Eval("ProductCatID")%>'>
+                                                                <asp:ListBox onchange="SaveVendor(this)" ID="lstVendorName" Width="30%" SelectionMode="Multiple" CssClass="form-control"  runat="server"></asp:ListBox>
+                                                                <input type="checkbox" name="chkDefault" id="chkDefault" checked="checked" /><label id="lblDefault">Default</label>
+                                                               
+                                                                
+                                                                
+                                                                 <asp:DropDownCheckBoxes Visible="false" ID="ddlVendorName" onblur="ShowProgress()" CssClass="chk-style" ClientIDMode="AutoID" EnableViewState="true" runat="server" Style="margin: -2em 0 0;" UseSelectAllNode="true" OnSelectedIndexChanged="ddlVendorName_SelectedIndexChanged1" AutoPostBack="true">
                                                             </asp:DropDownCheckBoxes>
-                                                            <asp:CheckBox ID="chkApplyFilter" Text="Apply Filter" runat="server" AutoPostBack="true" OnCheckedChanged="chkApplyFilter_CheckedChanged" />
+                                                            <asp:CheckBox ID="chkApplyFilter" Text="Apply Filter" runat="server" AutoPostBack="true" Visible="false" OnCheckedChanged="chkApplyFilter_CheckedChanged" />
+                                                            </div>
                                                         </ContentTemplate>
-                                                        <Triggers>
-                                                            <asp:AsyncPostBackTrigger ControlID="ddlVendorName" EventName="SelectedIndexChanged" />
-                                                            <asp:AsyncPostBackTrigger ControlID="lstVendorName" EventName="SelectedIndexChanged" />
-                                                            <asp:AsyncPostBackTrigger ControlID="chkApplyFilter" EventName="CheckedChanged" />
-                                                            
-                                                        </Triggers>
+                                                      
                                                     </asp:UpdatePanel>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
@@ -722,7 +834,9 @@ ul,li { margin:0; padding:0; list-style:none;}
                                         </Columns>
                                     </asp:GridView>
                                     <asp:LinkButton ID="lnkAddLines" CommandName="AddLine" CommandArgument='<%#Eval("ProductCatId") %>' OnClick="lnkAddLines_Click1" runat="server">Add Line</asp:LinkButton>
-                                    
+                                    <div class="btn_sec">
+                                        <asp:Button ID="btnSendEmailToVendorsForProd" runat="server"  CommandArgument='<%#Eval("ProductCatId") %>' Text="Send Mail to Vendors" OnClick="btnSendEmailToVendorsForProd_Click" OnClientClick="return ValidatePermissions()" />
+                                    </div>
                                     <hr style="border:none; background:#ccc; height:2px; margin-top:10px;margin-bottom:20px" />
 
                                 </ContentTemplate>
@@ -802,7 +916,7 @@ ul,li { margin:0; padding:0; list-style:none;}
         <div class="btn_sec">
             <asp:Button ID="btnSendMail" runat="server" Text="Save" OnClick="btnSendMail_Click" OnClientClick="return ValidatePermissions()"
                 Style="background: url(../img/btn1.png) no-repeat;" Width="300" Visible="false" />
-            <asp:Button ID="btnSendEmailToVendors" runat="server" Text="Send Mail to Vendors" OnClick="btnSendEmailToVendors_Click" OnClientClick="return ValidatePermissions()" />
+            <asp:Button ID="btnSendEmailToVendors" runat="server" Text="Send Mail to All Vendors" OnClick="btnSendEmailToVendors_Click" OnClientClick="return ValidatePermissions()" />
             <asp:Button ID="btnClose" runat="server" Text="Close" OnClick="btnClose_Click" CausesValidation="false" />
         </div>
         <h1>Edit Email Templates</h1>
@@ -907,8 +1021,6 @@ ul,li { margin:0; padding:0; list-style:none;}
     <%--<ajaxToolkit:ModalPopupExtender ID="popup_permission" TargetControlID="btnSendMail"
             runat="server" CancelControlID="btnClose1" PopupControlID="pnlpopup">
         </ajaxToolkit:ModalPopupExtender>--%>
-
-     <script src="../js/jquery.multiselect.js"></script>
     <script type="text/javascript">
 
         function ValidatePermissions() {
@@ -953,6 +1065,7 @@ ul,li { margin:0; padding:0; list-style:none;}
 
         function jsFunctions() {
             try {
+               
                 HideProgress();
                 endRequestHandler();
                 document.getElementById(document.getElementById("__LASTFOCUS").value).focus();
@@ -962,9 +1075,19 @@ ul,li { margin:0; padding:0; list-style:none;}
             }
             
         }
- 
-        Sys.WebForms.PageRequestManager.getInstance().add_endRequest(jsFunctions);
+       
+        TransformList();
+        //Sys.WebForms.PageRequestManager.getInstance().add_endRequest(jsFunctions);
+        var prm = Sys.WebForms.PageRequestManager.getInstance();
+        prm.add_endRequest(function (sender, e) {
+            setTimeout(function () {
+                TransformList();
+            }, 1000);
+            jsFunctions();
+        });
         HideProgress();
+        onload = true;
+     
     </script>
    
     

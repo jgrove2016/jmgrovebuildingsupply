@@ -116,7 +116,10 @@ namespace JG_Prospect.BLL
         {
             return CustomDAL.Instance.CheckPermissionsForCategories(jobid);//, productTypeId, estimateId);
         }
-
+        public int CheckPermissionsForCategories(string jobid, int pProductCatID)
+        {
+            return CustomDAL.Instance.CheckPermissionsForCategories(jobid, pProductCatID);
+        }
         public int CheckPermissionsForVendors(string jobid)//, int productTypeId, int estimateId)
         {
             return CustomDAL.Instance.CheckPermissionsForVendors(jobid);//, productTypeId, estimateId);
@@ -229,6 +232,13 @@ namespace JG_Prospect.BLL
                     break;
             }
             return lRequestStatus;
+        }
+        public void UpdateVendorIDs(String pVendorIDs, Int32 pProductCatID, String pExcludedMaterialListID, String pSoldJobID){
+            CustomDAL.Instance.UpdateVendorIDs( pVendorIDs, pProductCatID, pExcludedMaterialListID, pSoldJobID);
+        }
+        public void UpdateVendorIDForSpecMaterial(String pVendorIDs, Int32 pMaterialListID)
+        {
+            CustomDAL.Instance.UpdateVendorIDForSpecMaterial(pVendorIDs, pMaterialListID);
         }
     }
 }

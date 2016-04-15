@@ -14,12 +14,13 @@
 (function ($) {
     var msCounter = 1;
     $.fn.multiselect = function (options) {
+        
         var defaults = {
             placeholder: '',    // text to use in dummy input
             columns: 4,     // how many columns should be use to show options
             maxWidth: null,  // maximum width of option overlay (or selector)
             minHeight: 200,   // minimum height of option overlay
-            maxHeight: null,  // maximum height of option overlay
+            maxHeight: 200,  // maximum height of option overlay
             showCheckbox: true,  // display the checkbox to the user
 
             // @NOTE: these are for future development
@@ -41,9 +42,11 @@
                         .attr('id', 'ms-opt-' + msCounter)
                 );
 
+                
                 if ($(option).attr('selected')) {
                     container.addClass('selected');
                     container.find('input[type="checkbox"]').attr('checked', 'checked');
+                    container.find('input[type="checkbox"]').attr('checked', 'true');
                 }
 
                 var label = $('<label></label>').attr('for', 'ms-opt-' + msCounter);
@@ -97,7 +100,7 @@
 
             optionsWrap.css({
                 maxWidth: maxWidth,
-                maxHeight: ($(window).height() - optionsWrap.offset().top - 20),
+                maxHeight: (($(window).height() - optionsWrap.offset().top - 20)) < 200 ? 200: (($(window).height() - optionsWrap.offset().top - 20)),
                 overflow: 'auto'
             }).hide();
             
@@ -227,11 +230,13 @@
                 $(this).closest('li').toggleClass('selected');
 
                 var select = optionsWrap.parent().prev();
-
                 // toggle clicked option
                 select.find('option[value="' + $(this).val() + '"]').attr(
                     'selected', $(this).is(':checked')
-                ).closest('select').trigger('change');
+                );
+
+                // Trigger change event
+                select.find('option[value="' + $(this).val() + '"]').closest('select').trigger('change');
 
                 // get selected options
                 var selOpts = [];
