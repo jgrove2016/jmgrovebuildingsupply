@@ -195,7 +195,59 @@
             }
         }
 
+        function AddVenderEmails(data) {
+            for (var i = 0; i < data.length; i++) {
+                var AddressID = data[i].AddressID;
+                var Email = JSON.parse(data[i].Email);
+                var Contact = JSON.parse(data[i].Contact);
+                var EmailType = data[i].EmailType;
+                var FName = data[i].FName;
+                var LName = data[i].LName;
+                var SeqNo = data[i].SeqNo;
+                var VendorId = data[i].VendorId;
+                var TempID = data[i].TempID;
+                var ID = "";
+                if (EmailType == "Primary") {
+                    ID = "Primary";
+                }
+                if (EmailType == "Secondary") {
+                    ID = "Sec";
+                }
+                if (EmailType == "Alternate") {
+                    ID = "Alt";
+                }
 
+
+                GenereateHTML(data[i],ID);
+            }
+        }
+
+        function GenereateHTML(data,ID) {
+            var ContentPlaceHolder="ContentPlaceHolder1_";
+            var AddressID = data.AddressID;
+            var Email = JSON.parse(data.Email);
+            var Contact = JSON.parse(data.Contact);
+            var EmailType = data.EmailType;
+            var FName = data.FName;
+            var LName = data.LName;
+            var SeqNo = data.SeqNo;
+            var VendorId = data.VendorId;
+            var TempID = data.TempID;
+
+
+            $("#txt" + ID + "Email0").val(Email[0].Email);
+            $("#txt" + ID + "FName0").val(FName);
+            $("#txt" + ID + "LName0").val(LName);
+            $("#" + ContentPlaceHolder + "txt" + ID + "ContactExten0").val(Contact[0].Extension);
+            $("#" + ContentPlaceHolder + "txt" + ID + "Contact0").val(Contact[0].Number);
+            for (j = 1; j < Email.length; j++) {
+                $("#txt" + ID + "Email0" + j).val(Email[0].Email);
+            }
+            for (j = 1; j < Contact.length; j++) {
+                $("#" + ContentPlaceHolder + "txt" + ID + "ContactExten0" + j).val(Contact[j].Extension);
+                $("#" + ContentPlaceHolder + "txt" + ID + "Contact0" + j).val(Contact[j].Number);
+            }
+        }
 
 
     </script>
@@ -792,7 +844,7 @@
                                                     <tr>
                                                         <td>
                                                             <label>Address:</label><br />
-                                                            <asp:DropDownList ID="DrpVendorAddress" runat="server" Style="width: 180px;" CssClass="clsvendoraddress">
+                                                            <asp:DropDownList ID="DrpVendorAddress" AutoPostBack="true" OnSelectedIndexChanged="DrpVendorAddress_SelectedIndexChanged" runat="server" Style="width: 180px;" CssClass="clsvendoraddress">
                                                             </asp:DropDownList>
                                                         </td>
                                                         <td>
