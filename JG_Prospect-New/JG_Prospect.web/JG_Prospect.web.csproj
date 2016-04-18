@@ -211,6 +211,7 @@
     <Content Include="bin\Google.GData.Extensions.dll" />
     <Content Include="bin\Ionic.Zip.dll" />
     <Content Include="bin\itextsharp.dll" />
+    <Content Include="bin\JG_Prospect.Common.dll" />
     <Content Include="bin\Microsoft.Practices.EnterpriseLibrary.Caching.Database.dll" />
     <Content Include="bin\Microsoft.Practices.EnterpriseLibrary.Caching.dll" />
     <Content Include="bin\Microsoft.Practices.EnterpriseLibrary.Common.dll" />

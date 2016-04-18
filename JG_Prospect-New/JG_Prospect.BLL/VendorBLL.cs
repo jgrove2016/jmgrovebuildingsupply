@@ -147,17 +147,21 @@ namespace JG_Prospect.BLL
         {
             return VendorDAL.Instance.GetVendorSubCategory();
         }
-        public bool InsertVendorEmail(Vendor objvendor)
+        public bool InsertVendorEmail(DataTable tblVendorEmail, int addressID)
         {
-            return VendorDAL.Instance.InsertVendorEmail(objvendor);
+            return VendorDAL.Instance.InsertVendorEmail(tblVendorEmail,addressID);
         }
         public DataSet GetVendorEmail(Vendor objVendor)
         {
             return VendorDAL.Instance.GetVendorEmail(objVendor);
         }
-        public bool InsertVendorAddress(Vendor objvendor)
+        public int InsertVendorAddress(DataTable objvendor)
         {
             return VendorDAL.Instance.InsertVendorAddress(objvendor);
+        }
+        public DataSet GetVendorAddress(int VendorId)
+        {
+            return VendorDAL.Instance.GetVendorAddress(VendorId);
         }
 
         public List<AutoCompleteVendor> SearchVendor(string searchString, string tableName)

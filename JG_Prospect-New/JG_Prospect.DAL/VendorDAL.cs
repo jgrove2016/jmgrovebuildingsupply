@@ -461,6 +461,12 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@Website", DbType.String, objvendor.Website);
                     database.AddInParameter(command, "@ContactExten", DbType.String, objvendor.ContactExten);
 
+                    database.AddInParameter(command, "@Vendrosource", DbType.String, objvendor.Vendrosource);
+                    database.AddInParameter(command, "@AddressID", DbType.Int32, objvendor.AddressID);
+                    database.AddInParameter(command, "@PaymentTerms", DbType.String, objvendor.PaymentTerms);
+                    database.AddInParameter(command, "@PaymentMethod", DbType.String, objvendor.PaymentMethod);
+                    database.AddInParameter(command, "@TempID", DbType.String, objvendor.TempID);
+
                     database.ExecuteNonQuery(command);
                     return true;
                 }
@@ -669,7 +675,7 @@ namespace JG_Prospect.DAL
             }
         }
 
-        public bool InsertVendorEmail(Vendor objVendor)
+        public bool InsertVendorEmail(DataTable tblVendorEmail, int AddressID)
         {
             try
             {
@@ -680,7 +686,8 @@ namespace JG_Prospect.DAL
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Connection = con;
-                        cmd.Parameters.AddWithValue("@tblVendorEmail", objVendor.tblVendorEmail);
+                        cmd.Parameters.AddWithValue("@tblVendorEmail", tblVendorEmail);
+                        cmd.Parameters.AddWithValue("@AddressID", AddressID);
                         cmd.Parameters.AddWithValue("@action", 1);
                         con.Open();
                         cmd.ExecuteNonQuery();
@@ -704,7 +711,7 @@ namespace JG_Prospect.DAL
             }
         }
 
-        public bool InsertVendorAddress(Vendor objVendor)
+        public int InsertVendorAddress(DataTable tblVendorAddress)
         {
             try
             {
@@ -715,21 +722,20 @@ namespace JG_Prospect.DAL
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Connection = con;
-                        cmd.Parameters.AddWithValue("@tblVendorAddress", objVendor.tblVendorAddress);
+                        cmd.Parameters.AddWithValue("@tblVendorAddress", tblVendorAddress);
                         cmd.Parameters.AddWithValue("@action", 1);
                         con.Open();
-                        cmd.ExecuteNonQuery();
+                        var id = Convert.ToInt32(cmd.ExecuteScalar().ToString());
                         con.Close();
-                        return true;
+                        return id;
                     }
                 }
             }
             catch (Exception ex)
             {
-                return false;
+                return 0;
             }
         }
-
 
         public DataSet GetVendorEmail(Vendor objVendor)
         {
@@ -743,7 +749,7 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@action", DbType.Int16, 2);
                     DS = database.ExecuteDataSet(command);
                     return DS;
-           
+
                 }
             }
             catch (Exception ex)
@@ -751,6 +757,28 @@ namespace JG_Prospect.DAL
                 return null;
             }
         }
+
+        public DataSet GetVendorAddress(int VendorId)
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("sp_VendorAddress");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@VendorId", DbType.Int16, VendorId);
+                    database.AddInParameter(command, "@action", DbType.Int16, 2);
+                    DS = database.ExecuteDataSet(command);
+                    return DS;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+
         public DataTable SearchVendor(string searchString, string tableName)
         {
             //List<string> searchResult = new List<string>();
