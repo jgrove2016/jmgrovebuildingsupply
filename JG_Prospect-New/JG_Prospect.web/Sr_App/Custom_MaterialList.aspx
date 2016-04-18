@@ -32,6 +32,7 @@
         div.dd_chk_select {
             height: 24px !important;
         }
+        .floatRight{float:right;margin-top:-25px;z-index:9999}
     </style>
         <link href="../css/jquery.multiselect.css" rel="stylesheet" />
     <script src="../js/jquery.multiselect.js"></script>
@@ -186,11 +187,13 @@
                 $("." + sender.parentElement.className).each(function (idx, elm) {
                     if (idx == 0) {
                         $(elm).children().each(function (indx, elem) {
-                            if (elem.id == 'chkDefault') {
+                            if (elem.id.indexOf('chkDefault')>=0) {
                                 elem.style.display = 'none';
                             }
-                            if (elem.id == 'lblDefault') {
-                                elem.style.display = 'none';
+                            if(elem.getAttribute("for")){
+                                if (elem.getAttribute("for").indexOf('chkDefault')>=0) {
+                                    elem.style.display = 'none';
+                                }
                             }
 
                         });
@@ -204,12 +207,12 @@
             var excList = '';
             var lVendorIDs = '';
             var lExcVendorID = '';
-            var lFirstServiceCall = false;
+            var lFirstServiceCall = true;
             var lSecondServiceCall = false;
             $("." + sender.parentElement.className).each(function (index, elem) {
                 if ( index == 0) {
                     $(elem).children().each(function (idx, elm) {
-                        if (sender.id == elm.id && index == 0) {
+                        if (idx == 0) { //sender.id == elm.id && 
                             lFirstServiceCall = true;
                             if (elm.id.indexOf('lstVendor') > 0) {
                                 for (var i = 0; i < elm.options.length; i++) {
@@ -249,18 +252,25 @@
                 }
                 else {
                     lExcVendorID = '';
+                    var lstVendorTmp = null;
                     $(elem).children().each(function (idx, elm) {
                         lID = elm.parentElement.id;
                         if (elm.id.indexOf('lstVendor')>0) {
+                            
                             for (var i = 0; i < elm.options.length; i++) {
                                 if (elm.options[i].selected == true) {
                                     lExcVendorID += (elm.options[i].value) + ",";
+                                    
                                 }
                             }
                         }
-                        
-                        if (elm.id == 'chkDefault') {
+                        if (elm.className.indexOf('ms-option') >= 0) {
+                            lstVendorTmp = elm;
+                        }
+                        if (elm.id.indexOf('chkDefault')>=0) {
                             if (!elm.checked) {
+                                if (lstVendorTmp)
+                                    lstVendorTmp.style.display = '';
                                 $.ajax({
                                     type: "POST",
                                     url: "Custom_MaterialList.aspx/SaveVendorIdsForSpecificMaterial",
@@ -282,6 +292,10 @@
                                         }
                                     }
                                 });
+                            }
+                            else {
+                                if (lstVendorTmp)
+                                lstVendorTmp.style.display = 'none';
                             }
                         }
                     });
@@ -799,14 +813,12 @@ ul,li { margin:0; padding:0; list-style:none;max-height:300px;}
                                                     <asp:UpdatePanel ID="updVend" runat="server">
                                                         <ContentTemplate>
                                                             <div id='<%#Eval("id")   %>' class='<%#Eval("ProductCatID")%>'>
-                                                                <asp:ListBox onchange="SaveVendor(this)" ID="lstVendorName" Width="30%" SelectionMode="Multiple" CssClass="form-control"  runat="server"></asp:ListBox>
-                                                                <input type="checkbox" name="chkDefault" id="chkDefault" checked="checked" /><label id="lblDefault">Default</label>
-                                                               
-                                                                
-                                                                
+                                                                <asp:ListBox onchange="SaveVendor(this)" ID="lstVendorName" Width="25%" SelectionMode="Multiple" CssClass="form-control"  runat="server"></asp:ListBox>
+                                                                <asp:CheckBox onclick="SaveVendor(this);" ID="chkDefault"   Text="Default" runat="server" />
+
                                                                  <asp:DropDownCheckBoxes Visible="false" ID="ddlVendorName" onblur="ShowProgress()" CssClass="chk-style" ClientIDMode="AutoID" EnableViewState="true" runat="server" Style="margin: -2em 0 0;" UseSelectAllNode="true" OnSelectedIndexChanged="ddlVendorName_SelectedIndexChanged1" AutoPostBack="true">
-                                                            </asp:DropDownCheckBoxes>
-                                                            <asp:CheckBox ID="chkApplyFilter" Text="Apply Filter" runat="server" AutoPostBack="true" Visible="false" OnCheckedChanged="chkApplyFilter_CheckedChanged" />
+                                                                </asp:DropDownCheckBoxes>
+                                                                <asp:CheckBox ID="chkApplyFilter" Text="Apply Filter" runat="server" AutoPostBack="true" Visible="false" OnCheckedChanged="chkApplyFilter_CheckedChanged" />
                                                             </div>
                                                         </ContentTemplate>
                                                       

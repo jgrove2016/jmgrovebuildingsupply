@@ -1,0 +1,383 @@
+IF NOT EXISTS(SELECT * FROM sys.columns WHERE Name = N'DefaultVendorForCategory' AND Object_ID = Object_ID(N'tblCustom_MaterialList'))
+BEGIN
+	ALTER TABLE dbo.tblCustom_MaterialList ADD
+	DefaultVendorForCategory BIT NULL
+END
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[UDP_CheckPermissionsForCategoriesOfProductCat]    Script Date: 15-04-2016 17:52:56 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UDP_CheckPermissionsForCategoriesOfProductCat]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[UDP_CheckPermissionsForCategoriesOfProductCat]
+GO
+
+/****** Object:  StoredProcedure [dbo].[UDP_CheckPermissionsForCategoriesOfProductCat]    Script Date: 15-04-2016 17:52:56 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-04-15
+-- Description:	This procedure will check foreman and sr sales permission
+-- =============================================
+CREATE PROCEDURE [dbo].[UDP_CheckPermissionsForCategoriesOfProductCat]
+@soldJobId varchar(50),
+@productCatId int,
+@result int out
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SET @result =0
+	IF	EXISTS( SELECT 1 FROM tblCustom_MaterialList WHERE SoldJobId=@soldJobId AND ProductCatId = @productCatId AND [IsForemanPermission]='G' and [IsSrSalemanPermissionF]='G')	
+	BEGIN
+		SET @result =1
+	END
+
+END
+
+GO
+
+
+
+
+/****** Object:  StoredProcedure [dbo].[USP_SaveVendorIDs]    Script Date: 15-04-2016 12:30:59 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_SaveVendorIDs]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_SaveVendorIDs]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_SaveVendorIDs]    Script Date: 15-04-2016 12:30:59 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		Shabbir KAnchwala
+-- Create date: 2016-04-14
+-- Description:	This procedure saves the vendor ids
+-- [USP_SaveVendorIDs] '0', 13, '722,1067'
+-- =============================================
+CREATE PROCEDURE [dbo].[USP_SaveVendorIDs] 
+	@ExcMaterialListId VARCHAR(250),
+	@ProductCatID INT,
+	@VendorIDs VARCHAR(1000),
+	@SoldJobID VARCHAR(1000)
+
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+	DECLARE @SQL NVARCHAR(4000)
+	SET @SQL = 'UPDATE tblCustom_MaterialList SET VendorIds =''' + @VendorIDs + ''', DefaultVendorForCategory=1 WHERE SoldJobID='''+@SoldJobID +''' AND ProductCatID=' + CONVERT(VARCHAR,@ProductCatID) + ' AND Id NOT IN ('+ @ExcMaterialListId +')'
+	PRINT @SQL
+    EXECUTE sp_executesql @SQL
+	
+END
+
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[usp_SaveVendorsForSpecMaterial]    Script Date: 15-04-2016 12:37:21 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[usp_SaveVendorsForSpecMaterial]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[usp_SaveVendorsForSpecMaterial]
+GO
+
+/****** Object:  StoredProcedure [dbo].[usp_SaveVendorsForSpecMaterial]    Script Date: 15-04-2016 12:37:21 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-04-15
+-- Description:	This procedure will save vendor ids from specific material
+-- =============================================
+CREATE PROCEDURE [dbo].[usp_SaveVendorsForSpecMaterial]
+	@ID INT,
+	@VendorIDs VARCHAR(4000)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+	UPDATE tblCustom_MaterialList SET VendorIds = @VendorIDs, DefaultVendorForCategory = 0 WHERE Id = @ID
+
+END
+
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[USP_GetCustomMaterialList]    Script Date: 04/18/2016 18:57:05 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_GetCustomMaterialList]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_GetCustomMaterialList]
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[USP_GetCustomMaterialList]    Script Date: 04/18/2016 18:57:05 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-03-08
+-- Description:	This procedure will return custom material list
+-- Test Run:    USP_GetCustomMaterialList 'C3690-SJ1', 3690
+-- =============================================
+CREATE PROCEDURE [dbo].[USP_GetCustomMaterialList]
+(
+	@soldJobId varchar(50),
+	@customerID int
+)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+SELECT 
+	DISTINCT c.ProductCatID,
+	PM.ProductName, 
+	'' AS RequestStatus --#Shabbir: Placeholder for business logic
+FROM tblCustom_MaterialList c 
+INNER JOIN tblProductMaster PM ON PM.productid = c.ProductCatID
+WHERE c.SoldJobID = @SoldJobID
+
+SELECT cm.MaterialList
+	,cm.VendorCategoryId 
+	,vc.VendorCategoryNm
+	,v.VendorName  
+	,cm.Amount 
+	,cm.VendorId 
+	,cm.Line 
+	,cm.JGSkuPartNo
+	,cm.Quantity
+	,cm.UOM
+	,cm.MaterialCost
+	,cm.extend
+	,cm.VendorIds
+	,cm.Total
+	,cd.DocName
+	,cd.TempName
+	,cm.Id
+	,cm.ProductCatID
+	,cm.InstallerID
+	,cm.RequestStatus
+	,ISNULL(cm.DefaultVendorForCategory,0) AS DefaultVendorForCategory
+	,PM.ProductName
+	,ISNULL(cm.IsForemanPermission,'') as IsForemanPermission
+	,ISNULL(cm.IsSrSalemanPermissionF,'') as IsSrSalemanPermissionF
+	,ISNULL(cm.IsAdminPermission,'') as IsAdminPermission
+	,ISNULL(cm.IsSrSalemanPermissionA,'') as IsSrSalemanPermissionA
+	,ISNULL(cm.EmailStatus,'') as EmailStatus
+	,ISNULL(up.Id, 0) AS lastUpdatedByID	,ISNULL(up.firstname, '') as lastUpdatedByFirstName, ISNULL(up.LastName, '') as lastUpdatedByLastName, ISNULL(up.Username, '') as lastUpdatedByUserName
+	,ISNULL(FM.Id, 0) AS foremanID	,ISNULL(FM.firstname, '') as foremanFirstName, ISNULL(FM.LastName, '') as foremanLastName, ISNULL(FM.Username, '') as foremanUserName
+	,ISNULL(SLF.Id, 0) AS SLFID	,ISNULL(SLF.firstname, '') as SLFFirstName, ISNULL(SLF.LastName, '') as SLFLastName, ISNULL(SLF.Username, '') as SLFUserName
+	,ISNULL(SLA.Id, 0) AS SLAID	,ISNULL(SLA.firstname, '') as SLAFirstName, ISNULL(SLA.LastName, '') as SLALastName, ISNULL(SLA.Username, '') as SLAUserName
+	,ISNULL(AD.Id, 0) AS ADID	,ISNULL(AD.firstname, '') as ADFirstName, ISNULL(AD.LastName, '') as ADLastName, ISNULL(AD.Username, '') as ADUserName
+	FROM tblCustom_MaterialList cm 
+	LEFT OUTER JOIN tblVendorCategory vc on vc.VendorCategpryId =cm.VendorCategoryId
+	LEFT OUTER JOIN tblProductMaster PM ON PM.productid = cm.ProductCatID
+	LEFT OUTER JOIN tblVendors v on v.VendorId =cm.VendorId 
+	--inner join tblJobSequence js on js.SoldJobId=cm.SoldJobId--js.Id=cm.JobSequenceId 
+	LEFT JOIN tblVendorQuotes cd on cd.SoldJobId=cm.SoldJobId and cd.VendorId=cm.VendorId
+	-- tblCustomersDocument cd on cd.CustomerId =js.CustomerId and cd.ProductId=js.EstimateId and cd.ProductTypeId=js.ProductId and cd.VendorId=cm.VendorId and cd.DocType= 'VendorQuotes' 
+	LEFT OUTER JOIN tblUsers FM on FM.id = cm.ForemanApproverID
+	LEFT OUTER JOIN tblUsers SLF on SLF.id = cm.SrSalesFApproverID
+	LEFT OUTER JOIN tblUsers SLA on SLA.id = cm.SrSalesAApproverID
+	LEFT OUTER JOIN tblUsers AD on AD.id = cm.AdminApproverID
+	LEFT OUTER JOIN tblUsers up on up.id = cm.updatedby
+	WHERE cm.SoldJobId=@soldJobId
+	ORDER BY cm.Id
+	
+	EXEC UDP_GetSoldJobsForProcurementBySoldJobID @soldJobId   
+    
+    SELECT IU.Id,IU.FristName +' '+ IU.LastName  as QualifiedName from tblInstallUsers IU Where IU.Status IN ('Active', 'Offer Made') 
+	AND NOT EXISTS (Select 1 from tblCustomMaterialInstaller CSI WHERE CSI.SoldJobID = @soldJobId AND IU.Id = CSI.InstallerID)
+
+	SELECT 
+		CSI.ID,
+		CSI.InstallerID,
+		IU.FristName + ' ' + IU.LastName AS QualifiedName,
+		CSI.AddedDateTime,
+		CSI.UpdatedDateTime 
+	FROM tblCustomMaterialInstaller CSI 
+	INNER JOIN tblInstallUsers IU ON IU.Id = CSI.InstallerID
+	WHERE CSI.SoldJobID = @soldJobId
+	
+	SELECT 
+		pv.ProductCategoryId,
+		pv.VendorCategoryId,
+		tc.VendorCategoryNm AS VendorCategoryName
+	FROM [dbo].[tblProductVendorCat] pv
+	INNER JOIN [tblVendorCategory] tc ON pv.VendorCategoryId=tc.[VendorCategpryId]
+
+	SELECT 
+		DISTINCT VendorCategpryId,
+		VendorCategoryNm, PC.ProductCategoryId 
+	FROM tblVendorCategory vc 
+	INNER JOIN tblVendors v ON vc.VendorCategpryId =v.VendorCategoryId 
+	INNER JOIN tblProductVendorCat PC ON PC.VendorCategoryId = VC.VendorCategpryId
+	WHERE vc.VendorCategpryId = v.VendorCategoryId 
+	ORDER BY vc.VendorCategoryNm	
+
+	SELECT DISTINCT
+		v.VendorId, V.VendorName, V.Email, VC.VendorCategpryId, PC.ProductCategoryId, VC.IsRetail_Wholesale, VC.IsManufacturer
+	FROM tblvendors V
+	INNER JOIN tbl_Vendor_VendorCat VVC ON VVC.VendorID = V.VendorId 
+	INNER JOIN tblVendorCategory VC ON VC.VendorCategpryID = VVC.VendorCatID
+	INNER JOIN tblProductVendorCat PC ON PC.VendorCategoryId = VC.VendorCategpryId
+
+END
+
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[UDP_Add_Custom_MaterialList]    Script Date: 04/18/2016 19:01:27 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UDP_Add_Custom_MaterialList]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[UDP_Add_Custom_MaterialList]
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[UDP_Add_Custom_MaterialList]    Script Date: 04/18/2016 19:01:27 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE PROCEDURE [dbo].[UDP_Add_Custom_MaterialList]
+@soldJobId varchar(50),
+@materialList varchar(500),
+@vendorCategoryId int,
+@vendorId int,
+@amount decimal(18,2),
+@foremanPermission char(1),
+@salesmanPermissionF char(1),
+@adminPermission char(1),
+@salesmanPermissionA char(1),
+@emailStatus char(1),
+-------------------------New Variables--------------------------------------------
+@FormanEmail	varchar(100) = '',
+@SrSalesEmail	varchar(100) = '',
+@AdminEmail	varchar(100) = '',
+@SrSalemanAEmail	varchar(100) = '',
+@ProductCatId	int = 0,
+@Line	varchar(100) = '',
+@JGSkuPartNo	varchar(70) = '',
+@Description	varchar(MAX) = '',
+@Quantity	int = 0,
+@UOM	varchar(50) = '',
+@VendorQuotesPath	varchar(MAX) = '',
+@MaterialCost	decimal(18, 0) = 0,
+@extend	varchar(100) = '',
+@Total	decimal(18, 0) = 0,
+@JobSeqId	int = 0,
+@VendorIds varchar(MAX) = '',
+
+
+@Visible varchar(50),
+@ID int,
+@InstallerID INT,
+@RequestStatus INT
+
+AS
+BEGIN
+declare @jobId int=0
+	--select @jobId=id  from tblJobSequence where SoldJobId =@soldJobId and ProductId=@productId and EstimateId=@estimateId
+	DECLARE @SN INT = 0
+	Select @SN = COUNT(ID) from [tblCustom_MaterialList] where SoldJobId =@soldJobId  
+	SET @SN = @SN + 1;
+	select @jobId=id  from tblJobSequence where SoldJobId =@soldJobId 
+	
+	--# Shabbir Kanchwala, We are updating the list.
+	if(@ID > 0)
+	BEGIN
+		UPDATE [tblCustom_MaterialList]
+		SET MaterialList = @materialList,
+		VendorCategoryId = @vendorCategoryId,
+		VendorId = @VendorId,
+		Amount = @amount,
+		VendorIds = @VendorIds,
+		--Line = @Line,
+		JGSkuPartNo = @JGSkuPartNo,
+		Quantity = @Quantity,
+		UOM = @UOM,
+		MaterialCost = @MaterialCost,
+		extend = @extend
+		WHERE Id = @ID
+		
+		return;
+	END
+	
+	DECLARE @TmpVendorIDs VARCHAR(4000)
+	SELECT TOP 1 @TmpVendorIDs = VendorIds FROM tblCustom_MaterialList
+	WHERE SoldJobId = @soldJobId AND ProductCatId = @ProductCatId
+	
+	if(@VendorIds =0)
+	begin
+
+	INSERT INTO [dbo].[tblCustom_MaterialList]
+		   ([SoldJobId],[MaterialList],[EmailStatus],[VendorCategoryId],[Amount],[IsForemanPermission],[IsSrSalemanPermissionF],[IsAdminPermission],[IsSrSalemanPermissionA],[FormanEmail],[SrSalesEmail],[AdminEmail],[SrSalemanAEmail],[ProductCatId],[Line],[JGSkuPartNo],[Description],[Quantity],[UOM],[VendorQuotesPath],[MaterialCost],[extend],[Total],[JobSeqId],Visible, InstallerID, RequestStatus, VendorIds, DefaultVendorForCategory)
+     VALUES(@soldJobId ,@materialList,@emailStatus ,@vendorCategoryId,@amount,@foremanPermission,@salesmanPermissionF,@adminPermission,@salesmanPermissionA,@FormanEmail,@SrSalesEmail,@AdminEmail,@SrSalemanAEmail,@ProductCatId,@SN,@JGSkuPartNo,@Description,@Quantity,@UOM,@VendorQuotesPath,@MaterialCost,@extend,@Total,@jobId,@Visible, @InstallerID, @RequestStatus, @TmpVendorIDs,1)
+
+
+
+	--INSERT INTO [dbo].[tblCustom_MaterialList]
+	--	   ([SoldJobId],[MaterialList],[EmailStatus],[VendorCategoryId],[Amount],[IsForemanPermission],[IsSrSalemanPermissionF],[IsAdminPermission],[IsSrSalemanPermissionA],[FormanEmail],[SrSalesEmail],[AdminEmail],[SrSalemanAEmail],[ProductCatId],[Line],[JGSkuPartNo],[Description],[Quantity],[UOM],[VendorQuotesPath],[MaterialCost],[extend],[Total],[JobSeqId])
+ --    VALUES(@soldJobId ,@materialList,@emailStatus ,@vendorCategoryId,@amount,@foremanPermission,@salesmanPermissionF,@adminPermission,@salesmanPermissionA,@FormanEmail,@SrSalesEmail,@AdminEmail,@SrSalemanAEmail,@ProductCatId,@Line,@JGSkuPartNo,@Description,@Quantity,@UOM,@VendorQuotesPath,@MaterialCost,@extend,@Total,@JobSeqId)
+
+
+
+
+		--insert into tblcustom_MaterialList (SoldJobId,[MaterialList],[EmailStatus],[VendorCategoryId],[Amount],[IsForemanPermission],[IsSrSalemanPermissionF],[IsAdminPermission],[IsSrSalemanPermissionA])
+		--values (@soldJobId ,@materialList,@emailStatus ,@vendorCategoryId,@amount,@foremanPermission,@salesmanPermissionF,@adminPermission,@salesmanPermissionA)
+	end
+	else
+	begin
+
+	--INSERT INTO [dbo].[tblCustom_MaterialList]
+	--	   ([SoldJobId],[MaterialList],[EmailStatus],[VendorCategoryId],[Amount],[IsForemanPermission],[IsSrSalemanPermissionF],[IsAdminPermission],[IsSrSalemanPermissionA],[FormanEmail],[SrSalesEmail],[AdminEmail],[SrSalemanAEmail],[ProductCatId],[Line],[JGSkuPartNo],[Description],[Quantity],[UOM],[VendorQuotesPath],[MaterialCost],[extend],[Total],[JobSeqId],[VendorIds])
+ --    VALUES(@soldJobId ,@materialList,@emailStatus ,@vendorCategoryId,@amount,@foremanPermission,@salesmanPermissionF,@adminPermission,@salesmanPermissionA,@FormanEmail,@SrSalesEmail,@AdminEmail,@SrSalemanAEmail,@ProductCatId,@Line,@JGSkuPartNo,@Description,@Quantity,@UOM,@VendorQuotesPath,@MaterialCost,@extend,@Total,@jobId,@VendorIds)
+
+
+
+	--INSERT INTO [dbo].[tblCustom_MaterialList]
+	--	   ([SoldJobId],[MaterialList],[EmailStatus],[VendorCategoryId],[Amount],[IsForemanPermission],[IsSrSalemanPermissionF],[IsAdminPermission],[IsSrSalemanPermissionA],[FormanEmail],[SrSalesEmail],[AdminEmail],[SrSalemanAEmail],[ProductCatId],[Line],[JGSkuPartNo],[Description],[Quantity],[UOM],[VendorQuotesPath],[MaterialCost],[extend],[Total],[JobSeqId],[VendorIds])
+ --    VALUES(@soldJobId ,@materialList,@emailStatus ,@vendorCategoryId,@amount,@foremanPermission,@salesmanPermissionF,@adminPermission,@salesmanPermissionA,@FormanEmail,@SrSalesEmail,@AdminEmail,@SrSalemanAEmail,@ProductCatId,@Line,@JGSkuPartNo,@Description,@Quantity,@UOM,@VendorQuotesPath,@MaterialCost,@extend,@Total,@JobSeqId,@VendorIds)
+
+
+		--INSERT INTO [dbo].[tblCustom_MaterialList]
+		--   ([SoldJobId],[MaterialList],[EmailStatus],[VendorCategoryId],[Amount],[IsForemanPermission],[IsSrSalemanPermissionF],[IsAdminPermission],[IsSrSalemanPermissionA],[FormanEmail],[SrSalesEmail],[AdminEmail],[SrSalemanAEmail],[ProductCatId],[Line],[JGSkuPartNo],[Description],[Quantity],[UOM],[VendorQuotesPath],[MaterialCost],[extend],[Total],[JobSeqId])
+  --   VALUES(@soldJobId ,@materialList,@emailStatus ,@vendorCategoryId,@amount,@foremanPermission,@salesmanPermissionF,@adminPermission,@salesmanPermissionA,@FormanEmail,@SrSalesEmail,@AdminEmail,@SrSalemanAEmail,@ProductCatId,@Line,@JGSkuPartNo,@Description,@Quantity,@UOM,@VendorQuotesPath,@MaterialCost,@extend,@Total,@JobSeqId)
+		
+		
+		
+		insert into tblcustom_MaterialList (SoldJobId,[MaterialList],[VendorCategoryId],[VendorId],[Amount],[EmailStatus],[IsForemanPermission],[IsSrSalemanPermissionF],[IsAdminPermission],[IsSrSalemanPermissionA],[FormanEmail],[SrSalesEmail],[AdminEmail],[SrSalemanAEmail],[ProductCatId],[Line],[JGSkuPartNo],[Description],[Quantity],[UOM],[VendorQuotesPath],[MaterialCost],[extend],[Total],[JobSeqId],[VendorIds],Visible, InstallerID, RequestStatus, DefaultVendorForCategory)
+		values (@soldJobId ,@materialList ,@vendorCategoryId,@vendorId ,@amount,@emailStatus,@foremanPermission,@salesmanPermissionF,@adminPermission,@salesmanPermissionA,@FormanEmail,@SrSalesEmail,@AdminEmail,@SrSalemanAEmail,@ProductCatId,@SN,@JGSkuPartNo,@Description,@Quantity,@UOM,@VendorQuotesPath,@MaterialCost,@extend,@Total,@jobId,@TmpVendorIDs,@Visible,@InstallerID, @RequestStatus,1)
+	end
+END
+
+
+
+
+
+
+GO
+
+
+
+
+

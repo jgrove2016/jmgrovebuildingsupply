@@ -1,7 +1,7 @@
 .ms-options-wrap > button:focus,
 .ms-options-wrap > button {
     position: relative;
-    width: 250px;
+    width: 230px;
     text-align: left;
     border: 1px solid #aaa;
     background-color: #fff;
@@ -62,7 +62,7 @@
 
 .ms-options-wrap > ul input[type="checkbox"] {
     margin-right: 5px;
-    position: absolute;
+    /*position: absolute;
     left: 4px;
-    top: 6px;
+    top: 6px;*/
 }

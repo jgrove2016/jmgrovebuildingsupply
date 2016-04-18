@@ -3102,16 +3102,18 @@ namespace JG_Prospect.Sr_App
             {
                 DataRowView lDr = (DataRowView)e.Row.DataItem;
                 int lProdCatID = Convert.ToInt32(lDr["ProductCatID"].ToString());
+                Boolean lDefVendorCat = Convert.ToBoolean(lDr["DefaultVendorForCategory"].ToString());
 
-                
+                CheckBox chkDefault = (CheckBox)e.Row.FindControl("chkDefault");
+                chkDefault.Checked = lDefVendorCat;
 
-                DropDownCheckBoxes ddlVendorCategory = (DropDownCheckBoxes)e.Row.FindControl("ddlVendorName");
+                //DropDownCheckBoxes ddlVendorCategory = (DropDownCheckBoxes)e.Row.FindControl("ddlVendorName");
+                //ddlVendorCategory.DataSource = lDvVendor;
+                //ddlVendorCategory.DataTextField = "VendorName";
+                //ddlVendorCategory.DataValueField = "VendorId";
+                //ddlVendorCategory.DataBind();
+
                 DataView lDvVendor = new DataView(VendorList, " ProductCategoryId=" + lProdCatID, "VendorName asc", DataViewRowState.CurrentRows);
-                ddlVendorCategory.DataSource = lDvVendor;
-                ddlVendorCategory.DataTextField = "VendorName";
-                ddlVendorCategory.DataValueField = "VendorId";
-                ddlVendorCategory.DataBind();
-
                 ListBox lstVendorName = (ListBox)e.Row.FindControl("lstVendorName");
                 lstVendorName.DataSource = lDvVendor;
                 lstVendorName.DataTextField = "VendorName";
@@ -3119,16 +3121,16 @@ namespace JG_Prospect.Sr_App
                 lstVendorName.DataBind();
                 
                 String lVendorIds = lDr["VendorIds"].ToString();
-                foreach (System.Web.UI.WebControls.ListItem lItem in ddlVendorCategory.Items)
-                {
-                    foreach (string lVendorId in lVendorIds.Split(','))
-                    {
-                        if (lItem.Value == lVendorId)
-                        {
-                            lItem.Selected = true;
-                        }
-                    }
-                }
+                //foreach (System.Web.UI.WebControls.ListItem lItem in ddlVendorCategory.Items)
+                //{
+                //    foreach (string lVendorId in lVendorIds.Split(','))
+                //    {
+                //        if (lItem.Value == lVendorId)
+                //        {
+                //            lItem.Selected = true;
+                //        }
+                //    }
+                //}
 
                 foreach (System.Web.UI.WebControls.ListItem lItem in lstVendorName.Items)
                 {
@@ -4081,7 +4083,7 @@ namespace JG_Prospect.Sr_App
             GridViewRow r = new GridViewRow(0, 0, DataControlRowType.DataRow, DataControlRowState.Normal);
             if (sender.GetType().Equals(typeof(DropDownList)))
             {
-                //r = ((GridViewRow)((DropDownList)sender).Parent.Parent.Parent.Parent);
+                r = ((GridViewRow)((DropDownList)sender).Parent.Parent);
                 return;
             }
             else if (sender.GetType().Equals(typeof(RadioButton)))
@@ -4104,6 +4106,7 @@ namespace JG_Prospect.Sr_App
             RadioButton rdoWholeSaler = (RadioButton)r.Parent.Parent.Parent.FindControl("rdoWholeSaler");
             DropDownList ddlVendorCategory = (DropDownList)r.Parent.Parent.Parent.FindControl("dldVendorCategory");
             DropDownCheckBoxes ddlVendorName = (DropDownCheckBoxes)r.FindControl("ddlVendorName");
+            ListBox lstVendor = (ListBox)r.FindControl("lstVendor");
             UpdatePanel updVend = (UpdatePanel)r.FindControl("updVend");
             HiddenField hdnProductCatID = (HiddenField)r.FindControl("hdnProductCatID");
 
@@ -4118,18 +4121,18 @@ namespace JG_Prospect.Sr_App
             if (chkApplyFilter.Checked)
             {
                 DataView lDvVendor = new DataView(VendorList, "IsManufacturer=" + (rdoManufacturer.Checked ? 1 : 0) + " and IsRetail_Wholesale=" + (rdoWholeSaler.Checked ? 1 : 0) + (ddlVendorCategory.SelectedValue != "-1" ? " and VendorCategpryId=" + ddlVendorCategory.SelectedValue : "") + " and ProductCategoryId=" + lProdCatID, "VendorName asc", DataViewRowState.CurrentRows);
-                ddlVendorName.DataSource = lDvVendor;
-                ddlVendorName.DataTextField = "VendorName";
-                ddlVendorName.DataValueField = "VendorId";
-                ddlVendorName.DataBind();
+                lstVendor.DataSource = lDvVendor;
+                lstVendor.DataTextField = "VendorName";
+                lstVendor.DataValueField = "VendorId";
+                lstVendor.DataBind();
             }
             else
             {
                 DataView lDvVendor = new DataView(VendorList, "ProductCategoryId=" + lProdCatID, "VendorName asc", DataViewRowState.CurrentRows);
-                ddlVendorName.DataSource = lDvVendor;
-                ddlVendorName.DataTextField = "VendorName";
-                ddlVendorName.DataValueField = "VendorId";
-                ddlVendorName.DataBind();
+                lstVendor.DataSource = lDvVendor;
+                lstVendor.DataTextField = "VendorName";
+                lstVendor.DataValueField = "VendorId";
+                lstVendor.DataBind();
             }
             //ScriptManager.RegisterStartupScript(updVend, updVend.GetType(), "DropDownInit", "window." + ddlVendorName.ClientID + " = new DropDownScript('" + ddlVendorName.ClientID + "','_dv','_sl'," + ddlVendorName.ClientID + ", false, true, true);window."+ddlVendorName.ClientID+".init(); alert('hi');alert(window." + ddlVendorName.ClientID + ");", true);
             //ScriptManager.RegisterStartupScript(this, this.GetType(), "DropDownInit", "window." + ddlVendorName.ClientID + " = new DropDownScript('" + ddlVendorName.ClientID + "','_dv','_sl'," + ddlVendorName.ClientID + ", false, true, true);window." + ddlVendorName.ClientID + ".init(); alert('hi');alert(window." + ddlVendorName.ClientID + ");", true);
