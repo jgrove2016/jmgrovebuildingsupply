@@ -3129,7 +3129,7 @@ namespace JG_Prospect.Sr_App
                 DrpPaymentMode.SelectedValue = Convert.ToString(ds.Tables[0].Rows[0]["PaymentMethod"]);
             }
 
-            LoadVendorEmails(VendorIdToEdit, Convert.ToInt32(ds.Tables[0].Rows[0]["AddressID"]));
+            LoadVendorEmails(VendorIdToEdit, Convert.ToInt32(ds.Tables[0].Rows[0]["AddressID"] == DBNull.Value ? "0" : ds.Tables[0].Rows[0]["AddressID"]));
 
             btnSave.Text = "Update";
 

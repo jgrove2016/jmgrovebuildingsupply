@@ -797,7 +797,7 @@
                                     </tr>
 
                                 </table>
-                                <table>
+                                <table style="width:100%;">
                                     <tr>
                                         <td>
                                             <div style="width: 100%">
