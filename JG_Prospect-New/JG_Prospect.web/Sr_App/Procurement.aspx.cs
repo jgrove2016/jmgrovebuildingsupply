@@ -454,6 +454,10 @@ namespace JG_Prospect.Sr_App
                 grdVendorList.DataSource = ds;
                 grdVendorList.DataBind();
             }
+
+            int VendorID = Convert.ToInt32(string.IsNullOrEmpty(txtVendorId.Text) ? "0" : txtVendorId.Text);
+            int AddressID = Convert.ToInt32(DrpVendorAddress.SelectedValue == "Select" ? "0" : DrpVendorAddress.SelectedValue);
+            LoadVendorEmails(VendorID, AddressID);
         }
 
         #endregion
@@ -598,11 +602,19 @@ namespace JG_Prospect.Sr_App
             Vendor objvendor = new Vendor();
             if (ddlVndrCategory.SelectedValue == "Select")
             {
+
+                int VendorID = Convert.ToInt32(string.IsNullOrEmpty(txtVendorId.Text) ? "0" : txtVendorId.Text);
+                int AddressID = Convert.ToInt32(DrpVendorAddress.SelectedValue == "Select" ? "0" : DrpVendorAddress.SelectedValue);
+                LoadVendorEmails(VendorID, AddressID);
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('please select Vendor Category');", true);
                 return;
             }
             else if (ddlVendorSubCategory.SelectedValue == "Select")
             {
+
+                int VendorID = Convert.ToInt32(string.IsNullOrEmpty(txtVendorId.Text) ? "0" : txtVendorId.Text);
+                int AddressID = Convert.ToInt32(DrpVendorAddress.SelectedValue == "Select" ? "0" : DrpVendorAddress.SelectedValue);
+                LoadVendorEmails(VendorID, AddressID);
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('please select Vendor Sub Category');", true);
                 return;
 
@@ -621,7 +633,7 @@ namespace JG_Prospect.Sr_App
 
                 string primaryEmail = "", fName = "", lName = "", contactNo = "", contactExten = "", BillingAddress = "";
                 DataTable dtEmails = (DataTable)HttpContext.Current.Session["dtVendorEmail"];
-                if (dtEmails.Rows.Count > 0)
+                if (dtEmails != null && dtEmails.Rows.Count > 0)
                 {
                     for (int i = 0; i < dtEmails.Rows.Count; i++)
                     {
@@ -641,7 +653,7 @@ namespace JG_Prospect.Sr_App
                 }
 
                 DataTable dtAddress = (DataTable)HttpContext.Current.Session["dtVendorAddress"];
-                if (dtAddress.Rows.Count > 0)
+                if (dtAddress != null && dtAddress.Rows.Count > 0)
                 {
                     for (int i = 0; i < dtAddress.Rows.Count; i++)
                     {
@@ -3062,7 +3074,12 @@ namespace JG_Prospect.Sr_App
             //txtAutoInsurance.Text = ds.Tables[0].Rows[0]["AutoTruckInsurance"].ToString();
             txtVendorId.Text = Convert.ToString(ds.Tables[0].Rows[0]["VendorId"]);
 
-            DataSet dsAddress = VendorBLL.Instance.GetVendorAddress(Convert.ToInt32(txtVendorId.Text));
+            string NewTempID = "";
+            if (HttpContext.Current.Session["TempID"] != null)
+            {
+                NewTempID = Convert.ToString(HttpContext.Current.Session["TempID"]);
+            }
+            DataSet dsAddress = VendorBLL.Instance.GetVendorAddress(Convert.ToInt32(txtVendorId.Text),NewTempID);
 
             DrpVendorAddress.Items.Clear();
             DrpVendorAddress.Items.Add(new System.Web.UI.WebControls.ListItem("Select", "Select"));
@@ -3112,14 +3129,7 @@ namespace JG_Prospect.Sr_App
                 DrpPaymentMode.SelectedValue = Convert.ToString(ds.Tables[0].Rows[0]["PaymentMethod"]);
             }
 
-
-            //Set Email ID Template 
-            Vendor objVendor = new Vendor();
-            objVendor.vendor_id = VendorIdToEdit;
-            DataSet dsemail = VendorBLL.Instance.GetVendorEmail(objVendor);
-            HttpContext.Current.Session["dtVendorEmail"] = dsemail.Tables[0];
-            string EmailJSON = JsonConvert.SerializeObject(dsemail.Tables[0]);
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "vendor Email", "AddVenderEmails(" + EmailJSON + ")", true);
+            LoadVendorEmails(VendorIdToEdit, Convert.ToInt32(ds.Tables[0].Rows[0]["AddressID"]));
 
             btnSave.Text = "Update";
 
@@ -3136,22 +3146,23 @@ namespace JG_Prospect.Sr_App
             DataTable tblVendorEmail = (DataTable)HttpContext.Current.Session["dtVendorEmail"];
             bool emailres = VendorBLL.Instance.InsertVendorEmail(tblVendorEmail, addressID);
 
-            if (DrpVendorAddress.Items.FindByValue(addressID.ToString()) == new System.Web.UI.WebControls.ListItem())
+            var addr = txtPrimaryAddress.Text;
+            if (!string.IsNullOrEmpty(txtPrimaryCity.Text))
             {
-                var addr = txtPrimaryAddress.Text;
-                if (!string.IsNullOrEmpty(txtPrimaryCity.Text))
-                {
-                    addr += ", " + txtPrimaryCity.Text;
-                }
-                if (ddlCountry.SelectedValue != "")
-                {
-                    addr += ", " + ddlCountry.SelectedValue;
-                }
+                addr += ", " + txtPrimaryCity.Text;
+            }
+            if (ddlCountry.SelectedValue != "")
+            {
+                addr += ", " + ddlCountry.SelectedValue;
+            }
 
+            if (!DrpVendorAddress.Items.Contains(new System.Web.UI.WebControls.ListItem(addr, addressID.ToString())))
+            {
                 DrpVendorAddress.Items.Add(new System.Web.UI.WebControls.ListItem(addr, addressID.ToString()));
-
                 DrpVendorAddress.SelectedValue = addressID.ToString();
             }
+            int VendorIdToEdit = Convert.ToInt32(string.IsNullOrEmpty(txtVendorId.Text) ? "0" : txtVendorId.Text);
+            LoadVendorEmails(VendorIdToEdit, addressID);
             lbladdress.Text = "Address Saved/Updated Successfully.";
             //ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Vendor Saved/Updated Successfully');", true);
 
@@ -3160,7 +3171,7 @@ namespace JG_Prospect.Sr_App
 
         protected void DrpVendorAddress_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string DrpVendoreAdd = DrpVendorAddress.SelectedValue.ToString();
+            string DrpVendoreAdd = DrpVendorAddress.SelectedValue.ToString() == "Select" ? "0" : DrpVendorAddress.SelectedValue.ToString();
             int VendorIdToEdit = Convert.ToInt32(string.IsNullOrEmpty(txtVendorId.Text) ? "0" : txtVendorId.Text);
 
             ddlAddressType.SelectedValue = "Select";
@@ -3169,37 +3180,62 @@ namespace JG_Prospect.Sr_App
             txtPrimaryAddress.Text = "";
             ddlCountry.SelectedValue = "";
 
-            if (VendorIdToEdit > 0)
+            //if (VendorIdToEdit > 0)
+            //{
+            string NewTempID = "";
+            if (HttpContext.Current.Session["TempID"] != null)
             {
-                DataSet dsAddress = VendorBLL.Instance.GetVendorAddress(VendorIdToEdit);
+                NewTempID = Convert.ToString(HttpContext.Current.Session["TempID"]);
+            }
+            DataSet dsAddress = VendorBLL.Instance.GetVendorAddress(VendorIdToEdit, NewTempID);
 
-                if (dsAddress.Tables[0].Rows.Count > 0)
+            if (dsAddress.Tables[0].Rows.Count > 0)
+            {
+                for (int i = 0; i < dsAddress.Tables[0].Rows.Count; i++)
                 {
-                    for (int i = 0; i < dsAddress.Tables[0].Rows.Count; i++)
-                    {
-                        DataRow dr = dsAddress.Tables[0].Rows[i];
+                    DataRow dr = dsAddress.Tables[0].Rows[i];
 
-                        //Set Address Value on Update            
-                        if (DrpVendoreAdd == Convert.ToString(dr["Id"]))
-                        {
-                            ddlAddressType.SelectedValue = Convert.ToString(dr["AddressType"]);
-                            txtPrimaryCity.Text = Convert.ToString(dr["City"]);
-                            txtPrimaryZip.Text = Convert.ToString(dr["Zip"]);
-                            txtPrimaryAddress.Text = Convert.ToString(dr["Address"]);
-                            ddlCountry.SelectedValue = Convert.ToString(dr["Country"]);
-                        }
+                    //Set Address Value on Update            
+                    if (DrpVendoreAdd == Convert.ToString(dr["Id"]))
+                    {
+                        ddlAddressType.SelectedValue = Convert.ToString(dr["AddressType"]);
+                        txtPrimaryCity.Text = Convert.ToString(dr["City"]);
+                        txtPrimaryZip.Text = Convert.ToString(dr["Zip"]);
+                        txtPrimaryAddress.Text = Convert.ToString(dr["Address"]);
+                        ddlCountry.SelectedValue = Convert.ToString(dr["Country"]);
                     }
                 }
-
-
-                //Set Email ID Template 
-                Vendor objVendor = new Vendor();
-                objVendor.vendor_id = VendorIdToEdit;
-                DataSet dsemail = VendorBLL.Instance.GetVendorEmail(objVendor);
-                HttpContext.Current.Session["dtVendorEmail"] = dsemail.Tables[0];
-                string EmailJSON = JsonConvert.SerializeObject(dsemail.Tables[0]);
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "vendor Email", "AddVenderEmails(" + EmailJSON + ")", true);
             }
+
+            LoadVendorEmails(VendorIdToEdit, Convert.ToInt32(DrpVendoreAdd));
+            //}
+        }
+
+        public void LoadVendorEmails(int VendorID, int AddressID)
+        {
+
+            txtPrimaryContactExten0.Text = "";
+            txtPrimaryContact0.Text = "";
+            txtSecContactExten0.Text = "";
+            txtSecContact0.Text = "";
+            txtAltContactExten0.Text = "";
+            txtAltContact0.Text = "";
+            //Set Email ID Template 
+
+            string NewTempID = "";
+            if (HttpContext.Current.Session["TempID"] != null)
+            {
+                NewTempID = Convert.ToString(HttpContext.Current.Session["TempID"]);
+            }
+
+            Vendor objVendor = new Vendor();
+            objVendor.vendor_id = VendorID;
+            objVendor.AddressID = AddressID;
+            objVendor.TempID = NewTempID;
+            DataSet dsemail = VendorBLL.Instance.GetVendorEmailByAddress(objVendor);
+            HttpContext.Current.Session["dtVendorEmail"] = dsemail.Tables[0];
+            string EmailJSON = JsonConvert.SerializeObject(dsemail.Tables[0]);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "vendor Email", "AddVenderEmails(" + EmailJSON + ")", true);
         }
     }
 

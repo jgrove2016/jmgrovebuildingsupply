@@ -82,7 +82,7 @@
             //$(".vendor_table").find(".fixedAddressrow").each(function (index, node) {
             //    if (index == 0) {
             AddressData.push({
-                AddressID : $(".clsvendoraddress").val()==undefined || $(".clsvendoraddress").val()=="" ? "0" : $(".clsvendoraddress").val(),
+                AddressID: $(".clsvendoraddress").val() == undefined || $(".clsvendoraddress").val() == "Select" ? "0" : $(".clsvendoraddress").val(),
                 AddressType: $(".clstxtAddressType0").val(),
                 Address: $(".clstxtAddress0").val(),
                 City: $(".clstxtCity0").val(),
@@ -118,7 +118,7 @@
                     FirstName: $("input[name=nametxtPrimaryFName" + index + "]").val(),
                     LastName: $("input[name=nametxtPrimaryLName" + index + "]").val(),
                     Contact: c,
-                    AddressID: $(".clsvendoraddress").val() == undefined || $(".clsvendoraddress").val() == "" ? "0" : $(".clsvendoraddress").val(),
+                    AddressID: $(".clsvendoraddress").val() == undefined || $(".clsvendoraddress").val() == "Select" ? "0" : $(".clsvendoraddress").val(),
                 };
                 VendorEmailData.push(EmailData);
 
@@ -141,7 +141,7 @@
                     FirstName: $("#txtSecFName" + index).val(),
                     LastName: $("#txtSecLName" + index).val(),
                     Contact: c,
-                    AddressID: $(".clsvendoraddress").val() == undefined || $(".clsvendoraddress").val() == "" ? "0" : $(".clsvendoraddress").val(),
+                    AddressID: $(".clsvendoraddress").val() == undefined || $(".clsvendoraddress").val() == "Select" ? "0" : $(".clsvendoraddress").val(),
                 };
                 VendorEmailData.push(EmailData);
             });
@@ -164,7 +164,7 @@
                     FirstName: $("#txtAltFName" + index).val(),
                     LastName: $("#txtAltLName" + index).val(),
                     Contact: c,
-                    AddressID: $(".clsvendoraddress").val() == undefined || $(".clsvendoraddress").val() == "" ? "0" : $(".clsvendoraddress").val(),
+                    AddressID: $(".clsvendoraddress").val() == undefined || $(".clsvendoraddress").val() == "Select" ? "0" : $(".clsvendoraddress").val(),
                 };
                 VendorEmailData.push(EmailData);
             });
@@ -196,6 +196,9 @@
         }
 
         function AddVenderEmails(data) {
+            var PID = -1;
+            var SID = -1;
+            var AID = -1;
             for (var i = 0; i < data.length; i++) {
                 var AddressID = data[i].AddressID;
                 var Email = JSON.parse(data[i].Email);
@@ -209,21 +212,36 @@
                 var ID = "";
                 if (EmailType == "Primary") {
                     ID = "Primary";
+                    PID++;
                 }
                 if (EmailType == "Secondary") {
                     ID = "Sec";
+                    SID++;
                 }
                 if (EmailType == "Alternate") {
                     ID = "Alt";
+                    AID++;
                 }
 
+                var NewRow = 0;
+                if (PID > 0 || SID > 0 || AID > 0) {
+                    if (EmailType == "Primary") {
+                        NewRow = PID;
+                    }
+                    if (EmailType == "Secondary") {
+                        NewRow = SID;
+                    }
+                    if (EmailType == "Alternate") {
+                        NewRow = SID;
+                    }
+                }
 
-                GenereateHTML(data[i],ID);
+                GenereateHTML(data[i], ID, NewRow);
             }
         }
 
-        function GenereateHTML(data,ID) {
-            var ContentPlaceHolder="ContentPlaceHolder1_";
+        function GenereateHTML(data, ID, NewRow) {
+            var ContentPlaceHolder = "ContentPlaceHolder1_";
             var AddressID = data.AddressID;
             var Email = JSON.parse(data.Email);
             var Contact = JSON.parse(data.Contact);
@@ -235,17 +253,50 @@
             var TempID = data.TempID;
 
 
-            $("#txt" + ID + "Email0").val(Email[0].Email);
-            $("#txt" + ID + "FName0").val(FName);
-            $("#txt" + ID + "LName0").val(LName);
-            $("#" + ContentPlaceHolder + "txt" + ID + "ContactExten0").val(Contact[0].Extension);
-            $("#" + ContentPlaceHolder + "txt" + ID + "Contact0").val(Contact[0].Number);
-            for (j = 1; j < Email.length; j++) {
-                $("#txt" + ID + "Email0" + j).val(Email[0].Email);
+            if (NewRow > 0) {
+                var MainHTML = '<tr><td><div class="newEmaildiv">';
+                MainHTML += '<input type="text" id="txt' + ID + 'Email' + NewRow + '" name="nametxt' + ID + 'Email' + NewRow + '" value="' + Email[0].Email + '" placeholder="Email" class="clsemail" clientidmode="Static"/><br>';
+                MainHTML += '<a onclick="AddEmail(this)" style="cursor: pointer" data-emailtype="Primary" data-type="1">Add Email</a><br></div></td>';
+                MainHTML += '<td><input type="text" id="txt' + ID + 'FName' + NewRow + '" name="nametxt' + ID + 'FName' + NewRow + '" value="' + FName + '" placeholder="First Name" clientidmode="Static"></td>';
+                MainHTML += '<td><input type="text" id="txt' + ID + 'LName' + NewRow + '" name="nametxt' + ID + 'LName' + NewRow + '" value="' + LName + '" placeholder="Last Name" clientidmode="Static"></td>';
+                MainHTML += '<td><div class="newcontactdiv"><input type="text" id="txt' + ID + 'ContactExten' + NewRow + '" name="nametxt' + ID + 'ContactExten' + NewRow + '" value="' + Contact[0].Extension + '" style="width:35%" maxlength="6" class="clsmaskphoneexten" placeholder="Extension" clientidmode="Static"/>&nbsp;<input type="text" id="txt' + ID + 'Contact' + NewRow + '" name="nametx' + ID + 'Contact' + NewRow + '" value="' + Contact[0].Number + '" style="width:50%" class="clsmaskphone" maxlength="10" placeholder="___-___-____" clientidmode="Static"/>';
+                MainHTML += '<a onclick="AddContact(this)" style="cursor:pointer" data-type="1" data-emailtype="Primary" clientidmode="Static">Add Contact</a><br></div></td></tr>';
+                $("#tbl" + ID + "Email").find("tr:last-child").after(MainHTML);
+                for (j = 1; j < Email.length; j++) {
+                    var HTML = '<br/>';
+                    HTML += '<div class="newEmaildiv"><input type="text" id="txt' + ID + 'Email' + NewRow + '' + j + '" name="nametxt' + ID + 'Email' + NewRow + '' + j + '" class="clsemail" value="' + Email[j].Email + '" clientidmode="Static"?></div>';
+                    $("#tbl" + ID + "Email").find("tr:last-child .newEmaildiv").append(HTML);
+                    //$("#txt" + ID + "Email0" + j).val(Email[j].Email);
+                }
+                for (j = 1; j < Contact.length; j++) {
+                    var n = j - 1;
+                    var HTML = '<br/>';
+                    HTML += '<div class="newcontactdiv"><input type="text" id="txt' + ID + 'ContactExten' + NewRow + '' + n + '" name="nametxt' + ID + 'ContactExten' + NewRow + '' + n + '" style="width:35%;" maxlength="6" class="clsmaskphoneexten" placeholder="Extension" value="' + Contact[j].Extension + '" clientidmode="Static"/>&nbsp;<input type="text" id="txt' + ID + 'Contact0' + n + '" name="nametxt' + ID + 'Contact' + NewRow + '' + n + '" style="width:50%;" maxlength="10" class="clsmaskphone" placeholder="___-___-____" value="' + Contact[j].Number + '" clientidmode="Static"/><br></div>';
+                    $("#tbl" + ID + "Email").find("tr:last-child .newcontactdiv").append(HTML);
+                    //$("#" + ContentPlaceHolder + "txt" + ID + "ContactExten0" + j).val(Contact[j].Extension);
+                    //$("#" + ContentPlaceHolder + "txt" + ID + "Contact0" + j).val(Contact[j].Number);
+                }
             }
-            for (j = 1; j < Contact.length; j++) {
-                $("#" + ContentPlaceHolder + "txt" + ID + "ContactExten0" + j).val(Contact[j].Extension);
-                $("#" + ContentPlaceHolder + "txt" + ID + "Contact0" + j).val(Contact[j].Number);
+            else {
+                $("#txt" + ID + "Email" + NewRow).val(Email[0].Email);
+                $("#txt" + ID + "FName" + NewRow).val(FName);
+                $("#txt" + ID + "LName" + NewRow).val(LName);
+                $("#" + ContentPlaceHolder + "txt" + ID + "ContactExten" + NewRow).val(Contact[0].Extension);
+                $("#" + ContentPlaceHolder + "txt" + ID + "Contact" + NewRow).val(Contact[0].Number);
+                for (j = 1; j < Email.length; j++) {
+                    var HTML = '<br/>';
+                    HTML += '<div class="newEmaildiv"><input type="text" id="txt' + ID + 'Email' + NewRow + '' + j + '" name="nametxt' + ID + 'Email' + NewRow + '' + j + '" class="clsemail" value="' + Email[j].Email + '" clientidmode="Static"?></div>';
+                    $("#tbl" + ID + "Email").find("tr:last-child .newEmaildiv").append(HTML);
+                    //$("#txt" + ID + "Email0" + j).val(Email[j].Email);
+                }
+                for (j = 1; j < Contact.length; j++) {
+                    var n = j - 1;
+                    var HTML = '<br/>';
+                    HTML += '<div class="newcontactdiv"><input type="text" id="txt' + ID + 'ContactExten' + NewRow + '' + n + '" name="nametxt' + ID + 'ContactExten' + NewRow + '' + n + '" style="width:35%;" maxlength="6" class="clsmaskphoneexten" placeholder="Extension" value="' + Contact[j].Extension + '" clientidmode="Static"/>&nbsp;<input type="text" id="txt' + ID + 'Contact0' + n + '" name="nametxt' + ID + 'Contact' + NewRow + '' + n + '" style="width:50%;" maxlength="10" class="clsmaskphone" placeholder="___-___-____" value="' + Contact[j].Number + '" clientidmode="Static"/><br></div>';
+                    $("#tbl" + ID + "Email").find("tr:last-child .newcontactdiv").append(HTML);
+                    //$("#" + ContentPlaceHolder + "txt" + ID + "ContactExten0" + j).val(Contact[j].Extension);
+                    //$("#" + ContentPlaceHolder + "txt" + ID + "Contact0" + j).val(Contact[j].Number);
+                }
             }
         }
 
@@ -413,7 +464,7 @@
                                             <asp:Label ID="lblCategory" runat="server" Text='<%#Eval("Category") %>' HeaderStyle-Width="200px"></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    
+
                                     <asp:TemplateField HeaderText="Final Material List" HeaderStyle-Width="16%">
                                         <ItemTemplate>
                                             <asp:LinkButton ID="lnkmateriallist" runat="server" Text='<%#Eval("MaterialList") %>'
@@ -457,7 +508,7 @@
                             PopupControlID="pnlpopup" CancelControlID="btnCancel">
                         </asp:ModalPopupExtender>
 
-                      
+
                         <asp:Panel ID="pnlpopup" runat="server" BackColor="White" Height="269px" Width="550px"
                             Style="display: none; border: Solid 3px #A33E3F; border-radius: 10px 10px 0 0;">
                             <table style="border: Solid 3px #A33E3F; width: 100%; height: 100%;" cellpadding="0"
@@ -486,7 +537,7 @@
                                 </tr>
                             </table>
                         </asp:Panel>
-                   
+
                         <asp:ModalPopupExtender ID="Mpedeletecategory" runat="server" TargetControlID="btndeletecategory"
                             PopupControlID="pnlpopup2" CancelControlID="btnCancel2">
                         </asp:ModalPopupExtender>
@@ -845,6 +896,7 @@
                                                         <td>
                                                             <label>Address:</label><br />
                                                             <asp:DropDownList ID="DrpVendorAddress" AutoPostBack="true" OnSelectedIndexChanged="DrpVendorAddress_SelectedIndexChanged" runat="server" Style="width: 180px;" CssClass="clsvendoraddress">
+                                                                <asp:ListItem Value="Select">Select</asp:ListItem>
                                                             </asp:DropDownList>
                                                         </td>
                                                         <td>
@@ -1330,15 +1382,17 @@
                                                     </tr>
 
                                                 </table>
-                                                <div style="text-align:right;"> 
-                                                    <asp:LinkButton ID="BtnSaveLoaction" runat="server" Text="Save Address" OnClientClick="GetVendorDetails(this)" ValidationGroup="addaddress" OnClick="BtnSaveLoaction_Click" /> <br />
+                                                <div style="text-align: right;">
+                                                    <asp:LinkButton ID="BtnSaveLoaction" runat="server" Text="Save Address" OnClientClick="GetVendorDetails(this)" ValidationGroup="addaddress" OnClick="BtnSaveLoaction_Click" />
+                                                    <br />
                                                     <asp:Label ID="lbladdress" runat="server" ForeColor="Red"></asp:Label>
                                                 </div>
                                             </li>
                                         </ul>
                                         <div class="btn_sec">
                                             <asp:Button ID="btnSave" runat="server" Text="Save" OnClientClick="return checkAddress()" OnClick="btnSave_Click" ValidationGroup="addvendor" TabIndex="8" /><%--OnClick="btnSave_Click" ValidationGroup="addvendor"--%>
-                                            <br /> <asp:Label ID="LblSave" runat="server" ForeColor="Red"></asp:Label>
+                                            <br />
+                                            <asp:Label ID="LblSave" runat="server" ForeColor="Red"></asp:Label>
                                         </div>
                                     </div>
 
@@ -1385,7 +1439,7 @@
                                     <asp:TextBox ID="txtTodate" CssClass="date" onkeypress="return false"
                                         MaxLength="10" runat="server" TabIndex="3" AutoPostBack="true"
                                         Style="width: 150px;"></asp:TextBox>
-                                    
+
                                     <asp:RequiredFieldValidator ID="Requiretodate" ControlToValidate="txtTodate"
                                         runat="server" ErrorMessage=" Select To date" ForeColor="Red" ValidationGroup="display">
                                     </asp:RequiredFieldValidator>
@@ -1505,7 +1559,7 @@
                                 <td></td>
                                 <td>
                                     <asp:Button ID="btnVerifyAdmin" runat="server" Text="Verify" OnClick="VerifyAdminPermission" />
-                        &nbsp;&nbsp;
+                                    &nbsp;&nbsp;
                         <input type="button" id="btnCloseAdmin" class="btnClose" value="Cancel" />
                                 </td>
                             </tr>
@@ -1539,7 +1593,7 @@
                                 <td></td>
                                 <td>
                                     <asp:Button ID="btnVerifySrSalesmanA" runat="server" Text="Verify" OnClick="VerifySrSalesmanPermissionA" />
-                        &nbsp;&nbsp;
+                                    &nbsp;&nbsp;
                         <input type="button" id="btnCloseSrSalesmanA" class="btnClose" value="Cancel" />
                                 </td>
                             </tr>
@@ -1573,7 +1627,7 @@
                                 <td></td>
                                 <td>
                                     <asp:Button ID="btnVerifyForeman" runat="server" Text="Verify" OnClick="VerifyForemanPermission" />
-                        &nbsp;&nbsp;
+                                    &nbsp;&nbsp;
                         <input type="button" id="btnCloseForeman" class="btnClose" value="Cancel" />
                                 </td>
                             </tr>
@@ -1607,7 +1661,7 @@
                                 <td></td>
                                 <td>
                                     <asp:Button ID="btnVerifySrSalesmanF" runat="server" Text="Verify" OnClick="VerifySrSalesmanPermissionF" />
-                        &nbsp;&nbsp;
+                                    &nbsp;&nbsp;
                         <input type="button" id="btnCloseSrSalesmanF" class="btnClose" value="Cancel" />
                                 </td>
                             </tr>

@@ -758,6 +758,29 @@ namespace JG_Prospect.DAL
             }
         }
 
+        public DataSet GetVendorEmailByAddress(Vendor objVendor)
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("sp_VendorEmail");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@VendorId", DbType.Int16, objVendor.vendor_id);
+                    database.AddInParameter(command, "@AddressID", DbType.Int16, objVendor.AddressID);
+                    database.AddInParameter(command, "@TempID", DbType.String, objVendor.TempID);
+                    database.AddInParameter(command, "@action", DbType.Int16, 3);
+                    DS = database.ExecuteDataSet(command);
+                    return DS;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
         public DataSet GetVendorAddress(int VendorId)
         {
             try
@@ -768,6 +791,27 @@ namespace JG_Prospect.DAL
                     command.CommandType = CommandType.StoredProcedure;
                     database.AddInParameter(command, "@VendorId", DbType.Int16, VendorId);
                     database.AddInParameter(command, "@action", DbType.Int16, 2);
+                    DS = database.ExecuteDataSet(command);
+                    return DS;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public DataSet GetVendorAddress(int VendorId,string TempID)
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("sp_VendorAddress");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@VendorId", DbType.Int16, VendorId);
+                    database.AddInParameter(command, "@TempID", DbType.String, TempID);
+                    database.AddInParameter(command, "@action", DbType.Int16, 3);
                     DS = database.ExecuteDataSet(command);
                     return DS;
                 }

@@ -155,6 +155,12 @@ namespace JG_Prospect.BLL
         {
             return VendorDAL.Instance.GetVendorEmail(objVendor);
         }
+
+        public DataSet GetVendorEmailByAddress(Vendor objVendor)
+        {
+            return VendorDAL.Instance.GetVendorEmailByAddress(objVendor);
+        }
+
         public int InsertVendorAddress(DataTable objvendor)
         {
             return VendorDAL.Instance.InsertVendorAddress(objvendor);
@@ -162,6 +168,11 @@ namespace JG_Prospect.BLL
         public DataSet GetVendorAddress(int VendorId)
         {
             return VendorDAL.Instance.GetVendorAddress(VendorId);
+        }
+
+        public DataSet GetVendorAddress(int VendorId,string TempID)
+        {
+            return VendorDAL.Instance.GetVendorAddress(VendorId, TempID);
         }
 
         public List<AutoCompleteVendor> SearchVendor(string searchString, string tableName)
