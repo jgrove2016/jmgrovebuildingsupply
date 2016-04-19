@@ -46,7 +46,6 @@
                 if ($(option).attr('selected')) {
                     container.addClass('selected');
                     container.find('input[type="checkbox"]').attr('checked', 'checked');
-                    container.find('input[type="checkbox"]').attr('checked', 'true');
                 }
 
                 var label = $('<label></label>').attr('for', 'ms-opt-' + msCounter);
@@ -90,6 +89,9 @@
             }
             else {
                 optionsWrap.parent().css('position', 'relative');
+                optionsWrap.parent().css('width', '70%');
+                optionsWrap.parent().css('float', 'left');
+                optionsWrap.parent().css('margin-right', '20px');
             }
 
             var maxHeight = options.maxHeight;
@@ -234,6 +236,15 @@
                 select.find('option[value="' + $(this).val() + '"]').attr(
                     'selected', $(this).is(':checked')
                 );
+                if(select.find('option[value="' + $(this).val() + '"]').attr(
+                    'selected')) {
+                    $(this).closest('li').addClass('selected');
+                    
+                }
+                else {
+                    $(this).closest('li').removeClass('selected');
+                    
+                }
 
                 // Trigger change event
                 select.find('option[value="' + $(this).val() + '"]').closest('select').trigger('change');
