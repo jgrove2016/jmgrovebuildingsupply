@@ -378,6 +378,67 @@ END
 GO
 
 
+/****** Object:  StoredProcedure [dbo].[USP_UpdateSpecificProductLine]    Script Date: 04/19/2016 15:25:01 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_UpdateSpecificProductLine]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_UpdateSpecificProductLine]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_UpdateSpecificProductLine]    Script Date: 04/19/2016 15:25:01 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-04-19
+-- Description:	This procedure will update product line of Custom Material List
+-- =============================================
+CREATE PROCEDURE [dbo].[USP_UpdateSpecificProductLine]
+	@FieldName NVARCHAR(400),
+	@Value NVARCHAR(4000),
+	@SoldJobID VARCHAR(400),
+	@ID INT
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+	
+
+
+	IF(@FieldName = 'JGSkuPartNo')
+		UPDATE [tblCustom_MaterialList]
+		SET JGSkuPartNo = @Value
+		WHERE Id = @ID
+	ELSE IF(@FieldName = 'MaterialList')
+		UPDATE [tblCustom_MaterialList]
+		SET MaterialList = @Value
+		WHERE Id = @ID
+	ELSE IF(@FieldName = 'Quantity')
+		UPDATE [tblCustom_MaterialList]
+		SET Quantity = @Value
+		WHERE Id = @ID
+	ELSE IF(@FieldName = 'UOM')
+		UPDATE [tblCustom_MaterialList]
+		SET UOM = @Value
+		WHERE Id = @ID
+	ELSE IF(@FieldName = 'MaterialCost')
+		UPDATE [tblCustom_MaterialList]
+		SET MaterialCost = @Value
+		WHERE Id = @ID
+	ELSE IF(@FieldName = 'extend')
+		UPDATE [tblCustom_MaterialList]
+		SET extend = @Value
+		WHERE Id = @ID
+
+
+END
+
+GO
+
+
 
 
 

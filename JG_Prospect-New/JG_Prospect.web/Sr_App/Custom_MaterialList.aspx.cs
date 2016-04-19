@@ -2288,6 +2288,19 @@ namespace JG_Prospect.Sr_App
         /// <param name="sender"></param>
         /// <param name="e"></param>
         [WebMethod]
+        public static string UpdateSpecificProductLine(string pFieldName, String pFieldValue, Int32 pID)
+        {
+            string lResult = "1";
+            CustomBLL.Instance.UpdateSpecificProductLine(pFieldName, pFieldValue, pID, jobId);
+            return lResult;
+        }
+
+        /// <summary>
+        /// This method will save vendor ids
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        [WebMethod]
         public static string SaveVendorIds(string pExcMaterialListId, Int32 pProductCatID, String pVendorIds)
         {
             string lResult = "1";
@@ -2465,48 +2478,44 @@ namespace JG_Prospect.Sr_App
             Add_Click(sender, e);
         }
 
-        string flag = "";
+        //protected void txtExtended_TextChanged(object sender, EventArgs e)
+        //{
+        //    flag = "Autosave";
+        //    SaveMaterialList(sender, e);
+        //}
 
+        //protected void txtLine_TextChanged(object sender, EventArgs e)
+        //{
+        //    flag = "Autosave";
+        //    SaveMaterialList(sender, e);
+        //}
 
-        protected void txtExtended_TextChanged(object sender, EventArgs e)
-        {
-            flag = "Autosave";
-            SaveMaterialList(sender, e);
-        }
+        //protected void txtSkuPartNo_TextChanged(object sender, EventArgs e)
+        //{
+        //    flag = "Autosave";
+        //    SaveMaterialList(sender, e);
+        //}
 
-        protected void txtLine_TextChanged(object sender, EventArgs e)
-        {
-            flag = "Autosave";
-            SaveMaterialList(sender, e);
-        }
+        //protected void txtDescription_TextChanged(object sender, EventArgs e)
+        //{
+        //    flag = "Autosave";
+        //    SaveMaterialList(sender, e);
+        //}
 
-        protected void txtSkuPartNo_TextChanged(object sender, EventArgs e)
-        {
-            flag = "Autosave";
-            SaveMaterialList(sender, e);
-        }
+        //protected void txtQTY_TextChanged(object sender, EventArgs e)
+        //{
+        //    flag = "Autosave";
+        //    SaveMaterialList(sender, e);
+        //}
 
-        protected void txtDescription_TextChanged(object sender, EventArgs e)
-        {
-            flag = "Autosave";
-            SaveMaterialList(sender, e);
-        }
-
-        protected void txtQTY_TextChanged(object sender, EventArgs e)
-        {
-            flag = "Autosave";
-            SaveMaterialList(sender, e);
-        }
-
-        protected void txtUOM_TextChanged(object sender, EventArgs e)
-        {
-            flag = "Autosave";
-            SaveMaterialList(sender, e);
-        }
+        //protected void txtUOM_TextChanged(object sender, EventArgs e)
+        //{
+        //    flag = "Autosave";
+        //    SaveMaterialList(sender, e);
+        //}
 
         protected void ddlVendorName_SelectedIndexChanged1(object sender, EventArgs e)
         {
-            flag = "Autosave";
             SaveMaterialList(sender, e);
         }
 
@@ -3010,27 +3019,27 @@ namespace JG_Prospect.Sr_App
             string soldjobId = Session["jobId"].ToString();
             bool result = CustomBLL.Instance.DeleteWorkorders(soldjobId);
         }
-        protected void txtMaterialCost_TextChanged(object sender, EventArgs e)
-        {
-            //GridViewRow currentRow = (GridViewRow)((TextBox)sender).Parent.Parent.Parent;
-            //TextBox txt = (TextBox)currentRow.FindControl("txtQTY");
-            //TextBox txtCost = (TextBox)currentRow.FindControl("txtMaterialCost");
-            //Label lblCost = (Label)currentRow.FindControl("lblCost");
-            //int a = 0;
-            //if (txt.Text == "")
-            //{
-            //    txt.Text = Convert.ToString(a);
-            //}
-            //if (txtCost.Text == "")
-            //{
-            //    txtCost.Text = Convert.ToString(a);
-            //}
-            //lblCost.Text = Convert.ToString(Convert.ToDecimal(txt.Text) * Convert.ToDecimal(txtCost.Text));
+        //protected void txtMaterialCost_TextChanged(object sender, EventArgs e)
+        //{
+        //    //GridViewRow currentRow = (GridViewRow)((TextBox)sender).Parent.Parent.Parent;
+        //    //TextBox txt = (TextBox)currentRow.FindControl("txtQTY");
+        //    //TextBox txtCost = (TextBox)currentRow.FindControl("txtMaterialCost");
+        //    //Label lblCost = (Label)currentRow.FindControl("lblCost");
+        //    //int a = 0;
+        //    //if (txt.Text == "")
+        //    //{
+        //    //    txt.Text = Convert.ToString(a);
+        //    //}
+        //    //if (txtCost.Text == "")
+        //    //{
+        //    //    txtCost.Text = Convert.ToString(a);
+        //    //}
+        //    //lblCost.Text = Convert.ToString(Convert.ToDecimal(txt.Text) * Convert.ToDecimal(txtCost.Text));
 
-            flag = "Autosave";
-            SaveMaterialList(sender, e);
+        //    flag = "Autosave";
+        //    SaveMaterialList(sender, e);
       
-        }
+        //}
 
         protected void ddlExtent_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -3046,7 +3055,6 @@ namespace JG_Prospect.Sr_App
             {
                 lblTotal.Text = Convert.ToString(lblCost.Text);
             }
-            flag = "Autosave";
             SaveMaterialList(sender, e);
         }
 
@@ -3103,10 +3111,22 @@ namespace JG_Prospect.Sr_App
                 DataRowView lDr = (DataRowView)e.Row.DataItem;
                 int lProdCatID = Convert.ToInt32(lDr["ProductCatID"].ToString());
                 Boolean lDefVendorCat = Convert.ToBoolean(lDr["DefaultVendorForCategory"].ToString());
-
+                ListBox lstVendorName = (ListBox)e.Row.FindControl("lstVendorName");
                 CheckBox chkDefault = (CheckBox)e.Row.FindControl("chkDefault");
                 chkDefault.Checked = lDefVendorCat;
 
+                if (e.Row.RowIndex == 0)
+                {
+                    chkDefault.Style.Add("display", "none");
+                }
+                else
+                {
+                    if (chkDefault.Checked)
+                    {
+                        lstVendorName.Style.Add("display", "none");
+                    }
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "LoadTheList" + lProdCatID, "SaveVendor(document.getElementById('" + lstVendorName.ClientID + "'));", true);
+                }
                 //DropDownCheckBoxes ddlVendorCategory = (DropDownCheckBoxes)e.Row.FindControl("ddlVendorName");
                 //ddlVendorCategory.DataSource = lDvVendor;
                 //ddlVendorCategory.DataTextField = "VendorName";
@@ -3114,23 +3134,20 @@ namespace JG_Prospect.Sr_App
                 //ddlVendorCategory.DataBind();
 
                 DataView lDvVendor = new DataView(VendorList, " ProductCategoryId=" + lProdCatID, "VendorName asc", DataViewRowState.CurrentRows);
-                ListBox lstVendorName = (ListBox)e.Row.FindControl("lstVendorName");
-                lstVendorName.DataSource = lDvVendor;
-                lstVendorName.DataTextField = "VendorName";
-                lstVendorName.DataValueField = "VendorId";
-                lstVendorName.DataBind();
+                
+                //lstVendorName.DataSource = lDvVendor;
+                //lstVendorName.DataTextField = "VendorName";
+                //lstVendorName.DataValueField = "VendorId";
+                //lstVendorName.DataBind();
                 
                 String lVendorIds = lDr["VendorIds"].ToString();
-                //foreach (System.Web.UI.WebControls.ListItem lItem in ddlVendorCategory.Items)
-                //{
-                //    foreach (string lVendorId in lVendorIds.Split(','))
-                //    {
-                //        if (lItem.Value == lVendorId)
-                //        {
-                //            lItem.Selected = true;
-                //        }
-                //    }
-                //}
+
+                foreach (DataRow lRow in VendorList.Select("ProductCategoryId=" + lProdCatID))
+                {
+                    System.Web.UI.WebControls.ListItem lstVendor = new System.Web.UI.WebControls.ListItem(lRow["VendorName"].ToString(), lRow["VendorID"].ToString());
+                    lstVendorName.Attributes["OptionGroup"] = VendorCategoryList.Select("VendorCategpryId=" + lRow["VendorCategpryId"].ToString())[0]["VendorCategoryNm"].ToString();
+                    lstVendorName.Items.Add(lstVendor);
+                }
 
                 foreach (System.Web.UI.WebControls.ListItem lItem in lstVendorName.Items)
                 {

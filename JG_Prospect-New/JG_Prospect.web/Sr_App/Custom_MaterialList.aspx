@@ -180,25 +180,31 @@
                 }
             });
         }
+        function UpdateSpecificProdMat(pFldName, pFldVal, pID) {
+            ShowProgress();
+            $.ajax({
+                type: "POST",
+                url: "Custom_MaterialList.aspx/UpdateSpecificProductLine",
+                data: "{'pFieldName':'" + pFldName + "', 'pFieldValue':'" + pFldVal + "','pID':'" + pID + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "JSON",
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(errorThrown);
+                    HideProgress();
+                },
+                success: function (result) {
+                    if (result != null) {
+                        var flg = (result.d);
+                        if (flg == "1") {
+                            HideProgress();
+                        }
+                    }
+                }
+            });
+        }
         var onload = false;
         function SaveVendor(sender) {
-            
-            
-                $("." + sender.parentElement.className).each(function (idx, elm) {
-                    if (idx == 0) {
-                        $(elm).children().each(function (indx, elem) {
-                            if (elem.id.indexOf('chkDefault')>=0) {
-                                elem.style.display = 'none';
-                            }
-                            if(elem.getAttribute("for")){
-                                if (elem.getAttribute("for").indexOf('chkDefault')>=0) {
-                                    elem.style.display = 'none';
-                                }
-                            }
-
-                        });
-                    }
-                });
+             
                 
                 
             
@@ -678,8 +684,8 @@ ul,li { margin:0; padding:0; list-style:none;max-height:300px;}
             </fieldset>
         </div>
         <div class="grid">
-            <asp:UpdatePanel ID="updMaterialList" runat="server">
-                <ContentTemplate>
+           <%-- <asp:UpdatePanel ID="updMaterialList" runat="server">
+                <ContentTemplate>--%>
                     <div class="btn_sec">
                         Select Product Category:
                         <asp:DropDownList ID="ddlCategoryH" Width="150px" runat="server">
@@ -725,7 +731,7 @@ ul,li { margin:0; padding:0; list-style:none;max-height:300px;}
                                         <Columns>
                                             <asp:TemplateField HeaderText="Line" HeaderStyle-Width="2%" ItemStyle-Width="2%">
                                                 <ItemTemplate>
-                                                    <asp:TextBox CssClass="text-style" ID="txtLine" Text='<%# Eval("Line") %>' MaxLength="4" runat="server" ClientIDMode="Static" OnTextChanged="txtLine_TextChanged" Enabled="false"></asp:TextBox>
+                                                    <asp:TextBox CssClass="text-style" ID="txtLine" Text='<%# Eval("Line") %>' MaxLength="4" runat="server" ClientIDMode="Static" Enabled="false"></asp:TextBox>
                                                     <asp:HiddenField ID="hdnMaterialListId" runat="server" Value='<%#Eval("Id")%>' />
                                                     <asp:HiddenField ID="hdnEmailStatus" runat="server" Value='<%#Eval("EmailStatus")%>' />
                                                     <asp:HiddenField ID="hdnForemanPermission" runat="server" Value='<%#Eval("IsForemanPermission")%>' />
@@ -735,77 +741,34 @@ ul,li { margin:0; padding:0; list-style:none;max-height:300px;}
                                                     <asp:HiddenField ID="hdnProductCatID" runat="server" Value='<%#Eval("ProductCatID")%>' />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="JG sku- vendor part #" ItemStyle-Width="4%" HeaderStyle-Width="4%" >
+                                            <asp:TemplateField HeaderText="JG sku- vendor part #" ItemStyle-Width="5%" HeaderStyle-Width="5%" >
                                                 <ItemTemplate>
-                                                    <asp:UpdatePanel ID="updSku" runat="server">
-                                                        <ContentTemplate>
-                                                            <asp:TextBox ID="txtSkuPartNo" CssClass="text-style" Text='<%# Eval("JGSkuPartNo") %>' MaxLength="18" runat="server" onfocus="document.getElementById('__LASTFOCUS').value=this.id;"  OnTextChanged="txtSkuPartNo_TextChanged" onblur="ShowProgress()" AutoPostBack="true"></asp:TextBox>
-                                                        </ContentTemplate>
-                                                        <Triggers>
-                                                            <asp:AsyncPostBackTrigger ControlID="txtSkuPartNo" EventName="TextChanged" />
-                                                        </Triggers>
-                                                    </asp:UpdatePanel>
+                                                    <asp:TextBox ID="txtSkuPartNo" CssClass="text-style" Text='<%# Eval("JGSkuPartNo") %>' MaxLength="18" runat="server" onblur="UpdateSpecificProdMat('JGSkuPartNo',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>'></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Description" HeaderStyle-Width="25%" ItemStyle-Width="25%">
                                                 <ItemTemplate>
-                                                    <asp:UpdatePanel ID="updDesc" runat="server">
-                                                        <ContentTemplate>
-                                                            <asp:TextBox ID="txtDescription" CssClass="text-style" Text='<%# Eval("MaterialList") %>' onblur="ShowProgress()" runat="server" onfocus="document.getElementById('__LASTFOCUS').value=this.id;"  OnTextChanged="txtDescription_TextChanged" AutoPostBack="true"></asp:TextBox>
-                                                        </ContentTemplate>
-                                                        <Triggers>
-                                                            <asp:AsyncPostBackTrigger ControlID="txtDescription" EventName="TextChanged" />
-                                                        </Triggers>
-                                                    </asp:UpdatePanel>
+                                                    <asp:TextBox ID="txtDescription" CssClass="text-style" Text='<%# Eval("MaterialList") %>' onblur="UpdateSpecificProdMat('MaterialList',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>' runat="server" ></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Quantity" HeaderStyle-Width="9%"  ItemStyle-Width="9%">
                                                 <ItemTemplate>
-                                                    <asp:UpdatePanel ID="updQty" runat="server">
-                                                        <ContentTemplate>
-                                                            <asp:TextBox ID="txtQTY" runat="server" CssClass="text-style" MaxLength="4" onblur="ShowProgress()" onfocus="document.getElementById('__LASTFOCUS').value=this.id;" Text='<%# Eval("Quantity") %>' onkeypress="return isNumberKey(event)" OnTextChanged="txtQTY_TextChanged" AutoPostBack="true"></asp:TextBox>
-                                                        </ContentTemplate>
-                                                        <Triggers>
-                                                            <asp:AsyncPostBackTrigger ControlID="txtQTY" EventName="TextChanged" />
-                                                        </Triggers>
-                                                    </asp:UpdatePanel>
+                                                    <asp:TextBox ID="txtQTY" runat="server" CssClass="text-style" MaxLength="4" onblur="UpdateSpecificProdMat('Quantity',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>' Text='<%# Eval("Quantity") %>' onkeypress="return isNumberKey(event)"  ></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="UOM" HeaderStyle-Width="5%"  ItemStyle-Width="5%">
                                                 <ItemTemplate>
-                                                    <asp:UpdatePanel ID="updUOM" runat="server">
-                                                        <ContentTemplate>
-                                                            <asp:TextBox ID="txtUOM" runat="server" CssClass="text-style" onblur="ShowProgress()" onfocus="document.getElementById('__LASTFOCUS').value=this.id;"  Text='<%# Eval("UOM") %>' OnTextChanged="txtUOM_TextChanged" AutoPostBack="true"></asp:TextBox>
-                                                        </ContentTemplate>
-                                                        <Triggers>
-                                                            <asp:AsyncPostBackTrigger ControlID="txtUOM" EventName="TextChanged" />
-                                                        </Triggers>
-                                                    </asp:UpdatePanel>
+                                                    <asp:TextBox ID="txtUOM" runat="server" CssClass="text-style" onblur="UpdateSpecificProdMat('UOM',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>' onfocus="document.getElementById('__LASTFOCUS').value=this.id;"  Text='<%# Eval("UOM") %>' ></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Cost" HeaderStyle-Width="5%" ItemStyle-Width="5%"><%--Material Cost Per Item--%>
                                                 <ItemTemplate>
-                                                    <asp:UpdatePanel ID="updMC" runat="server">
-                                                        <ContentTemplate>
-                                                            <asp:TextBox ID="txtMaterialCost" onblur="ShowProgress()" CssClass="text-style" onfocus="document.getElementById('__LASTFOCUS').value=this.id;"  AutoPostBack="true" Text='<%# Eval("MaterialCost") %>' OnTextChanged="txtMaterialCost_TextChanged" runat="server"  onkeypress="return onlyDotsAndNumbers(event)"></asp:TextBox>
-                                                        </ContentTemplate>
-                                                        <Triggers>
-                                                            <asp:AsyncPostBackTrigger ControlID="txtMaterialCost" EventName="TextChanged" />
-                                                        </Triggers>
-                                                    </asp:UpdatePanel>
+                                                    <asp:TextBox ID="txtMaterialCost" onblur="UpdateSpecificProdMat('MaterialCost',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>' CssClass="text-style" onfocus="document.getElementById('__LASTFOCUS').value=this.id;" Text='<%# Eval("MaterialCost") %>' runat="server"  onkeypress="return onlyDotsAndNumbers(event)"></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Extended" HeaderStyle-Width="10%" ItemStyle-Width="10%">
                                                 <ItemTemplate>
-                                                    <asp:UpdatePanel ID="updExt" runat="server">
-                                                        <ContentTemplate>
-
-                                                            <asp:TextBox ID="txtExtended" onblur="ShowProgress()" runat="server" onfocus="document.getElementById('__LASTFOCUS').value=this.id;" CssClass="text-style"  Text='<%# Eval("Extend") %>' OnTextChanged="txtExtended_TextChanged" AutoPostBack="true"></asp:TextBox>
-                                                        </ContentTemplate>
-                                                        <Triggers>
-                                                            <asp:AsyncPostBackTrigger ControlID="txtExtended" EventName="TextChanged" />
-                                                        </Triggers>
-                                                    </asp:UpdatePanel>
+                                                    <asp:TextBox ID="txtExtended" onblur="UpdateSpecificProdMat('extend',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>' runat="server" onfocus="document.getElementById('__LASTFOCUS').value=this.id;" CssClass="text-style"  Text='<%# Eval("Extend") %>'></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Vendor Quotes/Invoice" Visible="true" HeaderStyle-Width="250px" ItemStyle-Width="250px" ItemStyle-Height="20px"  >
@@ -827,7 +790,6 @@ ul,li { margin:0; padding:0; list-style:none;max-height:300px;}
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="" HeaderStyle-Width="5%" ItemStyle-Width="5%">
                                                 <ItemTemplate>
-
                                                     <asp:LinkButton ID="lnkDeleteLineItems" runat="server" CommandArgument='<%#Eval("Id") %>' CommandName="DeleteLine" OnClick="lnkDeleteLineItems_Click">Delete</asp:LinkButton>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
@@ -921,8 +883,8 @@ ul,li { margin:0; padding:0; list-style:none;max-height:300px;}
                             </asp:TemplateField>
                         </Columns>
                     </asp:GridView>
-                </ContentTemplate>
-            </asp:UpdatePanel>
+              <%--  </ContentTemplate>
+            </asp:UpdatePanel>--%>
         </div>
           
         <div class="btn_sec">
@@ -1094,12 +1056,12 @@ ul,li { margin:0; padding:0; list-style:none;max-height:300px;}
         prm.add_endRequest(function (sender, e) {
             setTimeout(function () {
                 TransformList();
+               // $('select[multiple]').multiselect('reload');
             }, 1000);
             jsFunctions();
         });
         HideProgress();
         onload = true;
-     
     </script>
    
     

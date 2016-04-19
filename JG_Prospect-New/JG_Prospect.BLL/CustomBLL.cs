@@ -240,5 +240,9 @@ namespace JG_Prospect.BLL
         {
             CustomDAL.Instance.UpdateVendorIDForSpecMaterial(pVendorIDs, pMaterialListID);
         }
+        public void UpdateSpecificProductLine(string pFieldName, String pFieldValue, Int32 pID, String pSoldJobID)
+        {
+            CustomDAL.Instance.UpdateSpecificProductLine(pFieldName, pFieldValue, pID, pSoldJobID);
+        }
     }
 }

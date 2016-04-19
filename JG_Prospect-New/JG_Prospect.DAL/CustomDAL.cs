@@ -998,6 +998,19 @@ namespace JG_Prospect.DAL
                 database.ExecuteNonQuery(command);
             }
         }
+        public void UpdateSpecificProductLine(string pFieldName, String pFieldValue, Int32 pID, String pSoldJobID)
+        {
+            SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+            {
+                DbCommand command = database.GetStoredProcCommand("USP_UpdateSpecificProductLine");
+                command.CommandType = CommandType.StoredProcedure;
+                database.AddInParameter(command, "@FieldName", DbType.String, pFieldName);
+                database.AddInParameter(command, "@Value", DbType.String, pFieldValue);
+                database.AddInParameter(command, "@ID", DbType.Int32, pID);
+                database.AddInParameter(command, "@SoldJobID", DbType.String, pSoldJobID);
+                database.ExecuteNonQuery(command);
+            }
+        }
         public void UpdateVendorIDForSpecMaterial(String pVendorIDs, Int32 pMaterialListID)
         {
              SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
