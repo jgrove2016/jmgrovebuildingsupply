@@ -63,6 +63,10 @@ BEGIN
 END
 alter table tblVendorEmail add TempID nvarchar(500) null
 go
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[sp_VendorEmail]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[sp_VendorEmail]
+go
 IF EXISTS (SELECT *
            FROM   [sys].[table_types]
            WHERE  user_type_id = Type_id(N'[dbo].[VendorEmail]'))
@@ -85,6 +89,9 @@ CREATE TYPE [dbo].[VendorEmail] AS TABLE(
 )
 GO
 
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[sp_VendorAddress]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[sp_VendorAddress]
+GO
 IF EXISTS (SELECT *
            FROM   [sys].[table_types]
            WHERE  user_type_id = Type_id(N'[dbo].[VendorAddress]'))
@@ -108,9 +115,6 @@ CREATE TYPE [dbo].[VendorAddress] AS TABLE(
 
 
 go
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[sp_VendorAddress]') AND type in (N'P', N'PC'))
-DROP PROCEDURE [dbo].[sp_VendorAddress]
-GO
 
 
 Create proc [dbo].[sp_VendorAddress]  
@@ -288,9 +292,6 @@ end
 
 go
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[sp_VendorEmail]') AND type in (N'P', N'PC'))
-DROP PROCEDURE [dbo].[sp_VendorEmail]
-GO
 
 
 
