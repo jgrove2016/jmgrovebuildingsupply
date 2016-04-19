@@ -13,11 +13,84 @@ END
 alter table tblVendorAddress add TempID nvarchar(500) null
 go
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[sp_VendorAddress]') AND type in (N'P', N'PC'))
-DROP PROCEDURE [dbo].[sp_VendorAddress]
+
+IF EXISTS(SELECT * FROM sys.columns 
+            WHERE Name = N'Vendrosource' AND Object_ID = Object_ID(N'tblVendors'))
+BEGIN
+   Alter table tblVendors drop column Vendrosource
+END
+alter table tblVendors add Vendrosource nvarchar(500) null
+go
+
+IF EXISTS(SELECT * FROM sys.columns 
+            WHERE Name = N'AddressID' AND Object_ID = Object_ID(N'tblVendors'))
+BEGIN
+   Alter table tblVendors drop column AddressID
+END
+alter table tblVendors add AddressID int null
+go
+
+IF EXISTS(SELECT * FROM sys.columns 
+            WHERE Name = N'PaymentTerms' AND Object_ID = Object_ID(N'tblVendors'))
+BEGIN
+   Alter table tblVendors drop column PaymentTerms
+END
+alter table tblVendors add PaymentTerms nvarchar(500) null
+go
+
+IF EXISTS(SELECT * FROM sys.columns 
+            WHERE Name = N'PaymentMethod' AND Object_ID = Object_ID(N'tblVendors'))
+BEGIN
+   Alter table tblVendors drop column PaymentMethod
+END
+alter table tblVendors add PaymentMethod nvarchar(500) null
+go
+
+
+IF EXISTS(SELECT * FROM sys.columns 
+            WHERE Name = N'AddressID' AND Object_ID = Object_ID(N'tblVendorEmail'))
+BEGIN
+   Alter table tblVendorEmail drop column AddressID
+END
+alter table tblVendorEmail add AddressID int NULL
+
+go
+
+IF EXISTS(SELECT * FROM sys.columns 
+            WHERE Name = N'TempID' AND Object_ID = Object_ID(N'tblVendorEmail'))
+BEGIN
+   Alter table tblVendorEmail drop column TempID
+END
+alter table tblVendorEmail add TempID nvarchar(500) null
+go
+IF EXISTS (SELECT *
+           FROM   [sys].[table_types]
+           WHERE  user_type_id = Type_id(N'[dbo].[VendorEmail]'))
+  BEGIN
+     drop TYPE VendorEmail
+  END
+
+go
+
+CREATE TYPE [dbo].[VendorEmail] AS TABLE(
+	[VendorId] [int] NULL,
+	[EmailType] [nvarchar](50) NULL,
+	[SeqNo] [int] NULL,
+	[Email] [nvarchar](150) NULL,
+	[FName] [nvarchar](50) NULL,
+	[LName] [nvarchar](50) NULL,
+	[Contact] [nvarchar](max) NULL,
+	[AddressID] [int] NULL,
+	[TempID][nvarchar](150) NULL
+)
 GO
 
-Drop TYPE dbo.VendorAddress
+IF EXISTS (SELECT *
+           FROM   [sys].[table_types]
+           WHERE  user_type_id = Type_id(N'[dbo].[VendorAddress]'))
+  BEGIN
+     drop TYPE VendorAddress
+  END
 
 go
 
@@ -35,11 +108,16 @@ CREATE TYPE [dbo].[VendorAddress] AS TABLE(
 
 
 go
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[sp_VendorAddress]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[sp_VendorAddress]
+GO
+
 
 Create proc [dbo].[sp_VendorAddress]  
 @action int=null,  
 @VendorId int = null,
 @AddressID int=null,
+@TempID nvarchar(500)=null,
 @tblVendorAddress VendorAddress READONLY  
   
 AS  
@@ -83,16 +161,20 @@ if(@action=2)
 	 select * from tblVendorAddress 
 	 where VendorId=@VendorId  
  End  
+ else if(@action=3)  
+ Begin  
+ if(@TempID<>'')
+ begin
+	select * from tblVendorAddress where VendorId=@VendorId and TempID=@TempID
+	end
+	else
+	begin
+	select * from tblVendorAddress where VendorId=@VendorId
+	end
+ End
+ 
 go
 
-alter table tblVendors add Vendrosource nvarchar(500) null
-go
-alter table tblVendors add AddressID int null
-go
-alter table tblVendors add PaymentTerms nvarchar(500) null
-go
-alter table tblVendors add PaymentMethod nvarchar(500) null
-go
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UPP_savevendor]') AND type in (N'P', N'PC'))
 DROP PROCEDURE [dbo].[UPP_savevendor]
@@ -210,29 +292,7 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[sp_Ve
 DROP PROCEDURE [dbo].[sp_VendorEmail]
 GO
 
-drop TYPE VendorEmail
 
-go
-
-
-CREATE TYPE [dbo].[VendorEmail] AS TABLE(
-	[VendorId] [int] NULL,
-	[EmailType] [nvarchar](50) NULL,
-	[SeqNo] [int] NULL,
-	[Email] [nvarchar](150) NULL,
-	[FName] [nvarchar](50) NULL,
-	[LName] [nvarchar](50) NULL,
-	[Contact] [nvarchar](max) NULL,
-	[AddressID] [int] NULL,
-	[TempID][nvarchar](150) NULL
-)
-GO
-
-alter table tblVendorEmail add AddressID int NULL
-
-go
-alter table tblVendorEmail add TempID nvarchar(500) null
-go
 
 create proc [dbo].[sp_VendorEmail]  
 @VendorId int=null,  
@@ -268,6 +328,19 @@ if(@action=1)
 else if(@action=2)  
  Begin  
 	select * from tblVendorEmail where VendorId=@VendorId  
+ End
+ 
+ else if(@action=3)  
+ Begin  
+ if(@TempID<>'')
+ begin
+	select * from tblVendorEmail where VendorId=@VendorId  and AddressID=@AddressID and TempID=@TempID
+	end
+	else
+	begin
+	select * from tblVendorEmail where VendorId=@VendorId  and AddressID=@AddressID
+	end
+	
  End
  
  go
