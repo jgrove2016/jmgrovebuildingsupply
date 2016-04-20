@@ -796,15 +796,6 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.DropDownList ddlCountry;
         
         /// <summary>
-        /// txtPrimaryContactExten0 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPrimaryContactExten0;
-        
-        /// <summary>
         /// txtPrimaryContact0 control.
         /// </summary>
         /// <remarks>
@@ -814,13 +805,13 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.TextBox txtPrimaryContact0;
         
         /// <summary>
-        /// txtSecContactExten0 control.
+        /// txtPrimaryContactExten0 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSecContactExten0;
+        protected global::System.Web.UI.WebControls.TextBox txtPrimaryContactExten0;
         
         /// <summary>
         /// txtSecContact0 control.
@@ -832,13 +823,13 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.TextBox txtSecContact0;
         
         /// <summary>
-        /// txtAltContactExten0 control.
+        /// txtSecContactExten0 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtAltContactExten0;
+        protected global::System.Web.UI.WebControls.TextBox txtSecContactExten0;
         
         /// <summary>
         /// txtAltContact0 control.
@@ -848,6 +839,15 @@ namespace JG_Prospect.Sr_App {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtAltContact0;
+        
+        /// <summary>
+        /// txtAltContactExten0 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtAltContactExten0;
         
         /// <summary>
         /// BtnSaveLoaction control.

@@ -3060,6 +3060,40 @@ namespace JG_Prospect.Sr_App
             DataSet ds = new DataSet();
             ds = VendorBLL.Instance.FetchvendorDetails(VendorIdToEdit);
 
+            try
+            {
+                clear();
+                DataSet dsProduct = VendorBLL.Instance.GetProductCategoryByVendorCatID(Convert.ToString(ds.Tables[0].Rows[0]["VendorCategoryId"]) == "Select" ? "0" : Convert.ToString(ds.Tables[0].Rows[0]["VendorCategoryId"]));
+                if (!string.IsNullOrEmpty(Convert.ToString(dsProduct.Tables[0].Rows[0]["ProductCategoryId"])))
+                {
+                    ddlprdtCategory.SelectedValue = Convert.ToString(dsProduct.Tables[0].Rows[0]["ProductCategoryId"]) == "0" ? "Select" : Convert.ToString(dsProduct.Tables[0].Rows[0]["ProductCategoryId"]);
+                    BindVendorByProdCat(ddlprdtCategory.SelectedValue.ToString());
+                }
+                else
+                {
+                    ddlprdtCategory.SelectedValue = "Select";
+                }
+                if (!string.IsNullOrEmpty(Convert.ToString(ds.Tables[0].Rows[0]["VendorCategoryId"])))
+                {
+                    ddlVndrCategory.SelectedValue = Convert.ToString(ds.Tables[0].Rows[0]["VendorCategoryId"]) == "0" ? "Select" : Convert.ToString(ds.Tables[0].Rows[0]["VendorCategoryId"]);
+                    BindVendorSubCatByVendorCat(ddlVndrCategory.SelectedValue.ToString());
+                }
+                else
+                {
+                    ddlVndrCategory.SelectedValue = "Select";
+                }
+                if (!string.IsNullOrEmpty(Convert.ToString(ds.Tables[0].Rows[0]["VendorSubCategoryId"])))
+                {
+                    ddlVendorSubCategory.SelectedValue = Convert.ToString(ds.Tables[0].Rows[0]["VendorSubCategoryId"]) == "0" ? "Select" : Convert.ToString(ds.Tables[0].Rows[0]["VendorSubCategoryId"]);
+                }
+                else
+                {
+                    ddlVendorSubCategory.SelectedValue = "Select";
+                }
+            }
+            catch (Exception ex)
+            {
+            }
 
 
             txtVendorNm.Text = Convert.ToString(ds.Tables[0].Rows[0]["VendorName"]);
@@ -3100,7 +3134,7 @@ namespace JG_Prospect.Sr_App
             {
                 NewTempID = Convert.ToString(HttpContext.Current.Session["TempID"]);
             }
-            DataSet dsAddress = VendorBLL.Instance.GetVendorAddress(Convert.ToInt32(txtVendorId.Text),NewTempID);
+            DataSet dsAddress = VendorBLL.Instance.GetVendorAddress(Convert.ToInt32(txtVendorId.Text), NewTempID);
 
             DrpVendorAddress.Items.Clear();
             DrpVendorAddress.Items.Add(new System.Web.UI.WebControls.ListItem("Select", "Select"));
@@ -3194,7 +3228,7 @@ namespace JG_Prospect.Sr_App
         {
             string DrpVendoreAdd = DrpVendorAddress.SelectedValue.ToString() == "Select" ? "0" : DrpVendorAddress.SelectedValue.ToString();
             int VendorIdToEdit = Convert.ToInt32(string.IsNullOrEmpty(txtVendorId.Text) ? "0" : txtVendorId.Text);
-            
+
             ddlAddressType.ClearSelection();
             txtPrimaryCity.Text = "";
             txtPrimaryZip.Text = "";

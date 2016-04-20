@@ -114,7 +114,10 @@ namespace JG_Prospect.BLL
         {
             return VendorDAL.Instance.savevendorcatalogdetails(objcatalog);
         }
-
+        public DataSet GetProductCategoryByVendorCatID(string VendorCategoryId)
+        {
+            return VendorDAL.Instance.GetProductCategoryByVendorCatID(VendorCategoryId);
+        }
         public DataSet GetAllvendorDetails()
         {
             return VendorDAL.Instance.GetAllvendorDetails();

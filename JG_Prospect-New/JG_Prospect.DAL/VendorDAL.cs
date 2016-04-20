@@ -801,6 +801,25 @@ namespace JG_Prospect.DAL
             }
         }
 
+        public DataSet GetProductCategoryByVendorCatID(string VendorCategoryId)
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("GetProductCategoryByVendorCatID");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@VendorCategoryId", DbType.String, VendorCategoryId);
+                    DS = database.ExecuteDataSet(command);
+                    return DS;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
         public DataSet GetVendorAddress(int VendorId,string TempID)
         {
             try
