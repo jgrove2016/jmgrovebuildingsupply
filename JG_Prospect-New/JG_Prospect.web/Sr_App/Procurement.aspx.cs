@@ -339,6 +339,7 @@ namespace JG_Prospect.Sr_App
             ddlVndrCategory.DataValueField = "VendorCategoryId";
             ddlVndrCategory.DataBind();
             ddlVndrCategory.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select", "Select"));
+            BindVendorCatPopup();
         }
 
         public void BindVendorByProdCat1(string ProductId)
@@ -609,16 +610,16 @@ namespace JG_Prospect.Sr_App
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('please select Vendor Category');", true);
                 return;
             }
-            else if (ddlVendorSubCategory.SelectedValue == "Select")
-            {
+            //else if (ddlVendorSubCategory.SelectedValue == "Select")
+            //{
 
-                int VendorID = Convert.ToInt32(string.IsNullOrEmpty(txtVendorId.Text) ? "0" : txtVendorId.Text);
-                int AddressID = Convert.ToInt32(DrpVendorAddress.SelectedValue == "Select" ? "0" : DrpVendorAddress.SelectedValue);
-                LoadVendorEmails(VendorID, AddressID);
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('please select Vendor Sub Category');", true);
-                return;
+            //    int VendorID = Convert.ToInt32(string.IsNullOrEmpty(txtVendorId.Text) ? "0" : txtVendorId.Text);
+            //    int AddressID = Convert.ToInt32(DrpVendorAddress.SelectedValue == "Select" ? "0" : DrpVendorAddress.SelectedValue);
+            //    LoadVendorEmails(VendorID, AddressID);
+            //    ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('please select Vendor Sub Category');", true);
+            //    return;
 
-            }
+            //}
             else
             {
 
@@ -676,13 +677,13 @@ namespace JG_Prospect.Sr_App
                 objvendor.TaxId = txtTaxId.Text;
                 objvendor.ExpenseCategory = "";
                 objvendor.AutoTruckInsurance = "";
-                objvendor.vendor_subcategory_id = Convert.ToInt32(ddlVendorSubCategory.SelectedValue);
+                objvendor.vendor_subcategory_id = Convert.ToInt32((ddlVendorSubCategory.SelectedValue == "Select") ? "0" : ddlVendorSubCategory.SelectedValue);
                 objvendor.VendorStatus = (ddlVendorStatus.SelectedValue == "Select") ? "" : ddlVendorStatus.SelectedValue;
                 objvendor.Website = txtWebsite.Text;
                 objvendor.Vendrosource = ddlSource.SelectedValue;
                 if (DrpVendorAddress.Items.Count > 0)
                 {
-                    objvendor.AddressID = Convert.ToInt32(DrpVendorAddress.SelectedValue);
+                    objvendor.AddressID = Convert.ToInt32((DrpVendorAddress.SelectedValue == "Select") ? "0" : DrpVendorAddress.SelectedValue);
                 }
 
                 objvendor.PaymentTerms = DrpPaymentTerms.SelectedValue;
@@ -717,7 +718,14 @@ namespace JG_Prospect.Sr_App
                         LblSave.Text = "Vendor Saved/Updated Successfully";
                         clear();
                         string ManufacturerType = GetManufacturerType();
-                        FilterVendors(ddlVendorSubCategory.SelectedValue.ToString(), "VendorSubCategory", ManufacturerType, ddlVndrCategory.SelectedValue.ToString());
+                        if (ddlVendorSubCategory.SelectedValue == "Select")
+                        {
+                            FilterVendors(ddlVndrCategory.SelectedValue.ToString(), "VendorCategory", ManufacturerType, null);
+                        }
+                        else
+                        {
+                            FilterVendors(ddlVendorSubCategory.SelectedValue.ToString(), "VendorSubCategory", ManufacturerType, ddlVndrCategory.SelectedValue.ToString());
+                        }
                     }
                 }
             }
@@ -728,10 +736,23 @@ namespace JG_Prospect.Sr_App
             //txtContact1.Text = txtContactExten1.Text = txtFName.Text = txtLName.Text = txtVendorFax.Text = txtprimaryemail.Text = txtVendorNm.Text = txtVendorId.Text = null;
             //txtWebsite.Text = txtTaxId.Text = txtPrimaryAddress.Text = txtPrimaryCity.Text = txtPrimaryZip.Text = null;
             //txtSecAddress.Text = txtSecCity.Text = txtSeczip.Text = null;
-            //txtBillingAddr.Text = txtBillingCity.Text = txtBillingZip.Text = null;
-            txtPrimaryContactExten0.Text = txtPrimaryContact0.Text = txtSecContactExten0.Text = txtSecContact0.Text = txtAltContactExten0.Text = txtAltContact0.Text = null;
+            //txtBillingAddr.Text = txtBillingCity.Text = txtBillingZip.Text = null;            
             //ddlVndrCategory.ClearSelection();
+
+            txtVendorId.Text = txtVendorNm.Text = "";
             ddlVendorStatus.ClearSelection();
+            ddlSource.ClearSelection();
+            ddlAddressType.ClearSelection();
+            txtTaxId.Text = txtWebsite.Text = txtVendorFax.Text = null;
+            DrpPaymentMode.ClearSelection();
+            DrpPaymentTerms.ClearSelection();
+            txtPrimaryCity.Text = "";
+            txtPrimaryZip.Text = "";
+            txtPrimaryAddress.Text = "";
+            ddlCountry.ClearSelection();
+            DrpVendorAddress.Items.Clear();
+            DrpVendorAddress.Items.Add(new System.Web.UI.WebControls.ListItem("Select", "Select"));
+            txtPrimaryContactExten0.Text = txtPrimaryContact0.Text = txtSecContactExten0.Text = txtSecContact0.Text = txtAltContactExten0.Text = txtAltContact0.Text = null;
             btnSave.Text = "Save";
         }
 
@@ -3173,12 +3194,12 @@ namespace JG_Prospect.Sr_App
         {
             string DrpVendoreAdd = DrpVendorAddress.SelectedValue.ToString() == "Select" ? "0" : DrpVendorAddress.SelectedValue.ToString();
             int VendorIdToEdit = Convert.ToInt32(string.IsNullOrEmpty(txtVendorId.Text) ? "0" : txtVendorId.Text);
-
-            ddlAddressType.SelectedValue = "Select";
+            
+            ddlAddressType.ClearSelection();
             txtPrimaryCity.Text = "";
             txtPrimaryZip.Text = "";
             txtPrimaryAddress.Text = "";
-            ddlCountry.SelectedValue = "";
+            ddlCountry.ClearSelection();
 
             //if (VendorIdToEdit > 0)
             //{

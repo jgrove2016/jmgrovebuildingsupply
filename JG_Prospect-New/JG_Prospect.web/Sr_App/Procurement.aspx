@@ -24,14 +24,14 @@
             var dataTypeValue = $(e).attr("data-type");
             var subCount = $(e).closest('table').find('tr').length - 1;
             $(e).closest('table').append("<tr class='newAddressrow'>" +
-                                            "<td><select name='nameddlAddresstype" + dataTypeValue + subCount + "' id='ddlAddressType" + dataTypeValue + subCount + "'>" +
+                                            "<td><select TabIndex='1' name='nameddlAddresstype" + dataTypeValue + subCount + "' id='ddlAddressType" + dataTypeValue + subCount + "'>" +
                                                     "<option value='--Select--'>Select</option>" +
                                                     "<option value='Primary'>Primary</option>" +
                                                     "<option value='Secondary'>Secondary</option>" +
                                                     "<option value='Billing'>Billing</option></select></td>" +
-                                            "<td><textarea id='txtAddress" + dataTypeValue + subCount + "' name='nametxtAddress" + dataTypeValue + subCount + "' placeholder='Address' rows='2' cols='40' clientidmode='Static' /></td>" +
-                                            "<td><input type='text' id='txtCity" + dataTypeValue + subCount + "' name='nametxtCity" + dataTypeValue + subCount + "' placeholder='City' clientidmode='Static' /></td>" +
-                                            "<td><input type='text' id='txtZip" + dataTypeValue + subCount + "' name='nametxtZip" + dataTypeValue + subCount + "' placeholder='Zip' clientidmode='Static' /></td>" +
+                                            "<td><textarea TabIndex='1' id='txtAddress" + dataTypeValue + subCount + "' name='nametxtAddress" + dataTypeValue + subCount + "' placeholder='Address' rows='2' cols='40' clientidmode='Static' /></td>" +
+                                            "<td><input TabIndex='1' type='text' id='txtCity" + dataTypeValue + subCount + "' name='nametxtCity" + dataTypeValue + subCount + "' placeholder='City' clientidmode='Static' /></td>" +
+                                            "<td><input TabIndex='1' type='text' id='txtZip" + dataTypeValue + subCount + "' name='nametxtZip" + dataTypeValue + subCount + "' placeholder='Zip' clientidmode='Static' /></td>" +
                                             "</tr>");
         }
 
@@ -39,13 +39,13 @@
             var EmailType = $(e).attr("data-EmailType");
             var subCount = $(e).closest('table').find('tr').length;
             $(e).closest('table').append("<tr>" +
-                                            "<td><div class='newEmaildiv'><input type='text' id='txt" + EmailType + "Email" + subCount + "' name='nametxt" + EmailType + "Email" + subCount + "' placeholder='Email' class='clsemail' clientidmode='Static' />" +
-                                            "<br/><a onclick='AddEmail(this)' style='cursor: pointer' data-emailtype='" + EmailType + "' data-type='" + subCount + "'>Add Email</a><br/></div></td>" +
-                                            "<td><input type='text' id='txt" + EmailType + "FName" + subCount + "' name='nametxt" + EmailType + "FName" + subCount + "' placeholder='First Name' clientidmode='Static' /></td>" +
-                                            "<td><input type='text' id='txt" + EmailType + "LName" + subCount + "' name='nametxt" + EmailType + "LName" + subCount + "' placeholder='Last Name' clientidmode='Static' /></td>" +
-                                            "<td><div class='newcontactdiv'><input type='text' id='txt" + EmailType + "ContactExten" + subCount + "' name='nametxt" + EmailType + "ContactExten" + subCount + "' style='width:35%' maxlength='6' class='clsmaskphoneexten' placeholder='Extension' clientidmode='Static' />" +
-                                            "&nbsp;<input type='text' id='txt" + EmailType + "Contact" + subCount + "' name='nametxt" + EmailType + "Contact" + subCount + "' style='width:50%' class='clsmaskphone' maxlength='10' placeholder='___-___-____' clientidmode='Static' />" +
-                                            "<a onclick='AddContact(this)' style='cursor:pointer' data-type='" + subCount + "' data-EmailType='" + EmailType + "' clientidmode='Static'>Add Contact</a><br/></div></td>" +
+                                            "<td><div class='newEmaildiv'><input TabIndex='1' type='text' id='txt" + EmailType + "Email" + subCount + "' name='nametxt" + EmailType + "Email" + subCount + "' placeholder='Email' class='clsemail' clientidmode='Static' />" +
+                                            "<br/><a TabIndex='1' onclick='AddEmail(this)' style='cursor: pointer' data-emailtype='" + EmailType + "' data-type='" + subCount + "'>Add Email</a><br/></div></td>" +
+                                            "<td><input TabIndex='1' type='text' id='txt" + EmailType + "FName" + subCount + "' name='nametxt" + EmailType + "FName" + subCount + "' placeholder='First Name' clientidmode='Static' /></td>" +
+                                            "<td><input TabIndex='1' type='text' id='txt" + EmailType + "LName" + subCount + "' name='nametxt" + EmailType + "LName" + subCount + "' placeholder='Last Name' clientidmode='Static' /></td>" +
+                                            "<td><div class='newcontactdiv'><input TabIndex='1' type='text' id='txt" + EmailType + "ContactExten" + subCount + "' name='nametxt" + EmailType + "ContactExten" + subCount + "' style='width:35%' maxlength='6' class='clsmaskphoneexten' placeholder='Extension' clientidmode='Static' />" +
+                                            "&nbsp;<input TabIndex='1' type='text' id='txt" + EmailType + "Contact" + subCount + "' name='nametxt" + EmailType + "Contact" + subCount + "' style='width:50%' class='clsmaskphone' maxlength='10' placeholder='___-___-____' clientidmode='Static' />" +
+                                            "<a TabIndex='1' onclick='AddContact(this)' style='cursor:pointer' data-type='" + subCount + "' data-EmailType='" + EmailType + "' clientidmode='Static'>Add Contact</a><br/></div></td>" +
                                             "</tr>");
             $('.clsmaskphone').mask("(999) 999-9999");
             $('.clsmaskphoneexten').mask("999999");
@@ -56,7 +56,7 @@
             var EmailType = $(e).attr("data-EmailType");
             var subCount = $(e).closest('tr').find('.newEmaildiv').length;
             $(e).closest('td').append(
-                        "<br/><div class='newEmaildiv'><input type='text' id='txt" + EmailType + "Email" + dataTypeValue + subCount + "' name='nametxt" + EmailType + "Email" + dataTypeValue + subCount + "' class='clsemail' clientidmode='Static' />"
+                        "<br/><div class='newEmaildiv'><input TabIndex='1' type='text' id='txt" + EmailType + "Email" + dataTypeValue + subCount + "' name='nametxt" + EmailType + "Email" + dataTypeValue + subCount + "' class='clsemail' clientidmode='Static' />"
                 );
         }
 
@@ -65,8 +65,8 @@
             var EmailType = $(e).attr("data-EmailType");
             var subCount = $(e).closest('td').find('.clsmaskphone').length - 1;
             $(e).closest('td').append(
-                                            "<br/><div class='newcontactdiv'><input type='text' id='txt" + EmailType + "ContactExten" + dataTypeValue + subCount + "' name='nametxt" + EmailType + "ContactExten" + dataTypeValue + subCount + "' style='width:35%;' maxlength='6' class='clsmaskphoneexten' placeholder='Extension' clientidmode='Static' />&nbsp;" +
-                                            "<input type='text' id='txt" + EmailType + "Contact" + dataTypeValue + subCount + "' name='nametxt" + EmailType + "Contact" + dataTypeValue + subCount + "' style='width:50%;' maxlength='10' class='clsmaskphone' maxlength='10' placeholder='___-___-____' clientidmode='Static' /><br/></div>");
+                                            "<br/><div class='newcontactdiv'><input TabIndex='1' type='text' id='txt" + EmailType + "ContactExten" + dataTypeValue + subCount + "' name='nametxt" + EmailType + "ContactExten" + dataTypeValue + subCount + "' style='width:35%;' maxlength='6' class='clsmaskphoneexten' placeholder='Extension' clientidmode='Static' />&nbsp;" +
+                                            "<input TabIndex='1' type='text' id='txt" + EmailType + "Contact" + dataTypeValue + subCount + "' name='nametxt" + EmailType + "Contact" + dataTypeValue + subCount + "' style='width:50%;' maxlength='10' class='clsmaskphone' maxlength='10' placeholder='___-___-____' clientidmode='Static' /><br/></div>");
             $('.clsmaskphone').mask("(999) 999-9999");
             $('.clsmaskphoneexten').mask("999999");
 
@@ -255,23 +255,23 @@
 
             if (NewRow > 0) {
                 var MainHTML = '<tr><td><div class="newEmaildiv">';
-                MainHTML += '<input type="text" id="txt' + ID + 'Email' + NewRow + '" name="nametxt' + ID + 'Email' + NewRow + '" value="' + Email[0].Email + '" placeholder="Email" class="clsemail" clientidmode="Static"/><br>';
-                MainHTML += '<a onclick="AddEmail(this)" style="cursor: pointer" data-emailtype="Primary" data-type="1">Add Email</a><br></div></td>';
-                MainHTML += '<td><input type="text" id="txt' + ID + 'FName' + NewRow + '" name="nametxt' + ID + 'FName' + NewRow + '" value="' + FName + '" placeholder="First Name" clientidmode="Static"></td>';
-                MainHTML += '<td><input type="text" id="txt' + ID + 'LName' + NewRow + '" name="nametxt' + ID + 'LName' + NewRow + '" value="' + LName + '" placeholder="Last Name" clientidmode="Static"></td>';
-                MainHTML += '<td><div class="newcontactdiv"><input type="text" id="txt' + ID + 'ContactExten' + NewRow + '" name="nametxt' + ID + 'ContactExten' + NewRow + '" value="' + Contact[0].Extension + '" style="width:35%" maxlength="6" class="clsmaskphoneexten" placeholder="Extension" clientidmode="Static"/>&nbsp;<input type="text" id="txt' + ID + 'Contact' + NewRow + '" name="nametx' + ID + 'Contact' + NewRow + '" value="' + Contact[0].Number + '" style="width:50%" class="clsmaskphone" maxlength="10" placeholder="___-___-____" clientidmode="Static"/>';
-                MainHTML += '<a onclick="AddContact(this)" style="cursor:pointer" data-type="1" data-emailtype="Primary" clientidmode="Static">Add Contact</a><br></div></td></tr>';
+                MainHTML += '<input TabIndex="1" type="text" id="txt' + ID + 'Email' + NewRow + '" name="nametxt' + ID + 'Email' + NewRow + '" value="' + Email[0].Email + '" placeholder="Email" class="clsemail" clientidmode="Static"/><br>';
+                MainHTML += '<a TabIndex="1" onclick="AddEmail(this)" style="cursor: pointer" data-emailtype="Primary" data-type="1">Add Email</a><br></div></td>';
+                MainHTML += '<td><input TabIndex="1" type="text" id="txt' + ID + 'FName' + NewRow + '" name="nametxt' + ID + 'FName' + NewRow + '" value="' + FName + '" placeholder="First Name" clientidmode="Static"></td>';
+                MainHTML += '<td><input TabIndex="1" type="text" id="txt' + ID + 'LName' + NewRow + '" name="nametxt' + ID + 'LName' + NewRow + '" value="' + LName + '" placeholder="Last Name" clientidmode="Static"></td>';
+                MainHTML += '<td><div class="newcontactdiv"><input TabIndex="1" type="text" id="txt' + ID + 'ContactExten' + NewRow + '" name="nametxt' + ID + 'ContactExten' + NewRow + '" value="' + Contact[0].Extension + '" style="width:35%" maxlength="6" class="clsmaskphoneexten" placeholder="Extension" clientidmode="Static"/>&nbsp;<input type="text" id="txt' + ID + 'Contact' + NewRow + '" name="nametx' + ID + 'Contact' + NewRow + '" value="' + Contact[0].Number + '" style="width:50%" class="clsmaskphone" maxlength="10" TabIndex="1" placeholder="___-___-____" clientidmode="Static"/>';
+                MainHTML += '<a TabIndex="1" onclick="AddContact(this)" style="cursor:pointer" data-type="1" data-emailtype="Primary" clientidmode="Static">Add Contact</a><br></div></td></tr>';
                 $("#tbl" + ID + "Email").find("tr:last-child").after(MainHTML);
                 for (j = 1; j < Email.length; j++) {
                     var HTML = '<br/>';
-                    HTML += '<div class="newEmaildiv"><input type="text" id="txt' + ID + 'Email' + NewRow + '' + j + '" name="nametxt' + ID + 'Email' + NewRow + '' + j + '" class="clsemail" value="' + Email[j].Email + '" clientidmode="Static"?></div>';
+                    HTML += '<div class="newEmaildiv"><input TabIndex="1" type="text" id="txt' + ID + 'Email' + NewRow + '' + j + '" name="nametxt' + ID + 'Email' + NewRow + '' + j + '" class="clsemail" value="' + Email[j].Email + '" clientidmode="Static"?></div>';
                     $("#tbl" + ID + "Email").find("tr:last-child .newEmaildiv").append(HTML);
                     //$("#txt" + ID + "Email0" + j).val(Email[j].Email);
                 }
                 for (j = 1; j < Contact.length; j++) {
                     var n = j - 1;
                     var HTML = '<br/>';
-                    HTML += '<div class="newcontactdiv"><input type="text" id="txt' + ID + 'ContactExten' + NewRow + '' + n + '" name="nametxt' + ID + 'ContactExten' + NewRow + '' + n + '" style="width:35%;" maxlength="6" class="clsmaskphoneexten" placeholder="Extension" value="' + Contact[j].Extension + '" clientidmode="Static"/>&nbsp;<input type="text" id="txt' + ID + 'Contact0' + n + '" name="nametxt' + ID + 'Contact' + NewRow + '' + n + '" style="width:50%;" maxlength="10" class="clsmaskphone" placeholder="___-___-____" value="' + Contact[j].Number + '" clientidmode="Static"/><br></div>';
+                    HTML += '<div class="newcontactdiv"><input TabIndex="1" type="text" id="txt' + ID + 'ContactExten' + NewRow + '' + n + '" name="nametxt' + ID + 'ContactExten' + NewRow + '' + n + '" style="width:35%;" maxlength="6" class="clsmaskphoneexten" placeholder="Extension" value="' + Contact[j].Extension + '" clientidmode="Static"/>&nbsp;<input type="text" id="txt' + ID + 'Contact0' + n + '" name="nametxt' + ID + 'Contact' + NewRow + '' + n + '" style="width:50%;" maxlength="10" class="clsmaskphone" placeholder="___-___-____" value="' + Contact[j].Number + '" TabIndex="1" clientidmode="Static"/><br></div>';
                     $("#tbl" + ID + "Email").find("tr:last-child .newcontactdiv").append(HTML);
                     //$("#" + ContentPlaceHolder + "txt" + ID + "ContactExten0" + j).val(Contact[j].Extension);
                     //$("#" + ContentPlaceHolder + "txt" + ID + "Contact0" + j).val(Contact[j].Number);
@@ -285,14 +285,14 @@
                 $("#" + ContentPlaceHolder + "txt" + ID + "Contact" + NewRow).val(Contact[0].Number);
                 for (j = 1; j < Email.length; j++) {
                     var HTML = '<br/>';
-                    HTML += '<div class="newEmaildiv"><input type="text" id="txt' + ID + 'Email' + NewRow + '' + j + '" name="nametxt' + ID + 'Email' + NewRow + '' + j + '" class="clsemail" value="' + Email[j].Email + '" clientidmode="Static"?></div>';
+                    HTML += '<div class="newEmaildiv"><input TabIndex="1" type="text" id="txt' + ID + 'Email' + NewRow + '' + j + '" name="nametxt' + ID + 'Email' + NewRow + '' + j + '" class="clsemail" value="' + Email[j].Email + '" clientidmode="Static"?></div>';
                     $("#tbl" + ID + "Email").find("tr:last-child .newEmaildiv").append(HTML);
                     //$("#txt" + ID + "Email0" + j).val(Email[j].Email);
                 }
                 for (j = 1; j < Contact.length; j++) {
                     var n = j - 1;
                     var HTML = '<br/>';
-                    HTML += '<div class="newcontactdiv"><input type="text" id="txt' + ID + 'ContactExten' + NewRow + '' + n + '" name="nametxt' + ID + 'ContactExten' + NewRow + '' + n + '" style="width:35%;" maxlength="6" class="clsmaskphoneexten" placeholder="Extension" value="' + Contact[j].Extension + '" clientidmode="Static"/>&nbsp;<input type="text" id="txt' + ID + 'Contact0' + n + '" name="nametxt' + ID + 'Contact' + NewRow + '' + n + '" style="width:50%;" maxlength="10" class="clsmaskphone" placeholder="___-___-____" value="' + Contact[j].Number + '" clientidmode="Static"/><br></div>';
+                    HTML += '<div class="newcontactdiv"><input TabIndex="1" type="text" id="txt' + ID + 'ContactExten' + NewRow + '' + n + '" name="nametxt' + ID + 'ContactExten' + NewRow + '' + n + '" style="width:35%;" maxlength="6" class="clsmaskphoneexten" placeholder="Extension" value="' + Contact[j].Extension + '" clientidmode="Static"/>&nbsp;<input type="text" id="txt' + ID + 'Contact0' + n + '" name="nametxt' + ID + 'Contact' + NewRow + '' + n + '" style="width:50%;" maxlength="10" class="clsmaskphone" placeholder="___-___-____" value="' + Contact[j].Number + '" TabIndex="1" clientidmode="Static"/><br></div>';
                     $("#tbl" + ID + "Email").find("tr:last-child .newcontactdiv").append(HTML);
                     //$("#" + ContentPlaceHolder + "txt" + ID + "ContactExten0" + j).val(Contact[j].Extension);
                     //$("#" + ContentPlaceHolder + "txt" + ID + "Contact0" + j).val(Contact[j].Number);
@@ -853,14 +853,14 @@
 
                                                         <td>
                                                             <label>Vendor Id:</label><br />
-                                                            <asp:TextBox ID="txtVendorId" CssClass="clsvendorid" runat="server" MaxLength="50"></asp:TextBox>
+                                                            <asp:TextBox ID="txtVendorId" CssClass="clsvendorid" TabIndex="1" runat="server" MaxLength="50"></asp:TextBox>
                                                         </td>
                                                         <td>
                                                             <label>
                                                                 <span>* </span>Vendor Name:
                                                             </label>
                                                             <br />
-                                                            <asp:TextBox ID="txtVendorNm" runat="server" MaxLength="30" AutoComplete="off" onkeypress="return isAlphaKey(event);" TabIndex="1"></asp:TextBox>
+                                                            <asp:TextBox ID="txtVendorNm" runat="server" MaxLength="30" TabIndex="1" AutoComplete="off" onkeypress="return isAlphaKey(event);" ></asp:TextBox>
 
                                                             <asp:RequiredFieldValidator ID="Requiredvendorname" runat="server" ControlToValidate="txtVendorNm" Display="Dynamic"
                                                                 ValidationGroup="addvendor" ErrorMessage="Please Enter Vendor Name." ForeColor="Red"></asp:RequiredFieldValidator>
@@ -869,7 +869,7 @@
 
                                                         <td>
                                                             <label>Vendor Status:</label><br />
-                                                            <asp:DropDownList ID="ddlVendorStatus" runat="server" Style="width: 180px;">
+                                                            <asp:DropDownList ID="ddlVendorStatus" runat="server" TabIndex="1" Style="width: 180px;">
                                                                 <asp:ListItem>Select</asp:ListItem>
                                                                 <asp:ListItem>Prospect</asp:ListItem>
                                                                 <asp:ListItem>Active-Past</asp:ListItem>
@@ -880,12 +880,12 @@
                                                         <td class="style1">
                                                             <label>
                                                                 Vendor Source<asp:Label ID="lblSourceReq" runat="server" Text="*" ForeColor="Green"></asp:Label></label>
-                                                            <asp:DropDownList ID="ddlSource" runat="server" Width="250px">
+                                                            <asp:DropDownList ID="ddlSource" runat="server" TabIndex="1" Width="250px">
                                                             </asp:DropDownList>
-                                                            <asp:TextBox ID="txtSource" runat="server" Width="125px"></asp:TextBox>
-                                                            <asp:Button runat="server" ID="btnAddSource" Text="Add" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff;" OnClick="btnAddSource_Click" Height="30px" />&nbsp;
+                                                            <asp:TextBox ID="txtSource" runat="server" TabIndex="1" Width="125px"></asp:TextBox>
+                                                            <asp:Button runat="server" ID="btnAddSource" TabIndex="1" Text="Add" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff;" OnClick="btnAddSource_Click" Height="30px" />&nbsp;
                                
-                                <asp:Button runat="server" ID="btnDeleteSource" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff;" Text="Delete" OnClick="btnDeleteSource_Click" Height="30px" />
+                                <asp:Button runat="server" ID="btnDeleteSource" TabIndex="1" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff;" Text="Delete" OnClick="btnDeleteSource_Click" Height="30px" />
                                                             <%--<br />
                                 &nbsp;&nbsp;&nbsp;&nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="ddlSource"
                                     ForeColor="Green" Display="Dynamic" ValidationGroup="submit" ErrorMessage="Please select the source." InitialValue="Select Source"></asp:RequiredFieldValidator>--%>
@@ -895,25 +895,25 @@
                                                     <tr>
                                                         <td>
                                                             <label>Address:</label><br />
-                                                            <asp:DropDownList ID="DrpVendorAddress" AutoPostBack="true" OnSelectedIndexChanged="DrpVendorAddress_SelectedIndexChanged" runat="server" Style="width: 180px;" CssClass="clsvendoraddress">
+                                                            <asp:DropDownList ID="DrpVendorAddress" TabIndex="1" AutoPostBack="true" OnSelectedIndexChanged="DrpVendorAddress_SelectedIndexChanged" runat="server" Style="width: 180px;" CssClass="clsvendoraddress">
                                                                 <asp:ListItem Value="Select">Select</asp:ListItem>
                                                             </asp:DropDownList>
                                                         </td>
                                                         <td>
                                                             <label>
                                                                 Tax Id:</label><br />
-                                                            <asp:TextBox ID="txtTaxId" runat="server" MaxLength="50"></asp:TextBox>
+                                                            <asp:TextBox ID="txtTaxId" TabIndex="1" runat="server" MaxLength="50"></asp:TextBox>
 
                                                         </td>
                                                         <td>
                                                             <label>
                                                                 Website:</label><br />
-                                                            <asp:TextBox ID="txtWebsite" runat="server" MaxLength="100"></asp:TextBox>
+                                                            <asp:TextBox ID="txtWebsite" TabIndex="1" runat="server" MaxLength="100"></asp:TextBox>
                                                         </td>
                                                         <td>
                                                             <label>
                                                                 Fax</label><br />
-                                                            <asp:TextBox ID="txtVendorFax" runat="server" MaxLength="20"></asp:TextBox>
+                                                            <asp:TextBox ID="txtVendorFax" TabIndex="1" runat="server" MaxLength="20"></asp:TextBox>
                                                             <br />
                                                         </td>
 
@@ -924,7 +924,7 @@
                                                             <label>
                                                                 Payment Terms
                                                             </label>
-                                                            <asp:DropDownList ID="DrpPaymentTerms" runat="server" Style="width: 180px;">
+                                                            <asp:DropDownList ID="DrpPaymentTerms" TabIndex="1" runat="server" Style="width: 180px;">
                                                                 <asp:ListItem>Select</asp:ListItem>
                                                                 <asp:ListItem>Pay In Advance</asp:ListItem>
                                                                 <asp:ListItem>COD</asp:ListItem>
@@ -937,7 +937,7 @@
                                                         <td>
                                                             <label>
                                                                 Payment Method:</label><br />
-                                                            <asp:DropDownList ID="DrpPaymentMode" runat="server" Style="width: 180px;">
+                                                            <asp:DropDownList ID="DrpPaymentMode" TabIndex="1" runat="server" Style="width: 180px;">
                                                                 <asp:ListItem>Select</asp:ListItem>
                                                                 <asp:ListItem>amex2343</asp:ListItem>
                                                                 <asp:ListItem>Discover3494</asp:ListItem>
@@ -956,7 +956,7 @@
                                                                         <tr class="fixedAddressrow">
                                                                             <td style="width: 12%">
                                                                                 <label>Address Type:</label><br />
-                                                                                <asp:DropDownList ID="ddlAddressType" runat="server" CssClass="clstxtAddressType0" Width="190px">
+                                                                                <asp:DropDownList ID="ddlAddressType" TabIndex="1" runat="server" CssClass="clstxtAddressType0" Width="190px">
                                                                                     <asp:ListItem>Select</asp:ListItem>
                                                                                     <asp:ListItem>Primary</asp:ListItem>
                                                                                     <asp:ListItem>Secondary</asp:ListItem>
@@ -966,18 +966,18 @@
                                                                             </td>
                                                                             <td style="width: 12%">
                                                                                 <label>City:</label><br />
-                                                                                <asp:TextBox ID="txtPrimaryCity" runat="server" TabIndex="7" placeholder="City" CssClass="clstxtCity0"></asp:TextBox>
+                                                                                <asp:TextBox ID="txtPrimaryCity" runat="server" TabIndex="1" placeholder="City" CssClass="clstxtCity0"></asp:TextBox>
                                                                             </td>
                                                                             <td style="width: 12%">
                                                                                 <label>Zip:</label><br />
-                                                                                <asp:TextBox ID="txtPrimaryZip" runat="server" TabIndex="7" placeholder="Zip" CssClass="clstxtZip0"></asp:TextBox>
+                                                                                <asp:TextBox ID="txtPrimaryZip" runat="server" TabIndex="1" placeholder="Zip" CssClass="clstxtZip0"></asp:TextBox>
 
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
                                                                             <td colspan="2">
                                                                                 <label>Address:</label><br />
-                                                                                <asp:TextBox ID="txtPrimaryAddress" runat="server" TabIndex="7" placeholder="Address" TextMode="MultiLine" Columns="40" Rows="2" CssClass="clstxtAddress0" Width="86%"></asp:TextBox>
+                                                                                <asp:TextBox ID="txtPrimaryAddress" runat="server" TabIndex="1" placeholder="Address" TextMode="MultiLine" Columns="40" Rows="2" CssClass="clstxtAddress0" Width="86%"></asp:TextBox>
                                                                                 <asp:RequiredFieldValidator ID="RfvAddress" runat="server" ControlToValidate="txtPrimaryAddress" Display="Dynamic"
                                                                                     ValidationGroup="addvendor" ErrorMessage="Please Enter Primary Address." ForeColor="Red"></asp:RequiredFieldValidator>
                                                                             </td>
@@ -985,7 +985,7 @@
 
                                                                             <td>
                                                                                 <label>Country:</label><br />
-                                                                                <asp:DropDownList ID="ddlCountry" runat="server" Width="190px" CssClass="clstxtCountry0">
+                                                                                <asp:DropDownList ID="ddlCountry" TabIndex="1" runat="server" Width="190px" CssClass="clstxtCountry0">
                                                                                     <asp:ListItem Value="" Selected="True">Select Country</asp:ListItem>
                                                                                     <asp:ListItem Value="AF">Afghanistan</asp:ListItem>
                                                                                     <asp:ListItem Value="AL">Albania</asp:ListItem>
@@ -1250,22 +1250,22 @@
                                                                             Primary Contact Email
                                                                         </label>
                                                                         <div class="newEmaildiv">
-                                                                            <input type='text' id="txtPrimaryEmail0" name="nametxtPrimaryEmail0" placeholder="Email" class="clsemail" clientidmode='Static' />
+                                                                            <input type='text' TabIndex="1" id="txtPrimaryEmail0" name="nametxtPrimaryEmail0" placeholder="Email" class="clsemail" clientidmode='Static' />
                                                                             <br />
-                                                                            <a style="cursor: pointer" data-emailtype="Primary" onclick="AddEmailRow(this)">Add New Row</a> &nbsp;&nbsp;
-                                                                    <a onclick="AddEmail(this)" style="cursor: pointer" data-emailtype="Primary" data-type="0">Add Email</a>
+                                                                            <a style="cursor: pointer" TabIndex="1" data-emailtype="Primary" onclick="AddEmailRow(this)">Add New Row</a> &nbsp;&nbsp;
+                                                                    <a onclick="AddEmail(this)" TabIndex="1" style="cursor: pointer" data-emailtype="Primary" data-type="0">Add Email</a>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <label>
                                                                             First Name</label><br />
-                                                                        <input type='text' id="txtPrimaryFName0" name="nametxtPrimaryFName0" maxlength="50" clientidmode='Static' />
+                                                                        <input type='text' id="txtPrimaryFName0" TabIndex="1" name="nametxtPrimaryFName0" maxlength="50" clientidmode='Static' />
                                                                     </td>
 
                                                                     <td>
                                                                         <label>
                                                                             Last Name</label><br />
-                                                                        <input type='text' id="txtPrimaryLName0" name="nametxtPrimaryLName0" maxlength="50" clientidmode='Static' />
+                                                                        <input type='text' id="txtPrimaryLName0" TabIndex="1" name="nametxtPrimaryLName0" maxlength="50" clientidmode='Static' />
                                                                         <%--    <asp:TextBox ID="txtPrimaryLName0" runat="server" MaxLength="50"></asp:TextBox>--%>
                                                                         <br />
 
@@ -1276,10 +1276,10 @@
                                                                         </label>
                                                                         <br />
                                                                         <div class='newcontactdiv'>
-                                                                            <asp:TextBox ID="txtPrimaryContactExten0" runat="server" placeholder="Extension" class="clsmaskphoneexten" MaxLength="6" Width="34%"></asp:TextBox>
-                                                                            <asp:TextBox ID="txtPrimaryContact0" runat="server" placeholder='___-___-____' MaxLength="10" CssClass="clsmaskphone" Width="50%"></asp:TextBox>
+                                                                            <asp:TextBox ID="txtPrimaryContactExten0" TabIndex="1" runat="server" placeholder="Extension" class="clsmaskphoneexten" MaxLength="6" Width="34%"></asp:TextBox>
+                                                                            <asp:TextBox ID="txtPrimaryContact0" TabIndex="1" runat="server" placeholder='___-___-____' MaxLength="10" CssClass="clsmaskphone" Width="50%"></asp:TextBox>
                                                                             <br />
-                                                                            <a onclick="AddContact(this)" style="cursor: pointer" data-emailtype="Primary" data-type="0">Add Contact</a><br />
+                                                                            <a onclick="AddContact(this)" TabIndex="1" style="cursor: pointer" data-emailtype="Primary" data-type="0">Add Contact</a><br />
                                                                         </div>
                                                                     </td>
                                                                 </tr>
@@ -1294,23 +1294,23 @@
                                                                         <label>
                                                                             Secondary Contact Email</label><br />
                                                                         <div class="newEmaildiv">
-                                                                            <input type='text' id="txtSecEmail0" name="nametxtSecEmail0" maxlength="50" class="clsemail" clientidmode='Static' />
+                                                                            <input type='text' id="txtSecEmail0" TabIndex="1" name="nametxtSecEmail0" maxlength="50" class="clsemail" clientidmode='Static' />
                                                                             <br />
-                                                                            <a style="cursor: pointer" data-emailtype="Sec" onclick="AddEmailRow(this)">Add New Row</a> &nbsp;&nbsp;
-                                                                    <a onclick="AddEmail(this)" style="cursor: pointer" data-emailtype="Sec" data-type="0">Add Email</a>
+                                                                            <a style="cursor: pointer" TabIndex="1" data-emailtype="Sec" onclick="AddEmailRow(this)">Add New Row</a> &nbsp;&nbsp;
+                                                                    <a onclick="AddEmail(this)" TabIndex="1" style="cursor: pointer" data-emailtype="Sec" data-type="0">Add Email</a>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <label>
                                                                             First Name</label><br />
-                                                                        <input type='text' id="txtSecFName0" name="nametxtSecFName0" maxlength="50" clientidmode='Static' />
+                                                                        <input type='text' id="txtSecFName0" TabIndex="1" name="nametxtSecFName0" maxlength="50" clientidmode='Static' />
                                                                         <%--<asp:TextBox ID="txtSecFName0" runat="server" MaxLength="50"></asp:TextBox>--%>
                                                                     </td>
 
                                                                     <td>
                                                                         <label>
                                                                             Last Name</label><br />
-                                                                        <input type='text' id="txtSecLName0" name="nametxtSecLName0" maxlength="50" clientidmode='Static' />
+                                                                        <input type='text' id="txtSecLName0" TabIndex="1" name="nametxtSecLName0" maxlength="50" clientidmode='Static' />
                                                                         <%--  <asp:TextBox ID="txtSecLName0" runat="server" MaxLength="50"></asp:TextBox>--%>
                                                                         <br />
 
@@ -1321,10 +1321,10 @@
                                                                         </label>
                                                                         <br />
                                                                         <div class='newcontactdiv'>
-                                                                            <asp:TextBox ID="txtSecContactExten0" runat="server" MaxLength="6" class="clsmaskphoneexten" placeholder="Extension" Width="35%"></asp:TextBox>
-                                                                            <asp:TextBox ID="txtSecContact0" runat="server" MaxLength="10" placeholder='___-___-____' CssClass="clsmaskphone" Width="50%"></asp:TextBox>
+                                                                            <asp:TextBox ID="txtSecContactExten0" TabIndex="1" runat="server" MaxLength="6" class="clsmaskphoneexten" placeholder="Extension" Width="35%"></asp:TextBox>
+                                                                            <asp:TextBox ID="txtSecContact0" TabIndex="1" runat="server" MaxLength="10" placeholder='___-___-____' CssClass="clsmaskphone" Width="50%"></asp:TextBox>
                                                                             <br />
-                                                                            <a onclick="AddContact(this)" data-emailtype="Sec" style="cursor: pointer" data-type="0">Add Contact</a>
+                                                                            <a onclick="AddContact(this)" TabIndex="1" data-emailtype="Sec" style="cursor: pointer" data-type="0">Add Contact</a>
                                                                             <br />
                                                                         </div>
                                                                     </td>
@@ -1341,16 +1341,16 @@
                                                                         <label>
                                                                             Alt. Contact Email</label><br />
                                                                         <div class="newEmaildiv">
-                                                                            <input type='text' id="txtAltEmail0" name="nametxtAltEmail0" maxlength="50" class="clsemail" clientidmode='Static' />
+                                                                            <input type='text' id="txtAltEmail0" TabIndex="1" name="nametxtAltEmail0" maxlength="50" class="clsemail" clientidmode='Static' />
                                                                             <br />
-                                                                            <a style="cursor: pointer" data-emailtype="Alt" onclick="AddEmailRow(this)">Add New Row</a> &nbsp;&nbsp;
-                                                                    <a onclick="AddEmail(this)" style="cursor: pointer" data-emailtype="Alt" data-type="0">Add Email</a>
+                                                                            <a style="cursor: pointer" TabIndex="1" data-emailtype="Alt" onclick="AddEmailRow(this)">Add New Row</a> &nbsp;&nbsp;
+                                                                    <a onclick="AddEmail(this)" TabIndex="1" style="cursor: pointer" data-emailtype="Alt" data-type="0">Add Email</a>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <label>
                                                                             First Name</label><br />
-                                                                        <input type='text' id="txtAltFName0" name="nametxtAltFName0" maxlength="50" clientidmode='Static' />
+                                                                        <input type='text' id="txtAltFName0" TabIndex="1" name="nametxtAltFName0" maxlength="50" clientidmode='Static' />
                                                                         <%--<asp:TextBox ID="txtAltFName0" runat="server" MaxLength="50"></asp:TextBox>--%>
                                                                         <br />
 
@@ -1359,7 +1359,7 @@
                                                                     <td>
                                                                         <label>
                                                                             Last Name</label><br />
-                                                                        <input type='text' id="txtAltLName0" name="nametxtAltLName0" maxlength="50" clientidmode='Static' />
+                                                                        <input type='text' id="txtAltLName0" TabIndex="1" name="nametxtAltLName0" maxlength="50" clientidmode='Static' />
                                                                         <%--<asp:TextBox ID="txtAltLName0" runat="server" MaxLength="50"></asp:TextBox>--%>
                                                                         <br />
                                                                     </td>
@@ -1369,10 +1369,10 @@
                                                                         </label>
                                                                         <br />
                                                                         <div class='newcontactdiv'>
-                                                                            <asp:TextBox ID="txtAltContactExten0" runat="server" MaxLength="6" class="clsmaskphoneexten" placeholder="Extension" Width="32%"></asp:TextBox>
-                                                                            <asp:TextBox ID="txtAltContact0" runat="server" MaxLength="10" CssClass="clsmaskphone" placeholder='___-___-____' Width="50%"></asp:TextBox>
+                                                                            <asp:TextBox ID="txtAltContactExten0" TabIndex="1" runat="server" MaxLength="6" class="clsmaskphoneexten" placeholder="Extension" Width="32%"></asp:TextBox>
+                                                                            <asp:TextBox ID="txtAltContact0" TabIndex="1" runat="server" MaxLength="10" CssClass="clsmaskphone" placeholder='___-___-____' Width="50%"></asp:TextBox>
                                                                             <br />
-                                                                            <a onclick="AddContact(this)" style="cursor: pointer" data-emailtype="Alt" data-type="0">Add Contact</a>
+                                                                            <a onclick="AddContact(this)" TabIndex="1" style="cursor: pointer" data-emailtype="Alt" data-type="0">Add Contact</a>
                                                                             <br />
                                                                         </div>
                                                                     </td>
@@ -1383,14 +1383,14 @@
 
                                                 </table>
                                                 <div style="text-align: right;">
-                                                    <asp:LinkButton ID="BtnSaveLoaction" runat="server" Text="Save Address" OnClientClick="GetVendorDetails(this)" ValidationGroup="addaddress" OnClick="BtnSaveLoaction_Click" />
+                                                    <asp:LinkButton ID="BtnSaveLoaction" TabIndex="1" runat="server" Text="Save Address" OnClientClick="GetVendorDetails(this)" ValidationGroup="addaddress" OnClick="BtnSaveLoaction_Click" />
                                                     <br />
                                                     <asp:Label ID="lbladdress" runat="server" ForeColor="Red"></asp:Label>
                                                 </div>
                                             </li>
                                         </ul>
                                         <div class="btn_sec">
-                                            <asp:Button ID="btnSave" runat="server" Text="Save" OnClientClick="return checkAddress()" OnClick="btnSave_Click" ValidationGroup="addvendor" TabIndex="8" /><%--OnClick="btnSave_Click" ValidationGroup="addvendor"--%>
+                                            <asp:Button ID="btnSave" runat="server" TabIndex="1" Text="Save" OnClientClick="return checkAddress()" OnClick="btnSave_Click" ValidationGroup="addvendor"  /><%--OnClick="btnSave_Click" ValidationGroup="addvendor"--%>
                                             <br />
                                             <asp:Label ID="LblSave" runat="server" ForeColor="Red"></asp:Label>
                                         </div>
