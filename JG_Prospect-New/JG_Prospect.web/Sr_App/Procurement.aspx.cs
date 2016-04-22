@@ -3173,7 +3173,13 @@ namespace JG_Prospect.Sr_App
             }
             if (!string.IsNullOrEmpty(Convert.ToString(ds.Tables[0].Rows[0]["AddressID"])))
             {
-                DrpVendorAddress.SelectedValue = ds.Tables[0].Rows[0]["AddressID"].ToString();
+                try
+                {
+                    DrpVendorAddress.SelectedValue = ds.Tables[0].Rows[0]["AddressID"].ToString();
+                }
+                catch (Exception ex)
+                {
+                }
             }
             if (!string.IsNullOrEmpty(Convert.ToString(ds.Tables[0].Rows[0]["PaymentTerms"])))
             {

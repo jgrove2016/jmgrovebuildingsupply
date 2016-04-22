@@ -7,6 +7,11 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js"></script>
     <script src="../js/jquery.MultiFile.js" type="text/javascript"></script>
+    <style>
+        #googleMap > div {
+            width:100% !important;
+        }
+    </style>
     <script type="text/javascript">
         function ClosePopup() {
             document.getElementById('light').style.display = 'none';
@@ -502,8 +507,8 @@
                         </div>
                     </div>
                     <div class="btn_sec">
-                        <asp:Button ID="btnAddcategory" runat="server" Text="Add Category" OnClick="btnAddcategory_Click" />
-                        <asp:Button ID="btndeletecategory" runat="server" Text="Delete Category" OnClick="btndeletecategory_Click" />
+                        <asp:Button ID="btnAddcategory" runat="server" Text="Add Category" Visible="false" OnClick="btnAddcategory_Click" />
+                        <asp:Button ID="btndeletecategory" runat="server" Text="Delete Category" Visible="false" OnClick="btndeletecategory_Click" />
                         <br />
                         <br />
                         <br />
@@ -807,7 +812,7 @@
                                         <td>
                                             <div style="width: 100%">
 
-                                                <div class="grid_h" style="width: 47%; float: left">
+                                                <div class="grid_h" style="width: 47%;float: left;box-sizing: border-box;">
                                                     Vendor List
                                              <div class="grid">
                                                  <asp:GridView ID="grdVendorList" runat="server" AutoGenerateColumns="false" CssClass="tableClass" Width="100%">
@@ -826,7 +831,7 @@
                                              </div>
 
                                                 </div>
-                                                <div style="width: 450px; float: left; margin-left: 25px; margin-top: 20px;">
+                                                <div style="width: 50%;float: left;margin-left: 3%;margin-top: 20px;box-sizing: border-box;">
                                                     <div id="googleMap" style="width: 100%; height: 254px;"></div>
                                                 </div>
 
@@ -1744,6 +1749,7 @@
         $('.clsmaskphoneexten').mask("999999");
 
         var mapProp;
+        initialize();
         function initialize() {
             mapProp = {
                 center: new google.maps.LatLng(40.748492, -73.985496),
