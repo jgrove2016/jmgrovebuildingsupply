@@ -5,11 +5,11 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit.HTMLEditor" TagPrefix="cc1" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js"></script>
+    <%--<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js"></script>--%>
     <script src="../js/jquery.MultiFile.js" type="text/javascript"></script>
     <style>
         #googleMap > div {
-            width:100% !important;
+            width: 100% !important;
         }
     </style>
     <script type="text/javascript">
@@ -807,12 +807,12 @@
                                     </tr>
 
                                 </table>
-                                <table style="width:100%;">
+                                <table style="width: 100%;">
                                     <tr>
                                         <td>
                                             <div style="width: 100%">
 
-                                                <div class="grid_h" style="width: 47%;float: left;box-sizing: border-box;">
+                                                <div class="grid_h" style="width: 47%; float: left; box-sizing: border-box;">
                                                     Vendor List
                                              <div class="grid">
                                                  <asp:GridView ID="grdVendorList" runat="server" AutoGenerateColumns="false" CssClass="tableClass" Width="100%">
@@ -831,7 +831,7 @@
                                              </div>
 
                                                 </div>
-                                                <div style="width: 50%;float: left;margin-left: 3%;margin-top: 20px;box-sizing: border-box;">
+                                                <div style="width: 50%; float: left; margin-left: 3%; margin-top: 20px; box-sizing: border-box;">
                                                     <div id="googleMap" style="width: 100%; height: 254px;"></div>
                                                 </div>
 
@@ -870,7 +870,7 @@
                                                                 <span>* </span>Vendor Name:
                                                             </label>
                                                             <br />
-                                                            <asp:TextBox ID="txtVendorNm" runat="server" MaxLength="30" TabIndex="1" AutoComplete="off" onkeypress="return isAlphaKey(event);" ></asp:TextBox>
+                                                            <asp:TextBox ID="txtVendorNm" runat="server" MaxLength="30" TabIndex="1" AutoComplete="off" onkeypress="return isAlphaKey(event);"></asp:TextBox>
 
                                                             <asp:RequiredFieldValidator ID="Requiredvendorname" runat="server" ControlToValidate="txtVendorNm" Display="Dynamic"
                                                                 ValidationGroup="addvendor" ErrorMessage="Please Enter Vendor Name." ForeColor="Red"></asp:RequiredFieldValidator>
@@ -996,7 +996,7 @@
                                                                             <td>
                                                                                 <label>Country:</label><br />
                                                                                 <asp:DropDownList ID="ddlCountry" TabIndex="1" runat="server" Width="190px" CssClass="clstxtCountry0">
-                                                                                    <asp:ListItem Value="" Selected="True">Select Country</asp:ListItem>
+                                                                                    <asp:ListItem Value="">Select Country</asp:ListItem>
                                                                                     <asp:ListItem Value="AF">Afghanistan</asp:ListItem>
                                                                                     <asp:ListItem Value="AL">Albania</asp:ListItem>
                                                                                     <asp:ListItem Value="DZ">Algeria</asp:ListItem>
@@ -1219,7 +1219,7 @@
                                                                                     <asp:ListItem Value="UA">Ukraine</asp:ListItem>
                                                                                     <asp:ListItem Value="AE">United Arab Emirates</asp:ListItem>
                                                                                     <asp:ListItem Value="GB">United Kingdom</asp:ListItem>
-                                                                                    <asp:ListItem Value="US">United States</asp:ListItem>
+                                                                                    <asp:ListItem Value="US" Selected="True">United States</asp:ListItem>
                                                                                     <asp:ListItem Value="UM">United States Minor Is.</asp:ListItem>
                                                                                     <asp:ListItem Value="UY">Uruguay</asp:ListItem>
                                                                                     <asp:ListItem Value="UZ">Uzbekistan</asp:ListItem>
@@ -1260,22 +1260,22 @@
                                                                             Primary Contact Email
                                                                         </label>
                                                                         <div class="newEmaildiv">
-                                                                            <input type='text' TabIndex="1" id="txtPrimaryEmail0" name="nametxtPrimaryEmail0" placeholder="Email" class="clsemail" clientidmode='Static' />
+                                                                            <input type='text' tabindex="1" id="txtPrimaryEmail0" name="nametxtPrimaryEmail0" placeholder="Email" class="clsemail" clientidmode='Static' />
                                                                             <br />
-                                                                            <a style="cursor: pointer" TabIndex="1" data-emailtype="Primary" onclick="AddEmailRow(this)">Add New Row</a> &nbsp;&nbsp;
-                                                                    <a onclick="AddEmail(this)" TabIndex="1" style="cursor: pointer" data-emailtype="Primary" data-type="0">Add Email</a>
+                                                                            <a style="cursor: pointer" tabindex="1" data-emailtype="Primary" onclick="AddEmailRow(this)">Add New Row</a> &nbsp;&nbsp;
+                                                                    <a onclick="AddEmail(this)" tabindex="1" style="cursor: pointer" data-emailtype="Primary" data-type="0">Add Email</a>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <label>
                                                                             First Name</label><br />
-                                                                        <input type='text' id="txtPrimaryFName0" TabIndex="1" name="nametxtPrimaryFName0" maxlength="50" clientidmode='Static' />
+                                                                        <input type='text' id="txtPrimaryFName0" tabindex="1" name="nametxtPrimaryFName0" maxlength="50" clientidmode='Static' />
                                                                     </td>
 
                                                                     <td>
                                                                         <label>
                                                                             Last Name</label><br />
-                                                                        <input type='text' id="txtPrimaryLName0" TabIndex="1" name="nametxtPrimaryLName0" maxlength="50" clientidmode='Static' />
+                                                                        <input type='text' id="txtPrimaryLName0" tabindex="1" name="nametxtPrimaryLName0" maxlength="50" clientidmode='Static' />
                                                                         <%--    <asp:TextBox ID="txtPrimaryLName0" runat="server" MaxLength="50"></asp:TextBox>--%>
                                                                         <br />
 
@@ -1289,7 +1289,7 @@
                                                                             <asp:TextBox ID="txtPrimaryContact0" TabIndex="1" runat="server" placeholder='___-___-____' MaxLength="10" CssClass="clsmaskphone" Width="50%"></asp:TextBox>
                                                                             <asp:TextBox ID="txtPrimaryContactExten0" TabIndex="1" runat="server" placeholder="Extension" class="clsmaskphoneexten" MaxLength="6" Width="34%"></asp:TextBox>
                                                                             <br />
-                                                                            <a onclick="AddContact(this)" TabIndex="1" style="cursor: pointer" data-emailtype="Primary" data-type="0">Add Contact</a><br />
+                                                                            <a onclick="AddContact(this)" tabindex="1" style="cursor: pointer" data-emailtype="Primary" data-type="0">Add Contact</a><br />
                                                                         </div>
                                                                     </td>
                                                                 </tr>
@@ -1304,23 +1304,23 @@
                                                                         <label>
                                                                             Secondary Contact Email</label><br />
                                                                         <div class="newEmaildiv">
-                                                                            <input type='text' id="txtSecEmail0" TabIndex="1" name="nametxtSecEmail0" maxlength="50" class="clsemail" clientidmode='Static' />
+                                                                            <input type='text' id="txtSecEmail0" tabindex="1" name="nametxtSecEmail0" maxlength="50" class="clsemail" clientidmode='Static' />
                                                                             <br />
-                                                                            <a style="cursor: pointer" TabIndex="1" data-emailtype="Sec" onclick="AddEmailRow(this)">Add New Row</a> &nbsp;&nbsp;
-                                                                    <a onclick="AddEmail(this)" TabIndex="1" style="cursor: pointer" data-emailtype="Sec" data-type="0">Add Email</a>
+                                                                            <a style="cursor: pointer" tabindex="1" data-emailtype="Sec" onclick="AddEmailRow(this)">Add New Row</a> &nbsp;&nbsp;
+                                                                    <a onclick="AddEmail(this)" tabindex="1" style="cursor: pointer" data-emailtype="Sec" data-type="0">Add Email</a>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <label>
                                                                             First Name</label><br />
-                                                                        <input type='text' id="txtSecFName0" TabIndex="1" name="nametxtSecFName0" maxlength="50" clientidmode='Static' />
+                                                                        <input type='text' id="txtSecFName0" tabindex="1" name="nametxtSecFName0" maxlength="50" clientidmode='Static' />
                                                                         <%--<asp:TextBox ID="txtSecFName0" runat="server" MaxLength="50"></asp:TextBox>--%>
                                                                     </td>
 
                                                                     <td>
                                                                         <label>
                                                                             Last Name</label><br />
-                                                                        <input type='text' id="txtSecLName0" TabIndex="1" name="nametxtSecLName0" maxlength="50" clientidmode='Static' />
+                                                                        <input type='text' id="txtSecLName0" tabindex="1" name="nametxtSecLName0" maxlength="50" clientidmode='Static' />
                                                                         <%--  <asp:TextBox ID="txtSecLName0" runat="server" MaxLength="50"></asp:TextBox>--%>
                                                                         <br />
 
@@ -1334,7 +1334,7 @@
                                                                             <asp:TextBox ID="txtSecContact0" TabIndex="1" runat="server" MaxLength="10" placeholder='___-___-____' CssClass="clsmaskphone" Width="50%"></asp:TextBox>
                                                                             <asp:TextBox ID="txtSecContactExten0" TabIndex="1" runat="server" MaxLength="6" class="clsmaskphoneexten" placeholder="Extension" Width="35%"></asp:TextBox>
                                                                             <br />
-                                                                            <a onclick="AddContact(this)" TabIndex="1" data-emailtype="Sec" style="cursor: pointer" data-type="0">Add Contact</a>
+                                                                            <a onclick="AddContact(this)" tabindex="1" data-emailtype="Sec" style="cursor: pointer" data-type="0">Add Contact</a>
                                                                             <br />
                                                                         </div>
                                                                     </td>
@@ -1351,16 +1351,16 @@
                                                                         <label>
                                                                             Alt. Contact Email</label><br />
                                                                         <div class="newEmaildiv">
-                                                                            <input type='text' id="txtAltEmail0" TabIndex="1" name="nametxtAltEmail0" maxlength="50" class="clsemail" clientidmode='Static' />
+                                                                            <input type='text' id="txtAltEmail0" tabindex="1" name="nametxtAltEmail0" maxlength="50" class="clsemail" clientidmode='Static' />
                                                                             <br />
-                                                                            <a style="cursor: pointer" TabIndex="1" data-emailtype="Alt" onclick="AddEmailRow(this)">Add New Row</a> &nbsp;&nbsp;
-                                                                    <a onclick="AddEmail(this)" TabIndex="1" style="cursor: pointer" data-emailtype="Alt" data-type="0">Add Email</a>
+                                                                            <a style="cursor: pointer" tabindex="1" data-emailtype="Alt" onclick="AddEmailRow(this)">Add New Row</a> &nbsp;&nbsp;
+                                                                    <a onclick="AddEmail(this)" tabindex="1" style="cursor: pointer" data-emailtype="Alt" data-type="0">Add Email</a>
                                                                         </div>
                                                                     </td>
                                                                     <td>
                                                                         <label>
                                                                             First Name</label><br />
-                                                                        <input type='text' id="txtAltFName0" TabIndex="1" name="nametxtAltFName0" maxlength="50" clientidmode='Static' />
+                                                                        <input type='text' id="txtAltFName0" tabindex="1" name="nametxtAltFName0" maxlength="50" clientidmode='Static' />
                                                                         <%--<asp:TextBox ID="txtAltFName0" runat="server" MaxLength="50"></asp:TextBox>--%>
                                                                         <br />
 
@@ -1369,7 +1369,7 @@
                                                                     <td>
                                                                         <label>
                                                                             Last Name</label><br />
-                                                                        <input type='text' id="txtAltLName0" TabIndex="1" name="nametxtAltLName0" maxlength="50" clientidmode='Static' />
+                                                                        <input type='text' id="txtAltLName0" tabindex="1" name="nametxtAltLName0" maxlength="50" clientidmode='Static' />
                                                                         <%--<asp:TextBox ID="txtAltLName0" runat="server" MaxLength="50"></asp:TextBox>--%>
                                                                         <br />
                                                                     </td>
@@ -1382,7 +1382,7 @@
                                                                             <asp:TextBox ID="txtAltContact0" TabIndex="1" runat="server" MaxLength="10" CssClass="clsmaskphone" placeholder='___-___-____' Width="50%"></asp:TextBox>
                                                                             <asp:TextBox ID="txtAltContactExten0" TabIndex="1" runat="server" MaxLength="6" class="clsmaskphoneexten" placeholder="Extension" Width="32%"></asp:TextBox>
                                                                             <br />
-                                                                            <a onclick="AddContact(this)" TabIndex="1" style="cursor: pointer" data-emailtype="Alt" data-type="0">Add Contact</a>
+                                                                            <a onclick="AddContact(this)" tabindex="1" style="cursor: pointer" data-emailtype="Alt" data-type="0">Add Contact</a>
                                                                             <br />
                                                                         </div>
                                                                     </td>
@@ -1400,7 +1400,7 @@
                                             </li>
                                         </ul>
                                         <div class="btn_sec">
-                                            <asp:Button ID="btnSave" runat="server" TabIndex="1" Text="Save" OnClientClick="return checkAddress()" OnClick="btnSave_Click" ValidationGroup="addvendor"  /><%--OnClick="btnSave_Click" ValidationGroup="addvendor"--%>
+                                            <asp:Button ID="btnSave" runat="server" TabIndex="1" Text="Save" OnClientClick="return checkAddress()" OnClick="btnSave_Click" ValidationGroup="addvendor" /><%--OnClick="btnSave_Click" ValidationGroup="addvendor"--%>
                                             <br />
                                             <asp:Label ID="LblSave" runat="server" ForeColor="Red"></asp:Label>
                                         </div>
@@ -1748,16 +1748,78 @@
         $('.clsmaskphone').mask("(999) 999-9999");
         $('.clsmaskphoneexten').mask("999999");
 
+
+        setTimeout(function () {
+            initialize();
+        }, 500);
+
         var mapProp;
-        initialize();
+        var map;
         function initialize() {
             mapProp = {
-                center: new google.maps.LatLng(40.748492, -73.985496),
+                center: new google.maps.LatLng(40.043482, -75.517138),
                 zoom: 5,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
-            var map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+            map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+            getAllAddressOnMap();
         }
+
+        function getAllAddressOnMap(){            
+            $.ajax({
+                type: "POST",
+                url: "Procurement.aspx/GetAllVendorsAddressDetail",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: null,
+                success: function (data) {
+                    initializeMapIcon(JSON.parse(data.d));
+                }
+            });
+        }
+
+        function initializeMapIcon(MapJSON) {
+            // Setup the different icons and shadows
+            var iconURLPrefix = 'http://maps.google.com/mapfiles/ms/icons/';
+
+            var icons = [
+            iconURLPrefix + 'red-dot.png',
+            iconURLPrefix + 'green-dot.png',
+            iconURLPrefix + 'blue-dot.png',
+            iconURLPrefix + 'orange-dot.png',
+            iconURLPrefix + 'purple-dot.png',
+            iconURLPrefix + 'pink-dot.png',
+            iconURLPrefix + 'yellow-dot.png'];
+
+            var icons_length = icons.length;
+
+            for (var i = 0; i < MapJSON.length; i++) {
+                var address = MapJSON[i];
+                var Latitude = address["Latitude"];
+                var Longitude = address["Longitude"];
+                var AddressType = address["AddressType"];
+                if (Latitude != null && Latitude != "" && Longitude != null && Longitude != "") {
+                    var iconCounter = 0;
+                    if (AddressType == "Primary") {
+                        iconCounter = 0;
+                    }
+                    if (AddressType == "Secondary") {
+                        iconCounter = 2;
+                    }
+                    if (AddressType == "Billing") {
+                        iconCounter = 3;
+                    }
+
+                    var marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(Latitude, Longitude),
+                        map: map,
+                        icon: icons[iconCounter]
+                    });
+
+                }
+            }
+        }
+
         function SearchText() {
             $(".VendorSearchBox").autocomplete({
                 minLength: 0,

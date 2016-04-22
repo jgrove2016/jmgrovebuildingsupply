@@ -168,6 +168,10 @@ namespace JG_Prospect.BLL
         {
             return VendorDAL.Instance.InsertVendorAddress(objvendor);
         }
+        public DataSet GetALLVendorAddress()
+        {
+            return VendorDAL.Instance.GetALLVendorAddress();
+        }
         public DataSet GetVendorAddress(int VendorId)
         {
             return VendorDAL.Instance.GetVendorAddress(VendorId);

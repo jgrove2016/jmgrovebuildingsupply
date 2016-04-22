@@ -737,6 +737,26 @@ namespace JG_Prospect.DAL
             }
         }
 
+        public DataSet GetALLVendorAddress()
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("sp_VendorAddress");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@action", DbType.Int16, 3);
+                    DS = database.ExecuteDataSet(command);
+                    return DS;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
         public DataSet GetVendorEmail(Vendor objVendor)
         {
             try

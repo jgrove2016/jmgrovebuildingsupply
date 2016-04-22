@@ -22,6 +22,7 @@ using System.Web.Script.Serialization;
 using System.Data.SqlClient;
 using Org.BouncyCastle.Asn1.Ocsp;
 using Newtonsoft.Json;
+using System.Net;
 
 namespace JG_Prospect.Sr_App
 {
@@ -532,6 +533,8 @@ namespace JG_Prospect.Sr_App
                 dtVendorAddress.Columns.Add("Country");
                 dtVendorAddress.Columns.Add("AddressID");
                 dtVendorAddress.Columns.Add("TempID");
+                dtVendorAddress.Columns.Add("Latitude");
+                dtVendorAddress.Columns.Add("Longitude");
             }
             DataRow AddressRow = dtVendorAddress.NewRow();
 
@@ -547,6 +550,44 @@ namespace JG_Prospect.Sr_App
                     AddressRow["Zip"] = Address[i].Zip.ToString();
                     AddressRow["Country"] = Address[i].Country.ToString();
                     AddressRow["TempID"] = NewTempID;
+
+                    DataTable dtCoordinates = new DataTable();
+
+                    string VendorAddress = AddressRow["Address"].ToString() + " " + AddressRow["City"].ToString() + " " + AddressRow["Country"].ToString() + " " + AddressRow["Zip"].ToString();
+                    try
+                    {
+                        string url = "http://maps.google.com/maps/api/geocode/xml?address=" + VendorAddress + "&sensor=false";
+                        WebRequest request = WebRequest.Create(url);
+                        using (WebResponse response = (HttpWebResponse)request.GetResponse())
+                        {
+                            using (StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.UTF8))
+                            {
+                                DataSet dsResult = new DataSet();
+                                dsResult.ReadXml(reader);
+                                dtCoordinates.Columns.AddRange(new DataColumn[4] { new DataColumn("Id", typeof(int)),
+                        new DataColumn("Address", typeof(string)),
+                        new DataColumn("Latitude",typeof(string)),
+                        new DataColumn("Longitude",typeof(string)) });
+                                foreach (DataRow row in dsResult.Tables["result"].Rows)
+                                {
+                                    string geometry_id = dsResult.Tables["geometry"].Select("result_id = " + row["result_id"].ToString())[0]["geometry_id"].ToString();
+                                    DataRow location = dsResult.Tables["location"].Select("geometry_id = " + geometry_id)[0];
+                                    dtCoordinates.Rows.Add(row["result_id"], row["formatted_address"], location["lat"], location["lng"]);
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+
+                    
+                    if (dtCoordinates.Rows.Count != 0)
+                    {
+                        AddressRow["Latitude"] = dtCoordinates.Rows[0]["Latitude"].ToString();
+                        AddressRow["Longitude"] = dtCoordinates.Rows[0]["Longitude"].ToString();
+                    }
+
                     dtVendorAddress.Rows.Add(AddressRow);
                     AddressRow = dtVendorAddress.NewRow();
                 }
@@ -750,6 +791,7 @@ namespace JG_Prospect.Sr_App
             txtPrimaryZip.Text = "";
             txtPrimaryAddress.Text = "";
             ddlCountry.ClearSelection();
+            ddlCountry.SelectedValue = "US";
             DrpVendorAddress.Items.Clear();
             DrpVendorAddress.Items.Add(new System.Web.UI.WebControls.ListItem("Select", "Select"));
             txtPrimaryContactExten0.Text = txtPrimaryContact0.Text = txtSecContactExten0.Text = txtSecContact0.Text = txtAltContactExten0.Text = txtAltContact0.Text = null;
@@ -3138,7 +3180,7 @@ namespace JG_Prospect.Sr_App
 
             DrpVendorAddress.Items.Clear();
             DrpVendorAddress.Items.Add(new System.Web.UI.WebControls.ListItem("Select", "Select"));
-            if (dsAddress.Tables[0].Rows.Count > 0)
+            if (dsAddress!=null && dsAddress.Tables[0].Rows.Count > 0)
             {
                 for (int i = 0; i < dsAddress.Tables[0].Rows.Count; i++)
                 {
@@ -3240,6 +3282,7 @@ namespace JG_Prospect.Sr_App
             txtPrimaryZip.Text = "";
             txtPrimaryAddress.Text = "";
             ddlCountry.ClearSelection();
+            ddlCountry.SelectedValue = "US";
 
             //if (VendorIdToEdit > 0)
             //{
@@ -3298,6 +3341,46 @@ namespace JG_Prospect.Sr_App
             string EmailJSON = JsonConvert.SerializeObject(dsemail.Tables[0]);
             ScriptManager.RegisterStartupScript(this, this.GetType(), "vendor Email", "AddVenderEmails(" + EmailJSON + ")", true);
         }
+
+        #region Find Coordinates
+        public DataTable FindCoordinates(string Address)
+        {
+            DataTable dtCoordinates = new DataTable();
+            string url = "http://maps.google.com/maps/api/geocode/xml?address=" + Address + "&sensor=false";
+            WebRequest request = WebRequest.Create(url);
+            using (WebResponse response = (HttpWebResponse)request.GetResponse())
+            {
+                using (StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.UTF8))
+                {
+                    DataSet dsResult = new DataSet();
+                    dsResult.ReadXml(reader);
+                    dtCoordinates.Columns.AddRange(new DataColumn[4] { new DataColumn("Id", typeof(int)),
+                        new DataColumn("Address", typeof(string)),
+                        new DataColumn("Latitude",typeof(string)),
+                        new DataColumn("Longitude",typeof(string)) });
+                    foreach (DataRow row in dsResult.Tables["result"].Rows)
+                    {
+                        string geometry_id = dsResult.Tables["geometry"].Select("result_id = " + row["result_id"].ToString())[0]["geometry_id"].ToString();
+                        DataRow location = dsResult.Tables["location"].Select("geometry_id = " + geometry_id)[0];
+                        dtCoordinates.Rows.Add(row["result_id"], row["formatted_address"], location["lat"], location["lng"]);
+                    }
+                }
+            }
+            return dtCoordinates;
+        }
+        #endregion
+
+        #region Get All Vendors Address Detail
+        [WebMethod]
+        [System.Web.Script.Services.ScriptMethod()]
+        public static string GetAllVendorsAddressDetail()
+        {
+            DataSet ds = VendorBLL.Instance.GetALLVendorAddress();
+            string AddressJSON = JsonConvert.SerializeObject(ds.Tables[0]);
+            return AddressJSON;
+            //ScriptManager.RegisterStartupScript(this, this.GetType(), "initializeMapIcon", "initializeMapIcon(" + AddressJSON + ");", true);
+        }
+        #endregion
     }
 
     public class NameValue
