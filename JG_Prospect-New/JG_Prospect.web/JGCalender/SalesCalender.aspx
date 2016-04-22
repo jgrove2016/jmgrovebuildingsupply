@@ -130,6 +130,26 @@
                     </td>
                 </tr>--%>
                 <tr>
+                    <td class="alignRight">Customer ID:</td>
+                    <td class="alignLeft"><span id="txtCustID"></span></td>
+                </tr>
+                <tr>
+                    <td class="alignRight">Last Name:</td>
+                    <td class="alignLeft"><span id="txtlstName"></span></td>
+                </tr>
+                <tr>
+                    <td class="alignRight">Primary Phone #:</td>
+                    <td class="alignLeft"><span id="spnPrimaryPhone"></span></td>
+                </tr>
+                <tr>
+                    <td class="alignRight">Address:</td>
+                    <td class="alignLeft"><span id="spnAddress"></span></td>
+                </tr>
+                  <tr>
+                    <td class="alignRight">Zip:</td>
+                    <td class="alignLeft"><span id="spnZip"></span></td>
+                </tr>
+                <tr style="display:none">
                     <td class="alignRight">Description:</td>
                     <td class="alignLeft">
                         <textarea id="eventDesc" disabled="disabled" cols="30" rows="3"></textarea></td>
@@ -153,6 +173,11 @@
                         </select></td>
                 </tr>
                 <tr>
+                    <td class="alignRight">Product Line:</td>
+                    <td class="alignLeft">
+                        <span id="spnProductLine"></span></td>
+                </tr>
+                <tr>
                     <td class="alignRight">Start:</td>
                     <td class="alignLeft">
                         <span id="eventStart"></span></td>
@@ -162,6 +187,11 @@
                     <td class="alignLeft">
                         <span id="eventEnd"></span>
                         <input type="hidden" id="eventId" /></td>
+                </tr>
+                <tr>
+                    <td class="alignRight">Added By:</td>
+                    <td class="alignLeft">
+                        <span id="spnAddedBy"></span></td>
                 </tr>
             </table>
         </div>

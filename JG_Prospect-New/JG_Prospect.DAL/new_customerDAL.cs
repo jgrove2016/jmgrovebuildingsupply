@@ -487,7 +487,7 @@ namespace JG_Prospect.DAL
             }
 
         }
-        public int AddCustomerFollowUp(int customerid, DateTime meetingdate, string Status, int userId, bool IsNotes, int assignuserid, string TempFileName, int pEstimateID = 0)
+        public int AddCustomerFollowUp(int customerid, DateTime meetingdate, string Status, int userId, bool IsNotes, int assignuserid, string TempFileName, int pEstimateID = 0,int pProductID =0)
         {
             int result = 0;
             try
@@ -500,7 +500,7 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@MeetingDate", DbType.DateTime, meetingdate);
                     database.AddInParameter(command, "@MeetingStatus", DbType.String, Status);
                     database.AddInParameter(command, "@UserId", DbType.Int32, userId);
-                    database.AddInParameter(command, "@ProductId", DbType.Int32, null);
+                    database.AddInParameter(command, "@ProductId", DbType.Int32, pProductID );
                     database.AddInParameter(command, "@EstimateId", DbType.Int32, pEstimateID);
                     database.AddInParameter(command, "@IsNotes", DbType.Boolean, IsNotes);
                     database.AddInParameter(command, "@AssignedId", DbType.Int32, assignuserid);

@@ -1492,7 +1492,9 @@
                                         <Columns>
                                             <asp:TemplateField HeaderText="Quote or Sold Job#" HeaderStyle-Width="15%" ItemStyle-Width="50px">
                                                 <ItemTemplate>
-                                                    <asp:LinkButton ID="lnkSoldJobDetails" OnClick="lnkSoldJobDetails_Click" runat="server" Text='<%# Eval("SoldJobId").ToString().Substring( Eval("SoldJobId").ToString().IndexOf("-")+1)  %>'></asp:LinkButton>
+                                                    <asp:HiddenField ID="hdnproductid" runat="server" Value='<%#Eval("JobSeqID") %>' />
+                                                    <asp:HiddenField ID="hdnProductTypeId" runat="server" Value='<%#Eval("ProductTypeId") %>' />
+                                                    <asp:LinkButton CommandArgument='<%#Eval("CustomerID") %>' ID="lnkSoldJobDetails" OnClick="lnkSoldJobDetails_Click"  runat="server"  Text='<%# Eval("SoldJobId").ToString().Substring( Eval("SoldJobId").ToString().IndexOf("-")+1)  %>' ></asp:LinkButton>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <%--<asp:BoundField ItemStyle-Width="50px" HeaderText="Quote or Sold Job#" DataField="SoldJobId" />--%>

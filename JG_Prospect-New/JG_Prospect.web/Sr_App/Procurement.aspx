@@ -1847,6 +1847,7 @@
             });
         }
 
-        $('#tabs').tabs();
+        $('#tabs').tabs();
+
     </script>
 </asp:Content>

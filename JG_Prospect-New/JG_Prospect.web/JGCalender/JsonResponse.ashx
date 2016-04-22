@@ -41,9 +41,15 @@ namespace JG_Prospect.JGCalender
                     end = String.Format("{0:s}", cevent.end),
                     description = cevent.description,
                     allDay = cevent.allDay,
-                    status = cevent.status
-                }
-                    );
+                    status = cevent.status,
+                    customerid = cevent.customerid,
+                    lastname = cevent.lastname,
+                    primarycontact = cevent.primarycontact,
+                    address = cevent.address,
+                    zipcode = cevent.zipcode,
+                    productline = cevent.productline,
+                    addedby = cevent.addedby
+                });
                 idList.Add(cevent.id);
             }
 

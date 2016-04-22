@@ -19,6 +19,15 @@ function updateEvent(event, element) {
     $("#eventId").val(event.id);
     $("#eventStart").text("" + event.start.toLocaleString());
     $("#eventStatus").val(event.status);
+    
+    $("#txtCustID").text(event.customerid);
+    
+    $("#txtlstName").text(event.lastname);
+    $("#spnPrimaryPhone").text(event.primarycontact);
+    $("#spnAddress").text(event.address);
+    $("#spnZip").text(event.zipcode);
+    $("#spnProductLine").text(event.productline);
+    $("#spnAddedBy").text(event.addedby);
 
     if (event.end === null) {
         $("#eventEnd").text("");

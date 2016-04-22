@@ -47,6 +47,12 @@ namespace JG_Prospect.BLL
             return AdminDAL.Instance.FetchContractTemplate(id);
         }
 
+        public DataSet GetAutoEmailTemplate(int pHTMLTemplateID)
+        {
+            return AdminDAL.Instance.GetAutoEmailTemplate(pHTMLTemplateID);
+        }
+
+
         public DataSet FetchWorkOrderTemplate()
         {
             return AdminDAL.Instance.FetchWorkOrderTemplate();
@@ -390,6 +396,11 @@ namespace JG_Prospect.BLL
         public bool UpdateEmailVendorCategoryTemplate(string EmailTemplateHeader, string EmailTemplateFooter, string subject, int pHTMLTemplateID,  List<CustomerDocument> custList)
         {
             return AdminDAL.Instance.UpdateEmailVendorCategoryTemplate(EmailTemplateHeader, EmailTemplateFooter,subject,pHTMLTemplateID,custList);
+        }
+
+        public bool UpdateHTMLTemplate(string EmailTemplateHeader, string EmailTemplateFooter, string subject, int pHTMLTemplateID, List<CustomerDocument> custList)
+        {
+            return AdminDAL.Instance.UpdateHTMLTemplate(EmailTemplateHeader, EmailTemplateFooter, subject, pHTMLTemplateID, custList);
         }
         
         public DataSet GetHTMLTemplateAttachedFile(int pHTMLTemplateID)

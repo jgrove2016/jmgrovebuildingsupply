@@ -152,9 +152,9 @@ namespace JG_Prospect.BLL
         {
             return new_customerDAL.Instance.GetCustomerFollowUpDetails(Id);
         }
-        public int AddCustomerFollowUp(int customerid, DateTime meetingdate, string Status, int userId, bool IsNotes, int assignuserid, string strFileName = "", int pEstimateID = 0)
+        public int AddCustomerFollowUp(int customerid, DateTime meetingdate, string Status, int userId, bool IsNotes, int assignuserid, string strFileName = "", int pEstimateID = 0, int pProductID = 0)
         {
-            return new_customerDAL.Instance.AddCustomerFollowUp(customerid, meetingdate, Status, userId, IsNotes, assignuserid, strFileName, pEstimateID);
+            return new_customerDAL.Instance.AddCustomerFollowUp(customerid, meetingdate, Status, userId, IsNotes, assignuserid, strFileName, pEstimateID, pProductID);
         }
         /// <summary>
         /// To Check for the Customer Duplication

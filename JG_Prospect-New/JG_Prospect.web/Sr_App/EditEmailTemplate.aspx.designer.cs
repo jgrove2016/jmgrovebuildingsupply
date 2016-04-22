@@ -13,22 +13,22 @@ namespace JG_Prospect.Sr_App {
     public partial class EditEmailTemplate {
         
         /// <summary>
-        /// pnlEmailTemplateForVendorCategories control.
+        /// lblPageTitle control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlEmailTemplateForVendorCategories;
+        protected global::System.Web.UI.WebControls.Label lblPageTitle;
         
         /// <summary>
-        /// txtVendorSubject control.
+        /// txtSubject control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtVendorSubject;
+        protected global::System.Web.UI.WebControls.TextBox txtSubject;
         
         /// <summary>
         /// flVendCat control.
@@ -58,24 +58,6 @@ namespace JG_Prospect.Sr_App {
         protected global::AjaxControlToolkit.HTMLEditor.Editor HeaderEditor;
         
         /// <summary>
-        /// lblMaterials control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMaterials;
-        
-        /// <summary>
-        /// BodyEditor control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.HTMLEditor.Editor BodyEditor;
-        
-        /// <summary>
         /// FooterEditor control.
         /// </summary>
         /// <remarks>
@@ -92,77 +74,5 @@ namespace JG_Prospect.Sr_App {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnUpdate;
-        
-        /// <summary>
-        /// pnlEmailTemplateForVendors control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlEmailTemplateForVendors;
-        
-        /// <summary>
-        /// txtSubject control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtSubject;
-        
-        /// <summary>
-        /// flVend control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.FileUpload flVend;
-        
-        /// <summary>
-        /// grdVendAtc control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView grdVendAtc;
-        
-        /// <summary>
-        /// HeaderEditorVendor control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.HTMLEditor.Editor HeaderEditorVendor;
-        
-        /// <summary>
-        /// lblMaterialsVendor control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMaterialsVendor;
-        
-        /// <summary>
-        /// FooterEditorVendor control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.HTMLEditor.Editor FooterEditorVendor;
-        
-        /// <summary>
-        /// btnUpdateVendor control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnUpdateVendor;
     }
 }

@@ -1186,14 +1186,6 @@ namespace JG_Prospect.Sr_App
                 else
                     bitYesNo = false;
 
-                //Commented By TCT, No need to check for required field
-                //if ((txtestimate_date.Text != "" || txtestimate_time.Text != ""))
-                //{
-                //    ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please fill only one : either Estimate Date & Time or Follow Up Date');", true);
-                //    return;
-                //}
-
-
                 objcust.BestTimetocontact = hdnBestTimeToContact.Value;
                 objcust.CompetitorsBids = txtCompetitorBids.Text;
                 //objcust.BestTimetocontact = txtBestDayToContact.Text;
@@ -1217,65 +1209,14 @@ namespace JG_Prospect.Sr_App
                 {
                     objcust.ContactPreference = chbmail.Text;
                 }
-                /* Commented by Tct*/
-                //if ((ddlfollowup3.SelectedItem.Text == "est<$1000" || ddlfollowup3.SelectedItem.Text == "est>$1000"))
-                //{
-                //    ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please Select FollowUp Date!');", true);
-                //    return;
-                //}
-
-
-                //if (ddlPrimaryContact.SelectedValue == "Cell Phone")
-                //{
-                //    if (txtcell_ph.Text == "")
-                //    {
-                //        ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please Enter Cell Phone, as it is primary contact');", true);
-                //        return;
-                //    }
-                //    primarycontact = txtcell_ph.Text;
-                //}
-                //else if (ddlPrimaryContact.SelectedValue == "House Phone")
-                //{
-                //    if (txthome_phone.Text == "")
-                //    {
-                //        ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please Enter House Phone, as it is primary contact');", true);
-                //        return;
-                //    }
-                //    primarycontact = txthome_phone.Text;
-                //}
-                //else if (ddlPrimaryContact.SelectedValue == "Alt Phone")
-                //{
-                //    if (txtalt_phone.Text == "")
-                //    {
-                //        ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please Enter Alternate Phone, as it is primary contact');", true);
-                //        return;
-                //    }
-                //    primarycontact = txtalt_phone.Text;
-                //}
-
-
-                //if (chbemail.Checked)
-                //{
-                //    if (txtEMail1.Value == "" && txtEMail2. == "" && txtEMail3.Text == "")
-                //    {
-                //        ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please Enter at least one Email');", true);
-                //        return;
-                //    }
-                //    objcust.ContactPreference = chbemail.Text;
-                //}
+                
                 if (chbmail.Checked)
                 {
                     objcust.ContactPreference = chbmail.Text;
                 }
+               
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
-                //objcust.firstName = txtfirstname.Text.Trim();
-                //objcust.lastName = txtlast_name.Text.Trim();
-                //objcust.customerNm = txtfirstname.Text.Trim() + ' ' + txtlast_name.Text.Trim();
-                //objcust.CustomerAddress = txtaddress.Text;
-                //objcust.state = txtstate.Text;
-                //objcust.City = txtcity.Text;
-                //objcust.Zipcode = txtzip.Text;
-                //objcust.BillingAddress = txtbill_address.Text;
+               
                 DateTime EstDate = new DateTime();
                 EstDate = string.IsNullOrEmpty(txtestimate_date.Text) ? Convert.ToDateTime("1/1/1753", JGConstant.CULTURE) : Convert.ToDateTime(txtestimate_date.Text, JGConstant.CULTURE);
                 objcust.EstDate = EstDate.ToString("MM/dd/yyyy");
@@ -1288,38 +1229,7 @@ namespace JG_Prospect.Sr_App
                 {
                     objcust.Leadtype = ddlleadtype.SelectedValue.ToString();
                 }
-                //objcust.CellPh = txtcell_ph.Text;
-                //objcust.HousePh = txthome_phone.Text;
-                //objcust.AltPh = txtalt_phone.Text;
-                //objcust.Email = txtEmail.Text;
-                //objcust.Email2 = txtEmail2.Text;
-                //objcust.Email3 = txtEmail3.Text;
-                //objcust.CallTakenby = txtcall_taken.Text;
-                //objcust.Addedby = txtcall_taken.Text;
-                //objcust.Notes = txtService.Text;
-                //objcust.BestTimetocontact = ddlbesttime.SelectedValue;
-                //objcust.PrimaryContact = ddlPrimaryContact.SelectedValue;
-                //    objcust.followupdate = string.IsNullOrEmpty(txtfollowup3.Text) ? "1/1/1753" : Convert.ToDateTime(txtfollowup3.Text, JGConstant.CULTURE).ToString("MM/dd/yyyy");
-
-                /* Commented by Tct*/
-                //if (ddlfollowup3.SelectedValue == "0")
-                //    objcust.status = Hiddenfieldstatus.Value;
-                //else
-                //    objcust.status = ddlfollowup3.SelectedItem.Text;
-
-
-                //objcust.Service = txtService.Text;
-                //if (ddlleadtype.SelectedValue.ToString() == "Other")
-                //{
-                //    objcust.Leadtype = txtleadtype.Text;
-                //}
-                //else
-                //{
-                //    objcust.Leadtype = ddlleadtype.SelectedValue.ToString();
-                //}
-
-                //  objcust.ProjectManager = txtProjectManager.Text;
-
+                
                 if (drpProductOfInterest1.SelectedIndex != 0)
                 {
                     objcust.Productofinterest = Convert.ToInt16(drpProductOfInterest1.SelectedItem.Value);
@@ -1351,29 +1261,8 @@ namespace JG_Prospect.Sr_App
 
                 int res = new_customerBLL.Instance.UpdateSrCustomer(objcust, dtbleAddress, dtbleBillingAddress, dtblePrimary, dtbleProduct, bitYesNo);
 
-                // UserId = Convert.ToInt16(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]);
-                /* Commented by Tct*/
-                //if (ddlfollowup3.SelectedValue != "0")
-                //{
-                //    int res1;
-                //    if (ddlfollowup3.SelectedItem.Text == "est<$1000" || ddlfollowup3.SelectedItem.Text == "est>$1000")
-                //    {
-                //        //if (txtfollowup3.Text != "")
-                //        //{
-                //        //    res1 = new_customerBLL.Instance.AddCustomerFollowUp(objcust.id, DateTime.Parse(objcust.followupdate,JGConstant.CULTURE), objcust.status, UserId, false,0);
-                //        //    lblmsg.Visible = false;
-                //        //}
-                //        //else
-                //        //{
-                //        //    ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please enter Follow Up Date');", true);
-                //        //    return;
-                //        //}
-                //    }
-                //    else
-                //    {
-                //        res1 = new_customerBLL.Instance.AddCustomerFollowUp(objcust.id, DateTime.Parse(objcust.followupdate, JGConstant.CULTURE), objcust.status, UserId, false, 0);
-                //    }
-                //}
+               
+
                 string AdminId = ConfigurationManager.AppSettings["AdminUserId"].ToString();
                 string Adminuser = ConfigurationManager.AppSettings["AdminCalendarUser"].ToString();
                 string AdminPwd = ConfigurationManager.AppSettings["AdminCalendarPwd"].ToString();
@@ -1406,43 +1295,46 @@ namespace JG_Prospect.Sr_App
                         //string gaddress = txtaddress.Text + " " + txtcity.Text + "," + txtstate.Text + " -" + txtzip.Text;
                         string gaddress = ""; //TCT
 
-                        if (GoogleCalendarEvent.DeleteEvent(objcust.id.ToString(), gtitle, gcontent, gaddress, datetime, datetime.AddHours(1), AdminId))
-                        {
-                            GoogleCalendarEvent.AddEvent(GoogleCalendarEvent.GetService("GoogleCalendar", Adminuser, AdminPwd), objcust.id.ToString(), gtitle, gcontent, gaddress, Convert.ToDateTime(datetime), Convert.ToDateTime(datetime).AddHours(1), AdminId);
-                        }
-                        else
-                        {
-                            ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('There is some error in deleting the Customer');", true);
-                        }
-                        if (AdminId != objcust.Addedby)
-                        {
-                            if (GoogleCalendarEvent.DeleteEvent(objcust.id.ToString(), gtitle, gcontent, gaddress, datetime, datetime.AddHours(1), objcust.Addedby))
-                            {
-                                GoogleCalendarEvent.AddEvent(GoogleCalendarEvent.GetService("GoogleCalendar", Adminuser, AdminPwd), objcust.id.ToString(), gtitle, gcontent, gaddress, Convert.ToDateTime(datetime), Convert.ToDateTime(datetime).AddHours(1), objcust.Addedby);
-                            }
-                            else
-                            {
-                                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('There is some error in deleting the Customer');", true);
-                            }
-                        }
-                        if (GoogleCalendarEvent.DeleteEvent(objcust.id.ToString(), gtitle, gcontent, gaddress, datetime, datetime.AddHours(1), JGConstant.CustomerCalendar))
-                        {
-                            GoogleCalendarEvent.AddEvent(GoogleCalendarEvent.GetService("GoogleCalendar", Adminuser, AdminPwd), objcust.id.ToString(), gtitle, gcontent, gaddress, Convert.ToDateTime(datetime), Convert.ToDateTime(datetime).AddHours(1), JGConstant.CustomerCalendar);
-                        }
-                        else
-                        {
-                            ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('There is some error in deleting the Customer');", true);
-                        }
-                    }
 
+                        new_customerBLL.Instance.AddCustomerFollowUp(Convert.ToInt32(Session["CustomerId"].ToString()), DateTime.Now, "", UserId, true, 0, "", 0, Convert.ToInt32(drpProductOfInterest1.SelectedValue));
+                       
+
+                        //if (GoogleCalendarEvent.DeleteEvent(objcust.id.ToString(), gtitle, gcontent, gaddress, datetime, datetime.AddHours(1), AdminId))
+                        //{
+                        //    GoogleCalendarEvent.AddEvent(GoogleCalendarEvent.GetService("GoogleCalendar", Adminuser, AdminPwd), objcust.id.ToString(), gtitle, gcontent, gaddress, Convert.ToDateTime(datetime), Convert.ToDateTime(datetime).AddHours(1), AdminId);
+                        //}
+                        //else
+                        //{
+                        //    ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('There is some error in deleting the Customer');", true);
+                        //}
+                        //if (AdminId != objcust.Addedby)
+                        //{
+                        //    if (GoogleCalendarEvent.DeleteEvent(objcust.id.ToString(), gtitle, gcontent, gaddress, datetime, datetime.AddHours(1), objcust.Addedby))
+                        //    {
+                        //        GoogleCalendarEvent.AddEvent(GoogleCalendarEvent.GetService("GoogleCalendar", Adminuser, AdminPwd), objcust.id.ToString(), gtitle, gcontent, gaddress, Convert.ToDateTime(datetime), Convert.ToDateTime(datetime).AddHours(1), objcust.Addedby);
+                        //    }
+                        //    else
+                        //    {
+                        //        ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('There is some error in deleting the Customer');", true);
+                        //    }
+                        //}
+                        //if (GoogleCalendarEvent.DeleteEvent(objcust.id.ToString(), gtitle, gcontent, gaddress, datetime, datetime.AddHours(1), JGConstant.CustomerCalendar))
+                        //{
+                        //    GoogleCalendarEvent.AddEvent(GoogleCalendarEvent.GetService("GoogleCalendar", Adminuser, AdminPwd), objcust.id.ToString(), gtitle, gcontent, gaddress, Convert.ToDateTime(datetime), Convert.ToDateTime(datetime).AddHours(1), JGConstant.CustomerCalendar);
+                        //}
+                        //else
+                        //{
+                        //    ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('There is some error in deleting the Customer');", true);
+                        //}
+                    }
                     else
                     {
-                        GoogleCalendarEvent.DeleteEvent(objcust.id.ToString(), "", "", "", DateTime.Now, DateTime.Now, AdminId);
-                        if (Session["AdminUserId"] == null)
-                        {
-                            GoogleCalendarEvent.DeleteEvent(objcust.id.ToString(), "", "", "", DateTime.Now, DateTime.Now, objcust.Addedby);
-                        }
-                        GoogleCalendarEvent.DeleteEvent(objcust.id.ToString(), "", "", "", DateTime.Now, DateTime.Now, JGConstant.CustomerCalendar);
+                        //GoogleCalendarEvent.DeleteEvent(objcust.id.ToString(), "", "", "", DateTime.Now, DateTime.Now, AdminId);
+                        //if (Session["AdminUserId"] == null)
+                        //{
+                        //    GoogleCalendarEvent.DeleteEvent(objcust.id.ToString(), "", "", "", DateTime.Now, DateTime.Now, objcust.Addedby);
+                        //}
+                        //GoogleCalendarEvent.DeleteEvent(objcust.id.ToString(), "", "", "", DateTime.Now, DateTime.Now, JGConstant.CustomerCalendar);
                     }
 
 
@@ -1535,47 +1427,51 @@ namespace JG_Prospect.Sr_App
 
         private void ResetFormControlValues(Control parent)
         {
-            //imgmap.ImageUrl = "";
-            //GridViewLocationPic.DataSource = null;
-            //GridViewLocationPic.DataBind();
-            GridViewSoldJobs.DataSource = null;
-            GridViewSoldJobs.DataBind();
-            //LinkButtonmap1.Text = "";
-            //LinkButtonmap2.Text = "";
-            lblmsg.Text = "";
-            //LblStatus1.Text = "";
-
-            foreach (Control c in parent.Controls)
+            try
             {
-                if (c.Controls.Count > 0)
+                //imgmap.ImageUrl = "";
+                //GridViewLocationPic.DataSource = null;
+                //GridViewLocationPic.DataBind();
+                GridViewSoldJobs.DataSource = null;
+                GridViewSoldJobs.DataBind();
+                //LinkButtonmap1.Text = "";
+                //LinkButtonmap2.Text = "";
+                lblmsg.Text = "";
+                //LblStatus1.Text = "";
+
+                foreach (Control c in parent.Controls)
                 {
-                    ResetFormControlValues(c);
-                }
-                else
-                {
-                    switch (c.GetType().ToString())
+                    if (c.Controls.Count > 0)
                     {
-                        case "System.Web.UI.WebControls.TextBox":
-                            ((TextBox)c).Text = "";
-                            break;
-                        case "System.Web.UI.WebControls.CheckBox":
-                            ((CheckBox)c).Checked = false;
-                            break;
-                        case "System.Web.UI.WebControls.RadioButton":
-                            ((RadioButton)c).Checked = false;
-                            break;
-                        case "System.Web.UI.WebControls.DropDownList":
-                            ((DropDownList)c).SelectedValue = "0";
-                            break;
-
-                        case "System.Web.UI.WebControls.Image":
-                            ((Image)c).ImageUrl = "";
-                            break;
-
+                        ResetFormControlValues(c);
                     }
-                }
+                    else
+                    {
+                        switch (c.GetType().ToString())
+                        {
+                            case "System.Web.UI.WebControls.TextBox":
+                                ((TextBox)c).Text = "";
+                                break;
+                            case "System.Web.UI.WebControls.CheckBox":
+                                ((CheckBox)c).Checked = false;
+                                break;
+                            case "System.Web.UI.WebControls.RadioButton":
+                                ((RadioButton)c).Checked = false;
+                                break;
+                            case "System.Web.UI.WebControls.DropDownList":
+                                ((DropDownList)c).SelectedValue = "0";
+                                break;
 
+                            case "System.Web.UI.WebControls.Image":
+                                ((Image)c).ImageUrl = "";
+                                break;
+
+                        }
+                    }
+
+                }
             }
+            catch { }
 
         }
 
@@ -1930,7 +1826,16 @@ namespace JG_Prospect.Sr_App
 
         protected void lnkSoldJobDetails_Click(object sender, EventArgs e)
         {
-            ModalPopupExtender1.Show();
+            LinkButton lnksoldjobid = sender as LinkButton;
+            GridViewRow gr = (GridViewRow)lnksoldjobid.Parent.Parent;
+            //Newly Added .....
+            HiddenField hdnProductTypeId = (HiddenField)gr.FindControl("hdnProductTypeId");
+            HiddenField hdnproductid = (HiddenField)gr.FindControl("hdnproductid");
+            int customerId = Convert.ToInt16(lnksoldjobid.CommandArgument);
+            int productId = Convert.ToInt16(hdnproductid.Value); //Convert.ToInt16(dssoldJobs.Tables[0].Rows[0]["EstimateId"].ToString());
+
+            Response.Redirect("Custom.aspx?ProductTypeId=" + Convert.ToInt16(hdnProductTypeId.Value) + "&ProductId=" + productId + "&CustomerId=" + customerId);
+
         }
 
         [System.Web.Services.WebMethod]

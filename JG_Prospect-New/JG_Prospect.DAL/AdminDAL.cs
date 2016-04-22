@@ -50,6 +50,27 @@ namespace JG_Prospect.DAL
             }
         }
 
+        public DataSet GetAutoEmailTemplate(int pHTMLTemplateID)
+        {
+            DataSet result = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_GETAutoEmailTemplates");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@HTMLTemplateID", DbType.Int32, pHTMLTemplateID);
+                    result = database.ExecuteDataSet(command);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+                return null;
+            }
+        }
+
         public DataSet FetchContractTemplate(int id)
         {
             DataSet result = new DataSet();
@@ -1733,6 +1754,47 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@EmailTemplateHeader", DbType.String, EmailTemplateHeader);
                     database.AddInParameter(command, "@EmailTemplateFooter", DbType.String, EmailTemplateFooter);
                     database.AddInParameter(command, "@Subject", DbType.String, subject);
+                    database.ExecuteNonQuery(command);
+                    foreach (var item in custList)
+                    {
+                        DbCommand command2 = database.GetStoredProcCommand("UDP_AddCustomerFile");
+                        command2.CommandType = CommandType.StoredProcedure;
+                        database.AddInParameter(command2, "@DocumentName", DbType.String, item.DocumentName);
+                        database.AddInParameter(command2, "@DocumentPath", DbType.String, item.DocumentPath);
+                        database.AddInParameter(command2, "@HTMLTemplateID", DbType.String, pHTMLTemplateID);
+                        database.ExecuteNonQuery(command2);
+                    }
+                    command.Dispose();
+                    result = true;
+                }
+
+                return result;
+
+            }
+
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+                return false;
+            }
+
+        }
+
+        public bool UpdateHTMLTemplate(string EmailTemplateHeader, string EmailTemplateFooter, string subject, int pHTMLTemplateID, List<CustomerDocument> custList)
+        {
+            bool result = false;
+            try
+            {
+
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_SaveHTMLTemplate");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@EmailTemplateHeader", DbType.String, EmailTemplateHeader);
+                    database.AddInParameter(command, "@EmailTemplateFooter", DbType.String, EmailTemplateFooter);
+                    database.AddInParameter(command, "@Subject", DbType.String, subject);
+                    database.AddInParameter(command, "@HTMLTemplateID", DbType.Int32, pHTMLTemplateID);
+                    
                     database.ExecuteNonQuery(command);
                     foreach (var item in custList)
                     {

@@ -488,6 +488,7 @@
     <Content Include="Sr_App\Custom.aspx" />
     <Content Include="Sr_App\CustomerEmailTemplate.aspx" />
     <Content Include="Sr_App\Custom_MaterialList.aspx" />
+    <Content Include="Sr_App\EditEmailTemplate.aspx" />
     <Content Include="Sr_App\EditInstallUser.aspx" />
     <Content Include="Sr_App\EmailTemplateForVendorCategories.aspx" />
     <Content Include="Sr_App\EmailTemplateForVendors.aspx" />
@@ -998,6 +999,13 @@
     </Compile>
     <Compile Include="Sr_App\Custom_MaterialList.aspx.designer.cs">
       <DependentUpon>Custom_MaterialList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Sr_App\EditEmailTemplate.aspx.cs">
+      <DependentUpon>EditEmailTemplate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Sr_App\EditEmailTemplate.aspx.designer.cs">
+      <DependentUpon>EditEmailTemplate.aspx</DependentUpon>
     </Compile>
     <Compile Include="Sr_App\EditInstallUser.aspx.cs">
       <DependentUpon>EditInstallUser.aspx</DependentUpon>
