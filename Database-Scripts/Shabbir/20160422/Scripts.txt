@@ -1,0 +1,95 @@
+
+
+/****** Object:  StoredProcedure [dbo].[USP_GETAutoEmailTemplates]    Script Date: 04/22/2016 20:56:53 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_GETAutoEmailTemplates]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_GETAutoEmailTemplates]
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[USP_GETAutoEmailTemplates]    Script Date: 04/22/2016 20:56:53 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-04-22
+-- Description:	This procedure will get HTML Template and it's attached files
+-- =============================================
+CREATE PROCEDURE [dbo].[USP_GETAutoEmailTemplates] 
+(
+	@HTMLTemplateID INT
+)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	SELECT Html_Name, ISNULL(HTMLSubject, '') AS HTMLSubject, ISNULL(HTMLHeader,'') AS HTMLHeader, ISNULL(HTMLFooter,'') AS HTMLFooter FROM tblHTMLTemplates WHERE ID = @HTMLTemplateID
+	SELECT * FROM tblCustomerAttachment WHERE HTMLTemplateID = @HTMLTemplateID
+END
+
+GO
+
+
+
+
+/****** Object:  StoredProcedure [dbo].[USP_SaveHTMLTemplate]    Script Date: 04/22/2016 21:02:25 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_SaveHTMLTemplate]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_SaveHTMLTemplate]
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[USP_SaveHTMLTemplate]    Script Date: 04/22/2016 21:02:25 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-04-22
+-- Description:	This procedure will save html template
+-- =============================================
+CREATE PROCEDURE [dbo].[USP_SaveHTMLTemplate] 
+	@EmailTemplateHeader nvarchar(max),
+	@EmailTemplateFooter nvarchar(max),
+	@AttachmentPath VARCHAR(MAX) = '',
+	@Subject VARCHAR(MAX) = '',
+	@HTMLTemplateID INT
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+	UPDATE tblHTMLTemplates 
+		SET HTMLHeader = @EmailTemplateHeader,
+		HTMLFooter = @EmailTemplateFooter,
+		HTMLSubject = @Subject
+		WHERE Id = @HTMLTemplateID
+END
+
+GO
+
+
+
+SET IDENTITY_INSERT tblHTMLTemplates ON
+GO
+
+INSERT INTO tblHTMLTemplates (Id, Html_Name, HTMLSubject, HTMLHeader, HTMLFooter) VALUES
+(100, 'Sales Auto Email', 'Sales Auto Email', '', ''),
+(101, 'Installer Auto Email', 'Installer Auto Email', '', ''),
+(102, 'Customer Service Auto Email', 'Customer Service Auto Email', '', ''),
+(103, 'Prospecting Auto Email', 'Prospecting Auto Email', '', ''),
+(104, 'Interview Date Auto Email', 'Interview Date Auto Email', '', ''),
+(105, 'Offer Made Auto Email', 'Offer Made Auto Email', '', ''),
+(106, 'Active Auto Email', 'Active Auto Email', '', ''),
+(107, 'Deactive Auto Email', 'Deactive Auto Email', '', '')
+
+
+SET IDENTITY_INSERT tblHTMLTemplates OFF
+GO

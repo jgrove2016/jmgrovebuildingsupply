@@ -3,26 +3,12 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <%@ Register Src="~/UserControl/UCAddress.ascx" TagPrefix="uc1" TagName="UCAddress" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <%---------start script for Datetime Picker----------%>
     <link href="../datetime/css/jquery-ui-1.7.1.custom.css" rel="stylesheet" type="text/css" />
     <link href="../datetime/css/stylesheet.css" rel="stylesheet" type="text/css" />
     <link href="../css/pgwslideshow.min.css" rel="stylesheet" type="text/css" />
-    <%-- <link href="../css/dropDownListDiv.css" rel="stylesheet" type="text/css" />--%>
     <link href="../Scripts/jquery.webui-popover.min.css" rel="stylesheet" type="text/css" />
-
+    <link href="../datetime/js/jquery.ptTimeSelect.css" rel="stylesheet" type="text/css" />
     <style type="text/css">
-        /*#ddlPrimaryPhoneType{
-            width: 70%;
-        }
-
-        #txtPrimaryPhoneNumber{
-            width: 60%;
-        }
-
-        .lblPhonePrimaryContact{
-            width: 20%;
-        }*/
-
         #container {
             width: 95%;
             height: 600px;
@@ -355,13 +341,19 @@
     <%--<script src="../Scripts/dropDownlistDiv.js" type="text/javascript"></script>--%>
     <script src="../Scripts/jquery.webui-popover.min.js" type="text/javascript"></script>
     <script src="../Scripts/pgwslideshow.min.js" type="text/javascript"></script>
-    <script language="JavaScript" type="text/javascript">
-
+    
+    
+    <script type="text/javascript">
         var PrimaryRadio = 0;
         var SecondaryRadio = 0;
         var map;
         var directionsDisplay;
         var directionsService;
+        try {
+
+        }
+        catch(e){}
+        
 
         // directionsService = new google.maps.DirectionsService();
 
@@ -1215,10 +1207,11 @@
         window.onload = function () {
             //$(document).ready(function () {
             //  debugger;
-
+            
             BindPrimaryContact();
-            $(".date").datepicker();
-            $('.time').ptTimeSelect();
+
+            
+            
             $('code').each(
 					function () {
 					    eval($(this).html());
@@ -1699,8 +1692,7 @@
                             <td>
                                 <label>
                                     Estimate Date</label>
-                                <asp:TextBox ID="txtestimate_date" CssClass="date" TabIndex="5" runat="server" onkeypress="return false"></asp:TextBox>
-                                <%--<input type="text" name="textfield" id="textfield" />--%>
+                                <asp:TextBox ID="txtestimate_date" CssClass="date" TabIndex="5" runat="server" ></asp:TextBox>
                                 <label>
                                 </label>
                             </td>
@@ -2031,27 +2023,16 @@
         </div>
         <!-- Tabs endss -->
     </div>
-    <%--  <asp:Panel ID="ModalPanel" runat="server" Width="500px">
-        Customer Records are duplicated. Are you sure want to update the existing record?
-        <asp:Button ID="OKButton" runat="server" Text="Close" />
-</asp:Panel>
+    <link href="../datetime/jq/ui-lightness/jquery-ui-1.10.0.custom.min.css" rel="stylesheet" />    <link href="../datetime/jq/jquery.ui.timepicker.css" rel="stylesheet" />
 
-    <asp:Button ID="hdnDuplicationStatus" runat="server" Text="" Visible="false"/>
-
-
-
-    <ajaxToolkit:ModalPopupExtender ID="mpe" runat="server"  
-    TargetControlID="hdnDuplicationStatus"  
-    PopupControlID="ModalPanel"  
-    BackgroundCssClass="modalBackground"   
-    DropShadow="true"   
-    OkControlID="OkButton"   
-    OnOkScript="onOk()"  
-    CancelControlID="CancelButton"   
-    PopupDragHandleControlID="Panel3" />  --%>
-
-
-
+    <script src="../datetime/jq/jquery-1.9.0.min.js"></script>
+    <script src="../datetime/jq/jquery.ui.core.min.js"></script>
+    <script src="../datetime/jq/jquery.ui.position.min.js"></script>
+    <script src="../datetime/jq/jquery.ui.tabs.min.js"></script>
+    <script src="../datetime/jq/jquery.ui.widget.min.js"></script>
+    
+    <script src="../datetime/jq/jquery.ui.timepicker.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <asp:HiddenField runat="server" ID="hfWasConfirmed" />
     <asp:Panel ID="Panel1" runat="server">
         <script>
@@ -2076,51 +2057,57 @@
             });
         </script>
 
-
+      
         <script language="javascript" type="text/javascript">
             var directionsDisplay;
-            var directionsService = new google.maps.DirectionsService();
+            var directionsService ;
+            try {
+                directionsService = new google.maps.DirectionsService();
+            }catch(e){}
 
             function InitializeMap() {
-                directionsDisplay = new google.maps.DirectionsRenderer();
-                var latlng = new google.maps.LatLng(40.748492, -73.985496);
-                var myOptions =
-                {
-                    zoom: 10,
-                    center: latlng,
-                    mapTypeId: google.maps.MapTypeId.ROADMAP
-                };
-                var map = new google.maps.Map(document.getElementById("map"), myOptions);
+                try {
+                    directionsDisplay = new google.maps.DirectionsRenderer();
+                    var latlng = new google.maps.LatLng(40.748492, -73.985496);
+                    var myOptions =
+                    {
+                        zoom: 10,
+                        center: latlng,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    };
+                    var map = new google.maps.Map(document.getElementById("map"), myOptions);
 
-                directionsDisplay.setMap(map);
-                directionsDisplay.setPanel(document.getElementById('directionpanel'));
+                    directionsDisplay.setMap(map);
+                    directionsDisplay.setPanel(document.getElementById('directionpanel'));
 
-                var control = document.getElementById('control');
-                //control.style.display = 'block';
+                    var control = document.getElementById('control');
+                    //control.style.display = 'block';
+                }catch(e){}
             }
             function calcRoute() {
-
-                var start = document.getElementById('startvalue').value;
-                var end = document.getElementById('endvalue').value;
-                var request = {
-                    origin: start,
-                    destination: end,
-                    travelMode: google.maps.DirectionsTravelMode.DRIVING
-                };
-                directionsService.route(request, function (response, status) {
-                    if (status == google.maps.DirectionsStatus.OK) {
-                        directionsDisplay.setDirections(response);
-                    }
-                });
+                try {
+                    var start = document.getElementById('startvalue').value;
+                    var end = document.getElementById('endvalue').value;
+                    var request = {
+                        origin: start,
+                        destination: end,
+                        travelMode: google.maps.DirectionsTravelMode.DRIVING
+                    };
+                    directionsService.route(request, function (response, status) {
+                        if (status == google.maps.DirectionsStatus.OK) {
+                            directionsDisplay.setDirections(response);
+                        }
+                    });
+                }catch(e){}
 
             }
             function Button1_onclick() {
                 calcRoute();
             }
 
-            $(document).ready(function () {
+           /* $(document).ready(function () {
                 InitializeMap();
-            });
+            });*/
             function jsFunctions() {
                 $('.popover').webuiPopover({
                     constrains: 'horizontal',
@@ -2131,6 +2118,9 @@
                 });
             }
             Sys.WebForms.PageRequestManager.getInstance().add_endRequest(jsFunctions);
+            //$('.time').ptTimeSelect();
+            $('.time').timepicker();
+            $(".date").datepicker();
 </script>
 
     </asp:Panel>

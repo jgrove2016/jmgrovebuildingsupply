@@ -1273,9 +1273,9 @@ namespace JG_Prospect.Sr_App
                     //if (ddlfollowup3.SelectedValue != "0")
                     //    newstatus = ddlfollowup3.SelectedItem.Text;
                     //else
-                    newstatus = Hiddenfieldstatus.Value;
-                    if (newstatus == "Set" || newstatus == "est<$1000" || newstatus == "est>$1000" || newstatus == "sold<$1000" || newstatus == "sold>$1000" || newstatus == "Closed(sold)")
-                    {
+                    //newstatus = Hiddenfieldstatus.Value;
+                    //if (newstatus == "Set" || newstatus == "est<$1000" || newstatus == "est>$1000" || newstatus == "sold<$1000" || newstatus == "sold>$1000" || newstatus == "Closed(sold)")
+                    //{
 
                         DateTime datetime;
                         string t = string.Empty;
@@ -1296,7 +1296,7 @@ namespace JG_Prospect.Sr_App
                         string gaddress = ""; //TCT
 
 
-                        new_customerBLL.Instance.AddCustomerFollowUp(Convert.ToInt32(Session["CustomerId"].ToString()), DateTime.Now, "", UserId, true, 0, "", 0, Convert.ToInt32(drpProductOfInterest1.SelectedValue));
+                        new_customerBLL.Instance.AddCustomerFollowUp(Convert.ToInt32(Session["CustomerId"].ToString()), datetime, "", UserId, true, 0, "", 0, Convert.ToInt32(drpProductOfInterest1.SelectedValue));
                        
 
                         //if (GoogleCalendarEvent.DeleteEvent(objcust.id.ToString(), gtitle, gcontent, gaddress, datetime, datetime.AddHours(1), AdminId))
@@ -1326,16 +1326,16 @@ namespace JG_Prospect.Sr_App
                         //{
                         //    ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('There is some error in deleting the Customer');", true);
                         //}
-                    }
-                    else
-                    {
-                        //GoogleCalendarEvent.DeleteEvent(objcust.id.ToString(), "", "", "", DateTime.Now, DateTime.Now, AdminId);
-                        //if (Session["AdminUserId"] == null)
-                        //{
-                        //    GoogleCalendarEvent.DeleteEvent(objcust.id.ToString(), "", "", "", DateTime.Now, DateTime.Now, objcust.Addedby);
-                        //}
-                        //GoogleCalendarEvent.DeleteEvent(objcust.id.ToString(), "", "", "", DateTime.Now, DateTime.Now, JGConstant.CustomerCalendar);
-                    }
+                    //}
+                    //else
+                    //{
+                    //    //GoogleCalendarEvent.DeleteEvent(objcust.id.ToString(), "", "", "", DateTime.Now, DateTime.Now, AdminId);
+                    //    //if (Session["AdminUserId"] == null)
+                    //    //{
+                    //    //    GoogleCalendarEvent.DeleteEvent(objcust.id.ToString(), "", "", "", DateTime.Now, DateTime.Now, objcust.Addedby);
+                    //    //}
+                    //    //GoogleCalendarEvent.DeleteEvent(objcust.id.ToString(), "", "", "", DateTime.Now, DateTime.Now, JGConstant.CustomerCalendar);
+                    //}
 
 
                     ResetFormControlValues(this);

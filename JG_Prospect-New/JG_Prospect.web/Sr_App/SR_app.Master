@@ -13,24 +13,25 @@
     <link href="../css/screen.css" rel="stylesheet" media="screen" type="text/css" />
     <link href="../css/jquery.ui.theme.css" rel="stylesheet" media="screen" type="text/css" />
     <%--<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/themes/redmond/jquery-ui.css" />--%>
-    <link href="../datetime/js/jquery.ptTimeSelect.css" rel="stylesheet" type="text/css" />
-    <link href="../datetime/js/jquery.ptDayOnlySelect.css" rel="stylesheet" type="text/css" />
-    <link href="../datetime/js/jquery.ptTimeOnlySelect.css" rel="stylesheet" type="text/css" />
+    
+    <%--<link href="../datetime/js/jquery.ptDayOnlySelect.css" rel="stylesheet" type="text/css" />
+    <link href="../datetime/js/jquery.ptTimeOnlySelect.css" rel="stylesheet" type="text/css" />--%>
 
     
     <%--<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />--%>
     <link href="../css/jquery-ui.css" rel="stylesheet" />
 
     
-    <script type="text/javascript" src="../js/jquery.js"></script>
-    <script type="text/javascript" src="../js/jquery-latest.js" ></script>
+    <%--<script type="text/javascript" src="../js/jquery.js"></script>
+    <script type="text/javascript" src="../js/jquery-latest.js" ></script>--%>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
     <script type="text/javascript" src="../js/jquery.ui.core.js"></script>
     <%--<script type="text/javascript" src="../js/jquery.ui.widget.js"></script>--%>
     <script type="text/javascript" src="../js/jquery.watermarkinput.js" ></script>
     <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js" type="text/javascript"></script>
-    <script src="../datetime/js/jquery.ptTimeSelect.js" type="text/javascript"></script>
-    <script src="../datetime/js/jquery.ptDayOnlySelect.js" type="text/javascript"></script>
-    <script src="../datetime/js/jquery.ptTimeOnlySelect.js" type="text/javascript"></script>
+    
+    <%--<script src="../datetime/js/jquery.ptDayOnlySelect.js" type="text/javascript"></script>
+    <script src="../datetime/js/jquery.ptTimeOnlySelect.js" type="text/javascript"></script>--%>
     <!--tabs jquery ends-->
     <!--accordion jquery-->
     <script type="text/javascript" src="../js/ddaccordion.js"></script>   
@@ -43,22 +44,7 @@
                 $('#tabs').tabs();
             }catch(e){}
         });
-        $(document).ready(function () {
-            $('#searchbutton').click(function () {
-                var search_result = $('#qfront').val();
-                window.open('http://www.google.com/search?q=' + search_result);
 
-            });
-            $(".tableClass tr:even").addClass('even'); //Tables odd & Even
-            $(".tableClass tr:odd").addClass('odd');
-            $(".drpVendorName").change(function () {
-                
-                $(".tableClass tr:even").addClass('even'); //Tables odd & Even
-                $(".tableClass tr:odd").addClass('odd');
-                //alert("test");
-            });
-        });
-       
         function isfax(e) {
             var k;
             document.all ? k = e.keyCode : k = e.which;
@@ -219,22 +205,7 @@ display:none!important;
             curobj.q.value = "site:" + domainroot + " " + curobj.ctl00$qfront.value
         }
 
-        $(document).ready(function () {
-            $('#qfront') //search function
-		.on('focus', function () {
-		    var $this = $(this);
-		    if ($this.val() == 'Google Web Search') {
-		        $this.val('');
-		    }
-		})
-  		.on('blur', function () {
-  		    var $this = $(this);
-  		    if ($this.val() == '') {
-  		        $this.val('Google Web Search');
-  		    }
-  		});
-        });
-
+      
         $(function () {
             $('#boxclose').click(function () {
                 debugger;
@@ -470,6 +441,35 @@ display:none!important;
     </form>
      <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyD0X4v7eqMFcWCR-VZAJwEMfb47id9IZao"></script>
+    <script type="text/javascript">
+            $('#searchbutton').click(function () {
+                var search_result = $('#qfront').val();
+                window.open('http://www.google.com/search?q=' + search_result);
 
+            });
+            $(".tableClass tr:even").addClass('even'); //Tables odd & Even
+            $(".tableClass tr:odd").addClass('odd');
+            $(".drpVendorName").change(function () {
+
+                $(".tableClass tr:even").addClass('even'); //Tables odd & Even
+                $(".tableClass tr:odd").addClass('odd');
+                //alert("test");
+            });
+
+            $('#qfront') //search function
+           .on('focus', function () {
+               var $this = $(this);
+               if ($this.val() == 'Google Web Search') {
+                   $this.val('');
+               }
+           })
+           .on('blur', function () {
+               var $this = $(this);
+               if ($this.val() == '') {
+                   $this.val('Google Web Search');
+               }
+           });
+
+    </script>
 </body>
 </html>
