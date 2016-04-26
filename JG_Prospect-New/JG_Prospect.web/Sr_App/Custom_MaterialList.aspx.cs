@@ -108,7 +108,11 @@ namespace JG_Prospect.Sr_App
             get { return ViewState["VendorList"] != null ? ((DataTable)ViewState["VendorList"]) : new DataTable(); }
             set { ViewState["VendorList"] = value; }
         }
-
+        protected DataTable MaterialListAttachment
+        {
+            get { return ViewState["MaterialListAttachment"] != null ? ((DataTable)ViewState["MaterialListAttachment"]) : new DataTable(); }
+            set { ViewState["MaterialListAttachment"] = value; }
+        }
         #endregion
 
         #endregion
@@ -3144,9 +3148,13 @@ namespace JG_Prospect.Sr_App
 
                 foreach (DataRow lRow in VendorList.Select("ProductCategoryId=" + lProdCatID))
                 {
-                    System.Web.UI.WebControls.ListItem lstVendor = new System.Web.UI.WebControls.ListItem(lRow["VendorName"].ToString(), lRow["VendorID"].ToString());
-                    lstVendorName.Attributes["OptionGroup"] = VendorCategoryList.Select("VendorCategpryId=" + lRow["VendorCategpryId"].ToString())[0]["VendorCategoryNm"].ToString();
-                    lstVendorName.Items.Add(lstVendor);
+                    if (VendorCategoryList.Select("VendorCategpryId=" + lRow["VendorCategpryId"].ToString()).Count() > 0)
+                    {
+                        System.Web.UI.WebControls.ListItem lstVendor = new System.Web.UI.WebControls.ListItem(lRow["VendorName"].ToString(), lRow["VendorID"].ToString());
+
+                        lstVendor.Attributes.Add("OptionGroup", VendorCategoryList.Select("VendorCategpryId=" + lRow["VendorCategpryId"].ToString())[0]["VendorCategoryNm"].ToString());
+                        lstVendorName.Items.Add(lstVendor);
+                    }
                 }
 
                 foreach (System.Web.UI.WebControls.ListItem lItem in lstVendorName.Items)
@@ -3284,6 +3292,7 @@ namespace JG_Prospect.Sr_App
 
             VendorCategoryList = PageDataset.Tables[6];
             VendorList = PageDataset.Tables[7];
+            MaterialListAttachment = PageDataset.Tables[8];
 
             if (PageDataset.Tables[1].Rows.Count <= 0) //#-Shabbir: If this is the new record.
             {
@@ -3514,11 +3523,15 @@ namespace JG_Prospect.Sr_App
                 ddlCategory.DataTextField = "ProductName";
                 ddlCategory.DataValueField = "ProductId";
                 ddlCategory.DataBind();
-
-
+                
                 DataRowView lDrView = (DataRowView)e.Item.DataItem;
-
                 int lProdCatID = Convert.ToInt32(lDrView["ProductCatID"]);
+
+                DataList grdAttachment = (DataList)e.Item.FindControl("grdAttachment");
+                grdAttachment.DataSource = new DataView(MaterialListAttachment, "ProductCatId=" + lProdCatID, "Id desc", DataViewRowState.CurrentRows);
+                grdAttachment.DataBind();
+
+               
                 ddlCategory.SelectedValue = lProdCatID.ToString();
                 GridView grdProdLines = (GridView)e.Item.FindControl("grdProdLines");
                 DataView lDvMaterialList = new DataView(PageDataset.Tables[1], "ProductCatID=" + lProdCatID, "id asc", DataViewRowState.OriginalRows);
@@ -3699,10 +3712,12 @@ namespace JG_Prospect.Sr_App
                     m.From = new MailAddress(userName, "JGrove Construction");
                     //m.To.Add(new MailAddress(mailId, vendorName));
                     m.To.Add(new MailAddress("shabbir.kanchwala@straitapps.com", "Shabbir Kanchwala"));
+                 
                     //m.To.Add(new MailAddress("skanchwala@4qlearning.com", "Shabbir Kanchwala"));
                     //m.To.Add(new MailAddress("skanchwala@mosaic-network.com", "Shabbir Kanchwala"));
                     //m.To.Add(new MailAddress("shabbirk@live.com", "Shabbir Kanchwala"));
-                    m.To.Add(new MailAddress("jgrove.georgegrove@gmail.com", "Justin Grove"));
+                    
+                    //m.To.Add(new MailAddress("jgrove.georgegrove@gmail.com", "Justin Grove"));
                     m.Subject = "J.M. Grove " + jobId + " quote request ";
                     m.IsBodyHtml = true;
                     DataSet dsEmailTemplate = fetchVendorCategoryEmailTemplate();
@@ -3762,14 +3777,29 @@ namespace JG_Prospect.Sr_App
                     //m.AlternateViews.Add(htmlView);
                     m.Body = htmlBody;
 
-                    DataSet lDSAttachedFiles = AdminBLL.Instance.GetHTMLTemplateAttachedFile(14); //Vendor Categories
-                    for (int i = 0; i < lDSAttachedFiles.Tables[0].Rows.Count; i++)
+                    try
                     {
-                        string sourceDir = Server.MapPath(lDSAttachedFiles.Tables[0].Rows[i]["DocumentPath"].ToString());
-                        Attachment attachment = new Attachment(sourceDir);
-                        attachment.Name = Path.GetFileName(sourceDir);
-                        m.Attachments.Add(attachment);
+                        DataSet lDSAttachedFiles = AdminBLL.Instance.GetHTMLTemplateAttachedFile(14); //Vendor Categories
+                        for (int i = 0; i < lDSAttachedFiles.Tables[0].Rows.Count; i++)
+                        {
+                            string sourceDir = Server.MapPath(lDSAttachedFiles.Tables[0].Rows[i]["DocumentPath"].ToString());
+                            Attachment attachment = new Attachment(sourceDir);
+                            attachment.Name = Path.GetFileName(sourceDir);
+                            m.Attachments.Add(attachment);
+                        }
+
+                        for (int i = 0; i < MaterialListAttachment.Rows.Count; i++)
+                        {
+                            string sourceDir = Server.MapPath(MaterialListAttachment.Rows[i]["DocumentPath"].ToString());
+                            if (File.Exists(sourceDir))
+                            {
+                                Attachment attachment = new Attachment(sourceDir);
+                                attachment.Name = Path.GetFileName(sourceDir);
+                                m.Attachments.Add(attachment);
+                            }
+                        }
                     }
+                    catch (Exception ex) { }
 
 
                     NetworkCredential ntw = new System.Net.NetworkCredential(userName, password);
@@ -4172,7 +4202,7 @@ namespace JG_Prospect.Sr_App
         {
             FilterVendors(sender, e);
         }
-        #endregion
+     
 
         protected void btnSendEmailToVendorsForProd_Click(object sender, EventArgs e)
         {
@@ -4259,7 +4289,86 @@ namespace JG_Prospect.Sr_App
             }
         }
 
-      
+        protected void btnAttachFile_Click(object sender, EventArgs e)
+        {
+            Button btnAttachMaterialList = (Button)sender;
+            FileUpload flMaterialList = (FileUpload)btnAttachMaterialList.Parent.Parent.FindControl("flMaterialList");
+            DropDownList ddlCategory = (DropDownList)btnAttachMaterialList.Parent.Parent.FindControl("ddlCategory");
+
+            List<CustomerDocument> custDocs = new List<CustomerDocument>();
+            int intFileSize = flMaterialList.PostedFile.ContentLength;
+
+            if (flMaterialList.HasFile)
+            {
+                if (flMaterialList.PostedFile.FileName != "")
+                {
+                    if (Request.Files.Count > 0)
+                    {
+                        HttpFileCollection attachments = Request.Files;
+                        int i = 0;
+                        //for (int i = 0; i < attachments.Count; i++)
+                        //{
+
+                            HttpPostedFile attachment = attachments[i];
+                            if (attachment.ContentLength > 0 && !String.IsNullOrEmpty(attachment.FileName))
+                            {
+                                CustomerDocument cbc = new CustomerDocument();
+                                if (File.Exists(Server.MapPath("../CustomerDocs/MaterialListAttachment/") + attachment.FileName) == true)
+                                {
+                                    File.Delete(Server.MapPath("../CustomerDocs/MaterialListAttachment/") + attachment.FileName);
+                                    flMaterialList.PostedFile.SaveAs(Server.MapPath("../CustomerDocs/MaterialListAttachment/") + attachment.FileName);
+                                }
+                                else
+                                {
+                                    flMaterialList.PostedFile.SaveAs(Server.MapPath("../CustomerDocs/MaterialListAttachment/") + attachment.FileName);
+                                }
+                                string fPath;
+                                fPath = ("../CustomerDocs/MaterialListAttachment/") + attachment.FileName;
+                                cbc.DocumentName = attachment.FileName;
+                                cbc.DocumentPath = fPath;
+                                custDocs.Add(cbc);
+                            }
+                        //}
+                    }
+                }
+            }
+            int result = AdminBLL.Instance.AddMaterialListAttachment(jobId, Convert.ToInt32(ddlCategory.SelectedValue), custDocs);
+            InitialDataBind();
+            if (result==1)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Material List attachment added successfully');", true);
+            }
+            else if (result == 0)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('File with the same name already exists in the system. Please rename the file and upload again.');", true);
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Internal Error Occurred');", true);
+            }
+        }
+
+        protected void lnkDeleteMatLisAttc_Click(object sender, EventArgs e)
+        {
+            LinkButton lnkDeleteMatLisAttc = (LinkButton)sender;
+            int lAttachmentID = Convert.ToInt32(lnkDeleteMatLisAttc.CommandArgument);
+            DataSet lDsAttachment = AdminBLL.Instance.DeleteMaterialListlAttachment(lAttachmentID);
+            string fileName = (Server.MapPath(lDsAttachment.Tables[0].Rows[0]["DocumentPath"].ToString()));
+            //bool res = AdminBLL.Instance.DeleteCustomerAttachment(fileName);
+            if (fileName != "")
+            {
+                if (File.Exists(fileName))
+                {
+                    File.Delete(fileName);
+                }
+            }
+            Response.Redirect(Request.Url.AbsoluteUri);
+
+        }
+        #endregion
+
+       
+
 
 
     }

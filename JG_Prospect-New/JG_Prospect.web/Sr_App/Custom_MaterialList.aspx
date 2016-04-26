@@ -35,6 +35,7 @@
         .floatRight{float:right;margin-top:-25px;z-index:9999}
     </style>
         <link href="../css/jquery.multiselect.css" rel="stylesheet" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="../js/jquery.multiselect.js"></script>
     
     <script type="text/javascript">
@@ -321,7 +322,7 @@
         }
 
         function TransformList() {
-            $('.form-control').multiselect({ columns: 4, placeholder: 'Select options' });
+            $('.form-control').multiselect({ columns: 2, placeholder: 'Select options', search:true });
         }
     </script>
     <style type="text/css">
@@ -808,13 +809,33 @@ ul,li { margin:0; padding:0; list-style:none;max-height:300px;}
                                         </Columns>
                                     </asp:GridView>
                                     <asp:LinkButton ID="lnkAddLines" CommandName="AddLine" CommandArgument='<%#Eval("ProductCatId") %>' OnClick="lnkAddLines_Click1" runat="server">Add Line</asp:LinkButton>
-                                    <div class="btn_sec">
-                                        <asp:Button ID="btnSendEmailToVendorsForProd" runat="server"  CommandArgument='<%#Eval("ProductCatId") %>' Text="Send Mail to Vendors" OnClick="btnSendEmailToVendorsForProd_Click" OnClientClick="return ValidatePermissions()" />
+                                    
+                                    <div>
+                                        Attach File:
+                                        <asp:FileUpload ID="flMaterialList" runat="server" class="multi" />
+                                        <span class="btn_sec"><asp:Button ID="btnAttachFile" runat="server" Text="Attach" OnClick="btnAttachFile_Click" /></span>
+                                    </div>
+                                    <div>
+                                        <asp:DataList ID="grdAttachment" runat="server" RepeatLayout="Table" RepeatColumns="3">
+                                            <ItemTemplate>
+                                                <span style="width:250px;background-color:#f8f5f5;padding:5px;">
+                                                    <a href='<%#Eval("DocumentPath") %>' target="_blank">
+                                                        <%#Eval("DocumentName") %>
+                                                    </a>&nbsp;
+                                                    <asp:LinkButton ID="lnkDeleteMatLisAttc" OnClick="lnkDeleteMatLisAttc_Click" CommandArgument='<%#Eval("Id") %>'  runat="server" Text='Delete'></asp:LinkButton>
+                                                </span>
+                                            </ItemTemplate>                                            
+                                        </asp:DataList>
+                                        <div class="btn_sec">
+                                            <asp:Button ID="btnSendEmailToVendorsForProd" runat="server"  CommandArgument='<%#Eval("ProductCatId") %>' Text="Send Mail to Vendors" OnClick="btnSendEmailToVendorsForProd_Click" OnClientClick="return ValidatePermissions()" />
+                                        </div>
                                     </div>
                                     <hr style="border:none; background:#ccc; height:2px; margin-top:10px;margin-bottom:20px" />
 
                                 </ContentTemplate>
-
+                                <Triggers>
+                                    <asp:PostBackTrigger ControlID="btnAttachFile" />
+                                </Triggers>
                             </asp:UpdatePanel>
                         </ItemTemplate>
                     </asp:ListView>

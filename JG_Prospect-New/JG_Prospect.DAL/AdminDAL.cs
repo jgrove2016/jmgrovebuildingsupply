@@ -287,7 +287,34 @@ namespace JG_Prospect.DAL
             }
 
         }
+        public int AddMaterialListAttachment(String pSoldJobID, Int32 pProductCatID, List<CustomerDocument> pAttachmentList)
+        {
+            int result = -1;
+            try
+            {
 
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    
+                    foreach (var item in pAttachmentList)
+                    {
+                        DbCommand command2 = database.GetStoredProcCommand("USP_AddMaterialListAttachment");
+                        command2.CommandType = CommandType.StoredProcedure;
+                        database.AddInParameter(command2, "@DocumentName", DbType.String, item.DocumentName);
+                        database.AddInParameter(command2, "@DocumentPath", DbType.String, item.DocumentPath);
+                        database.AddInParameter(command2, "@SoldJobID", DbType.String, pSoldJobID);
+                        database.AddInParameter(command2, "@ProductCatID", DbType.String, pProductCatID);
+                        result = Convert.ToInt32(database.ExecuteScalar(command2));
+                    }
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return -1;
+            }
+
+        }
         /// <summary>
         /// This method deletes the record and returns the path of physical file, so that it could be deleted from server.
         /// </summary>
@@ -315,7 +342,33 @@ namespace JG_Prospect.DAL
             }
 
         }
+        /// <summary>
+        /// This method deletes the record and returns the path of physical file, so that it could be deleted from server.
+        /// </summary>
+        /// <param name="pAttachmentID"></param>
+        /// <returns></returns>
+        public DataSet DeleteMaterialListAttachment(int pAttachmentID)
+        {
+            DataSet result = new DataSet();
+            try
+            {
 
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_DeleteMaterialListAttachment");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@ID", DbType.String, pAttachmentID);
+                    result = database.ExecuteDataSet(command);
+                }
+                return result;
+            }
+
+            catch (Exception ex)
+            {
+                return null;
+            }
+
+        }
         public bool UpdateEmailVendorTemplate2(string EmailTemplateHeader, string EmailTemplateFooter,string AttPath)
         {
             bool result = false;

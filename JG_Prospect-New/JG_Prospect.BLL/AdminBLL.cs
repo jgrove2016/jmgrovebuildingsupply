@@ -84,6 +84,11 @@ namespace JG_Prospect.BLL
         {
             return AdminDAL.Instance.UpdateEmailVendorTemplate(EmailTemplateHeader, EmailTemplateFooter, subject, pHTMLTemplateID, custList);
         }
+
+        public int AddMaterialListAttachment(String pSoldJobID, Int32 pProductCatID, List<CustomerDocument> pAttachmentList)
+        {
+            return AdminDAL.Instance.AddMaterialListAttachment(pSoldJobID, pProductCatID, pAttachmentList);
+        }
         /// <summary>
         /// This method deletes the record and returns the path of physical file, so that it could be deleted from server.
         /// </summary>
@@ -92,6 +97,15 @@ namespace JG_Prospect.BLL
         public DataSet DeleteEmailAttachment(int pAttachmentID)
         {
             return AdminDAL.Instance.DeleteEmailAttachment(pAttachmentID);
+        }
+        /// <summary>
+        /// This method deletes the record and returns the path of physical file, so that it could be deleted from server.
+        /// </summary>
+        /// <param name="pAttachmentID"></param>
+        /// <returns></returns>
+        public DataSet DeleteMaterialListlAttachment(int pAttachmentID)
+        {
+            return AdminDAL.Instance.DeleteMaterialListAttachment(pAttachmentID);
         }
         public bool UpdateWorkOrderTemplate(string WorkOrdertemplate)
         {

@@ -807,6 +807,7 @@
     <Compile Include="AddResourcesJr.aspx.designer.cs">
       <DependentUpon>AddResourcesJr.aspx</DependentUpon>
     </Compile>
+    <Content Include="App_Code\DropDownListAdapter.cs" />
     <Compile Include="App_Code\PDFCheckBoxFieldType.cs" />
     <Compile Include="App_Code\PDFFieldType.cs" />
     <Compile Include="App_Code\PDFHelper.cs" />
@@ -1529,6 +1530,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="CustomerDocs\Maps\" />
+    <Folder Include="CustomerDocs\MaterialListAttachment\" />
     <Folder Include="CustomerDocs\VendorQuotes\" />
     <Folder Include="InvoicePdf\" />
     <Folder Include="Sr_App\MailDocument\" />
@@ -1538,6 +1540,7 @@
     <Content Include="JG.Master" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Browsers\BrowserFile.browser" />
     <None Include="css\notes\screen.css.mno" />
     <Content Include="fonts\barcodefont-webfont.eot" />
     <Content Include="fonts\barcodefont-webfont.ttf" />
