@@ -15,7 +15,9 @@
     <script type="text/javascript">
         $(function () {
             // Tabs
-            $('#tabs').tabs();
+            if ($('#tabs').length) {
+                $('#tabs').tabs();
+            }
         });
         function IsNumeric(e) {
             var keyCode = e.which ? e.which : e.keyCode

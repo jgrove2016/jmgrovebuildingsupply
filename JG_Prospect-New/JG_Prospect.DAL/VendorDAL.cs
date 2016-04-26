@@ -910,5 +910,24 @@ namespace JG_Prospect.DAL
                 return null;
             }
         }
+
+        public DataSet GETInvetoryCatogriesList()
+        {
+            try
+            {
+                {
+                    SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                    DS = new DataSet();
+                    DbCommand command = database.GetStoredProcCommand("GETInvetoryCatogriesList");
+                    command.CommandType = CommandType.StoredProcedure;
+                    DS = database.ExecuteDataSet(command);
+                    return DS;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
     }
 }

@@ -544,6 +544,7 @@
     <Content Include="Sr_App\InstallCreateProspect.aspx" />
     <Content Include="Sr_App\InstallCreateUser.aspx" />
     <Content Include="Sr_App\InstallCreateUser2.aspx" />
+    <Content Include="Sr_App\Inventory.aspx" />
     <Content Include="Sr_App\JMGroveCONTRACT-%28email-version%29.html" />
     <Content Include="Sr_App\Maintenace.aspx" />
     <Content Include="Sr_App\MasterAppointment.aspx" />
@@ -1119,6 +1120,13 @@
     </Compile>
     <Compile Include="Sr_App\InstallCreateUser2.aspx.designer.cs">
       <DependentUpon>InstallCreateUser2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Sr_App\Inventory.aspx.cs">
+      <DependentUpon>Inventory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Sr_App\Inventory.aspx.designer.cs">
+      <DependentUpon>Inventory.aspx</DependentUpon>
     </Compile>
     <Compile Include="Sr_App\Maintenace.aspx.cs">
       <DependentUpon>Maintenace.aspx</DependentUpon>

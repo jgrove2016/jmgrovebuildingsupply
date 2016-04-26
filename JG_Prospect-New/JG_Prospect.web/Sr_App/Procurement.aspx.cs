@@ -384,6 +384,7 @@ namespace JG_Prospect.Sr_App
             if (ddlVndrCategory.SelectedValue.ToString() != "Select")
             {
                 ddlVendorCatPopup.SelectedValue = ddlVndrCategory.SelectedValue;
+                ddlvendercategoryname.SelectedValue = ddlVndrCategory.SelectedValue;
                 FilterVendors(ddlVndrCategory.SelectedValue.ToString(), "VendorCategory", ManufacturerType, "");
             }
             else

@@ -41,7 +41,9 @@
  
         $(function () {
             try {
-                $('#tabs').tabs();
+                if ($('#tabs').length) {
+                    $('#tabs').tabs();
+                }
             }catch(e){}
         });
 

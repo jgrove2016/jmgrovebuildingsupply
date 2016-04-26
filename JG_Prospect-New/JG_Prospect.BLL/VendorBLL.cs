@@ -201,6 +201,11 @@ namespace JG_Prospect.BLL
         {
             return VendorDAL.Instance.fetchvendorcategory(Isretail_Wholesale, IsManufacturer);
         }
+
+        public DataSet GETInvetoryCatogriesList()
+        {
+            return VendorDAL.Instance.GETInvetoryCatogriesList();
+        }
     }
 
 

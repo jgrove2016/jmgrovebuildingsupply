@@ -553,7 +553,7 @@
                         </asp:ModalPopupExtender>
                         <asp:Panel ID="pnlpopup2" runat="server" BackColor="White" Height="269px" Width="550px" CssClass="pnlDeleteVendor"
                             Style="display: none">
-                            <table width="100%" style="border: Solid 3px #A33E3F; width: 100%; height: 100%"
+                            <%--<table width="100%" style="border: Solid 3px #A33E3F; width: 100%; height: 100%"
                                 cellpadding="0" cellspacing="0">
                                 <tr style="background-color: #A33E3F">
                                     <td colspan="2" style="height: 10%; color: White; font-weight: bold; font-size: larger"
@@ -575,7 +575,7 @@
                                         <asp:Button ID="btnCancel2" runat="server" Text="Cancel" Style="width: 100px;" />
                                     </td>
                                 </tr>
-                            </table>
+                            </table>--%>
                         </asp:Panel>
                         <button id="btnquotes" style="display: none" runat="server">
                         </button>
@@ -706,8 +706,35 @@
 
                                             <asp:LinkButton ID="Lnkdeletevendercategory1" Text="Delete Vendor Category" runat="server"></asp:LinkButton>
                                             <asp:ModalPopupExtender ID="ModalPopupExtender4" runat="server" TargetControlID="Lnkdeletevendercategory1"
-                                                PopupControlID="pnlpopup2" CancelControlID="btnCancel2">
+                                                PopupControlID="pnlpopupdeleteVendorCategory" CancelControlID="btnCancel2">
                                             </asp:ModalPopupExtender>
+
+                                            <asp:Panel ID="pnlpopupdeleteVendorCategory" runat="server" BackColor="White" Height="269px" Width="550px" CssClass="pnlDeleteVendor"
+                                                Style="display: none">
+                                                <table width="100%" style="border: Solid 3px #A33E3F; width: 100%; height: 100%"
+                                                    cellpadding="0" cellspacing="0">
+                                                    <tr style="background-color: #A33E3F">
+                                                        <td colspan="2" style="height: 10%; color: White; font-weight: bold; font-size: larger"
+                                                            align="center">Delete Vendor Category
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="right" style="width: 45%">Select Vendor Category Name
+                                                        </td>
+                                                        <td>
+                                                            <asp:DropDownList ID="ddlvendercategoryname" runat="server">
+                                                            </asp:DropDownList>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2" align="center">
+                                                            <asp:Button ID="btndeletevender" CommandName="Delete" runat="server" Style="width: 100px;"
+                                                                Text="Delete" OnClick="btndelete_Click" />
+                                                            <asp:Button ID="btnCancel2" runat="server" Text="Cancel" Style="width: 100px;" />
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </asp:Panel>
                                         </td>
                                         <td>Vendor Sub Category</td>
                                         <td>
@@ -1757,7 +1784,7 @@
         var map;
         function initialize() {
             mapProp = {
-                center: new google.maps.LatLng(40.043482, -75.517138),
+                center: new google.maps.LatLng(40.042838, -75.528559),
                 zoom: 5,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
@@ -1765,7 +1792,7 @@
             getAllAddressOnMap();
         }
 
-        function getAllAddressOnMap(){            
+        function getAllAddressOnMap() {
             $.ajax({
                 type: "POST",
                 url: "Procurement.aspx/GetAllVendorsAddressDetail",
@@ -1846,8 +1873,9 @@
                 }
             });
         }
-
-        $('#tabs').tabs();
+        if ($('#tabs').length) {
+            $('#tabs').tabs();
+        }
 
     </script>
 </asp:Content>

@@ -23,7 +23,9 @@
     <script type="text/javascript" src="../js/ddaccordion.js"></script>
     <script type="text/javascript">
         $(function () {
-            $('#tabs').tabs();
+            if ($('#tabs').length) {
+                $('#tabs').tabs();
+            }
         });
         $(document).ready(function () {
             $('#searchbutton').click(function () {
