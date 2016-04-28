@@ -635,7 +635,28 @@ namespace JG_Prospect.DAL
             }
         }
 
-
+        public bool UpdateVendorSubCat(VendorSubCategory objVendorSubCat)
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("sp_VendorSubCat");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@VendorSubCategoryId", DbType.String, objVendorSubCat.Id);
+                    database.AddInParameter(command, "@VendorSubCategoryName", DbType.String, objVendorSubCat.Name);
+                    database.AddInParameter(command, "@IsRetail_Wholesale", DbType.Boolean, objVendorSubCat.IsRetail_Wholesale);
+                    database.AddInParameter(command, "@IsManufacturer", DbType.Boolean, objVendorSubCat.IsManufacturer);
+                    database.AddInParameter(command, "@action", DbType.Int16, 4);
+                    database.ExecuteNonQuery(command);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
 
         public bool DeleteVendorSubCat(VendorSubCategory objVendorSubCat)
         {
@@ -911,7 +932,7 @@ namespace JG_Prospect.DAL
             }
         }
 
-        public DataSet GETInvetoryCatogriesList()
+        public DataSet GETInvetoryCatogriesList(string ManufactureType)
         {
             try
             {
@@ -920,6 +941,7 @@ namespace JG_Prospect.DAL
                     DS = new DataSet();
                     DbCommand command = database.GetStoredProcCommand("GETInvetoryCatogriesList");
                     command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@ManufacturerType", DbType.String, ManufactureType);
                     DS = database.ExecuteDataSet(command);
                     return DS;
                 }

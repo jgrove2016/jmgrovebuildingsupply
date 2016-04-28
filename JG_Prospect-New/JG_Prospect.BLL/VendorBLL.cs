@@ -142,6 +142,10 @@ namespace JG_Prospect.BLL
         {
             return VendorDAL.Instance.SaveNewVendorSubCat(objVendorsubCat);
         }
+        public bool UpdateVendorSubCat(VendorSubCategory objVendorsubCat)
+        {
+            return VendorDAL.Instance.UpdateVendorSubCat(objVendorsubCat);
+        }
         public bool DeleteVendorSubCat(VendorSubCategory objVendorsubCat)
         {
             return VendorDAL.Instance.DeleteVendorSubCat(objVendorsubCat);
@@ -202,9 +206,9 @@ namespace JG_Prospect.BLL
             return VendorDAL.Instance.fetchvendorcategory(Isretail_Wholesale, IsManufacturer);
         }
 
-        public DataSet GETInvetoryCatogriesList()
+        public DataSet GETInvetoryCatogriesList(string ManufactureType)
         {
-            return VendorDAL.Instance.GETInvetoryCatogriesList();
+            return VendorDAL.Instance.GETInvetoryCatogriesList(ManufactureType);
         }
     }
 
