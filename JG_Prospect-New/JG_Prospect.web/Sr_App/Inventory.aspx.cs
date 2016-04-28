@@ -19,33 +19,9 @@ namespace JG_Prospect.Sr_App
             {
                 string Mtype = GetManufacturerType();
                 GetInventoryCategoryList(Mtype);
-                BindProductCategory();
-                bindvendorcategory();
             }
         }
 
-        protected void BindProductCategory()
-        {
-            ddlProductCatgoryPopup.Items.Clear();
-            DataSet ds = new DataSet();
-            ds = AdminBLL.Instance.GetProductCategory();
-            ddlProductCatgoryPopup.DataSource = ds;
-            ddlProductCatgoryPopup.DataTextField = "ProductName";
-            ddlProductCatgoryPopup.DataValueField = "ProductId";
-            ddlProductCatgoryPopup.DataBind();
-            ddlProductCatgoryPopup.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select", "Select"));
-        }
-        protected void bindvendorcategory()
-        {
-            DataSet ds = new DataSet();
-            ds = VendorBLL.Instance.fetchvendorcategory(rdoRetailWholesale.Checked, rdoManufacturer.Checked);
-            ddlVendorCatPopup.DataSource = ds;
-            ddlVendorCatPopup.DataTextField = ds.Tables[0].Columns[1].ToString();
-            ddlVendorCatPopup.DataValueField = ds.Tables[0].Columns[0].ToString();
-            ddlVendorCatPopup.DataBind();
-            ddlVendorCatPopup.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select", "Select"));
-
-        }
         public string GetManufacturerType()
         {
             string MType = "";
@@ -71,8 +47,8 @@ namespace JG_Prospect.Sr_App
 
 
                     str.Append("<li>");
-                    str.AppendFormat("<a href=\"javascript:;\">{0}</a>", ProductName);
-                                        
+                    str.AppendFormat("<a href=\"javascript:;\"><span class=\"text\" onclick=\"productClick(this,'{0}','{1}')\">{1}</span><span class=\"buttons\"><i class=\"\" onclick=\"AddVenodrCat('{0}','{1}')\">Add</i></span></a>", PrdouctID, ProductName);
+
                     Boolean isCate = true;
                     for (int j = 0; j < ds.Tables[1].Rows.Count; j++)
                     {
@@ -88,8 +64,12 @@ namespace JG_Prospect.Sr_App
                             string VendorCategoryName = dr1["VendorCategoryNm"].ToString();
                             int VendorCategoryId = Convert.ToInt32(dr1["VendorCategpryId"] == DBNull.Value ? "0" : dr1["VendorCategpryId"].ToString());
 
+                            Boolean IsVRetail_Wholesale = Convert.ToBoolean(dr1["IsRetail_Wholesale"].ToString());
+                            Boolean IsVManufacturer = Convert.ToBoolean(dr1["IsManufacturer"].ToString());
+
+
                             str.Append("<li>");
-                            str.AppendFormat("<a href=\"javascript:;\">{0}</a>", VendorCategoryName);
+                            str.AppendFormat("<a href=\"javascript:;\"><span class=\"text\" onclick=\"vendorClick(this,'{0}','{1}','{2}','{3}','{4}','{5}')\">{3}</span><span class=\"buttons\"><i class=\"\" onclick=\"AddSubCat('{2}','{3}')\">Add</i><i class=\"\" onclick=\"EditVendorCat({0},'{1}','{2}','{3}','{4}','{5}')\">Edit</i><i class=\"\" onclick=\"DeleteVendorCat({0},'{1}','{2}','{3}','{4}','{5}')\">Delete</i></span></a>", ProductCategoryId, ProductName, VendorCategoryId, VendorCategoryName, IsVRetail_Wholesale, IsVManufacturer);
                             //str.AppendFormat("")
                             Boolean isSubCate = true;
                             for (int k = 0; k < ds.Tables[2].Rows.Count; k++)
@@ -109,7 +89,7 @@ namespace JG_Prospect.Sr_App
                                     Boolean IsManufacturer = Convert.ToBoolean(dr2["IsManufacturer"].ToString());
 
                                     str.Append("<li>");
-                                    str.AppendFormat("<a href=\"javascript:;\" onclick=\"EditSubCat({0},'{1}','{2}','{3}')\">{1}</a>", VendorSubCategoryId, VendorSubCategoryName, IsRetail_Wholesale, IsManufacturer);
+                                    str.AppendFormat("<a href=\"javascript:;\"><span class=\"text\" onclick=\"vendorSubClick(this,'{0}','{1}','{2}','{3}','{4}','{5}')\">{1}</span><span class=\"buttons\"><i class=\"\" onclick=\"EditSubCat({0},'{1}','{2}','{3}','{4}','{5}')\">Edit</i><i class=\"\" onclick=\"DeleteSubCat({0},'{1}','{2}','{3}','{4}','{5}')\">Delete</i></span></a>", VendorSubCategoryId, VendorSubCategoryName, VendorCategoryId, VendorCategoryName, IsRetail_Wholesale, IsManufacturer);
                                     str.Append("</li>");
                                 }
                             }
@@ -148,37 +128,13 @@ namespace JG_Prospect.Sr_App
             GetInventoryCategoryList(Mtype);
         }
 
-        protected void btnNewVendor_Click(object sender, EventArgs e)
-        {
-            NewVendorCategory objNewVendor = new NewVendorCategory();
-
-            objNewVendor.VendorName = txtnewVendorCat.Text;
-            objNewVendor.IsRetail_Wholesale = chkVCRetail_Wholesale.Checked;
-            objNewVendor.IsManufacturer = chkVCManufacturer.Checked;
-            string vendorCatId = VendorBLL.Instance.SaveNewVendorCategory(objNewVendor);
-            objNewVendor.VendorId = vendorCatId;
-            objNewVendor.ProductId = ddlProductCatgoryPopup.SelectedValue.ToString();
-            objNewVendor.ProductName = ddlProductCatgoryPopup.SelectedItem.Text;
-            bool res = VendorBLL.Instance.SaveNewVendorProduct(objNewVendor);
-            if (res)
-            {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Data has been inserted Successfully');", true);
-                string Mtype = GetManufacturerType();
-                GetInventoryCategoryList(Mtype);
-            }
-            else
-            {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('There is some error');", true);
-            }
-        }
-
         protected void btnNewVendorSubCat_Click(object sender, EventArgs e)
         {
             VendorSubCategory objVendorSubCat = new VendorSubCategory();
-            objVendorSubCat.VendorCatId = ddlVendorCatPopup.SelectedValue.ToString();
-            objVendorSubCat.IsRetail_Wholesale = chkVSCRetail_Wholesale.Checked;
-            objVendorSubCat.IsManufacturer = chkVSCManufacturer.Checked;
-            objVendorSubCat.Name = txtVendorSubCat.Text;
+            objVendorSubCat.VendorCatId = hdnVendorCatID.Value.ToString();
+            objVendorSubCat.IsRetail_Wholesale = chkVSCRetail_WholesaleEdit.Checked;
+            objVendorSubCat.IsManufacturer = chkVSCManufacturerEdit.Checked;
+            objVendorSubCat.Name = txtVendorSubCatEdit.Text;
             bool res = VendorBLL.Instance.SaveNewVendorSubCat(objVendorSubCat);
             if (res)
             {
@@ -203,6 +159,101 @@ namespace JG_Prospect.Sr_App
             if (res)
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Data has been Updated Successfully');", true);
+                string Mtype = GetManufacturerType();
+                GetInventoryCategoryList(Mtype);
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('There is some error');", true);
+            }
+        }
+
+        protected void btnDeleteVendorSubCat_Click(object sender, EventArgs e)
+        {
+            VendorSubCategory objVendorSubCat = new VendorSubCategory();
+            objVendorSubCat.Id = hdnSubCategoryId.Value.ToString();
+            //objVendorSubCat.IsRetail_Wholesale = chkVSCRetail_WholesaleEdit.Checked;
+            //objVendorSubCat.IsManufacturer = chkVSCManufacturerEdit.Checked;
+            //objVendorSubCat.Name = txtVendorSubCatEdit.Text;
+            bool res = VendorBLL.Instance.DeleteVendorSubCat(objVendorSubCat);
+            if (res)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Data has been Deleted Successfully');", true);
+                string Mtype = GetManufacturerType();
+                GetInventoryCategoryList(Mtype);
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('There is some error');", true);
+            }
+        }
+
+        protected void btnAddVendorCat_Click(object sender, EventArgs e)
+        {
+            string ProductID = hdnProductID.Value.ToString();
+            string VendorName = txtVendorCateogryName.Text;
+            Boolean IsRetail_Wholesale = chkVendorCRetail_WholesaleEdit.Checked; ;
+            Boolean IsManufacturer = chkVendorCManufacturerEdit.Checked;
+
+
+            NewVendorCategory objNewVendor = new NewVendorCategory();
+
+            objNewVendor.VendorName = VendorName;
+            objNewVendor.IsRetail_Wholesale = IsRetail_Wholesale;
+            objNewVendor.IsManufacturer = IsManufacturer;
+            string vendorCatId = VendorBLL.Instance.SaveNewVendorCategory(objNewVendor);
+            objNewVendor.VendorId = vendorCatId;
+            objNewVendor.ProductId = ProductID;
+            bool res = VendorBLL.Instance.SaveNewVendorProduct(objNewVendor);
+            if (res)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Data has been inserted Successfully');", true);
+                string Mtype = GetManufacturerType();
+                GetInventoryCategoryList(Mtype);
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('There is some error');", true);
+            }
+        }
+
+        protected void btnUpdateVendorCat_Click(object sender, EventArgs e)
+        {
+            string ProductID = hdnProductID.Value.ToString();
+            string VendorCatId = hdnVendorID.Value.ToString();
+            string VendorName = txtVendorCateogryName.Text;
+            Boolean IsRetail_Wholesale = chkVendorCRetail_WholesaleEdit.Checked; ;
+            Boolean IsManufacturer = chkVendorCManufacturerEdit.Checked;
+
+
+            NewVendorCategory objNewVendor = new NewVendorCategory();
+
+            objNewVendor.VendorName = VendorName;
+            objNewVendor.IsRetail_Wholesale = IsRetail_Wholesale;
+            objNewVendor.IsManufacturer = IsManufacturer;
+            objNewVendor.VendorId = VendorCatId;
+            objNewVendor.ProductId = ProductID;
+
+            bool res = VendorBLL.Instance.UpdateVendorCategory(objNewVendor);
+            if (res)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Data has been updated Successfully');", true);
+                string Mtype = GetManufacturerType();
+                GetInventoryCategoryList(Mtype);
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('There is some error');", true);
+            }
+        }
+
+        protected void btnDeleteVendorCat_Click(object sender, EventArgs e)
+        {
+            int vendorcategogyid = Convert.ToInt32(hdnVendorID.Value.ToString());
+            bool res = VendorBLL.Instance.deletevendorcategory(vendorcategogyid);
+            if (res)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Data has been Deleted Successfully');", true);
                 string Mtype = GetManufacturerType();
                 GetInventoryCategoryList(Mtype);
             }

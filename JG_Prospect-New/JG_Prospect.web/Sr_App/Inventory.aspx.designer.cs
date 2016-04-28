@@ -31,229 +31,139 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.RadioButton rdoManufacturer;
         
         /// <summary>
-        /// lnkAddVendorCategory1 control.
+        /// updtpnlfilter control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lnkAddVendorCategory1;
+        protected global::System.Web.UI.UpdatePanel updtpnlfilter;
         
         /// <summary>
-        /// ModalPopupExtender3 control.
+        /// pnlVendorCat control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AjaxControlToolkit.ModalPopupExtender ModalPopupExtender3;
+        protected global::System.Web.UI.WebControls.Panel pnlVendorCat;
         
         /// <summary>
-        /// pnlpopupVendorCategory control.
+        /// hdnProductID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlpopupVendorCategory;
+        protected global::System.Web.UI.WebControls.HiddenField hdnProductID;
         
         /// <summary>
-        /// ddlProductCatgoryPopup control.
+        /// txtProudctName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlProductCatgoryPopup;
+        protected global::System.Web.UI.WebControls.TextBox txtProudctName;
         
         /// <summary>
-        /// RequiredFieldValidator4 control.
+        /// hdnVendorID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator4;
+        protected global::System.Web.UI.WebControls.HiddenField hdnVendorID;
         
         /// <summary>
-        /// txtnewVendorCat control.
+        /// txtVendorCateogryName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtnewVendorCat;
+        protected global::System.Web.UI.WebControls.TextBox txtVendorCateogryName;
         
         /// <summary>
-        /// RequiredFieldValidator3 control.
+        /// RequiredFieldValidator1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator3;
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
         
         /// <summary>
-        /// chkVCRetail_Wholesale control.
+        /// chkVendorCRetail_WholesaleEdit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkVCRetail_Wholesale;
+        protected global::System.Web.UI.WebControls.CheckBox chkVendorCRetail_WholesaleEdit;
         
         /// <summary>
-        /// chkVCManufacturer control.
+        /// chkVendorCManufacturerEdit control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkVCManufacturer;
+        protected global::System.Web.UI.WebControls.CheckBox chkVendorCManufacturerEdit;
         
         /// <summary>
-        /// btnNewVendor control.
+        /// btnAddVendorCat control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnNewVendor;
+        protected global::System.Web.UI.WebControls.Button btnAddVendorCat;
         
         /// <summary>
-        /// btnCancelVendor control.
+        /// btnUpdateVendorCat control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCancelVendor;
+        protected global::System.Web.UI.WebControls.Button btnUpdateVendorCat;
         
         /// <summary>
-        /// lnkAddVendorSubCategory control.
+        /// btnDeleteVendorCat control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lnkAddVendorSubCategory;
+        protected global::System.Web.UI.WebControls.Button btnDeleteVendorCat;
         
         /// <summary>
-        /// ModalPopupExtender5 control.
+        /// pnlVendorSubCat control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::AjaxControlToolkit.ModalPopupExtender ModalPopupExtender5;
+        protected global::System.Web.UI.WebControls.Panel pnlVendorSubCat;
         
         /// <summary>
-        /// pnlvendorSubCat control.
+        /// hdnVendorCatID control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlvendorSubCat;
+        protected global::System.Web.UI.WebControls.HiddenField hdnVendorCatID;
         
         /// <summary>
-        /// ddlVendorCatPopup control.
+        /// txtVendorCatName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlVendorCatPopup;
-        
-        /// <summary>
-        /// RequiredFieldValidator5 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator5;
-        
-        /// <summary>
-        /// txtVendorSubCat control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtVendorSubCat;
-        
-        /// <summary>
-        /// RequiredFieldValidator6 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator6;
-        
-        /// <summary>
-        /// chkVSCRetail_Wholesale control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkVSCRetail_Wholesale;
-        
-        /// <summary>
-        /// chkVSCManufacturer control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkVSCManufacturer;
-        
-        /// <summary>
-        /// btnVendorSubCat control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnVendorSubCat;
-        
-        /// <summary>
-        /// btnCancelVendorSubCat control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCancelVendorSubCat;
-        
-        /// <summary>
-        /// lnkEditVendorSubCategory control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lnkEditVendorSubCategory;
-        
-        /// <summary>
-        /// ModalPopupExtender1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::AjaxControlToolkit.ModalPopupExtender ModalPopupExtender1;
-        
-        /// <summary>
-        /// pnlEditVendorSubCat control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlEditVendorSubCat;
+        protected global::System.Web.UI.WebControls.TextBox txtVendorCatName;
         
         /// <summary>
         /// hdnSubCategoryId control.
@@ -301,6 +211,15 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.CheckBox chkVSCManufacturerEdit;
         
         /// <summary>
+        /// btnNewVendorSubCat control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnNewVendorSubCat;
+        
+        /// <summary>
         /// btnUdpateVendorSubCat control.
         /// </summary>
         /// <remarks>
@@ -310,13 +229,13 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.Button btnUdpateVendorSubCat;
         
         /// <summary>
-        /// btnCancelVendorSubCatEdit control.
+        /// btnDeleteVendorSubCat control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnCancelVendorSubCatEdit;
+        protected global::System.Web.UI.WebControls.Button btnDeleteVendorSubCat;
         
         /// <summary>
         /// ltrInventoryCategoryList control.

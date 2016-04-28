@@ -142,6 +142,10 @@ namespace JG_Prospect.BLL
         {
             return VendorDAL.Instance.SaveNewVendorSubCat(objVendorsubCat);
         }
+        public bool UpdateVendorCategory(NewVendorCategory objVendorCat)
+        {
+            return VendorDAL.Instance.UpdateVendorCategory(objVendorCat);
+        }
         public bool UpdateVendorSubCat(VendorSubCategory objVendorsubCat)
         {
             return VendorDAL.Instance.UpdateVendorSubCat(objVendorsubCat);

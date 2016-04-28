@@ -635,6 +635,29 @@ namespace JG_Prospect.DAL
             }
         }
 
+        public bool UpdateVendorCategory(NewVendorCategory objVendorCat)
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("sp_VendorCategory");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@VendorCategoryId", DbType.String, objVendorCat.VendorId);
+                    database.AddInParameter(command, "@VendorCategoryName", DbType.String, objVendorCat.VendorName);
+                    database.AddInParameter(command, "@IsRetail_Wholesale", DbType.Boolean, objVendorCat.IsRetail_Wholesale);
+                    database.AddInParameter(command, "@IsManufacturer", DbType.Boolean, objVendorCat.IsManufacturer);
+                    database.AddInParameter(command, "@action", DbType.Int16, 1);
+                    database.ExecuteNonQuery(command);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
         public bool UpdateVendorSubCat(VendorSubCategory objVendorSubCat)
         {
             try
