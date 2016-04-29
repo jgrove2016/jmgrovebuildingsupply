@@ -7,12 +7,13 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="right_panel">
+         <!-- appointment tabs section start -->
         <ul class="appointment_tab">
-            <li><a href="home.aspx">Personal Appointment</a></li>
-            <li><a href="MasterAppointment.aspx">Master Appointment</a></li>
-            <li><a href="#">Construction Calendar</a></li>
-            <li><a href="CallSheet.aspx">Call Sheet</a></li>
+            <li><a href="Price_control.aspx">Product Line Estimate</a></li>
+            <li><a href="Inventory.aspx">Inventory</a></li>
+            <li><a href="Maintenace.aspx">Maintainance</a></li>
         </ul>
+        <!-- appointment tabs section end -->
         <h1>Edit Email Templates</h1>
         <div>
                 <h2 style="text-align: center">

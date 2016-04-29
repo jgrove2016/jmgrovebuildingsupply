@@ -721,45 +721,37 @@ namespace JG_Prospect
             {
                 string fullname = FName + " " + LName;
                 string HTML_TAG_PATTERN = "<.*?>";
-                string strHeader = GetEmailHeader(status);
-                string strBody = GetEmailBody(status);
-                string strFooter = GetFooter(status);
-                strBody = strBody.Replace("LBL name", FName);
+                DataSet ds = AdminBLL.Instance.FetchContractTemplate(104);
+
+                string strHeader = ds.Tables[0].Rows[0]["HTMLHeader"].ToString(); //GetEmailHeader(status);
+                string strBody = ds.Tables[0].Rows[0]["HTMLBody"].ToString(); //GetEmailBody(status);
+                string strFooter = ds.Tables[0].Rows[0]["HTMLFooter"].ToString(); // GetFooter(status);
+                string strsubject = ds.Tables[0].Rows[0]["HTMLSubject"].ToString();
+
+                string userName = ConfigurationManager.AppSettings["VendorCategoryUserName"].ToString();
+                string password = ConfigurationManager.AppSettings["VendorCategoryPassword"].ToString();
+
+                strBody = strBody.Replace("#lblFName#", FName);
+                strBody = strBody.Replace("#lblDate#", dtInterviewDate.Text);
+                strBody = strBody.Replace("#lblTime#", ddlInsteviewtime.SelectedValue);
                 strBody = strBody.Replace("Lbl Full name", fullname);
                 strBody = strBody.Replace("LBL position", Designition);
                 //strBody = strBody.Replace("lbl: start date", txtHireDate.Text);
                 //strBody = strBody.Replace("($ rate","$"+ txtHireDate.Text);
                 strBody = strBody.Replace("Reason", Reason);
-                //strBody = Regex.Replace(strBody, HTML_TAG_PATTERN, string.Empty);
-                //strHeader = Regex.Replace(strHeader, HTML_TAG_PATTERN, string.Empty);
-                //strFooter = Regex.Replace(strFooter, HTML_TAG_PATTERN, string.Empty);
+                //Hi #lblFName#, <br/><br/>You are requested to appear for an interview on #lblDate# - #lblTime#.<br/><br/>Regards,<br/>
                 StringBuilder Body = new StringBuilder();
-                //MailMessage Msg = new MailMessage();
-                // Sender e-mail address.
-                //Msg.From = new MailAddress("qat2015team@gmail.com");
+                MailMessage Msg = new MailMessage();
+                 //Sender e-mail address.
+                Msg.From = new MailAddress(userName, "JGrove Construction");
                 // Recipient e-mail address.
                 //Msg.To.Add(emailId);
-                //Msg.Subject = "JG Prospect Notification";
-                //StringBuilder Body = new StringBuilder();
-                //Body.Append("Hello " + FName + " " + LName + ",");
-                //Body.Append("<br>");
-                //Body.Append("Your stattus for the JG Prospect is :" + status);
-                //Body.Append("<br>");
-                ////if (status == "Source" || status == "Rejected" || status == "Interview Date" || status == "Offer Made")
-                ////{
-                //Body.Append(Reason);
-                ////}
-                //Body.Append("<br>");
-                //Body.Append("Tanking you");
+                Msg.To.Add(new MailAddress("shabbir.kanchwala@straitapps.com", "Shabbir Kanchwala"));
+                Msg.To.Add(new MailAddress("jgrove.georgegrove@gmail.com", "Justin Grove"));
+
+                Msg.Subject = strsubject;// "JG Prospect Notification";
                 Body.Append(strHeader);
-                Body.Append("<br>");
                 Body.Append(strBody);
-                Body.Append("<br>");
-                //if (status == "Source" || status == "Rejected" || status == "Interview Date" || status == "Offer Made")
-                //{
-                //Body.Append(Reason);
-                //}
-                Body.Append("<br>");
                 Body.Append(strFooter);
                 if (status == "OfferMade")
                 {
@@ -769,16 +761,30 @@ namespace JG_Prospect
                 {
                     CreateDeactivationAttachment(Convert.ToString(Body), FName, LName, Designition, emailId, HireDate, EmpType, PayRates);
                 }
-                //Msg.Body = Convert.ToString(Body);
-                //// your remote SMTP server IP.
-                //SmtpClient smtp = new SmtpClient();
-                //smtp.Host = "smtp.gmail.com";
-                //smtp.Port = 587;
-                //smtp.Credentials = new System.Net.NetworkCredential("qat2015team@gmail.com", "q$7@wt%j*65ba#3M@9P6");
-                //smtp.EnableSsl = true;
-                //smtp.Send(Msg);
-                //Msg = null;
-                //Page.RegisterStartupScript("UserMsg", "<script>alert('Mail sent thank you...');if(alert){ window.location='SendMail.aspx';}</script>");
+                Msg.Body = Convert.ToString(Body);
+                Msg.IsBodyHtml = true;
+                // your remote SMTP server IP.
+                SmtpClient sc = new SmtpClient(ConfigurationManager.AppSettings["smtpHost"].ToString(), Convert.ToInt32(ConfigurationManager.AppSettings["smtpPort"].ToString()));
+
+
+                NetworkCredential ntw = new System.Net.NetworkCredential(userName, password);
+                sc.UseDefaultCredentials = false;
+                sc.Credentials = ntw;
+
+                sc.DeliveryMethod = SmtpDeliveryMethod.Network;
+                sc.EnableSsl = Convert.ToBoolean(ConfigurationManager.AppSettings["enableSSL"].ToString()); // runtime encrypt the SMTP communications using SSL
+                try
+                {
+                    sc.Send(Msg);
+                }
+                catch (Exception ex)
+                {
+                }
+
+                Msg = null;
+                sc.Dispose();
+                sc = null;
+                Page.RegisterStartupScript("UserMsg", "<script>alert('An email notification has sent on "+ emailId +".');}</script>");
             }
             catch (Exception ex)
             {
@@ -1141,7 +1147,7 @@ namespace JG_Prospect
                     }
                 }
             }
-            SendEmail(email, Convert.ToString(Session["FirstNameNewSC"]), Convert.ToString(Session["LastNameNewSC"]), "Deactivation", txtReason.Text, Convert.ToString(Session["DesignitionSC"]), HireDate, EmpType, PayRates);
+            SendEmail(email, Convert.ToString(Session["FirstNameNewSC"]), Convert.ToString(Session["LastNameNewSC"]), "Interview Date Auto Email", txtReason.Text, Convert.ToString(Session["DesignitionSC"]), HireDate, EmpType, PayRates);
             binddata();
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Overlay", "ClosePopupInterviewDate()", true);
             return;

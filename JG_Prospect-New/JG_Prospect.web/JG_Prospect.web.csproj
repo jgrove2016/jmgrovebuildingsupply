@@ -482,6 +482,7 @@
     <Content Include="js\jquery-latest.js" />
     <Content Include="js\jquery-latest_old.js" />
     <Content Include="js\jquery-ui.js" />
+    <Content Include="js\Jquery.Actual.min.js" />
     <Content Include="js\jquery.datetimepicker.css" />
     <Content Include="js\jquery.datetimepicker.js" />
     <Content Include="js\jquery.dd.min.js" />

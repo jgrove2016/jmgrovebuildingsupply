@@ -998,6 +998,35 @@ namespace JG_Prospect.DAL
                 database.ExecuteNonQuery(command);
             }
         }
+
+        public void AssociateVendorToCat(String pVendorIDs, Int32 pProductCatID, Int32 pProdLineID, String pSoldJobID)
+        {
+            SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+            {
+                DbCommand command = database.GetStoredProcCommand("USP_SaveProductLineVendors");
+                command.CommandType = CommandType.StoredProcedure;
+                database.AddInParameter(command, "@ProductCatID", DbType.Int32, pProductCatID);
+                database.AddInParameter(command, "@ProdLineID", DbType.Int32, pProdLineID);
+                database.AddInParameter(command, "@VendorIDs", DbType.String, pVendorIDs);
+                database.AddInParameter(command, "@SoldJobID", DbType.String, pSoldJobID);
+                database.ExecuteNonQuery(command);
+            }
+        }
+
+        public void UpdateDefaultVendorsInProdLine(Boolean pDefaultVendor, Int32 pProductCatID, Int32 pProdLineID, String pSoldJobID)
+        {
+            SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+            {
+                DbCommand command = database.GetStoredProcCommand("USP_UpdateDefaultVendorinProdLine");
+                command.CommandType = CommandType.StoredProcedure;
+                database.AddInParameter(command, "@ProductLineID", DbType.Int32, pProdLineID);
+                database.AddInParameter(command, "@ProductCatID", DbType.Int32, pProductCatID);
+                database.AddInParameter(command, "@DefaultVendor", DbType.Boolean, pDefaultVendor);
+                database.AddInParameter(command, "@SoldJobID", DbType.String, pSoldJobID);
+                database.ExecuteNonQuery(command);
+            }
+        }
+
         public void UpdateSpecificProductLine(string pFieldName, String pFieldValue, Int32 pID, String pSoldJobID)
         {
             SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();

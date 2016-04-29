@@ -114,12 +114,13 @@
         <asp:HiddenField ID="hdnCompanyAddressId" runat="server" />
         <input type="button" id="btnupdate" runat="server" onclick="btnUpdate()" value="Update" />
         <div class="show_hide">
-            <h3>
+            <%--<h3>
                 <a href="CustomerEmailTemplate.aspx">Default Customer Email</a>
             </h3>
             <h3>
                 <a href="EditEmailTemplate.aspx?ProductId=1">Edit Email Template</a>
-            </h3>
+            </h3>--%>
+            <h3>Auto Email Templates</h3>
             <table width="100%">
                 <tr>
                     <td>
@@ -164,6 +165,16 @@
                     <td></td>
                 </tr>
 
+            </table>
+        
+            <h3>Templates</h3>
+            <table width="100%">
+                <tr>
+                    <td>
+                        <a href="ContractTemplate.aspx?ProductId=1">Contract Template</a>
+                        <a href="ShutterTemplate.aspx">Shutter W.O.</a>
+                    </td>
+                </tr>
             </table>
         </div>
         <div class="clr">

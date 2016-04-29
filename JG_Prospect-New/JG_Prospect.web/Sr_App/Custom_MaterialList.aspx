@@ -3,8 +3,7 @@
 
 <%@ Register TagPrefix="asp" Namespace="Saplin.Controls" Assembly="DropDownCheckBoxes" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
-<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit.HTMLEditor"
-    TagPrefix="cc1" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <style>
         .grid td {
@@ -25,19 +24,40 @@
             height: 24px;
             width: 100%;
         }
+
         .chk-style {
             height: 24px;
-            width: 70%!important;
+            width: 70% !important;
         }
+
         div.dd_chk_select {
             height: 24px !important;
         }
-        .floatRight{float:right;margin-top:-25px;z-index:9999}
+
+        .floatRight {
+            float: right;
+            margin-top: -25px;
+            z-index: 9999;
+        }
+        .form_panel2 {
+    background: #efeeee url(../img/form-bg.png) repeat-x top;
+    min-height: 200px;
+    border-top: #000 10px solid;
+    padding: 10px 5px 50px;
+}
+        .form_panel2 table tr td, .form_panel2 table tr td {
+    background: url(../img/line.png) bottom repeat-x;
+    padding: 10px 15px 12px 15px;
+    line-height: 15px;
+    min-height: 5px;
+    vertical-align: top;
+}
     </style>
-        <link href="../css/jquery.multiselect.css" rel="stylesheet" />
+    <link href="../css/jquery.multiselect.css" rel="stylesheet" />
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="../js/jquery.Actual.min.js"></script>
     <script src="../js/jquery.multiselect.js"></script>
-    
+
     <script type="text/javascript">
 
         function VerifyForemanManPwd() {
@@ -186,7 +206,7 @@
             $.ajax({
                 type: "POST",
                 url: "Custom_MaterialList.aspx/UpdateSpecificProductLine",
-                data: "{'pFieldName':'" + pFldName + "', 'pFieldValue':'" + pFldVal + "','pID':'" + pID + "'}",
+                data: "{'pFieldName':'" + pFldName + "', 'pFieldValue':'" + escape(pFldVal) + "','pID':'" + pID + "'}",
                 contentType: "application/json; charset=utf-8",
                 dataType: "JSON",
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -205,10 +225,6 @@
         }
         var onload = false;
         function SaveVendor(sender) {
-             
-                
-                
-            
             var lProdCatID = sender.parentElement.className;
             var lID = sender.parentElement.id;
             var excList = '';
@@ -217,7 +233,7 @@
             var lFirstServiceCall = true;
             var lSecondServiceCall = false;
             $("." + sender.parentElement.className).each(function (index, elem) {
-                if ( index == 0) {
+                if (index == 0) {
                     $(elem).children().each(function (idx, elm) {
                         if (idx == 0) { //sender.id == elm.id && 
                             lFirstServiceCall = true;
@@ -234,7 +250,7 @@
                         $.ajax({
                             type: "POST",
                             url: "Custom_MaterialList.aspx/SaveVendorIds",
-                            data: "{'pExcMaterialListId':'" + (excList == ''?'0': excList) + "', 'pProductCatID':'" + lProdCatID + "', 'pVendorIds': '"+ lVendorIDs.substr(0, lVendorIDs.length-1) +"'}",
+                            data: "{'pExcMaterialListId':'" + (excList == '' ? '0' : excList) + "', 'pProductCatID':'" + lProdCatID + "', 'pVendorIds': '" + lVendorIDs.substr(0, lVendorIDs.length - 1) + "'}",
                             contentType: "application/json; charset=utf-8",
                             dataType: "JSON",
                             error: function (XMLHttpRequest, textStatus, errorThrown) {
@@ -245,7 +261,7 @@
                                 if (result != null) {
                                     var flg = (result.d);
                                     if (flg == "1") {
-                                       // alert('Installer\'s material list request is approved');
+                                        // alert('Installer\'s material list request is approved');
                                         //window.location = window.location.href;
                                     }
                                     else {
@@ -262,19 +278,19 @@
                     var lstVendorTmp = null;
                     $(elem).children().each(function (idx, elm) {
                         lID = elm.parentElement.id;
-                        if (elm.id.indexOf('lstVendor')>0) {
-                            
+                        if (elm.id.indexOf('lstVendor') > 0) {
+
                             for (var i = 0; i < elm.options.length; i++) {
                                 if (elm.options[i].selected == true) {
                                     lExcVendorID += (elm.options[i].value) + ",";
-                                    
+
                                 }
                             }
                         }
                         if (elm.className.indexOf('ms-option') >= 0) {
                             lstVendorTmp = elm;
                         }
-                        if (elm.id.indexOf('chkDefault')>=0) {
+                        if (elm.id.indexOf('chkDefault') >= 0) {
                             if (!elm.checked) {
                                 if (lstVendorTmp)
                                     lstVendorTmp.style.display = '';
@@ -302,35 +318,116 @@
                             }
                             else {
                                 if (lstVendorTmp)
-                                lstVendorTmp.style.display = 'none';
+                                    lstVendorTmp.style.display = 'none';
                             }
                         }
                     });
                 }
             });
-
         }
+
+        function UpdateDefault(sender){
+            var lProdCatID = sender.parentElement.className;
+            var lID = sender.parentElement.id;
+
+            $.ajax({
+                type: "POST",
+                url: "Custom_MaterialList.aspx/UpdateDefaultVendor",
+                data: "{'pProductLineID':'" +lID + "', 'pProductCatID':'" + lProdCatID + "', 'pDefaultVendor': "+ sender.checked  +"}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "JSON",
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert('in error');
+                    alert(errorThrown);
+                },
+                success: function (result) {
+                    if (result != null) {
+                        var flg = (result.d);
+                        if (flg == "1") {
+                            alert('in');
+                            var spanID = '';
+                            var lnkID='';
+                            $("#" + sender.parentElement.id).children().each(function (index, elem) {
+                                if (elem.id.indexOf('lblVendorName') >= 0) {spanID=elem;}
+                                if (elem.id.indexOf('lnkAddVen') >= 0) {lnkID=elem;}
+                                if (elem.id.indexOf('chkDefault') >= 0) {
+                                    spanID.style.display = (elem.checked?'none':'');
+                                    lnkID.style.display = (elem.checked?'none':'');
+                                }
+                            });
+
+
+
+                        }
+                        else {
+                            alert('Transaction failed');
+                            //InstPwd.value = '';
+                        }
+                    }
+                }
+            });
+        }
+
+        function AssociateVendor(sender) {
+            var lProdCatID = <%=ProductCategoryID%> ; 
+             var lID = <%=ProductLineID %>; 
+             var excList = '';
+             var lVendorIDs = '';
+             var lExcVendorID = '';
+             var lFirstServiceCall = true;
+             var lSecondServiceCall = false;
+             for (var i = 0; i < sender.options.length; i++) {
+                 if (sender.options[i].selected == true) {
+                     lVendorIDs += (sender.options[i].value) + ",";
+                 }
+             }
+            //Int32 pProductCatID, String pVendorIds, Int32 pProductLineID
+             $.ajax({
+                 type: "POST",
+                 url: "Custom_MaterialList.aspx/AssociateVendorToCat",
+                 data: "{'pProductLineID':'" +lID + "', 'pProductCatID':'" + lProdCatID + "', 'pVendorIds': '" + lVendorIDs.substr(0, lVendorIDs.length - 1) + "'}",
+                 contentType: "application/json; charset=utf-8",
+                 dataType: "JSON",
+                 error: function (XMLHttpRequest, textStatus, errorThrown) {
+                     alert('in error');
+                     alert(errorThrown);
+                 },
+                 success: function (result) {
+                     if (result != null) {
+                         var flg = (result.d);
+                         if (flg == "1") {
+                             // alert('Installer\'s material list request is approved');
+                             //window.location = window.location.href;
+                         }
+                         else {
+                             alert('Transaction failed');
+                             //InstPwd.value = '';
+                         }
+                     }
+                 }
+             });
+         }
         function endRequestHandler() {
             try {
                 if (g_CurrentTextBox != null) {
-                
+
                     $get(g_CurrentTextBox).focus();
                     $get(g_CurrentTextBox).select();
                 }
             }
-            catch(e){}
+            catch (e) { }
         }
 
         function TransformList() {
-            $('.form-control').multiselect({ columns: 2, placeholder: 'Select options', search:true });
+            $('.form-control').multiselect({ columns: 2, placeholder: 'Select options', search: true });
         }
     </script>
     <style type="text/css">
         .dd_chk_select {
             width: 180px;
         }
-       
-         .modal {
+
+        .modal {
             position: fixed;
             z-index: 999;
             height: 100%;
@@ -350,40 +447,53 @@
             height: 120px;
             background-color: White;
             border-radius: 10px;
-             background: url(../img/loader.gif) no-repeat;
+            background: url(../img/loader.gif) no-repeat;
             filter: alpha(opacity=100);
             opacity: 1;
             -moz-opacity: 1;
         }
-       
     </style>
     <style>
+        ul, li {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            max-height: 300px;
+        }
 
-ul,li { margin:0; padding:0; list-style:none;max-height:300px;}
-.label { color:#000; font-size:16px;}
-.grid td .container { max-width:728px; margin-top:150px; max-height:250px;}
-.form-control {
-    display: block;
-    width: 100%;
-    height: 34px;
-    padding: 6px 12px;
-    font-size: 14px;
-    line-height: 1.42857143;
-    color: #555;
-    background-color: #fff;
-    background-image: none;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
-    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-}
-</style>
+        .label {
+            color: #000;
+            font-size: 16px;
+        }
+
+        .grid td .container {
+            max-width: 728px;
+            margin-top: 150px;
+            max-height: 250px;
+        }
+
+        .form-control {
+            display: block;
+            width: 100%;
+            height: 34px;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #555;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+            -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-    
+
     <div id="cover" class="modal">
         <div id="dvLoader" class="center">&nbsp;</div>
 
@@ -661,361 +771,335 @@ ul,li { margin:0; padding:0; list-style:none;max-height:300px;}
                 </tr>
             </table>
         </asp:Panel>
-        <div class="grid" style="display:none">
-            <fieldset >
-                <legend>Material requested by Installer</legend>
-                <asp:ListView ID="lstRequestedMaterial" runat="server"  ItemPlaceholderID="itemPlaceHolder" GroupPlaceholderID="groupPlaceHolder">
-                    <LayoutTemplate>
-                            <div>
-                                <asp:PlaceHolder ID="groupPlaceHolder" runat="server"></asp:PlaceHolder>
-                            </div>
-                        </LayoutTemplate>
-                        <GroupTemplate>
-                            <asp:PlaceHolder ID="itemPlaceHolder" runat="server"></asp:PlaceHolder>
 
-                        </GroupTemplate>
-                        <ItemTemplate>
-                            <h3 align="left">Product Category: 
+
+        <div class="grid" style="display: none">
+            <fieldset>
+                <legend>Material requested by Installer</legend>
+                <asp:ListView ID="lstRequestedMaterial" runat="server" ItemPlaceholderID="itemPlaceHolder" GroupPlaceholderID="groupPlaceHolder">
+                    <LayoutTemplate>
+                        <div>
+                            <asp:PlaceHolder ID="groupPlaceHolder" runat="server"></asp:PlaceHolder>
+                        </div>
+                    </LayoutTemplate>
+                    <GroupTemplate>
+                        <asp:PlaceHolder ID="itemPlaceHolder" runat="server"></asp:PlaceHolder>
+
+                    </GroupTemplate>
+                    <ItemTemplate>
+                        <h3 align="left">Product Category: 
                                 <asp:Label ID="lblProductCategory" runat="server" Text="Label"></asp:Label>
-                                <%--<asp:HiddenField ID="hdnProductCatID" runat="server" Value='<%#Eval("ProductCatID")%>' />--%>
-                                <div style="clear: both"></div>
-                            </h3>
-                        </ItemTemplate>
+                            <%--<asp:HiddenField ID="hdnProductCatID" runat="server" Value='<%#Eval("ProductCatID")%>' />--%>
+                            <div style="clear: both"></div>
+                        </h3>
+                    </ItemTemplate>
                 </asp:ListView>
             </fieldset>
         </div>
         <div class="grid">
-           <%-- <asp:UpdatePanel ID="updMaterialList" runat="server">
+            <%-- <asp:UpdatePanel ID="updMaterialList" runat="server">
                 <ContentTemplate>--%>
-                    <div class="btn_sec">
-                        Select Product Category:
+            <div class="btn_sec">
+                Select Product Category:
                         <asp:DropDownList ID="ddlCategoryH" Width="150px" runat="server">
                         </asp:DropDownList>
-                        <asp:Button ID="btnAddProdLines" runat="server" Text="Add Product Category" OnClick="btnAddProdLines_Click" />
+                <asp:Button ID="btnAddProdLines" runat="server" Text="Add Product Category" OnClick="btnAddProdLines_Click" />
 
+            </div>
+
+            <asp:ListView ID="lstCustomMaterialList" OnItemCommand="lstCustomMaterialList_ItemCommand" runat="server" OnItemDataBound="lstCustomMaterialList_ItemDataBound" ItemPlaceholderID="itemPlaceHolder" GroupPlaceholderID="groupPlaceHolder">
+                <LayoutTemplate>
+                    <div>
+                        <asp:PlaceHolder ID="groupPlaceHolder" runat="server"></asp:PlaceHolder>
                     </div>
+                </LayoutTemplate>
+                <GroupTemplate>
+                    <asp:PlaceHolder ID="itemPlaceHolder" runat="server"></asp:PlaceHolder>
 
-                    <asp:ListView ID="lstCustomMaterialList" OnItemCommand="lstCustomMaterialList_ItemCommand" runat="server" OnItemDataBound="lstCustomMaterialList_ItemDataBound" ItemPlaceholderID="itemPlaceHolder" GroupPlaceholderID="groupPlaceHolder">
-                        <LayoutTemplate>
-                            <div>
-                                <asp:PlaceHolder ID="groupPlaceHolder" runat="server"></asp:PlaceHolder>
-                            </div>
-                        </LayoutTemplate>
-                        <GroupTemplate>
-                            <asp:PlaceHolder ID="itemPlaceHolder" runat="server"></asp:PlaceHolder>
-
-                        </GroupTemplate>
-                        <ItemTemplate>
-                            <asp:UpdatePanel ID="updMaterialList2" runat="server">
-                                <ContentTemplate>
-                                    <div style="padding-bottom:2px;">
-                                        <div style="float:left" align="left">
-                                            Product Category: 
+                </GroupTemplate>
+                <ItemTemplate>
+                    <asp:UpdatePanel ID="updMaterialList2" runat="server">
+                        <ContentTemplate>
+                            <div style="padding-bottom: 2px;">
+                                <div style="float: left" align="left">
+                                    Product Category: 
                                             <asp:DropDownList ID="ddlCategory" Width="150px" runat="server" OnSelectedIndexChanged="ddlCategory_SelectedIndexChanged" AutoPostBack="true">
                                             </asp:DropDownList>
 
-                                            <asp:HiddenField ID="hdnProductCatID" runat="server" Value='<%#Eval("ProductCatID")%>' />
-                                            <asp:LinkButton ID="lnkAddProdCat" Visible="false" OnClick="lnkAddProdCat_Click" runat="server">Add</asp:LinkButton>
-                                            <asp:LinkButton ID="lnkDeleteProdCat" CommandArgument='<%#Eval("ProductCatID") %>' OnClick="lnkDeleteProdCat_Click" runat="server" OnClientClick="return confirm('Deleting product category will delete all associated line items. Are you sure you want to delete?')">Delete</asp:LinkButton>
-                                      
-                                        </div>
-                                        <div style="float:right;width:34%">
-                                            Vendor Category:
+                                    <asp:HiddenField ID="hdnProductCatID" runat="server" Value='<%#Eval("ProductCatID")%>' />
+                                    <asp:LinkButton ID="lnkAddProdCat" Visible="false" OnClick="lnkAddProdCat_Click" runat="server">Add</asp:LinkButton>
+                                    <asp:LinkButton ID="lnkDeleteProdCat" CommandArgument='<%#Eval("ProductCatID") %>' OnClick="lnkDeleteProdCat_Click" runat="server" OnClientClick="return confirm('Deleting product category will delete all associated line items. Are you sure you want to delete?')">Delete</asp:LinkButton>
+
+                                </div>
+                                <div style="float: right; width: 34%">
+                                    Vendor Category:
                                             <asp:DropDownList ID="dldVendorCategory" Width="70%" AutoPostBack="false" OnSelectedIndexChanged="dldVendorCategory_SelectedIndexChanged" runat="server"></asp:DropDownList><br />
-                                            <asp:RadioButton ID="rdoManufacturer" GroupName="VendorType" AutoPostBack="false" OnCheckedChanged="rdoManufacturer_CheckedChanged" Text="Manufacturer" runat="server" />
-                                            <asp:RadioButton ID="rdoWholeSaler"  GroupName="VendorType" AutoPostBack="false" OnCheckedChanged="rdoWholeSaler_CheckedChanged" Checked="true" Text="Wholesaler / Retailer" runat="server" />
-                                        </div>
-                                        <div style="clear: both"></div>
+                                    <asp:RadioButton ID="rdoManufacturer" GroupName="VendorType" AutoPostBack="false" OnCheckedChanged="rdoManufacturer_CheckedChanged" Text="Manufacturer" runat="server" />
+                                    <asp:RadioButton ID="rdoWholeSaler" GroupName="VendorType" AutoPostBack="false" OnCheckedChanged="rdoWholeSaler_CheckedChanged" Checked="true" Text="Wholesaler / Retailer" runat="server" />
+                                </div>
+                                <div style="clear: both"></div>
+                            </div>
+
+                            <asp:GridView ID="grdProdLines" Width="100%" runat="server" OnRowDataBound="grdProdLines_RowDataBound" AutoGenerateColumns="false">
+                                <Columns>
+                                    <asp:TemplateField HeaderText="Line" HeaderStyle-Width="2%" ItemStyle-Width="2%">
+                                        <ItemTemplate>
+                                            <asp:TextBox CssClass="text-style" ID="txtLine" Text='<%# Eval("Line") %>' MaxLength="4" runat="server" ClientIDMode="Static" Enabled="false"></asp:TextBox>
+                                            <asp:HiddenField ID="hdnMaterialListId" runat="server" Value='<%#Eval("Id")%>' />
+                                            <asp:HiddenField ID="hdnEmailStatus" runat="server" Value='<%#Eval("EmailStatus")%>' />
+                                            <asp:HiddenField ID="hdnForemanPermission" runat="server" Value='<%#Eval("IsForemanPermission")%>' />
+                                            <asp:HiddenField ID="hdnSrSalesmanPermissionF" runat="server" Value='<%#Eval("IsSrSalemanPermissionF")%>' />
+                                            <asp:HiddenField ID="hdnAdminPermission" runat="server" Value='<%#Eval("IsAdminPermission")%>' />
+                                            <asp:HiddenField ID="hdnSrSalesmanPermissionA" runat="server" Value='<%#Eval("IsSrSalemanPermissionA")%>' />
+                                            <asp:HiddenField ID="hdnProductCatID" runat="server" Value='<%#Eval("ProductCatID")%>' />
+                                            <asp:HiddenField ID="hdnVendorIDs" runat="server" Value='<%#Eval("VendorIDs")%>' />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="JG sku- vendor part #" ItemStyle-Width="5%" HeaderStyle-Width="5%">
+                                        <ItemTemplate>
+                                            <asp:TextBox ID="txtSkuPartNo" CssClass="text-style" Text='<%# Eval("JGSkuPartNo") %>' MaxLength="18" runat="server" onblur="UpdateSpecificProdMat('JGSkuPartNo',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>'></asp:TextBox>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Description" HeaderStyle-Width="25%" ItemStyle-Width="25%">
+                                        <ItemTemplate>
+                                            <asp:TextBox ID="txtDescription" CssClass="text-style" Text='<%# Eval("MaterialList") %>' onblur="UpdateSpecificProdMat('MaterialList',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>' runat="server"></asp:TextBox>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Quantity" HeaderStyle-Width="9%" ItemStyle-Width="9%">
+                                        <ItemTemplate>
+                                            <asp:TextBox ID="txtQTY" runat="server" CssClass="text-style" MaxLength="4" onblur="UpdateSpecificProdMat('Quantity',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>' Text='<%# Eval("Quantity") %>' onkeypress="return isNumberKey(event)"></asp:TextBox>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="UOM" HeaderStyle-Width="5%" ItemStyle-Width="5%">
+                                        <ItemTemplate>
+                                            <asp:TextBox ID="txtUOM" runat="server" CssClass="text-style" onblur="UpdateSpecificProdMat('UOM',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>' onfocus="document.getElementById('__LASTFOCUS').value=this.id;" Text='<%# Eval("UOM") %>'></asp:TextBox>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Cost" HeaderStyle-Width="5%" ItemStyle-Width="5%"><%--Material Cost Per Item--%>
+                                        <ItemTemplate>
+                                            <asp:TextBox ID="txtMaterialCost" onblur="UpdateSpecificProdMat('MaterialCost',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>' CssClass="text-style" onfocus="document.getElementById('__LASTFOCUS').value=this.id;" Text='<%# Eval("MaterialCost") %>' runat="server" onkeypress="return onlyDotsAndNumbers(event)"></asp:TextBox>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Extended" HeaderStyle-Width="10%" ItemStyle-Width="10%">
+                                        <ItemTemplate>
+                                            <asp:TextBox ID="txtExtended" onblur="UpdateSpecificProdMat('extend',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>' runat="server" onfocus="document.getElementById('__LASTFOCUS').value=this.id;" CssClass="text-style" Text='<%# Eval("Extend") %>'></asp:TextBox>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Vendor Quotes/Invoice" Visible="true" HeaderStyle-Width="250px" ItemStyle-Width="250px" ItemStyle-Height="20px">
+                                        <ItemTemplate>
+                                            <asp:UpdatePanel ID="updVend" runat="server">
+                                                <ContentTemplate>
+                                                    <div id='<%#Eval("id")   %>' class='<%#Eval("ProductCatID")%>'>
+                                                        <%--<asp:ListBox onchange="SaveVendor(this)" ID="lstVendorName" Width="25%" SelectionMode="Multiple" CssClass="form-contr2ol" runat="server"></asp:ListBox>--%>
+                                                        <asp:Label ID="lblVendorNames" runat="server" Text=""></asp:Label>
+                                                        <asp:LinkButton ID="lnkAddVendors" runat="server" CommandArgument='<%#Eval("Id") %>' CommandName="AddVendor" OnClick="lnkAddVendors_Click">+ Add</asp:LinkButton>
+                                                        <asp:CheckBox onclick="UpdateDefault(this);" ID="chkDefault" Text="Default" runat="server" />
+
+                                                        
+                                                    </div>
+                                                    
+                                                </ContentTemplate>
+                                            </asp:UpdatePanel>
+
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="" HeaderStyle-Width="5%" ItemStyle-Width="5%">
+                                        <ItemTemplate>
+                                            <asp:LinkButton ID="lnkDeleteLineItems" runat="server" CommandArgument='<%#Eval("Id") %>' CommandName="DeleteLine" OnClick="lnkDeleteLineItems_Click">Delete</asp:LinkButton>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Total" Visible="false">
+                                        <ItemTemplate>
+
+
+                                            <%--<asp:Label ID="lblTotal" runat="server" Text='<%# Eval("Total") %>' ClientIDMode="Static"></asp:Label>--%>
+                                            <asp:LinkButton ID="lblTotal" data-toggle="modal" data-target="#myModal" runat="server" Text='<%# Eval("Total") %>' ClientIDMode="Static"></asp:LinkButton>
+                                            <asp:LinkButton ID="lnkAttachQuotes" Text="Attach Quotes" runat="server" OnClick="lnkAttachQuotes_Click" ClientIDMode="Static"></asp:LinkButton>
+
+
+
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                </Columns>
+                            </asp:GridView>
+                            <asp:LinkButton ID="lnkAddLines" CommandName="AddLine" CommandArgument='<%#Eval("ProductCatId") %>' OnClick="lnkAddLines_Click1" runat="server">Add Line</asp:LinkButton>
+                            <fieldset style="border: 1px solid">
+                                <legend>Attachments</legend>
+                                <div style="float: left; width: 40%;">
+                                    Attach File:
+                                            <asp:FileUpload ID="flMaterialList" runat="server" class="multi" />
+                                    <div class="btn_sec">
+                                        <asp:Button ID="btnAttachFile" runat="server" Text="Attach" OnClick="btnAttachFile_Click" />
                                     </div>
+                                </div>
+                                <div style="float: left; width: 60%; vertical-align: top; padding-top: 0px;">
+                                    <h5 style="margin-top: 0px;">Attached Items:</h5>
+                                    <asp:DataList ID="grdAttachment" runat="server" RepeatLayout="Table" RepeatColumns="3">
+                                        <ItemTemplate>
+                                            <span style="width: 250px; background-color: #f8f5f5; padding: 5px;">
+                                                <a href='<%#Eval("DocumentPath") %>' target="_blank">
+                                                    <%#Eval("DocumentName") %>
+                                                </a>&nbsp;
+                                                        <asp:LinkButton ID="lnkDeleteMatLisAttc" OnClick="lnkDeleteMatLisAttc_Click" CommandArgument='<%#Eval("Id") %>' runat="server" Text='Delete'></asp:LinkButton>
+                                            </span>
+                                        </ItemTemplate>
+                                    </asp:DataList>
 
-                                    <asp:GridView ID="grdProdLines" Width="100%" runat="server" OnRowDataBound="grdProdLines_RowDataBound" AutoGenerateColumns="false">
-                                        <Columns>
-                                            <asp:TemplateField HeaderText="Line" HeaderStyle-Width="2%" ItemStyle-Width="2%">
-                                                <ItemTemplate>
-                                                    <asp:TextBox CssClass="text-style" ID="txtLine" Text='<%# Eval("Line") %>' MaxLength="4" runat="server" ClientIDMode="Static" Enabled="false"></asp:TextBox>
-                                                    <asp:HiddenField ID="hdnMaterialListId" runat="server" Value='<%#Eval("Id")%>' />
-                                                    <asp:HiddenField ID="hdnEmailStatus" runat="server" Value='<%#Eval("EmailStatus")%>' />
-                                                    <asp:HiddenField ID="hdnForemanPermission" runat="server" Value='<%#Eval("IsForemanPermission")%>' />
-                                                    <asp:HiddenField ID="hdnSrSalesmanPermissionF" runat="server" Value='<%#Eval("IsSrSalemanPermissionF")%>' />
-                                                    <asp:HiddenField ID="hdnAdminPermission" runat="server" Value='<%#Eval("IsAdminPermission")%>' />
-                                                    <asp:HiddenField ID="hdnSrSalesmanPermissionA" runat="server" Value='<%#Eval("IsSrSalemanPermissionA")%>' />
-                                                    <asp:HiddenField ID="hdnProductCatID" runat="server" Value='<%#Eval("ProductCatID")%>' />
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="JG sku- vendor part #" ItemStyle-Width="5%" HeaderStyle-Width="5%" >
-                                                <ItemTemplate>
-                                                    <asp:TextBox ID="txtSkuPartNo" CssClass="text-style" Text='<%# Eval("JGSkuPartNo") %>' MaxLength="18" runat="server" onblur="UpdateSpecificProdMat('JGSkuPartNo',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>'></asp:TextBox>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Description" HeaderStyle-Width="25%" ItemStyle-Width="25%">
-                                                <ItemTemplate>
-                                                    <asp:TextBox ID="txtDescription" CssClass="text-style" Text='<%# Eval("MaterialList") %>' onblur="UpdateSpecificProdMat('MaterialList',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>' runat="server" ></asp:TextBox>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Quantity" HeaderStyle-Width="9%"  ItemStyle-Width="9%">
-                                                <ItemTemplate>
-                                                    <asp:TextBox ID="txtQTY" runat="server" CssClass="text-style" MaxLength="4" onblur="UpdateSpecificProdMat('Quantity',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>' Text='<%# Eval("Quantity") %>' onkeypress="return isNumberKey(event)"  ></asp:TextBox>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="UOM" HeaderStyle-Width="5%"  ItemStyle-Width="5%">
-                                                <ItemTemplate>
-                                                    <asp:TextBox ID="txtUOM" runat="server" CssClass="text-style" onblur="UpdateSpecificProdMat('UOM',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>' onfocus="document.getElementById('__LASTFOCUS').value=this.id;"  Text='<%# Eval("UOM") %>' ></asp:TextBox>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Cost" HeaderStyle-Width="5%" ItemStyle-Width="5%"><%--Material Cost Per Item--%>
-                                                <ItemTemplate>
-                                                    <asp:TextBox ID="txtMaterialCost" onblur="UpdateSpecificProdMat('MaterialCost',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>' CssClass="text-style" onfocus="document.getElementById('__LASTFOCUS').value=this.id;" Text='<%# Eval("MaterialCost") %>' runat="server"  onkeypress="return onlyDotsAndNumbers(event)"></asp:TextBox>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Extended" HeaderStyle-Width="10%" ItemStyle-Width="10%">
-                                                <ItemTemplate>
-                                                    <asp:TextBox ID="txtExtended" onblur="UpdateSpecificProdMat('extend',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>' runat="server" onfocus="document.getElementById('__LASTFOCUS').value=this.id;" CssClass="text-style"  Text='<%# Eval("Extend") %>'></asp:TextBox>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Vendor Quotes/Invoice" Visible="true" HeaderStyle-Width="250px" ItemStyle-Width="250px" ItemStyle-Height="20px"  >
-                                                <ItemTemplate>
-                                                    <asp:UpdatePanel ID="updVend" runat="server">
-                                                        <ContentTemplate>
-                                                            <div id='<%#Eval("id")   %>' class='<%#Eval("ProductCatID")%>'>
-                                                                <asp:ListBox onchange="SaveVendor(this)" ID="lstVendorName" Width="25%" SelectionMode="Multiple" CssClass="form-control"  runat="server"></asp:ListBox>
-                                                                <asp:CheckBox onclick="SaveVendor(this);" ID="chkDefault"   Text="Default" runat="server" />
+                                </div>
+                            </fieldset>
+                            <div class="btn_sec">
+                                <asp:Button ID="btnSendEmailToVendorsForProd" runat="server" CommandArgument='<%#Eval("ProductCatId") %>' Text="Send Mail to Vendors" OnClick="btnSendEmailToVendorsForProd_Click" OnClientClick="return ValidatePermissions()" />
+                            </div>
+                            <hr style="border: none; background: #ccc; height: 2px; margin-top: 10px; margin-bottom: 20px" />
 
-                                                                 <asp:DropDownCheckBoxes Visible="false" ID="ddlVendorName" onblur="ShowProgress()" CssClass="chk-style" ClientIDMode="AutoID" EnableViewState="true" runat="server" Style="margin: -2em 0 0;" UseSelectAllNode="true" OnSelectedIndexChanged="ddlVendorName_SelectedIndexChanged1" AutoPostBack="true">
-                                                                </asp:DropDownCheckBoxes>
-                                                                <asp:CheckBox ID="chkApplyFilter" Text="Apply Filter" runat="server" AutoPostBack="true" Visible="false" OnCheckedChanged="chkApplyFilter_CheckedChanged" />
-                                                            </div>
-                                                        </ContentTemplate>
-                                                      
-                                                    </asp:UpdatePanel>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="" HeaderStyle-Width="5%" ItemStyle-Width="5%">
-                                                <ItemTemplate>
-                                                    <asp:LinkButton ID="lnkDeleteLineItems" runat="server" CommandArgument='<%#Eval("Id") %>' CommandName="DeleteLine" OnClick="lnkDeleteLineItems_Click">Delete</asp:LinkButton>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Total" Visible="false">
-                                                <ItemTemplate>
+                        </ContentTemplate>
+                        <Triggers>
+                            <asp:PostBackTrigger ControlID="btnAttachFile" />
+                            <asp:PostBackTrigger ControlID="btnSendEmailToVendorsForProd" />
+                        </Triggers>
+                    </asp:UpdatePanel>
+                </ItemTemplate>
+            </asp:ListView>
 
-
-                                                    <%--<asp:Label ID="lblTotal" runat="server" Text='<%# Eval("Total") %>' ClientIDMode="Static"></asp:Label>--%>
-                                                    <asp:LinkButton ID="lblTotal" data-toggle="modal" data-target="#myModal" runat="server" Text='<%# Eval("Total") %>' ClientIDMode="Static"></asp:LinkButton>
-                                                    <asp:LinkButton ID="lnkAttachQuotes" Text="Attach Quotes" runat="server" OnClick="lnkAttachQuotes_Click" ClientIDMode="Static"></asp:LinkButton>
-
-
-
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                        </Columns>
-                                    </asp:GridView>
-                                    <asp:LinkButton ID="lnkAddLines" CommandName="AddLine" CommandArgument='<%#Eval("ProductCatId") %>' OnClick="lnkAddLines_Click1" runat="server">Add Line</asp:LinkButton>
-                                    
-                                    <div>
-                                        Attach File:
-                                        <asp:FileUpload ID="flMaterialList" runat="server" class="multi" />
-                                        <span class="btn_sec"><asp:Button ID="btnAttachFile" runat="server" Text="Attach" OnClick="btnAttachFile_Click" /></span>
-                                    </div>
-                                    <div>
-                                        <asp:DataList ID="grdAttachment" runat="server" RepeatLayout="Table" RepeatColumns="3">
-                                            <ItemTemplate>
-                                                <span style="width:250px;background-color:#f8f5f5;padding:5px;">
-                                                    <a href='<%#Eval("DocumentPath") %>' target="_blank">
-                                                        <%#Eval("DocumentName") %>
-                                                    </a>&nbsp;
-                                                    <asp:LinkButton ID="lnkDeleteMatLisAttc" OnClick="lnkDeleteMatLisAttc_Click" CommandArgument='<%#Eval("Id") %>'  runat="server" Text='Delete'></asp:LinkButton>
-                                                </span>
-                                            </ItemTemplate>                                            
-                                        </asp:DataList>
-                                        <div class="btn_sec">
-                                            <asp:Button ID="btnSendEmailToVendorsForProd" runat="server"  CommandArgument='<%#Eval("ProductCatId") %>' Text="Send Mail to Vendors" OnClick="btnSendEmailToVendorsForProd_Click" OnClientClick="return ValidatePermissions()" />
-                                        </div>
-                                    </div>
-                                    <hr style="border:none; background:#ccc; height:2px; margin-top:10px;margin-bottom:20px" />
-
-                                </ContentTemplate>
-                                <Triggers>
-                                    <asp:PostBackTrigger ControlID="btnAttachFile" />
-                                </Triggers>
-                            </asp:UpdatePanel>
+            <asp:GridView ID="grdcustom_material_list" runat="server" Width="108%" AutoGenerateColumns="false" Visible="false"
+                OnRowDataBound="grdcustom_material_list_RowDataBound" OnRowDeleting="grdcustom_material_list_RowDeleting" OnRowCommand="grdcustom_material_list_RowCommand">
+                <Columns>
+                    <asp:TemplateField HeaderText="Sr No.">
+                        <ItemTemplate>
+                            <asp:Label ID="lblsrno" Text="0" runat="server"></asp:Label>
+                            <asp:HiddenField ID="hdnMaterialListId" runat="server" Value='<%#Eval("Id")%>' />
+                            <asp:HiddenField ID="hdnEmailStatus" runat="server" Value='<%#Eval("EmailStatus")%>' />
+                            <asp:HiddenField ID="hdnForemanPermission" runat="server" Value='<%#Eval("IsForemanPermission")%>' />
+                            <asp:HiddenField ID="hdnSrSalesmanPermissionF" runat="server" Value='<%#Eval("IsSrSalemanPermissionF")%>' />
+                            <asp:HiddenField ID="hdnAdminPermission" runat="server" Value='<%#Eval("IsAdminPermission")%>' />
+                            <asp:HiddenField ID="hdnSrSalesmanPermissionA" runat="server" Value='<%#Eval("IsSrSalemanPermissionA")%>' />
                         </ItemTemplate>
-                    </asp:ListView>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="Material List">
+                        <ItemTemplate>
+                            <asp:TextBox ID="txtMateriallist" Text='<%#Eval("MaterialList")%>' TextMode="MultiLine" AutoPostBack="true" OnTextChanged="txtMateriallist_TextChanged"
+                                runat="server"></asp:TextBox>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="Vendor Category">
+                        <ItemTemplate>
+                            <asp:DropDownList ID="ddlVendorCategory" ClientIDMode="Static" runat="server" Width="150px"
+                                OnSelectedIndexChanged="ddlVendorCategory_SelectedIndexChanged" AutoPostBack="true">
+                            </asp:DropDownList>
+                            <asp:RequiredFieldValidator ID="requiredvendorcategory" Display="Dynamic" runat="server"
+                                InitialValue="0" ForeColor="Red" ErrorMessage="Required!" ControlToValidate="ddlVendorCategory">
+                            </asp:RequiredFieldValidator>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="Vendor Name">
+                        <ItemTemplate>
+                            <asp:DropDownList ID="ddlVendorName" OnSelectedIndexChanged="ddlVendorName_SelectedIndexChanged"
+                                ClientIDMode="Static" runat="server" Width="150px" Enabled="false" AutoPostBack="true">
+                            </asp:DropDownList>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="Attach Quote">
+                        <ItemTemplate>
+                            <asp:LinkButton ID="lnkAttachQuote" runat="server" Text='Attach Quote' CommandArgument='<%#Eval("TempName") %>' CommandName="Attach Quote"></asp:LinkButton>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="Quote">
+                        <ItemTemplate>
+                            <asp:LinkButton ID="lnkQuote" runat="server" Text='<%#Eval("DocName")%>' CommandArgument='<%#Eval("TempName") %>' CommandName="View"></asp:LinkButton>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="Amount($)">
+                        <ItemTemplate>
+                            <asp:TextBox ID="txtAmount" runat="server" Text="0.00" onkeypress="return isNumericKey(event);" AutoPostBack="true" OnTextChanged="txtAmount_TextChanged"
+                                MaxLength="15" Enabled="false"></asp:TextBox>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField>
+                        <ItemTemplate>
+                            <asp:LinkButton ID="lnkAdd" runat="server" Text="Add" OnClick="Add_Click"></asp:LinkButton>
+                            <label>
+                                &nbsp;</label>
+                            <asp:LinkButton ID="lnkdelete" runat="server" CommandName="Delete" CommandArgument='<%#Eval("Id")%>' Text="Delete"></asp:LinkButton>
 
-                    <asp:GridView ID="grdcustom_material_list" runat="server" Width="108%" AutoGenerateColumns="false" Visible="false"
-                        OnRowDataBound="grdcustom_material_list_RowDataBound" OnRowDeleting="grdcustom_material_list_RowDeleting" OnRowCommand="grdcustom_material_list_RowCommand">
-                        <Columns>
-                            <asp:TemplateField HeaderText="Sr No.">
-                                <ItemTemplate>
-                                    <asp:Label ID="lblsrno" Text="0" runat="server"></asp:Label>
-                                    <asp:HiddenField ID="hdnMaterialListId" runat="server" Value='<%#Eval("Id")%>' />
-                                    <asp:HiddenField ID="hdnEmailStatus" runat="server" Value='<%#Eval("EmailStatus")%>' />
-                                    <asp:HiddenField ID="hdnForemanPermission" runat="server" Value='<%#Eval("IsForemanPermission")%>' />
-                                    <asp:HiddenField ID="hdnSrSalesmanPermissionF" runat="server" Value='<%#Eval("IsSrSalemanPermissionF")%>' />
-                                    <asp:HiddenField ID="hdnAdminPermission" runat="server" Value='<%#Eval("IsAdminPermission")%>' />
-                                    <asp:HiddenField ID="hdnSrSalesmanPermissionA" runat="server" Value='<%#Eval("IsSrSalemanPermissionA")%>' />
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Material List">
-                                <ItemTemplate>
-                                    <asp:TextBox ID="txtMateriallist" Text='<%#Eval("MaterialList")%>' TextMode="MultiLine" AutoPostBack="true" OnTextChanged="txtMateriallist_TextChanged"
-                                        runat="server"></asp:TextBox>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Vendor Category">
-                                <ItemTemplate>
-                                    <asp:DropDownList ID="ddlVendorCategory" ClientIDMode="Static" runat="server" Width="150px"
-                                        OnSelectedIndexChanged="ddlVendorCategory_SelectedIndexChanged" AutoPostBack="true">
-                                    </asp:DropDownList>
-                                    <asp:RequiredFieldValidator ID="requiredvendorcategory" Display="Dynamic" runat="server"
-                                        InitialValue="0" ForeColor="Red" ErrorMessage="Required!" ControlToValidate="ddlVendorCategory">
-                                    </asp:RequiredFieldValidator>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Vendor Name">
-                                <ItemTemplate>
-                                    <asp:DropDownList ID="ddlVendorName" OnSelectedIndexChanged="ddlVendorName_SelectedIndexChanged"
-                                        ClientIDMode="Static" runat="server" Width="150px" Enabled="false" AutoPostBack="true">
-                                    </asp:DropDownList>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Attach Quote">
-                                <ItemTemplate>
-                                    <asp:LinkButton ID="lnkAttachQuote" runat="server" Text='Attach Quote' CommandArgument='<%#Eval("TempName") %>' CommandName="Attach Quote"></asp:LinkButton>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Quote">
-                                <ItemTemplate>
-                                    <asp:LinkButton ID="lnkQuote" runat="server" Text='<%#Eval("DocName")%>' CommandArgument='<%#Eval("TempName") %>' CommandName="View"></asp:LinkButton>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField HeaderText="Amount($)">
-                                <ItemTemplate>
-                                    <asp:TextBox ID="txtAmount" runat="server" Text="0.00" onkeypress="return isNumericKey(event);" AutoPostBack="true" OnTextChanged="txtAmount_TextChanged"
-                                        MaxLength="15" Enabled="false"></asp:TextBox>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField>
-                                <ItemTemplate>
-                                    <asp:LinkButton ID="lnkAdd" runat="server" Text="Add" OnClick="Add_Click"></asp:LinkButton>
-                                    <label>
-                                        &nbsp;</label>
-                                    <asp:LinkButton ID="lnkdelete" runat="server" CommandName="Delete" CommandArgument='<%#Eval("Id")%>' Text="Delete"></asp:LinkButton>
-
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                        </Columns>
-                    </asp:GridView>
-              <%--  </ContentTemplate>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                </Columns>
+            </asp:GridView>
+            <%--  </ContentTemplate>
             </asp:UpdatePanel>--%>
         </div>
-          
+
         <div class="btn_sec">
             <asp:Button ID="btnSendMail" runat="server" Text="Save" OnClick="btnSendMail_Click" OnClientClick="return ValidatePermissions()"
                 Style="background: url(../img/btn1.png) no-repeat;" Width="300" Visible="false" />
             <asp:Button ID="btnSendEmailToVendors" runat="server" Text="Send Mail to All Vendors" OnClick="btnSendEmailToVendors_Click" OnClientClick="return ValidatePermissions()" />
             <asp:Button ID="btnClose" runat="server" Text="Close" OnClick="btnClose_Click" CausesValidation="false" />
         </div>
-        <h1>Edit Email Templates</h1>
-        <div>
-            <label>
-                &nbsp;</label>
-            <%--<a href="EmailTemplateForVendorCategories.aspx" title="Edit Email Template for vendor category">
-               Edit Email Template for vendor category</a>--%>
-            <asp:LinkButton runat="server" ID="lnkVendorCategory" OnClick="lnkVendorCategory_Click"
-                CausesValidation="false">Edit Email Template for vendor category</asp:LinkButton>
-            <br />
-            <label>
-                &nbsp;</label>
-            <%-- <a href="EmailTemplateForVendorCategories.aspx" title="Edit Email Template for vendor">
-                Edit Email Template for vendor</a>--%>
-            <asp:LinkButton runat="server" ID="lnkVendor" OnClick="lnkVendor_Click" CausesValidation="false">Edit Email Template for vendor</asp:LinkButton>
-            <%-- <iframe src="EmailTemplateForVendorCategories.aspx" width="100%" height="100%" id="ifEmailTemplate" runat="server">
-        </iframe>--%>
-            <asp:Panel ID="pnlEmailTemplateForVendorCategories" runat="server">
-                <h2 style="text-align: center">
-                    <b>Email Template For Vendor Category</b></h2>
-                <div>
-                    <h2>Subject:
-                        <asp:TextBox ID="txtVendorSubject" Width="500px" runat="server"></asp:TextBox></h2>
-                    <div>
-                        Attach File:
-                        <asp:FileUpload ID="flVendCat" runat="server" class="multi" />
-                        <asp:GridView ID="grdVendCatAtc" runat="server" AutoGenerateColumns="false" EmptyDataText="No files uploaded" CellSpacing="22">
-                            <Columns>
-                                <asp:BoundField DataField="DocumentName" HeaderText="File Name" />
-                                <asp:TemplateField HeaderStyle-Width="20%">
-                                    <ItemTemplate>
-                                        <asp:HyperLink ID="hypDownload" Target="_blank" NavigateUrl='<%#Eval("DocumentPath") %>' runat="server">Download</asp:HyperLink>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField>
-                                    <ItemTemplate>
-                                        <asp:LinkButton ID="lnkDelete" Text="Delete" CommandArgument='<%#Eval("Id") %>'
-                                            runat="server" OnClick="DeleteFile" />
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                            </Columns>
-                        </asp:GridView>
-                    </div>
-                    <h2>Header Template</h2>
-                    <cc1:Editor ID="HeaderEditor" Width="1000px" Height="200px" runat="server" />
-                    <h2>Body Template</h2>
-                    <asp:Label ID="lblMaterials" runat="server"></asp:Label>
-                    <h2>Footer Template</h2>
-                    <cc1:Editor ID="FooterEditor" Width="1000px" Height="200px" runat="server" />
-
-                </div>
-                <br />
-                <br />
-                <div class="btn_sec">
-                    <asp:Button ID="btnUpdate" runat="server" Text="Update" OnClick="btnUpdate_Click" />
-                </div>
+        <div class="form_panel2">
+            <button id="btnFake" style="display: none" runat="server" />
+            <ajaxToolkit:ModalPopupExtender ID="mpVendorCat" runat="server" TargetControlID="btnFake"
+                PopupControlID="pnlVendorCategory" CancelControlID="btnFake">
+            </ajaxToolkit:ModalPopupExtender>
+            <asp:Panel ID="pnlVendorCategory" runat="server" BackColor="White"  Width="750px" Style="display: none; border: Solid 3px #A33E3F; border-radius: 10px 10px 0 0;">
+                <%--<asp:UpdatePanel ID="updVendorCategoryFilter" runat="server">
+                    <ContentTemplate>--%>
+                        <table style="border: Solid 3px #A33E3F; width: 100%; height: 100%;" cellpadding="10"
+                                                    cellspacing="0">
+                            <tr style="background-color: #A33E3F">
+                                <td colspan="2" style="height: 10%; color: White; font-weight: bold; font-size: larger; width: 100%;"
+                                    align="center">Add Vendors to Product Line
+                                </td>
+                            </tr>                            
+                            <tr>
+                                <td align="right">
+                                    Client Type:
+                                </td>
+                                <td>
+                                    <asp:RadioButton ID="optManf" GroupName="VendorTypeA" Width="120px" AutoPostBack="true" OnCheckedChanged="optManf_CheckedChanged" Text="Manufacturer" runat="server" />
+                                    <asp:RadioButton ID="optWholeSaler" GroupName="VendorTypeA" Width="120px" AutoPostBack="true" OnCheckedChanged="optWholeSaler_CheckedChanged" Checked="true" Text="Retail/Wholesale" runat="server" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right">
+                                    Vendor Category:
+                                </td>
+                                <td>
+                                    <asp:DropDownList ID="drpVendorCat" Width="80%" AutoPostBack="true" OnSelectedIndexChanged="drpVendorCat_SelectedIndexChanged" runat="server"></asp:DropDownList><br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right">
+                                    Vendor Sub Category:
+                                </td>
+                                <td>
+                                    <asp:DropDownList ID="drpVendorSubCat" Width="80%" AutoPostBack="true" OnSelectedIndexChanged="drpVendorSubCat_SelectedIndexChanged" runat="server"></asp:DropDownList><br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right">Vendor:</td>
+                                <td>
+                                    <asp:ListBox onchange="AssociateVendor(this)" ID="lstVendors" Width="500px" SelectionMode="Multiple" CssClass="form-control" runat="server"></asp:ListBox>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" align="right"><asp:Button ID="btnCancel" runat="server" Style="width: 100px;" Text="Cancel" OnClick="btnCancel_Click" OnClientClick="" /></td>
+                            </tr>
+                        </table>
+                  <%--  </ContentTemplate>
+                    <Triggers>
+                        <asp:AsyncPostBackTrigger ControlID="drpVendorCat" />
+                        <asp:AsyncPostBackTrigger ControlID="drpVendorSubCat" />
+                        <%--<asp:AsyncPostBackTrigger ControlID="optManf" />
+                        <asp:AsyncPostBackTrigger ControlID="optWholeSaler" />--% >
+                    </Triggers>
+                </asp:UpdatePanel>--%>
+                
             </asp:Panel>
         </div>
-        <asp:Panel ID="pnlEmailTemplateForVendors" runat="server" Visible="false">
-            <h2 style="text-align: center">
-                <b>Email Template For Vendors</b></h2>
-            <div>
-                <h2>Subject:
-                    <asp:TextBox ID="txtSubject" Width="500px" runat="server"></asp:TextBox></h2>
-                <div>
-                    Attach File:
-                    <asp:FileUpload ID="flVend" runat="server" class="multi" />
-                    <asp:GridView ID="grdVendAtc" runat="server" AutoGenerateColumns="false" EmptyDataText="No files uploaded" CellSpacing="22">
-                        <Columns>
-                            <asp:BoundField DataField="DocumentName" HeaderText="File Name" />
-                            <asp:TemplateField HeaderStyle-Width="20%">
-                                <ItemTemplate>
-                                    <asp:HyperLink ID="hypDownload" Target="_blank" NavigateUrl='<%#Eval("DocumentPath") %>' runat="server">Download</asp:HyperLink>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:TemplateField>
-                                <ItemTemplate>
-                                    <asp:LinkButton ID="lnkDelete" Text="Delete" CommandArgument='<%#Eval("Id") %>'
-                                        runat="server" OnClick="DeleteFile" />
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                        </Columns>
-                    </asp:GridView>
-                </div>
-                <h2>Header Template</h2>
-                <cc1:Editor ID="HeaderEditorVendor" Width="1000px" Height="200px" runat="server" />
-                <h2>Body Template</h2>
-                <asp:Label ID="lblMaterialsVendor" runat="server"></asp:Label>
-                <h2>Footer Template</h2>
-                <cc1:Editor ID="FooterEditorVendor" Width="1000px" Height="200px" runat="server" />
 
 
-            </div>
-            <br />
-            <br />
-            <div class="btn_sec">
-                <asp:Button ID="btnUpdateVendor" runat="server" Text="Update" OnClick="btnUpdateVendor_Click" />
-            </div>
-        </asp:Panel>
     </div>
-    <%--<ajaxToolkit:ModalPopupExtender ID="popup_permission" TargetControlID="btnSendMail"
-            runat="server" CancelControlID="btnClose1" PopupControlID="pnlpopup">
-        </ajaxToolkit:ModalPopupExtender>--%>
+
     <script type="text/javascript">
 
         function ValidatePermissions() {
@@ -1043,24 +1127,28 @@ ul,li { margin:0; padding:0; list-style:none;max-height:300px;}
             if (!lIsValidated) {
                 alert('Please approve the custom material list first.');
             }
+            else{
+                document.getElementById('cover').style.display = '';
+                document.getElementById('dvLoader').style.display = '';
+            }
             return lIsValidated;
         }
 
         function ShowProgress() {
             document.getElementById('cover').style.display = '';
             document.getElementById('dvLoader').style.display = '';
-            setTimeout(function () { HideProgress();  }, 5000);
+            setTimeout(function () { HideProgress(); }, 5000);
         }
 
         function HideProgress() {
             document.getElementById('cover').style.display = 'none';
             document.getElementById('dvLoader').style.display = 'none';
-        
+
         }
 
         function jsFunctions() {
             try {
-               
+
                 HideProgress();
                 endRequestHandler();
                 document.getElementById(document.getElementById("__LASTFOCUS").value).focus();
@@ -1068,22 +1156,22 @@ ul,li { margin:0; padding:0; list-style:none;max-height:300px;}
             catch (e) {
                 HideProgress();
             }
-            
+
         }
-       
+
         TransformList();
         //Sys.WebForms.PageRequestManager.getInstance().add_endRequest(jsFunctions);
         var prm = Sys.WebForms.PageRequestManager.getInstance();
         prm.add_endRequest(function (sender, e) {
             setTimeout(function () {
                 TransformList();
-               // $('select[multiple]').multiselect('reload');
+                // $('select[multiple]').multiselect('reload');
             }, 1000);
             jsFunctions();
         });
         HideProgress();
         onload = true;
     </script>
-   
-    
+
+
 </asp:Content>

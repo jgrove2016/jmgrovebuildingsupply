@@ -236,6 +236,14 @@ namespace JG_Prospect.BLL
         public void UpdateVendorIDs(String pVendorIDs, Int32 pProductCatID, String pExcludedMaterialListID, String pSoldJobID){
             CustomDAL.Instance.UpdateVendorIDs( pVendorIDs, pProductCatID, pExcludedMaterialListID, pSoldJobID);
         }
+        public void AssociateVendorToCat(String pVendorIDs, Int32 pProductCatID, Int32 pProdLineID, String pSoldJobID)
+        {
+            CustomDAL.Instance.AssociateVendorToCat(pVendorIDs, pProductCatID, pProdLineID, pSoldJobID);
+        }
+        public void UpdateDefaultVendorsInProdLine(Boolean pDefaultVendor, Int32 pProductCatID, Int32 pProdLineID, String pSoldJobID)
+        {
+            CustomDAL.Instance.UpdateDefaultVendorsInProdLine(pDefaultVendor, pProductCatID, pProdLineID, pSoldJobID);
+        }
         public void UpdateVendorIDForSpecMaterial(String pVendorIDs, Int32 pMaterialListID)
         {
             CustomDAL.Instance.UpdateVendorIDForSpecMaterial(pVendorIDs, pMaterialListID);

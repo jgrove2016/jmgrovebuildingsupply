@@ -105,7 +105,7 @@ namespace JG_Prospect.Sr_App
 
                 HeaderEditor.Content = ds.Tables[0].Rows[0]["HTMLHeader"].ToString();
                // lblMaterialsVendor.Text = ds.Tables[0].Rows[0][1].ToString();
-                FooterEditor.Content = ds.Tables[0].Rows[0][2].ToString();
+                FooterEditor.Content = ds.Tables[0].Rows[0]["HTMLFooter"].ToString();
                 
 
                 grdVendCatAtc.DataSource = ds.Tables[1];
