@@ -701,6 +701,25 @@ namespace JG_Prospect.DAL
             }
         }
 
+        public bool DeleteVendorDetail(string VendorId)
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("sp_deletevendor");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@VendorId", DbType.String, VendorId);
+                    database.ExecuteNonQuery(command);
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
         public DataSet GetVendorSubCategory()
         {
             try
@@ -894,7 +913,7 @@ namespace JG_Prospect.DAL
                     command.CommandType = CommandType.StoredProcedure;
                     database.AddInParameter(command, "@VendorId", DbType.Int16, VendorId);
                     database.AddInParameter(command, "@TempID", DbType.String, TempID);
-                    database.AddInParameter(command, "@action", DbType.Int16, 3);
+                    database.AddInParameter(command, "@action", DbType.Int16, 4);
                     DS = database.ExecuteDataSet(command);
                     return DS;
                 }

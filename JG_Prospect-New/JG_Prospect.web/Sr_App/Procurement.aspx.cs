@@ -3086,7 +3086,7 @@ namespace JG_Prospect.Sr_App
             }
         }
         #endregion
-
+        
         #region Edit Click
         protected void lnkVendorName_Click(object sender, EventArgs e)
         {
@@ -3380,6 +3380,70 @@ namespace JG_Prospect.Sr_App
             string AddressJSON = JsonConvert.SerializeObject(ds.Tables[0]);
             return AddressJSON;
             //ScriptManager.RegisterStartupScript(this, this.GetType(), "initializeMapIcon", "initializeMapIcon(" + AddressJSON + ");", true);
+        }
+        #endregion
+
+        protected void btnAddNewVenodr_Click(object sender, EventArgs e)
+        {
+            clear();
+
+        }
+
+        protected void lblNewAddress_Click(object sender, EventArgs e)
+        {
+            //DrpVendorAddress.ClearSelection();
+            ddlAddressType.ClearSelection();
+            txtPrimaryCity.Text = "";
+            txtPrimaryZip.Text = "";
+            txtPrimaryAddress.Text = "";
+            ddlCountry.ClearSelection();
+            ddlCountry.SelectedValue = "US";
+
+            txtPrimaryContactExten0.Text = "";
+            txtPrimaryContact0.Text = "";
+            txtSecContactExten0.Text = "";
+            txtSecContact0.Text = "";
+            txtAltContactExten0.Text = "";
+            txtAltContact0.Text = "";
+        }
+
+        #region Bind Vendor Grid 
+        public void BindVendorGrid()
+        {
+            string ManufacturerType = GetManufacturerType();
+            if (ddlVendorSubCategory.SelectedValue != "Select")
+            {
+                FilterVendors(ddlVendorSubCategory.SelectedValue.ToString(), "VendorSubCategory", ManufacturerType, ddlVndrCategory.SelectedValue.ToString());
+            }
+            else if (ddlVndrCategory.SelectedValue != "Select")
+            {
+                FilterVendors(ddlVndrCategory.SelectedValue.ToString(), "VendorCategory", ManufacturerType, null);
+            }
+            else
+            {
+                FilterVendors("", "ProductCategoryAll", ManufacturerType, "");
+            }
+        }
+        #endregion
+
+        #region Delete Vendor
+        protected void lnkDeleteVendor_Click(object sender, EventArgs e)
+        {
+            LinkButton lnkbtnVendorName = sender as LinkButton;
+            GridViewRow gr = (GridViewRow)lnkbtnVendorName.Parent.Parent;
+            HiddenField hdnVendorId = (HiddenField)gr.FindControl("hdnVendorId");
+            string VendorID = hdnVendorId.Value.ToString();
+            bool res = VendorBLL.Instance.DeleteVendorDetail(VendorID);
+            if (res)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Vendor has been deleted Successfully');", true);
+                BindVendorGrid();
+                updtpnlAddVender.Update();
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('There is some error');", true);
+            }
         }
         #endregion
     }

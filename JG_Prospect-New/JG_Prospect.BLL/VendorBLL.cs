@@ -154,6 +154,10 @@ namespace JG_Prospect.BLL
         {
             return VendorDAL.Instance.DeleteVendorSubCat(objVendorsubCat);
         }
+        public bool DeleteVendorDetail(string VendorId)
+        {
+            return VendorDAL.Instance.DeleteVendorDetail(VendorId);
+        }
         public DataSet GetVendorSubCategory()
         {
             return VendorDAL.Instance.GetVendorSubCategory();

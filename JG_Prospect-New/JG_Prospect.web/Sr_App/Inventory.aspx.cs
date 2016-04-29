@@ -89,7 +89,7 @@ namespace JG_Prospect.Sr_App
                                     Boolean IsManufacturer = Convert.ToBoolean(dr2["IsManufacturer"].ToString());
 
                                     str.Append("<li>");
-                                    str.AppendFormat("<a href=\"javascript:;\"><span class=\"text\" onclick=\"vendorSubClick(this,'{0}','{1}','{2}','{3}','{4}','{5}')\">{1}</span><span class=\"buttons\"><i class=\"\" onclick=\"EditSubCat({0},'{1}','{2}','{3}','{4}','{5}')\">Edit</i><i class=\"\" onclick=\"DeleteSubCat({0},'{1}','{2}','{3}','{4}','{5}')\">Delete</i></span></a>", VendorSubCategoryId, VendorSubCategoryName, VendorCategoryId, VendorCategoryName, IsRetail_Wholesale, IsManufacturer);
+                                    str.AppendFormat("<a href=\"javascript:;\"><span class=\"text\" onclick=\"vendorSubClick(this,'{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}')\">{1}</span><span class=\"buttons\"><i class=\"\" onclick=\"EditSubCat({0},'{1}','{2}','{3}','{4}','{5}')\">Edit</i><i class=\"\" onclick=\"DeleteSubCat({0},'{1}','{2}','{3}','{4}','{5}')\">Delete</i></span></a>", VendorSubCategoryId, VendorSubCategoryName, VendorCategoryId, VendorCategoryName, IsRetail_Wholesale, IsManufacturer,ProductCategoryId,ProductName);
                                     str.Append("</li>");
                                 }
                             }

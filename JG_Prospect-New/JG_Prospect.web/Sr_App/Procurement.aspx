@@ -11,6 +11,34 @@
         #googleMap > div {
             width: 100% !important;
         }
+        .btnSaveAddress {
+                background: url(img/main-header-bg.png) repeat-x;
+                color: #fff !important;
+                display: inline-block;
+                text-decoration: none;
+                padding: 10px;
+                border-radius: 5px;
+                margin-top: 10px;
+        }
+        .btnAddNewVendor {
+                background: url(img/main-header-bg.png) repeat-x;
+                color: #fff !important;
+                display: inline-block;
+                text-decoration: none;
+                padding: 10px;
+                border-radius: 5px;
+                cursor:pointer;
+                float: right;
+        }
+        .btnNewAddress {
+                background: url(img/main-header-bg.png) repeat-x;
+                color: #fff !important;
+                display: inline-block;
+                text-decoration: none;
+                padding: 10px;
+                border-radius: 5px;
+                cursor:pointer;
+        }
     </style>
     <script type="text/javascript">
         function ClosePopup() {
@@ -650,7 +678,7 @@
                                         <td>
                                             <asp:DropDownList ID="ddlVndrCategory" runat="server" Width="150px" AutoPostBack="True" OnSelectedIndexChanged="ddlVndrCategory_SelectedIndexChanged"></asp:DropDownList>
                                             <br />
-                                            <asp:LinkButton ID="lnkAddVendorCategory1" Text="Add Vendor Category" runat="server" OnClick="lnkAddVendorCategory1_Click"></asp:LinkButton>
+                                            <asp:LinkButton ID="lnkAddVendorCategory1" Text="Add Vendor Category" Visible="false" runat="server" OnClick="lnkAddVendorCategory1_Click"></asp:LinkButton>
                                             <br />
                                             <asp:ModalPopupExtender ID="ModalPopupExtender3" runat="server" TargetControlID="lnkAddVendorCategory1"
                                                 PopupControlID="pnlpopupVendorCategory" CancelControlID="btnCancelVendor">
@@ -704,7 +732,7 @@
                                                 </table>
                                             </asp:Panel>
 
-                                            <asp:LinkButton ID="Lnkdeletevendercategory1" Text="Delete Vendor Category" runat="server"></asp:LinkButton>
+                                            <asp:LinkButton ID="Lnkdeletevendercategory1" Text="Delete Vendor Category" Visible="false" runat="server"></asp:LinkButton>
                                             <asp:ModalPopupExtender ID="ModalPopupExtender4" runat="server" TargetControlID="Lnkdeletevendercategory1"
                                                 PopupControlID="pnlpopupdeleteVendorCategory" CancelControlID="btnCancel2">
                                             </asp:ModalPopupExtender>
@@ -740,7 +768,7 @@
                                         <td>
                                             <asp:DropDownList ID="ddlVendorSubCategory" runat="server" Width="150px" AutoPostBack="True" OnSelectedIndexChanged="ddlVendorSubCategory_SelectedIndexChanged"></asp:DropDownList>
                                             <br />
-                                            <asp:LinkButton ID="lnkAddVendorSubCategory" Text="Add Vendor Sub Category" runat="server"></asp:LinkButton>
+                                            <asp:LinkButton ID="lnkAddVendorSubCategory" Text="Add Vendor Sub Category" Visible="false" runat="server"></asp:LinkButton>
                                             <asp:ModalPopupExtender ID="ModalPopupExtender5" runat="server" TargetControlID="lnkAddVendorSubCategory"
                                                 PopupControlID="pnlvendorSubCat" CancelControlID="btnCancelVendorSubCat">
                                             </asp:ModalPopupExtender>
@@ -794,7 +822,7 @@
                                                     </asp:Panel>
                                                 </ContentTemplate>
                                             </asp:UpdatePanel>
-                                            <asp:LinkButton ID="lnkdeletevendersubcategory" Text="Delete Vendor Sub Category" runat="server"></asp:LinkButton>
+                                            <asp:LinkButton ID="lnkdeletevendersubcategory" Text="Delete Vendor Sub Category" Visible="false" runat="server"></asp:LinkButton>
                                             <asp:ModalPopupExtender ID="ModalPopupExtender6" runat="server" TargetControlID="Lnkdeletevendersubcategory"
                                                 PopupControlID="pnldeleteVendorSubCat" CancelControlID="btnCancelDelete">
                                             </asp:ModalPopupExtender>
@@ -844,10 +872,15 @@
                                              <div class="grid">
                                                  <asp:GridView ID="grdVendorList" runat="server" AutoGenerateColumns="false" CssClass="tableClass" Width="100%">
                                                      <Columns>
-                                                         <asp:TemplateField HeaderText="Vendor Name" HeaderStyle-Width="10%">
+                                                         <asp:TemplateField HeaderText="Vendor Name">
                                                              <ItemTemplate>
                                                                  <asp:LinkButton ID="lnkVendorName" runat="server" Text='<%#Eval("VendorName") %>' OnClick="lnkVendorName_Click"></asp:LinkButton>
                                                                  <asp:HiddenField ID="hdnVendorId" runat="server" Value='<%#Eval("VendorId") %>' />
+                                                             </ItemTemplate>
+                                                         </asp:TemplateField>
+                                                         <asp:TemplateField HeaderText="Action">
+                                                             <ItemTemplate>
+                                                                 <asp:LinkButton ID="lnkDeleteVendor" runat="server" OnClientClick="return confirm('Are you sure want to delete vendor?');" OnClick="lnkDeleteVendor_Click">Delete</asp:LinkButton>
                                                              </ItemTemplate>
                                                          </asp:TemplateField>
                                                      </Columns>
@@ -883,7 +916,10 @@
                                             <li style="width: 99%; padding-left: 0px; margin-left: 0px;">
                                                 <table border="0" cellspacing="0" cellpadding="0" style="padding: 0px; margin: 0px;">
                                                     <tr>
-                                                        <td colspan="4" style="font-weight: bold; font-size: large; font-style: normal">Add Vendor
+                                                        <td colspan="3" style="font-weight: bold; font-size: large; font-style: normal">Add Vendor
+                                                        </td>
+                                                        <td>
+                                                            <asp:Button ID="btnAddNewVenodr" runat="server" CssClass="btnAddNewVendor" OnClick="btnAddNewVenodr_Click" Text="Add New Vendor" />
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -920,9 +956,9 @@
                                                             <asp:DropDownList ID="ddlSource" runat="server" TabIndex="1" Width="250px">
                                                             </asp:DropDownList>
                                                             <asp:TextBox ID="txtSource" runat="server" TabIndex="1" Width="125px"></asp:TextBox>
-                                                            <asp:Button runat="server" ID="btnAddSource" TabIndex="1" Text="Add" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff;" OnClick="btnAddSource_Click" Height="30px" />&nbsp;
+                                                            <asp:Button runat="server" ID="btnAddSource" TabIndex="1" Text="Add" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff; cursor:pointer;" OnClick="btnAddSource_Click" Height="30px" />&nbsp;
                                
-                                <asp:Button runat="server" ID="btnDeleteSource" TabIndex="1" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff;" Text="Delete" OnClick="btnDeleteSource_Click" Height="30px" />
+                                <asp:Button runat="server" ID="btnDeleteSource" TabIndex="1" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff; cursor:pointer;" Text="Delete" OnClick="btnDeleteSource_Click" Height="30px" />
                                                             <%--<br />
                                 &nbsp;&nbsp;&nbsp;&nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="ddlSource"
                                     ForeColor="Green" Display="Dynamic" ValidationGroup="submit" ErrorMessage="Please select the source." InitialValue="Select Source"></asp:RequiredFieldValidator>--%>
@@ -988,7 +1024,8 @@
                                                         <td colspan="4" style="padding: 0px;">
                                                             <fieldset style="margin: 0px !important;">
                                                                 <legend style="width: 100%;">
-                                                                    <span style="font-weight: bold; font-size: 15px; font-style: normal; padding: 15px 15px 5px; display: block;">Vendor Address</span>
+                                                                    <span style="font-weight: bold; font-size: 15px; font-style: normal; padding: 15px 15px 5px; display: inline-block;">Vendor Address</span>
+                                                                    <asp:LinkButton ID="lblNewAddress" runat="server" OnClick="lblNewAddress_Click" CssClass="btnNewAddress">Add New Address</asp:LinkButton>
                                                                     <table class="vendor_table">
                                                                         <tr class="fixedAddressrow">
                                                                             <td style="width: 12%">
@@ -1420,7 +1457,7 @@
 
                                                 </table>
                                                 <div style="text-align: right;">
-                                                    <asp:LinkButton ID="BtnSaveLoaction" TabIndex="1" runat="server" Text="Save Address" OnClientClick="GetVendorDetails(this)" ValidationGroup="addaddress" OnClick="BtnSaveLoaction_Click" />
+                                                    <asp:LinkButton ID="BtnSaveLoaction" CssClass="btnSaveAddress" TabIndex="1" runat="server" Text="Save Address" OnClientClick="GetVendorDetails(this)" ValidationGroup="addaddress" OnClick="BtnSaveLoaction_Click" />
                                                     <br />
                                                     <asp:Label ID="lbladdress" runat="server" ForeColor="Red"></asp:Label>
                                                 </div>

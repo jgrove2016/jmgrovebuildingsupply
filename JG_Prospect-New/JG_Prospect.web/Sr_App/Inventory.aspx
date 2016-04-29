@@ -211,13 +211,15 @@
         function vendorClick(btn, productId, productName, vId, vName, IsRetail_Wholesale, IsManufacturer) {
             $(btn).find("ul:first").toggleClass('active');
             $(".breadcrumb .vSName").hide();
+            $(".breadcrumb .pName").show();
             $(".breadcrumb .vName").show();
             $(".breadcrumb .pName .text").html(productName);
             $(".breadcrumb .vName .text").html(vName);
         }
-        function vendorSubClick(btn, vsId, vsName, vId, vName, IsRetail_Wholesale, IsManufacturer) {
+        function vendorSubClick(btn, vsId, vsName, vId, vName, IsRetail_Wholesale, IsManufacturer,productId,productName) {
+            $(".breadcrumb .pName").show();
+            $(".breadcrumb .vName").show();
             $(".breadcrumb .vSName").show();
-            var productName = $(btn).closest("ul.inventory_cat").siblings("a").find("span.text").text();
             $(".breadcrumb .pName .text").html(productName);
             $(".breadcrumb .vName .text").html(vName);
             $(".breadcrumb .vSName .text").html(vsName);
