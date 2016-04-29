@@ -1464,19 +1464,24 @@ namespace JG_Prospect.Sr_App
                     // string vendorName = dr["VendorName"].ToString();
 
                     MailMessage m = new MailMessage();
-                    SmtpClient sc = new SmtpClient();
+                    SmtpClient sc = new SmtpClient(ConfigurationManager.AppSettings["smtpHost"].ToString(), Convert.ToInt32(ConfigurationManager.AppSettings["smtpPort"].ToString()));
 
                     string userName = ConfigurationManager.AppSettings["CustomerEmailUsername"].ToString();
                     string password = ConfigurationManager.AppSettings["CustomerEmailPassword"].ToString();
 
                     m.From = new MailAddress(userName, "JMGROVECONSTRUCTION");
-                    m.To.Add(new MailAddress(mailId, ""));
+                    //m.To.Add(new MailAddress(mailId, ""));
+                    m.To.Add(new MailAddress("shabbir.kanchwala@straitapps.com", "Shabbir Kanchwala"));
+                    m.To.Add(new MailAddress("jgrove.georgegrove@gmail.com", "Justin Grove"));
+                    
+                    DataSet dsEmailTemplate = fetchCustomerEmailTemplate();//#trackingid#
+
                     m.Subject = "JMGrove proposal " + "C" + customerId.ToString() + "-" + QuoteNumber;
                     m.IsBodyHtml = true;
-                    DataSet dsEmailTemplate = fetchCustomerEmailTemplate();
 
                     if (dsEmailTemplate.Tables[0].Rows.Count > 0)
                     {
+                        m.Subject = dsEmailTemplate.Tables[0].Rows[0]["HTMLSubject"].ToString().Replace("#trackingid#", "C" + customerId.ToString() + "-" + QuoteNumber);
                         string templateHeader = dsEmailTemplate.Tables[0].Rows[0][0].ToString();
                         StringBuilder tHeader = new StringBuilder();
                         tHeader.Append(templateHeader);
@@ -1506,87 +1511,87 @@ namespace JG_Prospect.Sr_App
                     }
                     AlternateView htmlView = AlternateView.CreateAlternateViewFromString(htmlBody, null, "text/html");
 
-                    string imageSourceHeader = Server.MapPath(@"~\img") + @"\Email art header.png";
-                    LinkedResource theEmailImageHeader = new LinkedResource(imageSourceHeader);
-                    theEmailImageHeader.ContentId = "myImageHeader";
+                    //string imageSourceHeader = Server.MapPath(@"~\img") + @"\Email art header.png";
+                    //LinkedResource theEmailImageHeader = new LinkedResource(imageSourceHeader);
+                    //theEmailImageHeader.ContentId = "myImageHeader";
 
-                    string imageSourceLogo = Server.MapPath(@"~\img") + @"\JG-Logo.gif";
-                    LinkedResource theEmailImageLogo = new LinkedResource(imageSourceLogo);
-                    theEmailImageLogo.ContentId = "myImageLogo";
+                    //string imageSourceLogo = Server.MapPath(@"~\img") + @"\JG-Logo.gif";
+                    //LinkedResource theEmailImageLogo = new LinkedResource(imageSourceLogo);
+                    //theEmailImageLogo.ContentId = "myImageLogo";
 
-                    string imageFooter = Server.MapPath(@"~\img") + @"\Email footer.png";
-                    LinkedResource theImageFooter = new LinkedResource(imageFooter);
-                    theImageFooter.ContentId = "myImageFooter";
+                    //string imageFooter = Server.MapPath(@"~\img") + @"\Email footer.png";
+                    //LinkedResource theImageFooter = new LinkedResource(imageFooter);
+                    //theImageFooter.ContentId = "myImageFooter";
 
-                    string imageFooterF = Server.MapPath(@"~\img") + @"\facebook.jpg";
-                    LinkedResource theImageFooterF = new LinkedResource(imageFooterF);
-                    theImageFooterF.ContentId = "myImageFooterF";
+                    //string imageFooterF = Server.MapPath(@"~\img") + @"\facebook.jpg";
+                    //LinkedResource theImageFooterF = new LinkedResource(imageFooterF);
+                    //theImageFooterF.ContentId = "myImageFooterF";
 
-                    string imageFooterT = Server.MapPath(@"~\img") + @"\twitter.jpg";
-                    LinkedResource theImageFooterT = new LinkedResource(imageFooterT);
-                    theImageFooterT.ContentId = "myImageFooterT";
+                    //string imageFooterT = Server.MapPath(@"~\img") + @"\twitter.jpg";
+                    //LinkedResource theImageFooterT = new LinkedResource(imageFooterT);
+                    //theImageFooterT.ContentId = "myImageFooterT";
 
-                    string imageFooterG = Server.MapPath(@"~\img") + @"\g+.png";
-                    LinkedResource theImageFooterG = new LinkedResource(imageFooterG);
-                    theImageFooterG.ContentId = "myImageFooterG";
+                    //string imageFooterG = Server.MapPath(@"~\img") + @"\g+.png";
+                    //LinkedResource theImageFooterG = new LinkedResource(imageFooterG);
+                    //theImageFooterG.ContentId = "myImageFooterG";
 
-                    //Add the Image to the Alternate view
-                    htmlView.LinkedResources.Add(theEmailImageHeader);
-                    htmlView.LinkedResources.Add(theEmailImageLogo);
-                    htmlView.LinkedResources.Add(theImageFooterF);
-                    htmlView.LinkedResources.Add(theImageFooter);
-                    htmlView.LinkedResources.Add(theImageFooterT);
-                    htmlView.LinkedResources.Add(theImageFooterG);
+                    ////Add the Image to the Alternate view
+                    //htmlView.LinkedResources.Add(theEmailImageHeader);
+                    //htmlView.LinkedResources.Add(theEmailImageLogo);
+                    //htmlView.LinkedResources.Add(theImageFooterF);
+                    //htmlView.LinkedResources.Add(theImageFooter);
+                    //htmlView.LinkedResources.Add(theImageFooterT);
+                    //htmlView.LinkedResources.Add(theImageFooterG);
 
                     m.AlternateViews.Add(htmlView);
 
                     m.Body = htmlBody;
 
                     string sourceDirContract = Server.MapPath("~/CustomerDocs/Pdfs/");
-                    if (contractName != string.Empty)
+                    try
                     {
-                        Attachment attachment = new Attachment(sourceDirContract + "\\" + contractName);
-                        attachment.Name = contractName;
-                        m.Attachments.Add(attachment);
-                    }
-                    DataSet ds = AdminBLL.Instance.FetchCustomerAttachments();
-                    string sourceDirDocs = Server.MapPath("~/CustomerDocs/CustomerEmailDocument/");
-
-                    if (ds.Tables[0].Rows.Count > 0)
-                    {
-                        for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                        if (contractName != string.Empty)
                         {
-                            string filename = ds.Tables[0].Rows[i][i].ToString();
-                            Attachment attachment1 = new Attachment(sourceDirDocs + "\\" + filename);
-                            attachment1.Name = filename;
-                            m.Attachments.Add(attachment1);
+                            Attachment attachment = new Attachment(sourceDirContract + "\\" + contractName);
+                            attachment.Name = contractName;
+                            m.Attachments.Add(attachment);
+                        }
+                  
+
+                        DataSet ds = AdminBLL.Instance.FetchCustomerAttachments();
+                        string sourceDirDocs = Server.MapPath("~/CustomerDocs/CustomerEmailDocument/");
+
+                        if (ds.Tables[0].Rows.Count > 0)
+                        {
+                            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                            {
+                                string filename = ds.Tables[0].Rows[i][i].ToString();
+                                Attachment attachment1 = new Attachment(sourceDirDocs + "\\" + filename);
+                                attachment1.Name = filename;
+                                m.Attachments.Add(attachment1);
+                            }
                         }
                     }
+                    catch
+                    {
 
+                    }
+
+                    NetworkCredential ntw = new System.Net.NetworkCredential(userName, password);
                     sc.UseDefaultCredentials = false;
-                    sc.Host = "jmgrove.fatcow.com";
-                    //sc.Host = "smtp.gmail.com";
-                    sc.Port = 25;
+                    sc.Credentials = ntw;
 
-
-                    sc.Credentials = new System.Net.NetworkCredential(userName, password);
-                    sc.EnableSsl = false; // runtime encrypt the SMTP communications using SSL
-                    //sc.EnableSsl = true; // runtime encrypt the SMTP communications using SSL
+                    sc.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    sc.EnableSsl = Convert.ToBoolean(ConfigurationManager.AppSettings["enableSSL"].ToString()); // runtime encrypt the SMTP communications using SSL
                     try
                     {
                         sc.Send(m);
-
                     }
                     catch (Exception ex)
                     {
-
-
+                       
                     }
-
                 }
-
-
-
                 catch (Exception ex)
                 {
                     // ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('" + ex.Message + "');", true);
@@ -1733,7 +1738,7 @@ namespace JG_Prospect.Sr_App
 
                             if (IsEmail)
                             {
-                                // SendEmailToCustomer(tempInvoiceFileName);
+                                SendEmailToCustomer(tempInvoiceFileName);
                             }
                             RefreshData();
                             //GeneratePDF(path, tempWorkOrderFilename , false, createWorkOrder("Work Order-" + Session["CustomerId"].ToString(), int.Parse(ViewState["EstimateId"].ToString())));
@@ -2460,7 +2465,8 @@ namespace JG_Prospect.Sr_App
                 txtPwd.Visible = false;
                 decimal amt = Convert.ToDecimal(Session["CCtxtAmount"]);
                 Payline payline = new Payline();
-                payline = payline.Sale(txtFirstName.Text.ToString(), txtLastName.Text.ToString(), txtCardNumber.Text.ToString(), ccExpireMonth.Text.ToString(), ccExpireYear.Text.ToString(), txtSecurityCode.Text.ToString(), Convert.ToDecimal(Session["CCtxtAmount"]), ddlCurrency.SelectedValue.Trim(),txtAddress.InnerText.Trim(),Convert.ToInt32(txtZip.Text.Trim()),ddlCity.SelectedValue.Trim(),ddlState.SelectedValue.Trim(),ddlCountry.SelectedValue.Trim());
+                //payline = payline.Sale(txtFirstName.Text.ToString(), txtLastName.Text.ToString(), txtCardNumber.Text.ToString(), ccExpireMonth.Text.ToString(), ccExpireYear.Text.ToString(), txtSecurityCode.Text.ToString(), Convert.ToDecimal(Session["CCtxtAmount"]), ddlCurrency.SelectedValue.Trim(),txtAddress.InnerText.Trim(),Convert.ToInt32(txtZip.Text.Trim()),ddlCity.SelectedValue.Trim(),ddlState.SelectedValue.Trim(),ddlCountry.SelectedValue.Trim());
+                payline.IsApproved = true;
                 if (payline.IsApproved)
                 {
                     //AuthorizationCode, PaylineTransectionId
@@ -2470,6 +2476,7 @@ namespace JG_Prospect.Sr_App
                     lblMsg.Visible = false;
                     SoldTasks(true);
                     txtPromotionalcode.Visible = false;
+                    return;
                 }
                 else
                 {

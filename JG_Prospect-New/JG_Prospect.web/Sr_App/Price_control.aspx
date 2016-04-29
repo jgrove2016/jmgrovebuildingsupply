@@ -323,7 +323,7 @@ table th[class*="col-"] {
             <h3>
                 <%--<span class="span_click down">Shutter</span>--%>
                <%-- <a href="CustomerEmailTemplate.aspx">Default Customer Email</a>--%>
-                <a href="ContractTemplate.aspx?ProductId=1">Contract Template</a><a href="ContractTemplate.aspx?ProductId=1" runat="server" visible="false">Shutter Contract Template</a><a
+                <a href="ContractTemplate.aspx?ProductId=1" runat="server" visible="false">Shutter Contract Template</a><a
                     href="ShutterTemplate.aspx">Shutter W.O.</a>
                 <label>Change%</label>
                 <asp:TextBox ID="txtpercentage" runat="server" Text="0" Width="50px"
