@@ -800,7 +800,7 @@ namespace JG_Prospect.DAL
             }
         }
 
-        public DataSet GetALLVendorAddress()
+        public DataSet GetALLVendorAddress(string manufacturer,string productId,string vendorCatId,string vendorSubCatId)
         {
             try
             {
@@ -808,6 +808,10 @@ namespace JG_Prospect.DAL
                 {
                     DbCommand command = database.GetStoredProcCommand("sp_VendorAddress");
                     command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@manufacturer", DbType.String, manufacturer);
+                    database.AddInParameter(command, "@productId", DbType.String, productId);
+                    database.AddInParameter(command, "@vendorCatId", DbType.String, vendorCatId);
+                    database.AddInParameter(command, "@vendorSubCatId", DbType.String, vendorSubCatId);
                     database.AddInParameter(command, "@action", DbType.Int16, 3);
                     DS = database.ExecuteDataSet(command);
                     return DS;

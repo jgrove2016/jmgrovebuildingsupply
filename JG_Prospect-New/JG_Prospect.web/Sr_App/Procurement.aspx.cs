@@ -3374,9 +3374,9 @@ namespace JG_Prospect.Sr_App
         #region Get All Vendors Address Detail
         [WebMethod]
         [System.Web.Script.Services.ScriptMethod()]
-        public static string GetAllVendorsAddressDetail()
+        public static string GetAllVendorsAddressDetail(string manufacturer,string productId,string vendorCatId,string vendorSubCatId)
         {
-            DataSet ds = VendorBLL.Instance.GetALLVendorAddress();
+            DataSet ds = VendorBLL.Instance.GetALLVendorAddress(manufacturer,productId, vendorCatId, vendorSubCatId);
             string AddressJSON = JsonConvert.SerializeObject(ds.Tables[0]);
             return AddressJSON;
             //ScriptManager.RegisterStartupScript(this, this.GetType(), "initializeMapIcon", "initializeMapIcon(" + AddressJSON + ");", true);
@@ -3391,7 +3391,7 @@ namespace JG_Prospect.Sr_App
 
         protected void lblNewAddress_Click(object sender, EventArgs e)
         {
-            //DrpVendorAddress.ClearSelection();
+            DrpVendorAddress.ClearSelection();
             ddlAddressType.ClearSelection();
             txtPrimaryCity.Text = "";
             txtPrimaryZip.Text = "";

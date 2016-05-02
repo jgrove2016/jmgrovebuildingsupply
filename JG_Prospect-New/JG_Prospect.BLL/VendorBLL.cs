@@ -180,9 +180,9 @@ namespace JG_Prospect.BLL
         {
             return VendorDAL.Instance.InsertVendorAddress(objvendor);
         }
-        public DataSet GetALLVendorAddress()
+        public DataSet GetALLVendorAddress(string manufacturer,string productId,string vendorCatId,string vendorSubCatId)
         {
-            return VendorDAL.Instance.GetALLVendorAddress();
+            return VendorDAL.Instance.GetALLVendorAddress(manufacturer,productId, vendorCatId, vendorSubCatId);
         }
         public DataSet GetVendorAddress(int VendorId)
         {

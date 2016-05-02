@@ -11,33 +11,36 @@
         #googleMap > div {
             width: 100% !important;
         }
+
         .btnSaveAddress {
-                background: url(img/main-header-bg.png) repeat-x;
-                color: #fff !important;
-                display: inline-block;
-                text-decoration: none;
-                padding: 10px;
-                border-radius: 5px;
-                margin-top: 10px;
+            background: url(img/main-header-bg.png) repeat-x;
+            color: #fff !important;
+            display: inline-block;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
         }
+
         .btnAddNewVendor {
-                background: url(img/main-header-bg.png) repeat-x;
-                color: #fff !important;
-                display: inline-block;
-                text-decoration: none;
-                padding: 10px;
-                border-radius: 5px;
-                cursor:pointer;
-                float: right;
+            background: url(img/main-header-bg.png) repeat-x;
+            color: #fff !important;
+            display: inline-block;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            float: right;
         }
+
         .btnNewAddress {
-                background: url(img/main-header-bg.png) repeat-x;
-                color: #fff !important;
-                display: inline-block;
-                text-decoration: none;
-                padding: 10px;
-                border-radius: 5px;
-                cursor:pointer;
+            background: url(img/main-header-bg.png) repeat-x;
+            color: #fff !important;
+            display: inline-block;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
         }
     </style>
     <script type="text/javascript">
@@ -118,7 +121,7 @@
             //$(".vendor_table").find(".fixedAddressrow").each(function (index, node) {
             //    if (index == 0) {
             AddressData.push({
-                AddressID: $(".clsvendoraddress").val() == undefined || $(".clsvendoraddress").val() == "Select" ? "0" : $(".clsvendoraddress").val(),
+                AddressID: ($(".clsvendoraddress").val() == undefined || $(".clsvendoraddress").val() == "Select") ? "0" : $(".clsvendoraddress").val(),
                 AddressType: $(".clstxtAddressType0").val(),
                 Address: $(".clstxtAddress0").val(),
                 City: $(".clstxtCity0").val(),
@@ -127,7 +130,6 @@
             })
             //}
             // });
-
             $("#tblVendorLocation").find(".newAddressrow").each(function (index, node) {
                 AddressData.push({
                     AddressType: $("#ddlAddressType1" + index).val(),
@@ -956,9 +958,9 @@
                                                             <asp:DropDownList ID="ddlSource" runat="server" TabIndex="1" Width="250px">
                                                             </asp:DropDownList>
                                                             <asp:TextBox ID="txtSource" runat="server" TabIndex="1" Width="125px"></asp:TextBox>
-                                                            <asp:Button runat="server" ID="btnAddSource" TabIndex="1" Text="Add" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff; cursor:pointer;" OnClick="btnAddSource_Click" Height="30px" />&nbsp;
+                                                            <asp:Button runat="server" ID="btnAddSource" TabIndex="1" Text="Add" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff; cursor: pointer;" OnClick="btnAddSource_Click" Height="30px" />&nbsp;
                                
-                                <asp:Button runat="server" ID="btnDeleteSource" TabIndex="1" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff; cursor:pointer;" Text="Delete" OnClick="btnDeleteSource_Click" Height="30px" />
+                                <asp:Button runat="server" ID="btnDeleteSource" TabIndex="1" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff; cursor: pointer;" Text="Delete" OnClick="btnDeleteSource_Click" Height="30px" />
                                                             <%--<br />
                                 &nbsp;&nbsp;&nbsp;&nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="ddlSource"
                                     ForeColor="Green" Display="Dynamic" ValidationGroup="submit" ErrorMessage="Please select the source." InitialValue="Select Source"></asp:RequiredFieldValidator>--%>
@@ -1830,12 +1832,25 @@
         }
 
         function getAllAddressOnMap() {
+            var manufacturer = "Manufacturer";
+            console.log($("#<%=rdoRetailWholesale.ClientID%>").attr("checked"));
+            if ($("#<%=rdoRetailWholesale.ClientID%>").attr("checked") == "checked") {
+                manufacturer = "Retail/Wholesale";
+            }
+            var productId = $("#<%=ddlprdtCategory.ClientID%>").val();
+            var vendorCatId = $("#<%= ddlVndrCategory.ClientID%>").val();
+            var vendorSubCatId = $("#<%=ddlVendorSubCategory.ClientID%>").val();
+
+            productId = productId == "Select" ? "" : productId;
+            vendorCatId = vendorCatId == "Select" ? "" : vendorCatId;
+            vendorSubCatId = vendorSubCatId == "Select" ? "" : vendorSubCatId;
+
             $.ajax({
                 type: "POST",
                 url: "Procurement.aspx/GetAllVendorsAddressDetail",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                data: null,
+                data: '{manufacturer:"' + manufacturer + '", productId: "' + productId + '", vendorCatId: "' + vendorCatId + '", vendorSubCatId:"' + vendorSubCatId + '" }',
                 success: function (data) {
                     initializeMapIcon(JSON.parse(data.d));
                 }
@@ -1859,6 +1874,7 @@
 
             for (var i = 0; i < MapJSON.length; i++) {
                 var address = MapJSON[i];
+                var VendorName = address["VendorName"];
                 var Latitude = address["Latitude"];
                 var Longitude = address["Longitude"];
                 var AddressType = address["AddressType"];
@@ -1873,13 +1889,24 @@
                     if (AddressType == "Billing") {
                         iconCounter = 3;
                     }
+                    var infowindow = new google.maps.InfoWindow({
+                        maxWidth: 160
+                    });
 
                     var marker = new google.maps.Marker({
                         position: new google.maps.LatLng(Latitude, Longitude),
                         map: map,
-                        icon: icons[iconCounter]
+                        icon: icons[iconCounter],
+                        title: VendorName
                     });
 
+                    google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                        return function () {
+                            var FullAddress = "<h2>"+MapJSON[i]['VendorName'] + "</h2><p> " + MapJSON[i]['Address'] + ", " + MapJSON[i]['City'] + ", " + MapJSON[i]['Country'] + ", " + MapJSON[i]['Zip']+"</p>";
+                            infowindow.setContent(FullAddress);
+                            infowindow.open(map, marker);
+                        }
+                    })(marker, i));
                 }
             }
         }
