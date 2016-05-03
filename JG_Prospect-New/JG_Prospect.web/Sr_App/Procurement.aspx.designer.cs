@@ -778,15 +778,6 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.DropDownList ddlAddressType;
         
         /// <summary>
-        /// txtPrimaryCity control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPrimaryCity;
-        
-        /// <summary>
         /// txtPrimaryZip control.
         /// </summary>
         /// <remarks>
@@ -794,6 +785,15 @@ namespace JG_Prospect.Sr_App {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtPrimaryZip;
+        
+        /// <summary>
+        /// txtPrimaryCity control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPrimaryCity;
         
         /// <summary>
         /// txtPrimaryAddress control.

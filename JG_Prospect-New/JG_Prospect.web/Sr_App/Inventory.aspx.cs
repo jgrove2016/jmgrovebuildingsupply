@@ -15,10 +15,18 @@ namespace JG_Prospect.Sr_App
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
+            if (Session["loginid"] == null)
             {
-                string Mtype = GetManufacturerType();
-                GetInventoryCategoryList(Mtype);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('You have to login first');", true);
+                Response.Redirect("~/login.aspx");
+            }
+            else
+            {
+                if (!IsPostBack)
+                {
+                    string Mtype = GetManufacturerType();
+                    GetInventoryCategoryList(Mtype);
+                }
             }
         }
 

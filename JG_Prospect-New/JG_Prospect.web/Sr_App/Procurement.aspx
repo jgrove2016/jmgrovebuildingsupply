@@ -340,7 +340,7 @@
             }
         }
 
-
+        
     </script>
 
 
@@ -876,11 +876,12 @@
                                                      <Columns>
                                                          <asp:TemplateField HeaderText="Vendor Name">
                                                              <ItemTemplate>
-                                                                 <asp:LinkButton ID="lnkVendorName" runat="server" Text='<%#Eval("VendorName") %>' OnClick="lnkVendorName_Click"></asp:LinkButton>
+                                                                 <asp:LinkButton ID="lnkVendorName" runat="server" Text='<%#Eval("Zip").ToString()==""?Eval("VendorName"):Eval("VendorName")+" - " +Eval("Zip")  %>' OnClick="lnkVendorName_Click"></asp:LinkButton>
                                                                  <asp:HiddenField ID="hdnVendorId" runat="server" Value='<%#Eval("VendorId") %>' />
+                                                                 <asp:HiddenField ID="hdnVendorAddressId" runat="server" Value='<%#Eval("AddressId") %>' />
                                                              </ItemTemplate>
                                                          </asp:TemplateField>
-                                                         <asp:TemplateField HeaderText="Action">
+                                                         <asp:TemplateField HeaderText="Action" Visible="false">
                                                              <ItemTemplate>
                                                                  <asp:LinkButton ID="lnkDeleteVendor" runat="server" OnClientClick="return confirm('Are you sure want to delete vendor?');" OnClick="lnkDeleteVendor_Click">Delete</asp:LinkButton>
                                                              </ItemTemplate>
@@ -1041,13 +1042,12 @@
 
                                                                             </td>
                                                                             <td style="width: 12%">
-                                                                                <label>City:</label><br />
-                                                                                <asp:TextBox ID="txtPrimaryCity" runat="server" TabIndex="1" placeholder="City" CssClass="clstxtCity0"></asp:TextBox>
+                                                                                <label>Zip:</label><br />
+                                                                                <asp:TextBox ID="txtPrimaryZip" runat="server" TabIndex="1" placeholder="Zip" CssClass="clstxtZip0" onkeypress="return isNumericKey(event);" autocomplete="off" onblur="GetCityStateOnBlur(this)"></asp:TextBox>
                                                                             </td>
                                                                             <td style="width: 12%">
-                                                                                <label>Zip:</label><br />
-                                                                                <asp:TextBox ID="txtPrimaryZip" runat="server" TabIndex="1" placeholder="Zip" CssClass="clstxtZip0"></asp:TextBox>
-
+                                                                                <label>City:</label><br />
+                                                                                <asp:TextBox ID="txtPrimaryCity" runat="server" TabIndex="1" placeholder="City" CssClass="clstxtCity0"></asp:TextBox>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
@@ -1811,6 +1811,7 @@
     <script type="text/javascript">
 
         SearchText();
+        SearchZipCode();    
         $('.clsmaskphone').mask("(999) 999-9999");
         $('.clsmaskphoneexten').mask("999999");
 
@@ -1824,7 +1825,7 @@
         function initialize() {
             mapProp = {
                 center: new google.maps.LatLng(40.042838, -75.528559),
-                zoom: 5,
+                zoom: 9,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
@@ -1878,15 +1879,25 @@
                 var Latitude = address["Latitude"];
                 var Longitude = address["Longitude"];
                 var AddressType = address["AddressType"];
+                var VendorStatus = address["VendorStatus"]
                 if (Latitude != null && Latitude != "" && Longitude != null && Longitude != "") {
                     var iconCounter = 0;
-                    if (AddressType == "Primary") {
+                    //if (AddressType == "Primary") {
+                    //    iconCounter = 0;
+                    //}
+                    //if (AddressType == "Secondary") {
+                    //    iconCounter = 2;
+                    //}
+                    //if (AddressType == "Billing") {
+                    //    iconCounter = 3;
+                    //}
+                    if (VendorStatus == "Prospect") {
                         iconCounter = 0;
                     }
-                    if (AddressType == "Secondary") {
+                    if (VendorStatus == "Active-Past") {
                         iconCounter = 2;
                     }
-                    if (AddressType == "Billing") {
+                    if (VendorStatus == "Deactivate") {
                         iconCounter = 3;
                     }
                     var infowindow = new google.maps.InfoWindow({
@@ -1902,7 +1913,7 @@
 
                     google.maps.event.addListener(marker, 'click', (function (marker, i) {
                         return function () {
-                            var FullAddress = "<h2>"+MapJSON[i]['VendorName'] + "</h2><p> " + MapJSON[i]['Address'] + ", " + MapJSON[i]['City'] + ", " + MapJSON[i]['Country'] + ", " + MapJSON[i]['Zip']+"</p>";
+                            var FullAddress = "<h2>" + MapJSON[i]['VendorName'] + "</h2><p> " + MapJSON[i]['Address'] + ", " + MapJSON[i]['City'] + ", " + MapJSON[i]['Country'] + ", " + MapJSON[i]['Zip'] + "</p>";
                             infowindow.setContent(FullAddress);
                             infowindow.open(map, marker);
                         }
@@ -1937,6 +1948,71 @@
                 }
             });
         }
+
+        function GetCityStateOnBlur(e) {
+            //debugger;
+            $.ajax({
+                type: "POST",
+                url: "Procurement.aspx/GetCityState",
+                data: "{'strZip':'" + $(e).val() + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "JSON",
+                success: function (data) {
+                    //debugger;
+                    //alert(data.d);
+                    var dataInput = (data.d).split("@^");
+                    $("#<%=txtPrimaryCity.ClientID%>").val(dataInput[0]);
+                    //$(e).closest('tr').next().find('input').val(dataInput[0]);
+                    //$(e).closest('tr').next().next().find('input').val(dataInput[1]);
+                }
+            });
+        }
+
+        function onclientselect(strZip) {
+            //debugger;
+            $.ajax({
+                type: "POST",
+                url: "Procurement.aspx/GetCityState",
+                data: "{'strZip':'" + strZip + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "JSON",
+                success: function (data) {
+                    // debugger;
+                    //alert(data.d);
+                    var dataInput = (data.d).split("@^");
+                    $("#<%=txtPrimaryCity.ClientID%>").val(dataInput[0]);
+                    //$(source._element).closest('tr').next().find('input').val(dataInput[0]);
+                    //$(source._element).closest('tr').next().next().find('input').val(dataInput[1]);
+                }
+            });
+        }
+
+        function SearchZipCode() {
+            $(".clstxtZip0").autocomplete({
+                minLength: 2,
+                source: function (request, response) {
+                    $.ajax({
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        url: "Procurement.aspx/GetZipcodes",
+                        data: "{'prefixText':'" + $(".clstxtZip0").val() + "'}",
+                        dataType: "json",
+                        success: function (data) {
+                            response($.parseJSON(data.d));
+                        },
+                        error: function (result) {
+                            console.log("No Match");
+                        }
+                    });
+                },
+                select: function (event, ui) {
+                    $(".clstxtZip0").val(ui.item.value);
+                    onclientselect(ui.item.value);
+                    return false;
+                }
+            });
+        }
+
         if ($('#tabs').length) {
             $('#tabs').tabs();
         }

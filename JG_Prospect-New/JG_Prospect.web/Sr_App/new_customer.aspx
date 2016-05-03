@@ -288,7 +288,7 @@
         var SecondaryRadio = 0;
 
         function GetCityStateOnBlur(e) {
-            debugger;
+            //debugger;
             $.ajax({
                 type: "POST",
                 url: "new_customer.aspx/GetCityState",
@@ -296,7 +296,7 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "JSON",
                 success: function (data) {
-                    debugger;
+                    //debugger;
                     //alert(data.d);
                     var dataInput = (data.d).split("@^");
                     $(e).closest('tr').next().find('input').val(dataInput[0]);
@@ -402,7 +402,7 @@
         }
 
         function onclientselect(source, eventArgs) {
-            debugger;
+            //debugger;
             var id = source._element.id;
             $.ajax({
                 type: "POST",
@@ -411,7 +411,7 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "JSON",
                 success: function (data) {
-                    debugger;
+                    //debugger;
                     //alert(data.d);
                     var dataInput = (data.d).split("@^");
                     $(source._element).closest('tr').next().find('input').val(dataInput[0]);

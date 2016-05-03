@@ -42,126 +42,134 @@ namespace JG_Prospect.Sr_App
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            Session["VendorId"] = "1";
-            setPermissions();
-            if (!IsPostBack)
+            if (Session["loginid"] == null)
             {
-                if (Request.QueryString["FileToOpen"] != null)
-                {
-                    // string FileToOpen = Request.QueryString["FileToOpen"].Replace("jgp.jmgroveconstruction.com.192-185-6-42.secure23.win.hostgator.com~", "..");
-                    string FileToOpen = Convert.ToString(Request.QueryString["FileToOpen"]);
-                    //ClientScript.RegisterClientScriptBlock(Page.GetType(), "Myscript", "<script language='javascript'>window.open('" + Request.QueryString["FileToOpen"].ToString() + "', null, 'width=487px,height=455px,center=1,resize=0,scrolling=1,location=no');</script>");
-                    ClientScript.RegisterClientScriptBlock(Page.GetType(), "Myscript", "<script language='javascript'>window.open('" + FileToOpen + "', null, 'width=487px,height=455px,center=1,resize=0,scrolling=1,location=no');</script>");
-                }
-
-                StringBuilder strerror = new StringBuilder();
-                try
-                {
-
-                    Session["DisableCustid"] = "";
-                    //pnlMaterialList.Visible = false;
-                    strerror.Append("before sold jobs");
-                    bindSoldJobs();
-                    strerror.Append("after sold jobs");
-                    //bindVendors();
-                    strerror.Append("before delete evendar");
-                    bindfordeletevender();
-                    strerror.Append("after delete evendar");
-                    if (Request.QueryString["UserId"] != null)
-                    {
-                        Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()] = Convert.ToString(Request.QueryString["UserId"]);
-                    }
-                    if (Request.QueryString["success"] != null)
-                    {
-                        if (Convert.ToString(Request.QueryString["success"]) == "0")
-                        {
-                            ScriptManager.RegisterStartupScript(this, GetType(), "success", "alert('Transaction is unsuccessful')", true);
-                        }
-                        else if (Convert.ToString(Request.QueryString["success"]) == "1")
-                        {
-                            if (Request.QueryString["FileToOpen"] != null)
-                            {
-                                string filetoopen = "../CustomerDocs/Pdfs/" + Request.QueryString["FileToOpen"] + ".pdf";
-                                // filetoopen = Convert.ToString(Session["FilePath"]);
-                                //ClientScript.RegisterClientScriptBlock(Page.GetType(), "Myscript", "<script language='javascript'>window.open('" + Request.QueryString["FileToOpen"].ToString() + "', null, 'width=487px,height=455px,center=1,resize=0,scrolling=1,location=no');</script>");
-                                ClientScript.RegisterClientScriptBlock(Page.GetType(), "Myscript", "<script language='javascript'>window.open('" + filetoopen + "', null, 'width=487px,height=455px,center=1,resize=0,scrolling=1,location=no');</script>");
-                            }
-                            //ScriptManager.RegisterStartupScript(this, GetType(), "success", "alert('Transaction is successful')", true);
-                        }
-                    }
-                    strerror.Append("before bind material");
-                    bindMaterialList();
-                    strerror.Append("after bind material");
-                    strerror.Append("before set button");
-                    SetButtonText();
-                    strerror.Append("after set button");
-                    strerror.Append("before bind");
-                    bind();
-                    strerror.Append("after bind");
-                    strerror.Append("before vendors");
-                    bindAllVendors();
-                    strerror.Append("after vendors");
-                    strerror.Append("before vendors category");
-                    //bindvendorcategory();
-                    strerror.Append("after vendors category");
-                    strerror.Append("before folder delete vendors category");
-                    bindfordeletevender();
-                    strerror.Append("after folder delete vendors category");
-                    //ScriptManager.RegisterStartupScript(this, GetType(), "initialize", "initialize();", true);
-                    //lnkVendorCategory.ForeColor = System.Drawing.Color.DarkGray;
-                    //lnkVendorCategory.Enabled = false;
-                    //lnkVendor.Enabled = true;
-                    //lnkVendor.ForeColor = System.Drawing.Color.Blue;
-                    // lblerrornew.Text = Convert.ToString(strerror);
-                    BindProductCategory();
-                    GetAllVendorSubCat();
-                    BindVendorByProdCat(ddlprdtCategory.SelectedValue.ToString());
-                    BindVendorByProdCat1(ddlprdtCategory1.SelectedValue.ToString());
-                    BindVendorSubCatByVendorCat(ddlVndrCategory.SelectedValue.ToString());
-                    string ManufacturerType = GetManufacturerType();
-                    FilterVendors("", "ProductCategoryAll", ManufacturerType, "");
-                    DataSet dsSource;
-                    dsSource = InstallUserBLL.Instance.GetSource();
-                    if (dsSource.Tables[0].Rows.Count > 0)
-                    {
-                        ddlSource.DataSource = dsSource.Tables[0];
-                        ddlSource.DataTextField = "Source";
-                        ddlSource.DataValueField = "Source";
-                        ddlSource.DataBind();
-                        ddlSource.Items.Insert(0, "Select Source");
-                        ddlSource.SelectedIndex = 0;
-                    }
-                    else
-                    {
-                        ddlSource.Items.Add("Select Source");
-                        ddlSource.SelectedIndex = 0;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    lblerrornew.Text = ex.Message + ex.StackTrace;
-                }
-
-
-                //added by harshit
-                //7-april-2016
-                UserType = Session[JG_Prospect.Common.SessionKey.Key.usertype.ToString()].ToString();
-                DataSet dsCurrentPeriod = UserBLL.Instance.Getcurrentperioddates();
-                DateTime fromDate = Convert.ToDateTime(dsCurrentPeriod.Tables[0].Rows[0]["FromDate"].ToString());
-                DateTime toDate = Convert.ToDateTime(dsCurrentPeriod.Tables[0].Rows[0]["ToDate"].ToString());
-
-                bindPayPeriod(dsCurrentPeriod);
-
-                grdtransations.DataSource = new List<JG_Prospect.BLL.clsProcurementData>();
-                grdtransations.DataBind();
-                grdprimaryvendor.DataSource = new List<JG_Prospect.BLL.clsProcurementDataAll>();
-                grdprimaryvendor.DataBind();
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('You have to login first');", true);
+                Response.Redirect("~/login.aspx");
             }
             else
             {
-                IsPageRefresh = true;
+                Session["VendorId"] = "1";
+                setPermissions();
+                if (!IsPostBack)
+                {
+                    if (Request.QueryString["FileToOpen"] != null)
+                    {
+                        // string FileToOpen = Request.QueryString["FileToOpen"].Replace("jgp.jmgroveconstruction.com.192-185-6-42.secure23.win.hostgator.com~", "..");
+                        string FileToOpen = Convert.ToString(Request.QueryString["FileToOpen"]);
+                        //ClientScript.RegisterClientScriptBlock(Page.GetType(), "Myscript", "<script language='javascript'>window.open('" + Request.QueryString["FileToOpen"].ToString() + "', null, 'width=487px,height=455px,center=1,resize=0,scrolling=1,location=no');</script>");
+                        ClientScript.RegisterClientScriptBlock(Page.GetType(), "Myscript", "<script language='javascript'>window.open('" + FileToOpen + "', null, 'width=487px,height=455px,center=1,resize=0,scrolling=1,location=no');</script>");
+                    }
+
+                    StringBuilder strerror = new StringBuilder();
+                    try
+                    {
+
+                        Session["DisableCustid"] = "";
+                        //pnlMaterialList.Visible = false;
+                        strerror.Append("before sold jobs");
+                        bindSoldJobs();
+                        strerror.Append("after sold jobs");
+                        //bindVendors();
+                        strerror.Append("before delete evendar");
+                        bindfordeletevender();
+                        strerror.Append("after delete evendar");
+                        if (Request.QueryString["UserId"] != null)
+                        {
+                            Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()] = Convert.ToString(Request.QueryString["UserId"]);
+                        }
+                        if (Request.QueryString["success"] != null)
+                        {
+                            if (Convert.ToString(Request.QueryString["success"]) == "0")
+                            {
+                                ScriptManager.RegisterStartupScript(this, GetType(), "success", "alert('Transaction is unsuccessful')", true);
+                            }
+                            else if (Convert.ToString(Request.QueryString["success"]) == "1")
+                            {
+                                if (Request.QueryString["FileToOpen"] != null)
+                                {
+                                    string filetoopen = "../CustomerDocs/Pdfs/" + Request.QueryString["FileToOpen"] + ".pdf";
+                                    // filetoopen = Convert.ToString(Session["FilePath"]);
+                                    //ClientScript.RegisterClientScriptBlock(Page.GetType(), "Myscript", "<script language='javascript'>window.open('" + Request.QueryString["FileToOpen"].ToString() + "', null, 'width=487px,height=455px,center=1,resize=0,scrolling=1,location=no');</script>");
+                                    ClientScript.RegisterClientScriptBlock(Page.GetType(), "Myscript", "<script language='javascript'>window.open('" + filetoopen + "', null, 'width=487px,height=455px,center=1,resize=0,scrolling=1,location=no');</script>");
+                                }
+                                //ScriptManager.RegisterStartupScript(this, GetType(), "success", "alert('Transaction is successful')", true);
+                            }
+                        }
+                        strerror.Append("before bind material");
+                        bindMaterialList();
+                        strerror.Append("after bind material");
+                        strerror.Append("before set button");
+                        SetButtonText();
+                        strerror.Append("after set button");
+                        strerror.Append("before bind");
+                        bind();
+                        strerror.Append("after bind");
+                        strerror.Append("before vendors");
+                        bindAllVendors();
+                        strerror.Append("after vendors");
+                        strerror.Append("before vendors category");
+                        //bindvendorcategory();
+                        strerror.Append("after vendors category");
+                        strerror.Append("before folder delete vendors category");
+                        bindfordeletevender();
+                        strerror.Append("after folder delete vendors category");
+                        //ScriptManager.RegisterStartupScript(this, GetType(), "initialize", "initialize();", true);
+                        //lnkVendorCategory.ForeColor = System.Drawing.Color.DarkGray;
+                        //lnkVendorCategory.Enabled = false;
+                        //lnkVendor.Enabled = true;
+                        //lnkVendor.ForeColor = System.Drawing.Color.Blue;
+                        // lblerrornew.Text = Convert.ToString(strerror);
+                        BindProductCategory();
+                        GetAllVendorSubCat();
+                        BindVendorByProdCat(ddlprdtCategory.SelectedValue.ToString());
+                        BindVendorByProdCat1(ddlprdtCategory1.SelectedValue.ToString());
+                        BindVendorSubCatByVendorCat(ddlVndrCategory.SelectedValue.ToString());
+                        string ManufacturerType = GetManufacturerType();
+                        FilterVendors("", "ProductCategoryAll", ManufacturerType, "");
+                        DataSet dsSource;
+                        dsSource = InstallUserBLL.Instance.GetSource();
+                        if (dsSource.Tables[0].Rows.Count > 0)
+                        {
+                            ddlSource.DataSource = dsSource.Tables[0];
+                            ddlSource.DataTextField = "Source";
+                            ddlSource.DataValueField = "Source";
+                            ddlSource.DataBind();
+                            ddlSource.Items.Insert(0, "Select Source");
+                            ddlSource.SelectedIndex = 0;
+                        }
+                        else
+                        {
+                            ddlSource.Items.Add("Select Source");
+                            ddlSource.SelectedIndex = 0;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        lblerrornew.Text = ex.Message + ex.StackTrace;
+                    }
+
+
+                    //added by harshit
+                    //7-april-2016
+                    UserType = Session[JG_Prospect.Common.SessionKey.Key.usertype.ToString()].ToString();
+                    DataSet dsCurrentPeriod = UserBLL.Instance.Getcurrentperioddates();
+                    DateTime fromDate = Convert.ToDateTime(dsCurrentPeriod.Tables[0].Rows[0]["FromDate"].ToString());
+                    DateTime toDate = Convert.ToDateTime(dsCurrentPeriod.Tables[0].Rows[0]["ToDate"].ToString());
+
+                    bindPayPeriod(dsCurrentPeriod);
+
+                    grdtransations.DataSource = new List<JG_Prospect.BLL.clsProcurementData>();
+                    grdtransations.DataBind();
+                    grdprimaryvendor.DataSource = new List<JG_Prospect.BLL.clsProcurementDataAll>();
+                    grdprimaryvendor.DataBind();
+                }
+                else
+                {
+                    IsPageRefresh = true;
+                }
+                ScriptManager.RegisterStartupScript(this, GetType(), "initialize", "initialize();", true);
             }
-            ScriptManager.RegisterStartupScript(this, GetType(), "initialize", "initialize();", true);
         }
 
         #endregion
@@ -627,6 +635,54 @@ namespace JG_Prospect.Sr_App
         {
             //Procurement obj = new Procurement();
             //obj.EditVendor(Convert.ToInt16(vendorid));
+        }
+
+         [WebMethod]
+        public static string GetCityState(string strZip)
+        {
+            DataSet ds = new DataSet();
+            ds = UserBLL.Instance.fetchcitystate(strZip);
+            if (ds != null)
+            {
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    string strResult = ds.Tables[0].Rows[0]["City"].ToString() + "@^" + ds.Tables[0].Rows[0]["State"].ToString();
+                    return strResult;
+                }
+                else
+                {
+                    return string.Empty;
+                }
+            }
+            else
+                return string.Empty;
+
+        }
+
+          [WebMethod]
+        public static string GetZipcodes(string prefixText)
+        {
+            List<string> ZipCodes = new List<string>();
+            DataSet dds = new DataSet();
+            dds = UserBLL.Instance.fetchzipcode(prefixText);
+            
+            List<AutoCompleteVendor> lstResult = new List<AutoCompleteVendor>();
+            int i = 0;
+            foreach (DataRow item in dds.Tables[0].Rows)
+            {
+                lstResult.Add(new AutoCompleteVendor
+                {
+                    id = Convert.ToInt32(item["ZipCode"].ToString()),
+                    label = Convert.ToString(item["ZipCode"]),
+                    value = Convert.ToString(item["ZipCode"])
+                });
+                i++;
+                if (i == 10)
+                    break;
+            }
+            JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
+            string deserializedJson = jsSerializer.Serialize(lstResult);
+            return deserializedJson;
         }
         #endregion
 
