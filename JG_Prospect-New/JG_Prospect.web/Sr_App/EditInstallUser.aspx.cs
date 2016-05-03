@@ -16,6 +16,7 @@ using System.Text;
 using Word = Microsoft.Office.Interop.Word;
 using System.Net;
 using System.Net.Mail;
+using System.Globalization;
 
 namespace JG_Prospect.Sr_App
 {
@@ -1091,7 +1092,7 @@ namespace JG_Prospect.Sr_App
             {
                 ddlInsteviewtime.DataSource = GetTimeIntervals();
                 ddlInsteviewtime.DataBind();
-                dtInterviewDate.Text = DateTime.Now.AddDays(1).ToShortDateString();
+                dtInterviewDate.Text = DateTime.Now.AddDays(1).ToString("MM/dd/yyyy");
                 ddlInsteviewtime.SelectedValue = "10:00 AM";
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "Overlay", "overlayInterviewDate()", true);
                 return;
@@ -1219,45 +1220,45 @@ namespace JG_Prospect.Sr_App
             {
                 string fullname = FName + " " + LName;
                 string HTML_TAG_PATTERN = "<.*?>";
-                string strHeader = GetEmailHeader(status);
-                string strBody = GetEmailBody(status);
-                string strFooter = GetFooter(status);
-                strBody = strBody.Replace("LBL name", FName);
+                DataSet ds = AdminBLL.Instance.FetchContractTemplate(104);
+
+                string strHeader = ds.Tables[0].Rows[0]["HTMLHeader"].ToString(); //GetEmailHeader(status);
+                string strBody = ds.Tables[0].Rows[0]["HTMLBody"].ToString(); //GetEmailBody(status);
+                string strFooter = ds.Tables[0].Rows[0]["HTMLFooter"].ToString(); // GetFooter(status);
+                string strsubject = ds.Tables[0].Rows[0]["HTMLSubject"].ToString();
+
+                string userName = ConfigurationManager.AppSettings["VendorCategoryUserName"].ToString();
+                string password = ConfigurationManager.AppSettings["VendorCategoryPassword"].ToString();
+
+                strBody = strBody.Replace("#Name#", FName);
+                strBody = strBody.Replace("#Date#", dtInterviewDate.Text);
+                strBody = strBody.Replace("#Time#", ddlInsteviewtime.SelectedValue);
+                strBody = strBody.Replace("#Designation#", Designition);
+
+
+                strFooter = strFooter.Replace("#Name#", FName);
+                strFooter = strFooter.Replace("#Date#", dtInterviewDate.Text);
+                strFooter = strFooter.Replace("#Time#", ddlInsteviewtime.SelectedValue);
+                strFooter = strFooter.Replace("#Designation#", Designition);
+
                 strBody = strBody.Replace("Lbl Full name", fullname);
                 strBody = strBody.Replace("LBL position", Designition);
                 //strBody = strBody.Replace("lbl: start date", txtHireDate.Text);
                 //strBody = strBody.Replace("($ rate","$"+ txtHireDate.Text);
                 strBody = strBody.Replace("Reason", Reason);
-                //strBody = Regex.Replace(strBody, HTML_TAG_PATTERN, string.Empty);
-                //strHeader = Regex.Replace(strHeader, HTML_TAG_PATTERN, string.Empty);
-                //strFooter = Regex.Replace(strFooter, HTML_TAG_PATTERN, string.Empty);
+                //Hi #lblFName#, <br/><br/>You are requested to appear for an interview on #lblDate# - #lblTime#.<br/><br/>Regards,<br/>
                 StringBuilder Body = new StringBuilder();
-                //MailMessage Msg = new MailMessage();
-                // Sender e-mail address.
-                //Msg.From = new MailAddress("qat2015team@gmail.com");
+                MailMessage Msg = new MailMessage();
+                //Sender e-mail address.
+                Msg.From = new MailAddress(userName, "JGrove Construction");
                 // Recipient e-mail address.
-                //Msg.To.Add(emailId);
-                //Msg.Subject = "JG Prospect Notification";
-                //StringBuilder Body = new StringBuilder();
-                //Body.Append("Hello " + FName + " " + LName + ",");
-                //Body.Append("<br>");
-                //Body.Append("Your stattus for the JG Prospect is :" + status);
-                //Body.Append("<br>");
-                ////if (status == "Source" || status == "Rejected" || status == "Interview Date" || status == "Offer Made")
-                ////{
-                //Body.Append(Reason);
-                ////}
-                //Body.Append("<br>");
-                //Body.Append("Tanking you");
+                Msg.To.Add(emailId);
+                Msg.Bcc.Add(new MailAddress("shabbir.kanchwala@straitapps.com", "Shabbir Kanchwala"));
+                Msg.CC.Add(new MailAddress("jgrove.georgegrove@gmail.com", "Justin Grove"));
+
+                Msg.Subject = strsubject;// "JG Prospect Notification";
                 Body.Append(strHeader);
-                Body.Append("<br>");
                 Body.Append(strBody);
-                Body.Append("<br>");
-                //if (status == "Source" || status == "Rejected" || status == "Interview Date" || status == "Offer Made")
-                //{
-                //Body.Append(Reason);
-                //}
-                Body.Append("<br>");
                 Body.Append(strFooter);
                 if (status == "OfferMade")
                 {
@@ -1267,16 +1268,40 @@ namespace JG_Prospect.Sr_App
                 {
                     CreateDeactivationAttachment(Convert.ToString(Body), FName, LName, Designition, emailId, HireDate, EmpType, PayRates);
                 }
-                //Msg.Body = Convert.ToString(Body);
-                //// your remote SMTP server IP.
-                //SmtpClient smtp = new SmtpClient();
-                //smtp.Host = "smtp.gmail.com";
-                //smtp.Port = 587;
-                //smtp.Credentials = new System.Net.NetworkCredential("qat2015team@gmail.com", "q$7@wt%j*65ba#3M@9P6");
-                //smtp.EnableSsl = true;
-                //smtp.Send(Msg);
-                //Msg = null;
-                //Page.RegisterStartupScript("UserMsg", "<script>alert('Mail sent thank you...');if(alert){ window.location='SendMail.aspx';}</script>");
+                Msg.Body = Convert.ToString(Body);
+                Msg.IsBodyHtml = true;
+                // your remote SMTP server IP.
+                for (int i = 0; i < ds.Tables[1].Rows.Count; i++)
+                {
+                    string sourceDir = Server.MapPath(ds.Tables[1].Rows[i]["DocumentPath"].ToString());
+                    if (File.Exists(sourceDir))
+                    {
+                        Attachment attachment = new Attachment(sourceDir);
+                        attachment.Name = Path.GetFileName(sourceDir);
+                        Msg.Attachments.Add(attachment);
+                    }
+                }
+                SmtpClient sc = new SmtpClient(ConfigurationManager.AppSettings["smtpHost"].ToString(), Convert.ToInt32(ConfigurationManager.AppSettings["smtpPort"].ToString()));
+
+
+                NetworkCredential ntw = new System.Net.NetworkCredential(userName, password);
+                sc.UseDefaultCredentials = false;
+                sc.Credentials = ntw;
+
+                sc.DeliveryMethod = SmtpDeliveryMethod.Network;
+                sc.EnableSsl = Convert.ToBoolean(ConfigurationManager.AppSettings["enableSSL"].ToString()); // runtime encrypt the SMTP communications using SSL
+                try
+                {
+                    sc.Send(Msg);
+                }
+                catch (Exception ex)
+                {
+                }
+
+                Msg = null;
+                sc.Dispose();
+                sc = null;
+                Page.RegisterStartupScript("UserMsg", "<script>alert('An email notification has sent on " + emailId + ".');}</script>");
             }
             catch (Exception ex)
             {
@@ -1553,6 +1578,7 @@ namespace JG_Prospect.Sr_App
                 string HireDate = "";
                 string EmpType = "";
                 string PayRates = "";
+                
                 ds = InstallUserBLL.Instance.ChangeStatus(Convert.ToString(Session["EditStatus"]), Convert.ToInt32(Session["EditId"]), Convert.ToString(DateTime.Today.ToShortDateString()), DateTime.Now.ToShortTimeString(), Convert.ToInt32(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]), txtReason.Text);
                 if (ds.Tables.Count > 0)
                 {
@@ -1596,7 +1622,8 @@ namespace JG_Prospect.Sr_App
             string EmpType = "";
             string PayRates = "";
             // ds = InstallUserBLL.Instance.ChangeStatus(Convert.ToString(Session["EditStatus"]), Convert.ToInt32(Session["EditId"]), Convert.ToString(DateTime.Today.ToShortDateString()), DateTime.Now.ToShortTimeString(), Convert.ToInt32(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]), txtReason.Text);
-            ds = InstallUserBLL.Instance.ChangeStatus(Convert.ToString(Session["EditStatus"]), Convert.ToInt32(Session["EditId"]), dtInterviewDate.Text, ddlInsteviewtime.SelectedValue, Convert.ToInt32(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]), txtReason.Text);
+            DateTime dt = DateTime.ParseExact(dtInterviewDate.Text, "MM/dd/yyyy", CultureInfo.InvariantCulture);
+            ds = InstallUserBLL.Instance.ChangeStatus(Convert.ToString(Session["EditStatus"]), Convert.ToInt32(Session["EditId"]), dt.ToString("yyyy-MM-dd"), ddlInsteviewtime.SelectedValue, Convert.ToInt32(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]), txtReason.Text);
             if (ds.Tables.Count > 0)
             {
                 if (ds.Tables[0].Rows.Count > 0)
@@ -1645,7 +1672,7 @@ namespace JG_Prospect.Sr_App
                     {
                         ddlInsteviewtime.DataSource = GetTimeIntervals();
                         ddlInsteviewtime.DataBind();
-                        dtInterviewDate.Text = DateTime.Now.AddDays(1).ToShortDateString();
+                        dtInterviewDate.Text = DateTime.Now.AddDays(1).ToString("MM/dd/yyyy");
                         ddlInsteviewtime.SelectedValue = "10:00 AM";
                         ScriptManager.RegisterStartupScript(this, this.GetType(), "Overlay", "overlayInterviewDate()", true);
                         return;

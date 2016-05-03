@@ -309,7 +309,7 @@
     <%--<asp:UpdatePanel ID="updatepanel1" runat="server">
                     <ContentTemplate>--%>
     <asp:Button ID="Button1" Style="display: none;" runat="server" Text="Button" />
-    <cc1:ModalPopupExtender ID="mp1" runat="server" PopupControlID="Panel1" TargetControlID="Button1"
+    <cc1:ModalPopupExtender ID="mp1" runat="server" PopupControlID="Panel1" TargetControlID="Button1" 
         CancelControlID="btnClose" BackgroundCssClass="modalBackground">
     </cc1:ModalPopupExtender>
     <asp:Panel ID="Panel1" runat="server" CssClass="modalPopup" align="center" Style="display: none">
@@ -358,7 +358,7 @@
                 <tr>
                     <td align="center" style="height:15px;">
                     <asp:TextBox ID="dtInterviewDate" placeholder="Select Date" runat="server" ClientIDMode="Static" onkeypress="return false" TabIndex="104" Width="127px"></asp:TextBox>
-                        <cc1:CalendarExtender ID="CalendarExtender1" TargetControlID="dtInterviewDate" runat="server"></cc1:CalendarExtender>
+                        <cc1:CalendarExtender ID="CalendarExtender1" TargetControlID="dtInterviewDate" Format="MM/dd/yyyy" runat="server"></cc1:CalendarExtender>
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Select Date" ControlToValidate="dtInterviewDate" ValidationGroup="InterviewDate"></asp:RequiredFieldValidator>
                     </td>
                     <td>

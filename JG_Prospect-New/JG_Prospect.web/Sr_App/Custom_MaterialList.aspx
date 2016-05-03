@@ -5,6 +5,34 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <script runat="server">
+        protected int i = 0;
+        protected int GetSerialNumber()
+        {
+            i += 1;
+            return i;
+        }
+
+        public static string ToRoman(int number)
+        {
+            if ((number < 0) || (number > 3999)) throw new ArgumentOutOfRangeException("insert value betwheen 1 and 3999");
+            if (number < 1) return string.Empty;
+            if (number >= 1000) return "M" + ToRoman(number - 1000);
+            if (number >= 900) return "CM" + ToRoman(number - 900); //EDIT: i've typed 400 instead 900
+            if (number >= 500) return "D" + ToRoman(number - 500);
+            if (number >= 400) return "CD" + ToRoman(number - 400);
+            if (number >= 100) return "C" + ToRoman(number - 100);
+            if (number >= 90) return "XC" + ToRoman(number - 90);
+            if (number >= 50) return "L" + ToRoman(number - 50);
+            if (number >= 40) return "XL" + ToRoman(number - 40);
+            if (number >= 10) return "X" + ToRoman(number - 10);
+            if (number >= 9) return "IX" + ToRoman(number - 9);
+            if (number >= 5) return "V" + ToRoman(number - 5);
+            if (number >= 4) return "IV" + ToRoman(number - 4);
+            if (number >= 1) return "I" + ToRoman(number - 1);
+            throw new ArgumentOutOfRangeException("something bad happened");
+        }
+    </script>
     <style>
         .grid td {
             padding: 1px !important;
@@ -822,7 +850,8 @@
                         <ContentTemplate>
                             <div style="padding-bottom: 2px;">
                                 <div style="float: left" align="left">
-                                    Product Category: 
+                                    
+                                   <%# ToRoman( GetSerialNumber())%>. Product Category: 
                                             <asp:DropDownList ID="ddlCategory" Width="150px" runat="server" OnSelectedIndexChanged="ddlCategory_SelectedIndexChanged" AutoPostBack="true">
                                             </asp:DropDownList>
 
@@ -831,7 +860,10 @@
                                     <asp:LinkButton ID="lnkDeleteProdCat" CommandArgument='<%#Eval("ProductCatID") %>' OnClick="lnkDeleteProdCat_Click" runat="server" OnClientClick="return confirm('Deleting product category will delete all associated line items. Are you sure you want to delete?')">Delete</asp:LinkButton>
 
                                 </div>
-                                <div style="float: right; width: 34%">
+                                <div style="float: right; width: 34%;">
+                                    <b>Status:</b> Material Confirmation (1)
+                                </div>
+                                <div style="float: right; width: 34%; display:none">
                                     Vendor Category:
                                             <asp:DropDownList ID="dldVendorCategory" Width="70%" AutoPostBack="false" OnSelectedIndexChanged="dldVendorCategory_SelectedIndexChanged" runat="server"></asp:DropDownList><br />
                                     <asp:RadioButton ID="rdoManufacturer" GroupName="VendorType" AutoPostBack="false" OnCheckedChanged="rdoManufacturer_CheckedChanged" Text="Manufacturer" runat="server" />
@@ -894,13 +926,18 @@
                                                         <asp:Label ID="lblVendorNames" runat="server" Text=""></asp:Label>
                                                         <asp:LinkButton ID="lnkAddVendors" runat="server" CommandArgument='<%#Eval("Id") %>' CommandName="AddVendor" OnClick="lnkAddVendors_Click">+ Add</asp:LinkButton>
                                                         <asp:CheckBox onclick="UpdateDefault(this);" ID="chkDefault" Text="Default" runat="server" />
-
+                                                        <asp:LinkButton ID="lnkaddvendorquotes" runat="server" Text="Attach Quotes" OnClick="lnkaddvendorquotes_Click" HeaderStyle-Width="200px">Attach Quotes</asp:LinkButton>
                                                         
                                                     </div>
                                                     
                                                 </ContentTemplate>
                                             </asp:UpdatePanel>
 
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Total" HeaderStyle-Width="8%" ItemStyle-Width="8%">
+                                        <ItemTemplate>
+                                            
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="" HeaderStyle-Width="5%" ItemStyle-Width="5%">
@@ -939,8 +976,7 @@
                                             <span style="width: 250px; background-color: #f8f5f5; padding: 5px;">
                                                 <a href='<%#Eval("DocumentPath") %>' target="_blank">
                                                     <%#Eval("DocumentName") %>
-                                                </a>&nbsp;
-                                                        <asp:LinkButton ID="lnkDeleteMatLisAttc" OnClick="lnkDeleteMatLisAttc_Click" CommandArgument='<%#Eval("Id") %>' runat="server" Text='Delete'></asp:LinkButton>
+                                                </a>&nbsp;<asp:LinkButton ID="lnkDeleteMatLisAttc" OnClick="lnkDeleteMatLisAttc_Click" CommandArgument='<%#Eval("Id") %>' runat="server" Text='Delete'></asp:LinkButton>
                                             </span>
                                         </ItemTemplate>
                                     </asp:DataList>
@@ -1079,6 +1115,12 @@
                                 <td align="right">Vendor:</td>
                                 <td>
                                     <asp:ListBox onchange="AssociateVendor(this)" ID="lstVendors" Width="500px" SelectionMode="Multiple" CssClass="form-control" runat="server"></asp:ListBox>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right">Qutoes requested from:</td>
+                                <td>
+                                    <asp:Label ID="lblGotQuotesFrom" runat="server" Text=""></asp:Label>
                                 </td>
                             </tr>
                             <tr>

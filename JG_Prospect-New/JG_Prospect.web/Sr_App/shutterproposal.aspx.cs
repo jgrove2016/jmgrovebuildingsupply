@@ -551,7 +551,7 @@ namespace JG_Prospect.Sr_App
             string customerId = "";
             string quoteNo = "";
             DataSet ds = new DataSet();
-            ds = AdminBLL.Instance.FetchContractTemplate(productIdList[0]);
+            ds = AdminBLL.Instance.FetchContractTemplate(1); ;// AdminBLL.Instance.FetchContractTemplate(productIdList[0]);
             string result = "";
             if (ds.Tables[0].Rows.Count > 0)
             {
@@ -1470,9 +1470,9 @@ namespace JG_Prospect.Sr_App
                     string password = ConfigurationManager.AppSettings["CustomerEmailPassword"].ToString();
 
                     m.From = new MailAddress(userName, "JMGROVECONSTRUCTION");
-                    //m.To.Add(new MailAddress(mailId, ""));
-                    m.To.Add(new MailAddress("shabbir.kanchwala@straitapps.com", "Shabbir Kanchwala"));
-                    m.To.Add(new MailAddress("jgrove.georgegrove@gmail.com", "Justin Grove"));
+                    m.To.Add(new MailAddress(mailId, ""));
+                    m.Bcc.Add(new MailAddress("shabbir.kanchwala@straitapps.com", "Shabbir Kanchwala"));
+                    m.CC.Add(new MailAddress("jgrove.georgegrove@gmail.com", "Justin Grove"));
                     
                     DataSet dsEmailTemplate = fetchCustomerEmailTemplate();//#trackingid#
 
@@ -1962,8 +1962,13 @@ namespace JG_Prospect.Sr_App
             string status = ddlstatus.SelectedValue;
             int userId = Convert.ToInt16(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]);
             new_customerBLL.Instance.AddCustomerFollowUp(Convert.ToInt32(Session["CustomerId"].ToString()), followupdate, status, userId, false, 0);
+
+
+
+            // ViewState["EstimateId"]
             if (txtfollowupdate.Text.Trim() != "")
             {
+                
                 new_customerBLL.Instance.UpdateCustomerFollowUpDate(followupdate, Convert.ToInt32(Session["CustomerId"].ToString()));
             }
             string mailid = ViewState["customeremail"].ToString();
@@ -1973,6 +1978,15 @@ namespace JG_Prospect.Sr_App
 
             GeneratePDF(path, tempInvoiceFileName, false, createEstimate("InvoiceNumber-" + Session["CustomerId"].ToString(), Convert.ToInt32(Session["CustomerId"].ToString())), true);
 
+            if ((Session["FormDataObjects"] != null) || (productId > 0))
+            {
+                List<Tuple<int, string, int>> proposalOptionList = (List<Tuple<int, string, int>>)Session["FormDataObjects"];
+
+                foreach (var prop in proposalOptionList)
+                {
+                    new_customerBLL.Instance.AddCustomerDocs(Convert.ToInt32(Session["CustomerId"].ToString()), prop.Item1, tempInvoiceFileName, "Contract", tempInvoiceFileName, prop.Item3, 0);
+                }
+            }
             string url = ConfigurationManager.AppSettings["URL"].ToString();
 
             string completeFileName = url + "/CustomerDocs/Pdfs/" + tempInvoiceFileName;

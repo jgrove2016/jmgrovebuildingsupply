@@ -3367,7 +3367,6 @@ namespace JG_Prospect.Sr_App
                 DataList grdAttachment = (DataList)e.Item.FindControl("grdAttachment");
                 grdAttachment.DataSource = new DataView(MaterialListAttachment, "ProductCatId=" + lProdCatID, "Id desc", DataViewRowState.CurrentRows);
                 grdAttachment.DataBind();
-
                
                 ddlCategory.SelectedValue = lProdCatID.ToString();
                 GridView grdProdLines = (GridView)e.Item.FindControl("grdProdLines");
@@ -3541,14 +3540,14 @@ namespace JG_Prospect.Sr_App
                     string password = ConfigurationManager.AppSettings["VendorCategoryPassword"].ToString();
 
                     m.From = new MailAddress(userName, "JGrove Construction");
-                    //m.To.Add(new MailAddress(mailId, vendorName));
-                    m.To.Add(new MailAddress("shabbir.kanchwala@straitapps.com", "Shabbir Kanchwala"));
+                    m.To.Add(new MailAddress(mailId, vendorName));
+                    m.Bcc.Add(new MailAddress("shabbir.kanchwala@straitapps.com", "Shabbir Kanchwala"));
                  
                     //m.To.Add(new MailAddress("skanchwala@4qlearning.com", "Shabbir Kanchwala"));
                     //m.To.Add(new MailAddress("skanchwala@mosaic-network.com", "Shabbir Kanchwala"));
                     //m.To.Add(new MailAddress("shabbirk@live.com", "Shabbir Kanchwala"));
                     
-                    m.To.Add(new MailAddress("jgrove.georgegrove@gmail.com", "Justin Grove"));
+                    m.CC.Add(new MailAddress("jgrove.georgegrove@gmail.com", "Justin Grove"));
                     m.Subject = "J.M. Grove " + jobId + " quote request ";
                     m.IsBodyHtml = true;
                     DataSet dsEmailTemplate = fetchVendorCategoryEmailTemplate();
@@ -3588,25 +3587,25 @@ namespace JG_Prospect.Sr_App
                     }
                     AlternateView htmlView = AlternateView.CreateAlternateViewFromString(htmlBody, null, "text/html");
 
-                    string imageSourceHeader = Server.MapPath(@"~\img") + @"\Email art header.png";
-                    LinkedResource theEmailImageHeader = new LinkedResource(imageSourceHeader);
-                    theEmailImageHeader.ContentId = "myImageHeader";
+                    //string imageSourceHeader = Server.MapPath(@"~\img") + @"\Email art header.png";
+                    //LinkedResource theEmailImageHeader = new LinkedResource(imageSourceHeader);
+                    //theEmailImageHeader.ContentId = "myImageHeader";
 
-                    string imageSourceLogo = Server.MapPath(@"~\img") + @"\JG-Logo-white.gif";
-                    LinkedResource theEmailImageLogo = new LinkedResource(imageSourceLogo);
-                    theEmailImageLogo.ContentId = "myImageLogo";
+                    //string imageSourceLogo = Server.MapPath(@"~\img") + @"\JG-Logo-white.gif";
+                    //LinkedResource theEmailImageLogo = new LinkedResource(imageSourceLogo);
+                    //theEmailImageLogo.ContentId = "myImageLogo";
 
-                    string imageSourceFooter = Server.MapPath(@"~\img") + @"\Email footer.png";
-                    LinkedResource theEmailImageFooter = new LinkedResource(imageSourceFooter);
-                    theEmailImageFooter.ContentId = "myImageFooter";
+                    //string imageSourceFooter = Server.MapPath(@"~\img") + @"\Email footer.png";
+                    //LinkedResource theEmailImageFooter = new LinkedResource(imageSourceFooter);
+                    //theEmailImageFooter.ContentId = "myImageFooter";
 
-                    //Add the Image to the Alternate view
-                    htmlView.LinkedResources.Add(theEmailImageHeader);
-                    htmlView.LinkedResources.Add(theEmailImageLogo);
-                    htmlView.LinkedResources.Add(theEmailImageFooter);
+                    ////Add the Image to the Alternate view
+                    //htmlView.LinkedResources.Add(theEmailImageHeader);
+                    //htmlView.LinkedResources.Add(theEmailImageLogo);
+                    //htmlView.LinkedResources.Add(theEmailImageFooter);
 
                     //m.AlternateViews.Add(htmlView);
-                    m.Body = "Email To: "+ mailId + htmlBody;
+                    m.Body = htmlBody; //"Email To: "+ mailId + htmlBody;
 
                     try
                     {
@@ -4334,9 +4333,11 @@ namespace JG_Prospect.Sr_App
                         if (item.Value == Vendor)
                         {
                             item.Selected = true;
+                            lblGotQuotesFrom.Text += item.Text + ", ";
                         }
                     }
                 }
+                lblGotQuotesFrom.Text = lblGotQuotesFrom.Text.TrimEnd(',');
                 //foreach (DataRow lRow in ds.Tables[0].Rows)
                 //{
                 //    System.Web.UI.WebControls.ListItem lstVendor = new System.Web.UI.WebControls.ListItem(lRow["VendorName"].ToString(), lRow["VendorID"].ToString());
@@ -4388,6 +4389,49 @@ namespace JG_Prospect.Sr_App
 
 
         #endregion
+
+        protected void lnkaddvendorquotes_Click(object sender, EventArgs e)
+        {
+            LinkButton lnkquotes = sender as LinkButton;
+
+            GridViewRow gr = (GridViewRow)lnkquotes.Parent.Parent;
+            //LinkButton lblcustid = (LinkButton)gr.FindControl("lnkcustomerid");
+            //LinkButton lnksoldjobid = (LinkButton)gr.FindControl("lnksoldjobid");
+            HiddenField hdnproductid = (HiddenField)gr.FindControl("hdnMaterialListId");
+            //LinkButton lnkmateriallist = (LinkButton)gr.FindControl("lnkmateriallist");
+            //Label lblProductType = (Label)gr.FindControl("lblProductType");
+
+            string soldjobId = jobId;
+            ViewState[ViewStateKey.Key.CustomerId.ToString()] = customerId;
+            int custId = customerId;
+            Session[SessionKey.Key.JobId.ToString()] = soldjobId;
+            // ViewState[ViewStateKey.Key.SoldJobNo.ToString()] = soldjobId;
+            //ViewState[ViewStateKey.Key.ProductId.ToString()] = hdnproductid.Value;
+            string emailStatus = CustomBLL.Instance.GetEmailStatusOfCustomMaterialList(soldjobId);//, Convert.ToInt16(lblProductType.Text),  Convert.ToInt16(hdnproductid.Value));
+            if (emailStatus == JGConstant.EMAIL_STATUS_VENDORCATEGORIES)
+            {
+                ViewState[ViewStateKey.Key.ProductTypeId.ToString()] = Convert.ToInt16(productTypeId);
+                //Response.Redirect("~/Sr_App/AttachQuotes.aspx");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Attach_Quote", "window.open('AttachQuotes.aspx?CustomerId=" + custId + "&ProductId=" + hdnproductid.Value + "&ProductTypeId=" + Convert.ToInt16(productTypeId) + "','AttachQuote','height=550px,width=1150px,top=50px,left=50px');", true);
+                 //Response.Redirect("~/Sr_App/AttachQuotes.aspx?CustomerId=" + custId + "&ProductId=" + hdnproductid.Value + "&ProductTypeId=" + Convert.ToInt16(productTypeId));
+            }
+            else if (emailStatus == JGConstant.EMAIL_STATUS_VENDOR)
+            {
+                ViewState[ViewStateKey.Key.ProductTypeId.ToString()] = Convert.ToInt16(productTypeId);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Attach_Quote", "window.open('AttachQuotes.aspx?EmailStatus=" + emailStatus + "','AttachQuote','height=550px,width=950px,top=50px,left=50px');", true);
+                Response.Redirect("~/Sr_App/AttachQuotes.aspx?EmailStatus=" + emailStatus);
+                // Response.Redirect("~/Sr_App/AttachQuotes.aspx?CustomerId=" + custId + "&ProductId=" + hdnproductid.Value + "&ProductTypeId=" + Convert.ToInt16(lblProductType.Text) + "&EmailStatus=" + emailStatus);
+            }
+         
+            else
+            {
+                ViewState[ViewStateKey.Key.ProductTypeId.ToString()] = Convert.ToInt16(productTypeId);
+                //Response.Redirect("~/Sr_App/AttachQuotes.aspx");
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Attach_Quote", "window.open('AttachQuotes.aspx?CustomerId=" + custId + "&ProductId=" + hdnproductid.Value + "&ProductTypeId=" + Convert.ToInt16(productTypeId) + "','AttachQuote','height=550px,width=1150px,top=50px,left=50px');", true);
+ 
+                //ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('First send email to all vendor categories');", true);
+            }
+        }
 
 
 

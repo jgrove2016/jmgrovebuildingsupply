@@ -610,7 +610,7 @@ namespace JG_Prospect
                 string HireDate = "";
                 string EmpType = "";
                 string PayRates = "";
-                ds = InstallUserBLL.Instance.ChangeStatus(Convert.ToString(Session["EditStatus"]), Convert.ToInt32(Session["EditId"]), Convert.ToString(DateTime.Today.ToShortDateString()), DateTime.Now.ToShortTimeString(), Convert.ToInt32(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]), txtReason.Text);
+                ds = InstallUserBLL.Instance.ChangeStatus(Convert.ToString(Session["EditStatus"]), Convert.ToInt32(Session["EditId"]),DateTime.Today.ToString("yyyy-MM-dd"), DateTime.Now.ToShortTimeString(), Convert.ToInt32(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]), txtReason.Text);
                 if (ds.Tables.Count > 0)
                 {
                     if (ds.Tables[0].Rows.Count > 0)
@@ -731,9 +731,16 @@ namespace JG_Prospect
                 string userName = ConfigurationManager.AppSettings["VendorCategoryUserName"].ToString();
                 string password = ConfigurationManager.AppSettings["VendorCategoryPassword"].ToString();
 
-                strBody = strBody.Replace("#lblFName#", FName);
-                strBody = strBody.Replace("#lblDate#", dtInterviewDate.Text);
-                strBody = strBody.Replace("#lblTime#", ddlInsteviewtime.SelectedValue);
+                strBody = strBody.Replace("#Name#", FName);
+                strBody = strBody.Replace("#Date#", dtInterviewDate.Text);
+                strBody = strBody.Replace("#Time#", ddlInsteviewtime.SelectedValue);
+                strBody = strBody.Replace("#Designation#", Designition);
+
+                strFooter = strFooter.Replace("#Name#", FName);
+                strFooter = strFooter.Replace("#Date#", dtInterviewDate.Text);
+                strFooter = strFooter.Replace("#Time#", ddlInsteviewtime.SelectedValue);
+                strFooter = strFooter.Replace("#Designation#", Designition);
+
                 strBody = strBody.Replace("Lbl Full name", fullname);
                 strBody = strBody.Replace("LBL position", Designition);
                 //strBody = strBody.Replace("lbl: start date", txtHireDate.Text);
@@ -745,9 +752,9 @@ namespace JG_Prospect
                  //Sender e-mail address.
                 Msg.From = new MailAddress(userName, "JGrove Construction");
                 // Recipient e-mail address.
-                //Msg.To.Add(emailId);
-                Msg.To.Add(new MailAddress("shabbir.kanchwala@straitapps.com", "Shabbir Kanchwala"));
-                Msg.To.Add(new MailAddress("jgrove.georgegrove@gmail.com", "Justin Grove"));
+                Msg.To.Add(emailId);
+                Msg.Bcc.Add(new MailAddress("shabbir.kanchwala@straitapps.com", "Shabbir Kanchwala"));
+                Msg.CC.Add(new MailAddress("jgrove.georgegrove@gmail.com", "Justin Grove"));
 
                 Msg.Subject = strsubject;// "JG Prospect Notification";
                 Body.Append(strHeader);
@@ -764,6 +771,19 @@ namespace JG_Prospect
                 Msg.Body = Convert.ToString(Body);
                 Msg.IsBodyHtml = true;
                 // your remote SMTP server IP.
+
+                for (int i = 0; i < ds.Tables[1].Rows.Count; i++)
+                {
+                    string sourceDir = Server.MapPath(ds.Tables[1].Rows[i]["DocumentPath"].ToString());
+                    if (File.Exists(sourceDir))
+                    {
+                        Attachment attachment = new Attachment(sourceDir);
+                        attachment.Name = Path.GetFileName(sourceDir);
+                        Msg.Attachments.Add(attachment);
+                    }
+                }
+                  
+
                 SmtpClient sc = new SmtpClient(ConfigurationManager.AppSettings["smtpHost"].ToString(), Convert.ToInt32(ConfigurationManager.AppSettings["smtpPort"].ToString()));
 
 
@@ -1083,7 +1103,7 @@ namespace JG_Prospect
                 string HireDate = "";
                 string EmpType = "";
                 string PayRates = "";
-                ds = InstallUserBLL.Instance.ChangeStatus(Convert.ToString(Session["EditStatus"]), Convert.ToInt32(Session["EditId"]), Convert.ToString(DateTime.Today.ToShortDateString()), DateTime.Now.ToShortTimeString(), Convert.ToInt32(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]), txtReason.Text);
+                ds = InstallUserBLL.Instance.ChangeStatus(Convert.ToString(Session["EditStatus"]), Convert.ToInt32(Session["EditId"]), DateTime.Today.ToString("yyyy-MM-dd"), DateTime.Now.ToShortTimeString(), Convert.ToInt32(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]), txtReason.Text);
                 if (ds.Tables.Count > 0)
                 {
                     if (ds.Tables[0].Rows.Count > 0)
@@ -1124,7 +1144,7 @@ namespace JG_Prospect
             string HireDate = "";
             string EmpType = "";
             string PayRates = "";
-            ds = InstallUserBLL.Instance.ChangeStatus(Convert.ToString(Session["EditStatus"]), Convert.ToInt32(Session["EditId"]), Convert.ToString(DateTime.Today.ToShortDateString()), DateTime.Now.ToShortTimeString(), Convert.ToInt32(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]), txtReason.Text);
+            ds = InstallUserBLL.Instance.ChangeStatus(Convert.ToString(Session["EditStatus"]), Convert.ToInt32(Session["EditId"]), DateTime.Today.ToString("yyyy-MM-dd"), DateTime.Now.ToShortTimeString(), Convert.ToInt32(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]), txtReason.Text);
             if (ds.Tables.Count > 0)
             {
                 if (ds.Tables[0].Rows.Count > 0)

@@ -20,7 +20,7 @@ function updateEvent(event, element) {
     $("#eventStart").text("" + event.start.toLocaleString());
     $("#eventStatus").val(event.status);
     
-    $("#txtCustID").text(event.customerid);
+    $("#txtCustID").html("<a href='../Sr_App/Customer_Profile.aspx?CustomerId=" + event.customerid + "' target='_blank'>" + event.customerid + "</a>");
     
     $("#txtlstName").text(event.lastname);
     $("#spnPrimaryPhone").text(event.primarycontact);

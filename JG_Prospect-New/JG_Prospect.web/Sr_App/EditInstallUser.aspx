@@ -391,7 +391,7 @@
                 <tr>
                     <td align="center" style="height:15px;">
                     <asp:TextBox ID="dtInterviewDate" placeholder="Select Date" runat="server" ClientIDMode="Static" onkeypress="return false" TabIndex="104" Width="127px"></asp:TextBox>
-                        <cc1:CalendarExtender ID="CalendarExtender1" TargetControlID="dtInterviewDate" runat="server"></cc1:CalendarExtender>
+                        <cc1:CalendarExtender ID="CalendarExtender1" Format="MM/dd/yyyy"  TargetControlID="dtInterviewDate" runat="server"></cc1:CalendarExtender>
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Select Date" ControlToValidate="dtInterviewDate" ValidationGroup="InterviewDate"></asp:RequiredFieldValidator>
                     </td>
                     <td>
