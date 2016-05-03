@@ -860,9 +860,7 @@
                                     <asp:LinkButton ID="lnkDeleteProdCat" CommandArgument='<%#Eval("ProductCatID") %>' OnClick="lnkDeleteProdCat_Click" runat="server" OnClientClick="return confirm('Deleting product category will delete all associated line items. Are you sure you want to delete?')">Delete</asp:LinkButton>
 
                                 </div>
-                                <div style="float: right; width: 34%;">
-                                    <b>Status:</b> Material Confirmation (1)
-                                </div>
+                       
                                 <div style="float: right; width: 34%; display:none">
                                     Vendor Category:
                                             <asp:DropDownList ID="dldVendorCategory" Width="70%" AutoPostBack="false" OnSelectedIndexChanged="dldVendorCategory_SelectedIndexChanged" runat="server"></asp:DropDownList><br />
