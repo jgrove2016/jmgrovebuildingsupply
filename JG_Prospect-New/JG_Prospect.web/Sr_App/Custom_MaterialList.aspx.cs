@@ -2984,27 +2984,24 @@ namespace JG_Prospect.Sr_App
                 
                 String lVendorIds = lDr["VendorIds"].ToString();
 
-                if (lVendorIds.Split(',').Count() >2)
+               /* if (lVendorIds.Split(',').Count() >2)
                 {
                     lblVendorNames.Text = lVendorIds.Split(',').Count() + " vendors selected";
                 }
                 else
+                {*/
+                foreach (DataRow lRow in VendorList.Select("ProductCategoryId=" + lProdCatID))
                 {
-                    foreach (DataRow lRow in VendorList.Select("ProductCategoryId=" + lProdCatID))
+                    foreach (string lVendorId in lVendorIds.Split(','))
                     {
-                       // if (VendorCategoryList.Select("VendorCategpryId=" + lRow["VendorCategpryId"].ToString()).Count() > 0)
-                       // {
-                            foreach (string lVendorId in lVendorIds.Split(','))
-                            {
-                                if (lRow["VendorID"].ToString() == lVendorId)
-                                {
-                                    lblVendorNames.Text += lRow["VendorName"].ToString();
-                                }
-                            }
-                        //}
+                        if (lRow["VendorID"].ToString() == lVendorId)
+                        {
+                            lblVendorNames.Text += lRow["VendorName"].ToString() + " <a href='javascript:void(0);' onclick='ShowAttachQuotes(" + lProdCatID + "," + lVendorId + ")'>Attach Quote</a><br/>";
+                        }
                     }
-                    lblVendorNames.Text = lblVendorNames.Text.TrimEnd(',');
                 }
+                    lblVendorNames.Text = lblVendorNames.Text.TrimEnd(',');
+               // }
 
             }
         }
@@ -3365,8 +3362,13 @@ namespace JG_Prospect.Sr_App
                 int lProdCatID = Convert.ToInt32(lDrView["ProductCatID"]);
 
                 DataList grdAttachment = (DataList)e.Item.FindControl("grdAttachment");
-                grdAttachment.DataSource = new DataView(MaterialListAttachment, "ProductCatId=" + lProdCatID, "Id desc", DataViewRowState.CurrentRows);
+                grdAttachment.DataSource = new DataView(MaterialListAttachment, "ProductCatId=" + lProdCatID + " and AttachmentType=1", "Id desc", DataViewRowState.CurrentRows);
                 grdAttachment.DataBind();
+
+                DataList grdPurchaseOrder = (DataList)e.Item.FindControl("grdPurchaseOrder");
+                grdPurchaseOrder.DataSource = new DataView(MaterialListAttachment, "ProductCatId=" + lProdCatID + " and AttachmentType=2", "Id desc", DataViewRowState.CurrentRows);
+                grdPurchaseOrder.DataBind();
+                
                
                 ddlCategory.SelectedValue = lProdCatID.ToString();
                 GridView grdProdLines = (GridView)e.Item.FindControl("grdProdLines");
@@ -4185,7 +4187,7 @@ namespace JG_Prospect.Sr_App
                     }
                 }
             }
-            int result = AdminBLL.Instance.AddMaterialListAttachment(jobId, Convert.ToInt32(ddlCategory.SelectedValue), custDocs);
+            int result = AdminBLL.Instance.AddMaterialListAttachment(jobId, Convert.ToInt32(ddlCategory.SelectedValue), custDocs,1,0); //#- 1 means Email Attachment
             InitialDataBind();
             if (result==1)
             {
@@ -4388,7 +4390,7 @@ namespace JG_Prospect.Sr_App
 
 
 
-        #endregion
+
 
         protected void lnkaddvendorquotes_Click(object sender, EventArgs e)
         {
@@ -4433,6 +4435,52 @@ namespace JG_Prospect.Sr_App
             }
         }
 
+        protected void btnUploadPO_Click(object sender, EventArgs e)
+        {
+            List<CustomerDocument> custDocs = new List<CustomerDocument>();
+            int intFileSize = flUploadPurchaseOrder.PostedFile.ContentLength;
+
+            if (flUploadPurchaseOrder.HasFile)
+            {
+                if (flUploadPurchaseOrder.PostedFile.FileName != "")
+                {
+                    if (flUploadPurchaseOrder.PostedFile.ContentLength > 0 && !String.IsNullOrEmpty(flUploadPurchaseOrder.PostedFile.FileName))
+                    {
+                        string pFileName = "PO" + jobId.Replace("-", "") + "_" + hdnProdCatID.Value + "_" + hdnVendorID.Value + Path.GetExtension(flUploadPurchaseOrder.PostedFile.FileName);
+                        CustomerDocument cbc = new CustomerDocument();
+                        if (File.Exists(Server.MapPath("../CustomerDocs/PurchaseOrder/") + pFileName) == true)
+                        {
+                            File.Delete(Server.MapPath("../CustomerDocs/PurchaseOrder/") + pFileName);
+                            flUploadPurchaseOrder.PostedFile.SaveAs(Server.MapPath("../CustomerDocs/PurchaseOrder/") + pFileName);
+                        }
+                        else
+                        {
+                            flUploadPurchaseOrder.PostedFile.SaveAs(Server.MapPath("../CustomerDocs/PurchaseOrder/") + pFileName);
+                        }
+                        string fPath;
+                        fPath = ("../CustomerDocs/PurchaseOrder/") + pFileName;
+                        cbc.DocumentName = pFileName;
+                        cbc.DocumentPath = fPath;
+                        custDocs.Add(cbc);
+                    }
+                }
+            }
+            int result = AdminBLL.Instance.AddMaterialListAttachment(jobId, Convert.ToInt32(hdnProdCatID.Value), custDocs, 2, Convert.ToInt32(hdnVendorID.Value)); //#- 2 means Quote Attachment
+            InitialDataBind();
+            if (result == 1)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Quotes attached successfully');", true);
+            }
+            else if (result == 0)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('File with the same name already exists in the system. Please rename the file and upload again.');", true);
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Internal Error Occurred');", true);
+            }
+        }
+        #endregion
 
 
     }
