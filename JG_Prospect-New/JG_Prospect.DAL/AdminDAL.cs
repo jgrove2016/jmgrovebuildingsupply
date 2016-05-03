@@ -287,7 +287,7 @@ namespace JG_Prospect.DAL
             }
 
         }
-        public int AddMaterialListAttachment(String pSoldJobID, Int32 pProductCatID, List<CustomerDocument> pAttachmentList)
+        public int AddMaterialListAttachment(String pSoldJobID, Int32 pProductCatID, List<CustomerDocument> pAttachmentList, int pAttachmentType, int pVendorID)
         {
             int result = -1;
             try
@@ -304,6 +304,8 @@ namespace JG_Prospect.DAL
                         database.AddInParameter(command2, "@DocumentPath", DbType.String, item.DocumentPath);
                         database.AddInParameter(command2, "@SoldJobID", DbType.String, pSoldJobID);
                         database.AddInParameter(command2, "@ProductCatID", DbType.String, pProductCatID);
+                        database.AddInParameter(command2, "@AttachmentType", DbType.Int32, pAttachmentType);
+                        database.AddInParameter(command2, "@VendorID", DbType.Int32, pVendorID);
                         result = Convert.ToInt32(database.ExecuteScalar(command2));
                     }
                 }

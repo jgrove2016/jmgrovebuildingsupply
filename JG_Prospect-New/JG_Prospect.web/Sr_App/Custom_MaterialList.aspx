@@ -449,6 +449,17 @@
         function TransformList() {
             $('.form-control').multiselect({ columns: 2, placeholder: 'Select options', search: true });
         }
+
+        function ShowAttachQuotes(ProdCatID, VendorID){
+            document.getElementById('<%=hdnProdCatID.ClientID%>').value = ProdCatID;
+            document.getElementById('<%=hdnVendorID.ClientID%>').value = VendorID;
+            $find('<%=mpAttachPurchaseOrder.ClientID %>').show();
+        }
+
+        function HideAttachQuotes(){
+            $find('<%=mpAttachPurchaseOrder.ClientID %>').hide();
+        }
+
     </script>
     <style type="text/css">
         .dd_chk_select {
@@ -480,8 +491,7 @@
             opacity: 1;
             -moz-opacity: 1;
         }
-    </style>
-    <style>
+
         ul, li {
             margin: 0;
             padding: 0;
@@ -860,9 +870,7 @@
                                     <asp:LinkButton ID="lnkDeleteProdCat" CommandArgument='<%#Eval("ProductCatID") %>' OnClick="lnkDeleteProdCat_Click" runat="server" OnClientClick="return confirm('Deleting product category will delete all associated line items. Are you sure you want to delete?')">Delete</asp:LinkButton>
 
                                 </div>
-                                <div style="float: right; width: 34%;">
-                                    <b>Status:</b> Material Confirmation (1)
-                                </div>
+                       
                                 <div style="float: right; width: 34%; display:none">
                                     Vendor Category:
                                             <asp:DropDownList ID="dldVendorCategory" Width="70%" AutoPostBack="false" OnSelectedIndexChanged="dldVendorCategory_SelectedIndexChanged" runat="server"></asp:DropDownList><br />
@@ -969,9 +977,22 @@
                                         <asp:Button ID="btnAttachFile" runat="server" Text="Attach" OnClick="btnAttachFile_Click" />
                                     </div>
                                 </div>
-                                <div style="float: left; width: 60%; vertical-align: top; padding-top: 0px;">
-                                    <h5 style="margin-top: 0px;">Attached Items:</h5>
+                                <div style="float: left; width: 30%; vertical-align: top; padding-top: 0px;">
+                                    <h5 style="margin-top: 0px;">Email Attachments:</h5>
                                     <asp:DataList ID="grdAttachment" runat="server" RepeatLayout="Table" RepeatColumns="3">
+                                        <ItemTemplate>
+                                            <span style="width: 250px; background-color: #f8f5f5; padding: 5px;">
+                                                <a href='<%#Eval("DocumentPath") %>' target="_blank">
+                                                    <%#Eval("DocumentName") %>
+                                                </a>&nbsp;<asp:LinkButton ID="lnkDeleteMatLisAttc" OnClick="lnkDeleteMatLisAttc_Click" CommandArgument='<%#Eval("Id") %>' runat="server" Text='Delete'></asp:LinkButton>
+                                            </span>
+                                        </ItemTemplate>
+                                    </asp:DataList>
+
+                                </div>
+                                <div style="float: left; width: 30%; vertical-align: top; padding-top: 0px;">
+                                    <h5 style="margin-top: 0px;">Attached Quotes:</h5>
+                                    <asp:DataList ID="grdPurchaseOrder" runat="server" RepeatLayout="Table" RepeatColumns="3">
                                         <ItemTemplate>
                                             <span style="width: 250px; background-color: #f8f5f5; padding: 5px;">
                                                 <a href='<%#Eval("DocumentPath") %>' target="_blank">
@@ -1139,7 +1160,35 @@
             </asp:Panel>
         </div>
 
-
+        <div class="form_panel2">
+            <ajaxToolkit:ModalPopupExtender ID="mpAttachPurchaseOrder" runat="server" TargetControlID="btnFake"
+                PopupControlID="pnlAttachPurchaseOrder" CancelControlID="btnFake">
+            </ajaxToolkit:ModalPopupExtender>
+            <asp:Panel ID="pnlAttachPurchaseOrder" runat="server" BackColor="White"  Width="750px" Style="display: none; border: Solid 3px #A33E3F; border-radius: 10px 10px 0 0;">
+                <table style="border: Solid 3px #A33E3F; width: 100%; height: 100%;" cellpadding="10" cellspacing="0">
+                    <tr style="background-color: #A33E3F">
+                        <td colspan="2" style="height: 10%; color: White; font-weight: bold; font-size: larger; width: 100%;"
+                            align="center">Attach Quotes
+                        </td>
+                    </tr>                            
+                    <tr>
+                        <td align="right">
+                            Attach Quotes:
+                        </td>
+                        <td>
+                            <asp:FileUpload ID="flUploadPurchaseOrder" runat="server" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <asp:Button ID="btnUploadPO" runat="server" Text="Attach" OnClick="btnUploadPO_Click" />
+                            <asp:HiddenField ID="hdnProdCatID" runat="server" />
+                            <asp:HiddenField ID="hdnVendorID" runat="server" />
+                        </td>
+                    </tr>
+                </table>
+            </asp:Panel>
+        </div>
     </div>
 
     <script type="text/javascript">

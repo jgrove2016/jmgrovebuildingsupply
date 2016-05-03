@@ -1,0 +1,51 @@
+IF NOT EXISTS(SELECT * FROM sys.columns WHERE Name = N'AttachmentType' AND Object_ID = Object_ID(N'tblMaterialListAttachment'))
+BEGIN
+	ALTER TABLE dbo.tblMaterialListAttachment ADD
+	AttachmentType int NULL
+END
+GO
+
+Update tblMaterialListAttachment SET AttachmentType = 1 where AttachmentType is null;
+GO
+
+IF NOT EXISTS(SELECT * FROM sys.columns WHERE Name = N'VendorID' AND Object_ID = Object_ID(N'tblMaterialListAttachment'))
+BEGIN
+	ALTER TABLE dbo.tblMaterialListAttachment ADD
+	VendorID int NULL
+END
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[USP_AddMaterialListAttachment]    Script Date: 05/03/2016 16:04:15 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_AddMaterialListAttachment]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_AddMaterialListAttachment]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_AddMaterialListAttachment]    Script Date: 05/03/2016 16:04:15 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE Proc [dbo].[USP_AddMaterialListAttachment]
+	@DocumentName varchar(200),
+	@DocumentPath varchar(500),
+	@SoldJobID VARCHAR(50),
+	@ProductCatID INT,
+	@AttachmentType INT,
+	@VendorID INT
+AS 
+BEGIN
+   IF NOT EXISTS (select Id from dbo.tblCustomerAttachment where DocumentName=@DocumentName)
+   BEGIN
+		Insert Into tblMaterialListAttachment (DocumentName,DocumentPath,SoldJobID, ProductCatID, CreatedDate,AttachmentType, VendorID) 
+		values (@DocumentName,@DocumentPath,@SoldJobID,@ProductCatID,GETDATE(),@AttachmentType, @VendorID)
+		SELECT 1 AS Result
+	END
+	ELSE 
+		SELECT 0 AS Result
+	
+END
+
+GO
