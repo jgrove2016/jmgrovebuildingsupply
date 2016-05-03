@@ -3433,8 +3433,15 @@ namespace JG_Prospect.Sr_App
         public static string GetAllVendorsAddressDetail(string manufacturer,string productId,string vendorCatId,string vendorSubCatId)
         {
             DataSet ds = VendorBLL.Instance.GetALLVendorAddress(manufacturer,productId, vendorCatId, vendorSubCatId);
-            string AddressJSON = JsonConvert.SerializeObject(ds.Tables[0]);
-            return AddressJSON;
+            if (ds != null)
+            {
+                string AddressJSON = JsonConvert.SerializeObject(ds.Tables[0]);
+                return AddressJSON;
+            }
+            else
+            {
+                return "";
+            }
             //ScriptManager.RegisterStartupScript(this, this.GetType(), "initializeMapIcon", "initializeMapIcon(" + AddressJSON + ");", true);
         }
         #endregion

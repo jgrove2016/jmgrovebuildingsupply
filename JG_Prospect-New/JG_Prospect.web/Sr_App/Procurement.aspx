@@ -5,7 +5,6 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit.HTMLEditor" TagPrefix="cc1" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <%--<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js"></script>--%>
     <script src="../js/jquery.MultiFile.js" type="text/javascript"></script>
     <style>
         #googleMap > div {
@@ -1782,6 +1781,8 @@
     <link href="../css/jquery-ui.css" rel="stylesheet" />
     <script src="../js/jquery-ui.js"></script>
     <script src="../Scripts/jquery.maskedinput.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyD0X4v7eqMFcWCR-VZAJwEMfb47id9IZao"></script>
+
     <style type="text/css">
         #tabs.ui-tabs {
             background: transparent;
@@ -1809,9 +1810,9 @@
         }
     </style>
     <script type="text/javascript">
-
         SearchText();
-        SearchZipCode();    
+        SearchZipCode();
+  
         $('.clsmaskphone').mask("(999) 999-9999");
         $('.clsmaskphoneexten').mask("999999");
 
@@ -1823,6 +1824,8 @@
         var mapProp;
         var map;
         function initialize() {
+            SearchText();
+            SearchZipCode();
             mapProp = {
                 center: new google.maps.LatLng(40.042838, -75.528559),
                 zoom: 9,
@@ -1859,65 +1862,67 @@
         }
 
         function initializeMapIcon(MapJSON) {
-            // Setup the different icons and shadows
-            var iconURLPrefix = 'http://maps.google.com/mapfiles/ms/icons/';
+            if (MapJSON != "") {
+                // Setup the different icons and shadows
+                var iconURLPrefix = 'http://maps.google.com/mapfiles/ms/icons/';
 
-            var icons = [
-            iconURLPrefix + 'red-dot.png',
-            iconURLPrefix + 'green-dot.png',
-            iconURLPrefix + 'blue-dot.png',
-            iconURLPrefix + 'orange-dot.png',
-            iconURLPrefix + 'purple-dot.png',
-            iconURLPrefix + 'pink-dot.png',
-            iconURLPrefix + 'yellow-dot.png'];
+                var icons = [
+                iconURLPrefix + 'red-dot.png',
+                iconURLPrefix + 'green-dot.png',
+                iconURLPrefix + 'blue-dot.png',
+                iconURLPrefix + 'orange-dot.png',
+                iconURLPrefix + 'purple-dot.png',
+                iconURLPrefix + 'pink-dot.png',
+                iconURLPrefix + 'yellow-dot.png'];
 
-            var icons_length = icons.length;
+                var icons_length = icons.length;
 
-            for (var i = 0; i < MapJSON.length; i++) {
-                var address = MapJSON[i];
-                var VendorName = address["VendorName"];
-                var Latitude = address["Latitude"];
-                var Longitude = address["Longitude"];
-                var AddressType = address["AddressType"];
-                var VendorStatus = address["VendorStatus"]
-                if (Latitude != null && Latitude != "" && Longitude != null && Longitude != "") {
-                    var iconCounter = 0;
-                    //if (AddressType == "Primary") {
-                    //    iconCounter = 0;
-                    //}
-                    //if (AddressType == "Secondary") {
-                    //    iconCounter = 2;
-                    //}
-                    //if (AddressType == "Billing") {
-                    //    iconCounter = 3;
-                    //}
-                    if (VendorStatus == "Prospect") {
-                        iconCounter = 0;
-                    }
-                    if (VendorStatus == "Active-Past") {
-                        iconCounter = 2;
-                    }
-                    if (VendorStatus == "Deactivate") {
-                        iconCounter = 3;
-                    }
-                    var infowindow = new google.maps.InfoWindow({
-                        maxWidth: 160
-                    });
-
-                    var marker = new google.maps.Marker({
-                        position: new google.maps.LatLng(Latitude, Longitude),
-                        map: map,
-                        icon: icons[iconCounter],
-                        title: VendorName
-                    });
-
-                    google.maps.event.addListener(marker, 'click', (function (marker, i) {
-                        return function () {
-                            var FullAddress = "<h2>" + MapJSON[i]['VendorName'] + "</h2><p> " + MapJSON[i]['Address'] + ", " + MapJSON[i]['City'] + ", " + MapJSON[i]['Country'] + ", " + MapJSON[i]['Zip'] + "</p>";
-                            infowindow.setContent(FullAddress);
-                            infowindow.open(map, marker);
+                for (var i = 0; i < MapJSON.length; i++) {
+                    var address = MapJSON[i];
+                    var VendorName = address["VendorName"];
+                    var Latitude = address["Latitude"];
+                    var Longitude = address["Longitude"];
+                    var AddressType = address["AddressType"];
+                    var VendorStatus = address["VendorStatus"]
+                    if (Latitude != null && Latitude != "" && Longitude != null && Longitude != "") {
+                        var iconCounter = 0;
+                        //if (AddressType == "Primary") {
+                        //    iconCounter = 0;
+                        //}
+                        //if (AddressType == "Secondary") {
+                        //    iconCounter = 2;
+                        //}
+                        //if (AddressType == "Billing") {
+                        //    iconCounter = 3;
+                        //}
+                        if (VendorStatus == "Prospect") {
+                            iconCounter = 0;
                         }
-                    })(marker, i));
+                        if (VendorStatus == "Active-Past") {
+                            iconCounter = 2;
+                        }
+                        if (VendorStatus == "Deactivate") {
+                            iconCounter = 3;
+                        }
+                        var infowindow = new google.maps.InfoWindow({
+                            maxWidth: 160
+                        });
+
+                        var marker = new google.maps.Marker({
+                            position: new google.maps.LatLng(Latitude, Longitude),
+                            map: map,
+                            icon: icons[iconCounter],
+                            title: VendorName
+                        });
+
+                        google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                            return function () {
+                                var FullAddress = "<h2>" + MapJSON[i]['VendorName'] + "</h2><p> " + MapJSON[i]['Address'] + ", " + MapJSON[i]['City'] + ", " + MapJSON[i]['Country'] + ", " + MapJSON[i]['Zip'] + "</p>";
+                                infowindow.setContent(FullAddress);
+                                infowindow.open(map, marker);
+                            }
+                        })(marker, i));
+                    }
                 }
             }
         }
