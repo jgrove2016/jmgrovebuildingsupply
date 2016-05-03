@@ -1856,13 +1856,14 @@
                 dataType: "json",
                 data: '{manufacturer:"' + manufacturer + '", productId: "' + productId + '", vendorCatId: "' + vendorCatId + '", vendorSubCatId:"' + vendorSubCatId + '" }',
                 success: function (data) {
-                    initializeMapIcon(JSON.parse(data.d));
+                    if (data != '') {
+                        initializeMapIcon(JSON.parse(data.d));
+                    }
                 }
             });
         }
 
         function initializeMapIcon(MapJSON) {
-            if (MapJSON != "") {
                 // Setup the different icons and shadows
                 var iconURLPrefix = 'http://maps.google.com/mapfiles/ms/icons/';
 
@@ -1917,14 +1918,13 @@
 
                         google.maps.event.addListener(marker, 'click', (function (marker, i) {
                             return function () {
-                                var FullAddress = "<h2>" + MapJSON[i]['VendorName'] + "</h2><p> " + MapJSON[i]['Address'] + ", " + MapJSON[i]['City'] + ", " + MapJSON[i]['Country'] + ", " + MapJSON[i]['Zip'] + "</p>";
+                                var FullAddress = "<b>" + MapJSON[i]['VendorName'] + "</b><p> " + MapJSON[i]['Address'] + ", " + MapJSON[i]['City'] + ", " + MapJSON[i]['Country'] + ", " + MapJSON[i]['Zip'] + "</p>";
                                 infowindow.setContent(FullAddress);
                                 infowindow.open(map, marker);
                             }
                         })(marker, i));
                     }
                 }
-            }
         }
 
         function SearchText() {

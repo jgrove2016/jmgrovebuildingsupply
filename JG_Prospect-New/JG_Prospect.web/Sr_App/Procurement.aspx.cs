@@ -44,8 +44,8 @@ namespace JG_Prospect.Sr_App
         {
             if (Session["loginid"] == null)
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('You have to login first');", true);
-                Response.Redirect("~/login.aspx");
+               // ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('You have to login first');", true);
+             //   Response.Redirect("~/login.aspx");
             }
             else
             {
