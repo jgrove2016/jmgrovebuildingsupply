@@ -18,12 +18,17 @@ namespace JG_Prospect.Sr_App
             get { return ViewState["HTMLTemplateID"] != null ? Convert.ToInt32(ViewState["HTMLTemplateID"].ToString()) : 0; }
             set { ViewState["HTMLTemplateID"] = value; }
         }
+        public int SubHTMLTemplateID
+        {
+            get { return ViewState["SubHTMLTemplateID"] != null ? Convert.ToInt32(ViewState["SubHTMLTemplateID"].ToString()) : 0; }
+            set { ViewState["SubHTMLTemplateID"] = value; }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
                 HTMLTemplateID = Convert.ToInt32(Request.QueryString["htempID"].ToString());
-                InitialDataBind();
+                InitialDataBind(0);
             }
         }
         protected void lnkVendorCategory_Click(object sender, EventArgs e)
@@ -36,6 +41,7 @@ namespace JG_Prospect.Sr_App
         {
             string Editor_contentHeader = HeaderEditor.Content;
             string Editor_contentFooter = FooterEditor.Content;
+            string Editor_contentBody = BodyEditor.Content;
             List<CustomerDocument> custDocs = new List<CustomerDocument>();
             int intFileSize = flVendCat.PostedFile.ContentLength;
 
@@ -72,10 +78,10 @@ namespace JG_Prospect.Sr_App
                     }
                 }
             }
-            bool result = AdminBLL.Instance.UpdateHTMLTemplate(Editor_contentHeader, Editor_contentFooter, txtSubject.Text, HTMLTemplateID, custDocs);
+            bool result = AdminBLL.Instance.UpdateHTMLTemplate(Editor_contentHeader, Editor_contentBody, Editor_contentFooter, txtSubject.Text, SubHTMLTemplateID, custDocs);
             if (result)
             {
-                InitialDataBind();
+                InitialDataBind(SubHTMLTemplateID);
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Auto Email Template Updated Successfully');", true);
             }
         }
@@ -95,22 +101,36 @@ namespace JG_Prospect.Sr_App
         {
         }
 
-        private void InitialDataBind()
+        private void InitialDataBind(int pSubHTMLTemplateID)
         {
-            DataSet ds = AdminBLL.Instance.GetAutoEmailTemplate(HTMLTemplateID);
+            DataSet ds = AdminBLL.Instance.GetAutoEmailTemplate(HTMLTemplateID, pSubHTMLTemplateID);
             if (ds != null)
             {
-                lblPageTitle.Text = ds.Tables[0].Rows[0]["html_name"].ToString().Replace("_"," ");
-                txtSubject.Text = ds.Tables[0].Rows[0]["htmlsubject"].ToString();
+                if (SubHTMLTemplateID == 0)
+                    SubHTMLTemplateID = Convert.ToInt32(ds.Tables[1].Rows[0]["Id"].ToString());
 
-                HeaderEditor.Content = ds.Tables[0].Rows[0]["HTMLHeader"].ToString();
-               // lblMaterialsVendor.Text = ds.Tables[0].Rows[0][1].ToString();
-                FooterEditor.Content = ds.Tables[0].Rows[0]["HTMLFooter"].ToString();
-                
+                drpChooseCategory.DataSource = ds.Tables[0];
+                drpChooseCategory.DataTextField = "SubHtmlName";
+                drpChooseCategory.DataValueField = "Id";
+                drpChooseCategory.DataBind();
+                drpChooseCategory.SelectedValue = SubHTMLTemplateID.ToString();
 
-                grdVendCatAtc.DataSource = ds.Tables[1];
+                lblPageTitle.Text = ds.Tables[1].Rows[0]["SubHTMLName"].ToString().Replace("_", " ");
+                txtSubject.Text = ds.Tables[1].Rows[0]["htmlsubject"].ToString();
+
+                HeaderEditor.Content = ds.Tables[1].Rows[0]["HTMLHeader"].ToString();
+                BodyEditor.Content = ds.Tables[1].Rows[0]["HTMLBody"].ToString();
+                FooterEditor.Content = ds.Tables[1].Rows[0]["HTMLFooter"].ToString();
+
+                grdVendCatAtc.DataSource = ds.Tables[2];
                 grdVendCatAtc.DataBind();
             }
+        }
+
+        protected void drpChooseCategory_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SubHTMLTemplateID = Convert.ToInt32(drpChooseCategory.SelectedValue);
+            InitialDataBind(SubHTMLTemplateID);
         }
     }
 }

@@ -365,14 +365,12 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "JSON",
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert('in error');
                     alert(errorThrown);
                 },
                 success: function (result) {
                     if (result != null) {
                         var flg = (result.d);
                         if (flg == "1") {
-                            alert('in');
                             var spanID = '';
                             var lnkID='';
                             $("#" + sender.parentElement.id).children().each(function (index, elem) {
@@ -383,13 +381,9 @@
                                     lnkID.style.display = (elem.checked?'none':'');
                                 }
                             });
-
-
-
                         }
                         else {
                             alert('Transaction failed');
-                            //InstPwd.value = '';
                         }
                     }
                 }
@@ -547,6 +541,27 @@
         <h1 id="h1Heading" runat="server">Material List</h1>
 
         <table width="100%">
+            <tr id="trUpdatedRow">
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td valign="top">
+                    <fieldset style="border-style: solid; border-width: 1px; padding: 5px;">
+                        <legend>Job Details</legend>
+                        <b>Job ID: </b><%=ElabJobID %><br />
+                        <b>Customer Name:</b> <%=CustomerName %><br />
+                    </fieldset>
+                </td>
+                <td>&nbsp;</td>
+                <td valign="top">
+                    <fieldset style='border-style: solid; border-width: 1px; padding: 5px; display: <%=(StaffID!=0?"":"none") %>'>
+                        <legend>Last Edited By</legend>
+                        <b>Staff Internal ID:</b> <%=StaffID %>
+                        <br />
+                        <b>Staff Name:</b>  <%=StaffName %>
+                        <br />
+                    </fieldset>
+                </td>
+            </tr>
             <tr>
                 <td>&nbsp;
                 </td>
@@ -629,187 +644,12 @@
                     </fieldset>
                 </td>
             </tr>
-            <tr id="trUpdatedRow">
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td valign="top">
-                    <fieldset style="border-style: solid; border-width: 1px; padding: 5px;">
-                        <legend>Job Details</legend>
-                        <b>Job ID: </b><%=ElabJobID %><br />
-                        <b>Customer Name:</b> <%=CustomerName %><br />
-                    </fieldset>
-                </td>
-                <td>&nbsp;</td>
-                <td valign="top">
-                    <fieldset style='border-style: solid; border-width: 1px; padding: 5px; display: <%=(StaffID!=0?"":"none") %>'>
-                        <legend>Last Edited By</legend>
-                        <b>Staff Internal ID:</b> <%=StaffID %>
-                        <br />
-                        <b>Staff Name:</b>  <%=StaffName %>
-                        <br />
-                    </fieldset>
-                </td>
-            </tr>
+
         </table>
         <asp:HiddenField ID="hdnAdmin" runat="server" />
         <asp:HiddenField ID="hdnForeman" runat="server" />
         <asp:HiddenField ID="hdnSrA" runat="server" />
         <asp:HiddenField ID="hdnSrF" runat="server" />
-
-
-        <ajaxToolkit:ModalPopupExtender ID="popupAdmin_permission" TargetControlID="lnkAdminPermission"
-            runat="server" CancelControlID="btnCloseAdmin" PopupControlID="pnlpopup">
-        </ajaxToolkit:ModalPopupExtender>
-        <asp:Panel ID="pnlpopup" runat="server" BackColor="White" Height="175px" Width="300px"
-            Style="z-index: 111; background-color: White; position: absolute; left: 35%; top: 12%; border: outset 2px gray; padding: 5px; display: none">
-            <table width="100%" style="width: 100%; height: 100%;" cellpadding="0" cellspacing="5">
-                <tr style="background-color: #b5494c">
-                    <td colspan="2" style="color: White; font-weight: bold; font-size: 1.2em; padding: 3px"
-                        align="center">Admin Verification
-                        <asp:Button ID="btnXAdmin" runat="server" OnClick="btnXAdmin_Click" Text="X" Style="float: right; text-decoration: none" />
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="width: 45%; text-align: center;">
-                        <asp:Label ID="LabelValidate" runat="server" />
-                    </td>
-                </tr>
-                <tr>
-                    <td align="right">Admin Password:
-                    </td>
-                    <td>
-                        <asp:TextBox ID="txtAdminPassword" runat="server" TextMode="Password"></asp:TextBox>
-                        <asp:Label ID="lblError" runat="server" Text=""></asp:Label>
-                        <asp:CustomValidator ID="CVAdmin" runat="server" ErrorMessage="Invalid Password"></asp:CustomValidator>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <asp:Button ID="btnVerifyAdmin" runat="server" Text="Verify" OnClick="VerifyAdminPermission" />
-                        <%-- <input type="button" class="btnVerify" value="Verify" runat="server" onclick="btnSendMail_Click"/>--%>
-                        &nbsp;&nbsp;
-                        <input type="button" id="btnCloseAdmin" class="btnClose" value="Cancel" />
-                    </td>
-                </tr>
-            </table>
-        </asp:Panel>
-        <ajaxToolkit:ModalPopupExtender ID="popupSrSalesmanPermissionA" TargetControlID="lnkSrSalesmanPermissionA"
-            runat="server" CancelControlID="btnCloseSrSalesmanA" PopupControlID="pnlSrSalesmanPermissionA">
-        </ajaxToolkit:ModalPopupExtender>
-        <asp:Panel ID="pnlSrSalesmanPermissionA" runat="server" BackColor="White" Height="175px"
-            Width="300px" Style="z-index: 111; background-color: White; position: absolute; left: 35%; top: 12%; border: outset 2px gray; padding: 5px; display: none">
-            <table width="100%" style="width: 100%; height: 100%;" cellpadding="0" cellspacing="5">
-                <tr style="background-color: #b5494c">
-                    <td colspan="2" style="color: White; font-weight: bold; font-size: 1.2em; padding: 3px"
-                        align="center">Sr. Salesman Verification
-                        <asp:Button ID="btnXSrSalesmanA" runat="server" OnClick="btnXSrSalesmanA_Click" Text="X"
-                            Style="float: right; text-decoration: none" />
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="width: 45%; text-align: center;">
-                        <asp:Label ID="Label3" runat="server" />
-                    </td>
-                </tr>
-                <tr>
-                    <td align="right">Sr. Salesman Password:
-                    </td>
-                    <td>
-                        <asp:TextBox ID="txtSrSalesmanPasswordA" runat="server" TextMode="Password"></asp:TextBox>
-                        <asp:Label ID="Label5" runat="server" Text=""></asp:Label>
-                        <asp:CustomValidator ID="CVSrSalesmanA" runat="server" ErrorMessage="Invalid Password"></asp:CustomValidator>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <asp:Button ID="btnVerifySrSalesmanA" runat="server" Text="Verify" OnClick="VerifySrSalesmanPermissionA" />
-                        <%-- <input type="button" class="btnVerify" value="Verify" runat="server" onclick="btnSendMail_Click"/>--%>
-                        &nbsp;&nbsp;
-                        <input type="button" id="btnCloseSrSalesmanA" class="btnClose" value="Cancel" />
-                    </td>
-                </tr>
-            </table>
-        </asp:Panel>
-        <ajaxToolkit:ModalPopupExtender ID="popupForeman_permission" TargetControlID="lnkForemanPermission"
-            runat="server" CancelControlID="btnCloseForeman" PopupControlID="pnlForemanPermission">
-        </ajaxToolkit:ModalPopupExtender>
-        <asp:Panel ID="pnlForemanPermission" runat="server" BackColor="White" Height="175px"
-            Width="300px" Style="z-index: 111; background-color: White; position: absolute; left: 35%; top: 12%; border: outset 2px gray; padding: 5px; display: none">
-            <table width="100%" style="width: 100%; height: 100%;" cellpadding="0" cellspacing="5">
-                <tr style="background-color: #b5494c">
-                    <td colspan="2" style="color: White; font-weight: bold; font-size: 1.2em; padding: 3px"
-                        align="center">Foreman Verification
-                        <asp:Button ID="btnXForeman" runat="server" OnClick="btnXForeman_Click" Text="X"
-                            Style="float: right; text-decoration: none" /><%--<a id="A1" style="color: white; float: right; text-decoration: none"
-                            class="btnClose" href="#">X</a>--%>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="width: 45%; text-align: center;">
-                        <asp:Label ID="Label1" runat="server" />
-                    </td>
-                </tr>
-                <tr>
-                    <td align="right">Foreman Password:
-                    </td>
-                    <td>
-                        <asp:TextBox ID="txtForemanPassword" runat="server" TextMode="Password"></asp:TextBox>
-                        <asp:Label ID="lblErrorForeman" runat="server" Text=""></asp:Label>
-                        <asp:CustomValidator ID="CVForeman" runat="server" ErrorMessage="Invalid Password"></asp:CustomValidator>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <asp:Button ID="btnVerifyForeman" runat="server" Text="Verify" OnClick="VerifyForemanPermission" />
-                        <%-- <input type="button" class="btnVerify" value="Verify" runat="server" onclick="btnSendMail_Click"/>--%>
-                        &nbsp;&nbsp;
-                        <input type="button" id="btnCloseForeman" class="btnClose" value="Cancel" />
-                    </td>
-                </tr>
-            </table>
-        </asp:Panel>
-        <ajaxToolkit:ModalPopupExtender ID="popupSrSalesmanPermissionF" TargetControlID="lnkSrSalesmanPermissionF"
-            runat="server" CancelControlID="btnCloseSrSalesmanF" PopupControlID="pnlSrSalesManPermissionF">
-        </ajaxToolkit:ModalPopupExtender>
-        <asp:Panel ID="pnlSrSalesManPermissionF" runat="server" BackColor="White" Height="175px"
-            Width="300px" Style="z-index: 111; background-color: White; position: absolute; left: 35%; top: 12%; border: outset 2px gray; padding: 5px; display: none">
-            <table width="100%" style="width: 100%; height: 100%;" cellpadding="0" cellspacing="5">
-                <tr style="background-color: #b5494c">
-                    <td colspan="2" style="color: White; font-weight: bold; font-size: 1.2em; padding: 3px"
-                        align="center">Sr. Salesman Verification
-                        <asp:Button ID="btnXSrSalesmanF" runat="server" OnClick="btnXSrSalesmanF_Click" Text="X"
-                            Style="float: right; text-decoration: none" />
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" style="width: 45%; text-align: center;">
-                        <asp:Label ID="Label4" runat="server" />
-                    </td>
-                </tr>
-                <tr>
-                    <td align="right">Sr. Salesman Password:
-                    </td>
-                    <td>
-                        <asp:TextBox ID="txtSrSalesmanPasswordF" runat="server" TextMode="Password"></asp:TextBox>
-                        <asp:Label ID="Label6" runat="server" Text=""></asp:Label>
-                        <asp:CustomValidator ID="CVSrSalesmanF" runat="server" ErrorMessage="Invalid Password"></asp:CustomValidator>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <asp:Button ID="btnVerifySrSalesmanF" runat="server" Text="Verify" OnClick="VerifySrSalesmanPermissionF" />
-                        <%-- <input type="button" class="btnVerify" value="Verify" runat="server" onclick="btnSendMail_Click"/>--%>
-                        &nbsp;&nbsp;
-                        <input type="button" id="btnCloseSrSalesmanF" class="btnClose" value="Cancel" />
-                    </td>
-                </tr>
-            </table>
-        </asp:Panel>
-
 
         <div class="grid" style="display: none">
             <fieldset>
@@ -1265,4 +1105,156 @@
     </script>
 
 
+        <ajaxToolkit:ModalPopupExtender ID="popupAdmin_permission" TargetControlID="lnkAdminPermission"
+            runat="server" CancelControlID="btnCloseAdmin" PopupControlID="pnlpopup">
+        </ajaxToolkit:ModalPopupExtender>
+        <asp:Panel ID="pnlpopup" runat="server" BackColor="White" Height="175px" Width="300px"
+            Style="z-index: 111; background-color: White; position: absolute; left: 35%; top: 12%; border: outset 2px gray; padding: 5px; display: none">
+            <table width="100%" style="width: 100%; height: 100%;" cellpadding="0" cellspacing="5">
+                <tr style="background-color: #b5494c">
+                    <td colspan="2" style="color: White; font-weight: bold; font-size: 1.2em; padding: 3px"
+                        align="center">Admin Verification
+                        <asp:Button ID="btnXAdmin" runat="server" OnClick="btnXAdmin_Click" Text="X" Style="float: right; text-decoration: none" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="width: 45%; text-align: center;">
+                        <asp:Label ID="LabelValidate" runat="server" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">Admin Password:
+                    </td>
+                    <td>
+                        <asp:TextBox ID="txtAdminPassword" runat="server" TextMode="Password"></asp:TextBox>
+                        <asp:Label ID="lblError" runat="server" Text=""></asp:Label>
+                        <asp:CustomValidator ID="CVAdmin" runat="server" ErrorMessage="Invalid Password"></asp:CustomValidator>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <asp:Button ID="btnVerifyAdmin" runat="server" Text="Verify" OnClick="VerifyAdminPermission" />
+                        <%-- <input type="button" class="btnVerify" value="Verify" runat="server" onclick="btnSendMail_Click"/>--%>
+                        &nbsp;&nbsp;
+                        <input type="button" id="btnCloseAdmin" class="btnClose" value="Cancel" />
+                    </td>
+                </tr>
+            </table>
+        </asp:Panel>
+        <ajaxToolkit:ModalPopupExtender ID="popupSrSalesmanPermissionA" TargetControlID="lnkSrSalesmanPermissionA"
+            runat="server" CancelControlID="btnCloseSrSalesmanA" PopupControlID="pnlSrSalesmanPermissionA">
+        </ajaxToolkit:ModalPopupExtender>
+        <asp:Panel ID="pnlSrSalesmanPermissionA" runat="server" BackColor="White" Height="175px"
+            Width="300px" Style="z-index: 111; background-color: White; position: absolute; left: 35%; top: 12%; border: outset 2px gray; padding: 5px; display: none">
+            <table width="100%" style="width: 100%; height: 100%;" cellpadding="0" cellspacing="5">
+                <tr style="background-color: #b5494c">
+                    <td colspan="2" style="color: White; font-weight: bold; font-size: 1.2em; padding: 3px"
+                        align="center">Sr. Salesman Verification
+                        <asp:Button ID="btnXSrSalesmanA" runat="server" OnClick="btnXSrSalesmanA_Click" Text="X"
+                            Style="float: right; text-decoration: none" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="width: 45%; text-align: center;">
+                        <asp:Label ID="Label3" runat="server" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">Sr. Salesman Password:
+                    </td>
+                    <td>
+                        <asp:TextBox ID="txtSrSalesmanPasswordA" runat="server" TextMode="Password"></asp:TextBox>
+                        <asp:Label ID="Label5" runat="server" Text=""></asp:Label>
+                        <asp:CustomValidator ID="CVSrSalesmanA" runat="server" ErrorMessage="Invalid Password"></asp:CustomValidator>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <asp:Button ID="btnVerifySrSalesmanA" runat="server" Text="Verify" OnClick="VerifySrSalesmanPermissionA" />
+                        <%-- <input type="button" class="btnVerify" value="Verify" runat="server" onclick="btnSendMail_Click"/>--%>
+                        &nbsp;&nbsp;
+                        <input type="button" id="btnCloseSrSalesmanA" class="btnClose" value="Cancel" />
+                    </td>
+                </tr>
+            </table>
+        </asp:Panel>
+        <ajaxToolkit:ModalPopupExtender ID="popupForeman_permission" TargetControlID="lnkForemanPermission"
+            runat="server" CancelControlID="btnCloseForeman" PopupControlID="pnlForemanPermission">
+        </ajaxToolkit:ModalPopupExtender>
+        <asp:Panel ID="pnlForemanPermission" runat="server" BackColor="White" Height="175px"
+            Width="300px" Style="z-index: 111; background-color: White; position: absolute; left: 35%; top: 12%; border: outset 2px gray; padding: 5px; display: none">
+            <table width="100%" style="width: 100%; height: 100%;" cellpadding="0" cellspacing="5">
+                <tr style="background-color: #b5494c">
+                    <td colspan="2" style="color: White; font-weight: bold; font-size: 1.2em; padding: 3px"
+                        align="center">Foreman Verification
+                        <asp:Button ID="btnXForeman" runat="server" OnClick="btnXForeman_Click" Text="X"
+                            Style="float: right; text-decoration: none" /><%--<a id="A1" style="color: white; float: right; text-decoration: none"
+                            class="btnClose" href="#">X</a>--%>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="width: 45%; text-align: center;">
+                        <asp:Label ID="Label1" runat="server" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">Foreman Password:
+                    </td>
+                    <td>
+                        <asp:TextBox ID="txtForemanPassword" runat="server" TextMode="Password"></asp:TextBox>
+                        <asp:Label ID="lblErrorForeman" runat="server" Text=""></asp:Label>
+                        <asp:CustomValidator ID="CVForeman" runat="server" ErrorMessage="Invalid Password"></asp:CustomValidator>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <asp:Button ID="btnVerifyForeman" runat="server" Text="Verify" OnClick="VerifyForemanPermission" />
+                        <%-- <input type="button" class="btnVerify" value="Verify" runat="server" onclick="btnSendMail_Click"/>--%>
+                        &nbsp;&nbsp;
+                        <input type="button" id="btnCloseForeman" class="btnClose" value="Cancel" />
+                    </td>
+                </tr>
+            </table>
+        </asp:Panel>
+        <ajaxToolkit:ModalPopupExtender ID="popupSrSalesmanPermissionF" TargetControlID="lnkSrSalesmanPermissionF"
+            runat="server" CancelControlID="btnCloseSrSalesmanF" PopupControlID="pnlSrSalesManPermissionF">
+        </ajaxToolkit:ModalPopupExtender>
+        <asp:Panel ID="pnlSrSalesManPermissionF" runat="server" BackColor="White" Height="175px"
+            Width="300px" Style="z-index: 111; background-color: White; position: absolute; left: 35%; top: 12%; border: outset 2px gray; padding: 5px; display: none">
+            <table width="100%" style="width: 100%; height: 100%;" cellpadding="0" cellspacing="5">
+                <tr style="background-color: #b5494c">
+                    <td colspan="2" style="color: White; font-weight: bold; font-size: 1.2em; padding: 3px"
+                        align="center">Sr. Salesman Verification
+                        <asp:Button ID="btnXSrSalesmanF" runat="server" OnClick="btnXSrSalesmanF_Click" Text="X"
+                            Style="float: right; text-decoration: none" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="width: 45%; text-align: center;">
+                        <asp:Label ID="Label4" runat="server" />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right">Sr. Salesman Password:
+                    </td>
+                    <td>
+                        <asp:TextBox ID="txtSrSalesmanPasswordF" runat="server" TextMode="Password"></asp:TextBox>
+                        <asp:Label ID="Label6" runat="server" Text=""></asp:Label>
+                        <asp:CustomValidator ID="CVSrSalesmanF" runat="server" ErrorMessage="Invalid Password"></asp:CustomValidator>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <asp:Button ID="btnVerifySrSalesmanF" runat="server" Text="Verify" OnClick="VerifySrSalesmanPermissionF" />
+                        <%-- <input type="button" class="btnVerify" value="Verify" runat="server" onclick="btnSendMail_Click"/>--%>
+                        &nbsp;&nbsp;
+                        <input type="button" id="btnCloseSrSalesmanF" class="btnClose" value="Cancel" />
+                    </td>
+                </tr>
+            </table>
+        </asp:Panel>
 </asp:Content>

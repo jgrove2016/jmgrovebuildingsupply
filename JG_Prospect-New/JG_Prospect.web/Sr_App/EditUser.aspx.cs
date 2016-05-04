@@ -721,7 +721,7 @@ namespace JG_Prospect
             {
                 string fullname = FName + " " + LName;
                 string HTML_TAG_PATTERN = "<.*?>";
-                DataSet ds = AdminBLL.Instance.FetchContractTemplate(104);
+                DataSet ds = AdminBLL.Instance.GetEmailTemplate("Sales User");// AdminBLL.Instance.FetchContractTemplate(104);
 
                 string strHeader = ds.Tables[0].Rows[0]["HTMLHeader"].ToString(); //GetEmailHeader(status);
                 string strBody = ds.Tables[0].Rows[0]["HTMLBody"].ToString(); //GetEmailBody(status);

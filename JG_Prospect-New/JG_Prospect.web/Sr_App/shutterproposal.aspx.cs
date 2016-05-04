@@ -1445,8 +1445,11 @@ namespace JG_Prospect.Sr_App
 
         public DataSet fetchCustomerEmailTemplate()
         {
+            //DataSet ds = new DataSet();
+            //ds = AdminBLL.Instance.FetchContractTemplate(20);
+            //return ds;
             DataSet ds = new DataSet();
-            ds = AdminBLL.Instance.FetchContractTemplate(20);
+            ds = AdminBLL.Instance.GetEmailTemplate("Sales Auto Email");
             return ds;
         }
 

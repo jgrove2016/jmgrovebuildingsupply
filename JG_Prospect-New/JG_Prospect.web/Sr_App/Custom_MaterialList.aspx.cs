@@ -1615,7 +1615,7 @@ namespace JG_Prospect.Sr_App
         public DataSet fetchVendorCategoryEmailTemplate()
         {
             DataSet ds = new DataSet();
-            ds = AdminBLL.Instance.FetchContractTemplate(0);
+            ds = AdminBLL.Instance.GetEmailTemplate("VendorCategoryEmail_Template");
             return ds;
         }
         protected bool sendEmailToVendorCategories(List<CustomMaterialList> cmList)
@@ -3545,10 +3545,6 @@ namespace JG_Prospect.Sr_App
                     m.To.Add(new MailAddress(mailId, vendorName));
                     m.Bcc.Add(new MailAddress("shabbir.kanchwala@straitapps.com", "Shabbir Kanchwala"));
                  
-                    //m.To.Add(new MailAddress("skanchwala@4qlearning.com", "Shabbir Kanchwala"));
-                    //m.To.Add(new MailAddress("skanchwala@mosaic-network.com", "Shabbir Kanchwala"));
-                    //m.To.Add(new MailAddress("shabbirk@live.com", "Shabbir Kanchwala"));
-                    
                     m.CC.Add(new MailAddress("jgrove.georgegrove@gmail.com", "Justin Grove"));
                     m.Subject = "J.M. Grove " + jobId + " quote request ";
                     m.IsBodyHtml = true;
@@ -3556,6 +3552,7 @@ namespace JG_Prospect.Sr_App
 
                     if (dsEmailTemplate != null)
                     {
+                        m.Subject = dsEmailTemplate.Tables[0].Rows[0]["HTMLSubject"].ToString().Replace("c-xxxx", jobId);
                         string templateHeader = dsEmailTemplate.Tables[0].Rows[0][0].ToString();
                         StringBuilder tHeader = new StringBuilder();
                         tHeader.Append(templateHeader);
@@ -3579,6 +3576,149 @@ namespace JG_Prospect.Sr_App
 
                         htmlBody += "</br></br></br>";
                         
+
+                        string templateFooter = dsEmailTemplate.Tables[0].Rows[0][2].ToString();
+                        StringBuilder tFooter = new StringBuilder();
+                        tFooter.Append(templateFooter);
+                        var replacedFooter = tFooter.Replace("src=\"../img/JG-Logo-white.gif\"", "src=cid:myImageLogo")
+                                                   .Replace("src=\"../img/Email footer.png\"", "src=cid:myImageFooter");
+                        htmlBody += replacedFooter.ToString();
+                    }
+                    AlternateView htmlView = AlternateView.CreateAlternateViewFromString(htmlBody, null, "text/html");
+
+                    //string imageSourceHeader = Server.MapPath(@"~\img") + @"\Email art header.png";
+                    //LinkedResource theEmailImageHeader = new LinkedResource(imageSourceHeader);
+                    //theEmailImageHeader.ContentId = "myImageHeader";
+
+                    //string imageSourceLogo = Server.MapPath(@"~\img") + @"\JG-Logo-white.gif";
+                    //LinkedResource theEmailImageLogo = new LinkedResource(imageSourceLogo);
+                    //theEmailImageLogo.ContentId = "myImageLogo";
+
+                    //string imageSourceFooter = Server.MapPath(@"~\img") + @"\Email footer.png";
+                    //LinkedResource theEmailImageFooter = new LinkedResource(imageSourceFooter);
+                    //theEmailImageFooter.ContentId = "myImageFooter";
+
+                    ////Add the Image to the Alternate view
+                    //htmlView.LinkedResources.Add(theEmailImageHeader);
+                    //htmlView.LinkedResources.Add(theEmailImageLogo);
+                    //htmlView.LinkedResources.Add(theEmailImageFooter);
+
+                    //m.AlternateViews.Add(htmlView);
+                    m.Body = htmlBody; //"Email To: "+ mailId + htmlBody;
+
+                    try
+                    {
+                       // DataSet lDSAttachedFiles = AdminBLL.Instance.GetHTMLTemplateAttachedFile(14); //Vendor Categories
+                        for (int i = 0; i < dsEmailTemplate.Tables[1].Rows.Count; i++)
+                        {
+                            string sourceDir = Server.MapPath(dsEmailTemplate.Tables[1].Rows[i]["DocumentPath"].ToString());
+                            if (File.Exists(sourceDir))
+                            {
+                                Attachment attachment = new Attachment(sourceDir);
+                                attachment.Name = Path.GetFileName(sourceDir);
+                                m.Attachments.Add(attachment);
+                            }
+                        }
+
+                        for (int i = 0; i < MaterialListAttachment.Rows.Count; i++)
+                        {
+                            string sourceDir = Server.MapPath(MaterialListAttachment.Rows[i]["DocumentPath"].ToString());
+                            if (File.Exists(sourceDir))
+                            {
+                                Attachment attachment = new Attachment(sourceDir);
+                                attachment.Name = Path.GetFileName(sourceDir);
+                                m.Attachments.Add(attachment);
+                            }
+                        }
+                    }
+                    catch (Exception ex) { }
+
+
+                    NetworkCredential ntw = new System.Net.NetworkCredential(userName, password);
+                    sc.UseDefaultCredentials = false;
+                    sc.Credentials = ntw;
+                    
+                    sc.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    sc.EnableSsl = Convert.ToBoolean(ConfigurationManager.AppSettings["enableSSL"].ToString()); // runtime encrypt the SMTP communications using SSL
+                    try
+                    {
+                        sc.Send(m);
+                        emailCounter += 1;
+                    }
+                    catch (Exception ex)
+                    {
+                        emailStatus = false;
+                        mailNotSendIds += mailId + " , ";
+                        CustomBLL.Instance.UpdateEmailStatusOfCustomMaterialList(jobId, JGConstant.EMAIL_STATUS_NONE);//, productTypeId, estimateId);
+                    }
+
+                }
+            }
+            return emailStatus;
+        }
+
+        public bool SendOrderonEmails(string pVendorCategoryIds, StringBuilder pStrMaterialListTable)
+        {
+            bool emailStatus = true;
+            string mailNotSendIds = string.Empty;
+            string htmlBody = string.Empty;
+            int emailCounter = 0;
+            //to fetch all vendors within a category
+            DataSet dsVendorsListByCategory = VendorBLL.Instance.GetVendors(pVendorCategoryIds);
+
+            if (dsVendorsListByCategory != null)
+            {
+                //loop for all vendors within a category
+                for (int counter = 0; counter < dsVendorsListByCategory.Tables[0].Rows.Count; counter++)
+                {
+                    DataRow dr = dsVendorsListByCategory.Tables[0].Rows[counter];
+                    string mailId = dr["Email"].ToString();
+                    string vendorName = dr["VendorName"].ToString();
+
+                    MailMessage m = new MailMessage();
+                    SmtpClient sc = new SmtpClient(ConfigurationManager.AppSettings["smtpHost"].ToString(), Convert.ToInt32(ConfigurationManager.AppSettings["smtpPort"].ToString()));
+
+                    string userName = ConfigurationManager.AppSettings["VendorCategoryUserName"].ToString();
+                    string password = ConfigurationManager.AppSettings["VendorCategoryPassword"].ToString();
+
+                    m.From = new MailAddress(userName, "JGrove Construction");
+                    m.To.Add(new MailAddress(mailId, vendorName));
+                    m.Bcc.Add(new MailAddress("shabbir.kanchwala@straitapps.com", "Shabbir Kanchwala"));
+
+                    //m.To.Add(new MailAddress("skanchwala@4qlearning.com", "Shabbir Kanchwala"));
+                    //m.To.Add(new MailAddress("skanchwala@mosaic-network.com", "Shabbir Kanchwala"));
+                    //m.To.Add(new MailAddress("shabbirk@live.com", "Shabbir Kanchwala"));
+
+                    m.CC.Add(new MailAddress("jgrove.georgegrove@gmail.com", "Justin Grove"));
+                    m.Subject = "J.M. Grove " + jobId + " quote request ";
+                    m.IsBodyHtml = true;
+                    DataSet dsEmailTemplate = fetchVendorEmailTemplate();
+
+                    if (dsEmailTemplate != null)
+                    {
+                        string templateHeader = dsEmailTemplate.Tables[0].Rows[0][0].ToString();
+                        StringBuilder tHeader = new StringBuilder();
+                        tHeader.Append(templateHeader);
+                        var replacedHeader = tHeader//.Replace("imgHeader", "<img src=cid:myImageHeader height=10% width=80%>")
+                                                       .Replace("src=\"../img/Email art header.png\"", "src=cid:myImageHeader")
+                                                    .Replace("lblJobId", jobId.ToString())
+                                                    .Replace("lblCustomerId", "C" + customerId.ToString());
+                        htmlBody = replacedHeader.ToString();
+                        htmlBody += "</br></br></br>";
+                        string templateBody = dsEmailTemplate.Tables[0].Rows[0][1].ToString();
+
+                        // string materialList = cm.MaterialList;
+
+
+                        StringBuilder tbody = new StringBuilder();
+                        tbody.Append(templateBody);
+
+                        var replacedBody = tbody.Replace("lblMaterialList", pStrMaterialListTable.ToString());
+
+                        htmlBody += replacedBody.ToString();
+
+                        htmlBody += "</br></br></br>";
+
 
                         string templateFooter = dsEmailTemplate.Tables[0].Rows[0][2].ToString();
                         StringBuilder tFooter = new StringBuilder();
@@ -3640,7 +3780,7 @@ namespace JG_Prospect.Sr_App
                     NetworkCredential ntw = new System.Net.NetworkCredential(userName, password);
                     sc.UseDefaultCredentials = false;
                     sc.Credentials = ntw;
-                    
+
                     sc.DeliveryMethod = SmtpDeliveryMethod.Network;
                     sc.EnableSsl = Convert.ToBoolean(ConfigurationManager.AppSettings["enableSSL"].ToString()); // runtime encrypt the SMTP communications using SSL
                     try
@@ -3659,6 +3799,7 @@ namespace JG_Prospect.Sr_App
             }
             return emailStatus;
         }
+
 
         protected void btnSendEmailToVendors_Click(object sender, EventArgs e)
         {

@@ -50,7 +50,7 @@ namespace JG_Prospect.DAL
             }
         }
 
-        public DataSet GetAutoEmailTemplate(int pHTMLTemplateID)
+        public DataSet GetAutoEmailTemplate(int pHTMLTemplateID, int pSubHTMLTemplateID=0)
         {
             DataSet result = new DataSet();
             try
@@ -60,6 +60,7 @@ namespace JG_Prospect.DAL
                     DbCommand command = database.GetStoredProcCommand("USP_GETAutoEmailTemplates");
                     command.CommandType = CommandType.StoredProcedure;
                     database.AddInParameter(command, "@HTMLTemplateID", DbType.Int32, pHTMLTemplateID);
+                    database.AddInParameter(command, "@SubHTMLTempID", DbType.Int32, pSubHTMLTemplateID);
                     result = database.ExecuteDataSet(command);
                 }
                 return result;
@@ -83,6 +84,27 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@ProductType", DbType.Int32, id);
                     result = database.ExecuteDataSet(command);
                 }               
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+                return null;
+            }
+        }
+
+        public DataSet GetEmailTemplate(String pTemplateName)
+        {
+            DataSet result = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_GetEmailTemplate");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@TemplateName", DbType.String, pTemplateName);
+                    result = database.ExecuteDataSet(command);
+                }
                 return result;
             }
             catch (Exception ex)
@@ -1835,7 +1857,7 @@ namespace JG_Prospect.DAL
 
         }
 
-        public bool UpdateHTMLTemplate(string EmailTemplateHeader, string EmailTemplateFooter, string subject, int pHTMLTemplateID, List<CustomerDocument> custList)
+        public bool UpdateHTMLTemplate(string EmailTemplateHeader, string EmailTemplateBody, string EmailTemplateFooter, string subject, int pHTMLTemplateID, List<CustomerDocument> custList)
         {
             bool result = false;
             try
@@ -1846,9 +1868,10 @@ namespace JG_Prospect.DAL
                     DbCommand command = database.GetStoredProcCommand("USP_SaveHTMLTemplate");
                     command.CommandType = CommandType.StoredProcedure;
                     database.AddInParameter(command, "@EmailTemplateHeader", DbType.String, EmailTemplateHeader);
+                    database.AddInParameter(command, "@EmailTemplateBody", DbType.String, EmailTemplateBody);
                     database.AddInParameter(command, "@EmailTemplateFooter", DbType.String, EmailTemplateFooter);
                     database.AddInParameter(command, "@Subject", DbType.String, subject);
-                    database.AddInParameter(command, "@HTMLTemplateID", DbType.Int32, pHTMLTemplateID);
+                    database.AddInParameter(command, "@SubHTMLTemplateID", DbType.Int32, pHTMLTemplateID);
                     
                     database.ExecuteNonQuery(command);
                     foreach (var item in custList)
@@ -1857,7 +1880,7 @@ namespace JG_Prospect.DAL
                         command2.CommandType = CommandType.StoredProcedure;
                         database.AddInParameter(command2, "@DocumentName", DbType.String, item.DocumentName);
                         database.AddInParameter(command2, "@DocumentPath", DbType.String, item.DocumentPath);
-                        database.AddInParameter(command2, "@HTMLTemplateID", DbType.String, pHTMLTemplateID);
+                        database.AddInParameter(command2, "@SubHTMLTemplateID", DbType.String, pHTMLTemplateID);
                         database.ExecuteNonQuery(command2);
                     }
                     command.Dispose();

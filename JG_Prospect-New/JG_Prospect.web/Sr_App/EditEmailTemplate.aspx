@@ -19,6 +19,9 @@
                 <h2 style="text-align: center">
                     <asp:Label ID="lblPageTitle" runat="server" Text="Label"></asp:Label></h2>
                 <div>
+                    <h2>
+                        Choose Category: <asp:DropDownList ID="drpChooseCategory" runat="server" AutoPostBack="true" OnSelectedIndexChanged="drpChooseCategory_SelectedIndexChanged"></asp:DropDownList>
+                    </h2>
                     <h2>Subject:
                         <asp:TextBox ID="txtSubject" Width="500px" runat="server"></asp:TextBox></h2>
                     <div>
@@ -43,9 +46,8 @@
                     </div>
                     <h2>Header Template</h2>
                     <cc1:Editor ID="HeaderEditor" Width="1000px" Height="200px" runat="server" />
-                  <%--  <h2>Body Template</h2>
-                    <asp:Label ID="lblMaterials" runat="server"></asp:Label>--%>
-                    <%--<cc1:Editor ID="BodyEditor" Width="1000px" Height="200px" runat="server" />--%>
+                    <h2>Body Template</h2>
+                    <cc1:Editor ID="BodyEditor" Width="1000px" Height="200px" runat="server" />
                     <h2>Footer Template</h2>
                     <cc1:Editor ID="FooterEditor" Width="1000px" Height="200px" runat="server" />
 

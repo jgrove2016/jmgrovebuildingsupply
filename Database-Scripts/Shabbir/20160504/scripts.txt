@@ -1,0 +1,282 @@
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_tblSubHTMLTemplates_tblHTMLTemplates]') AND parent_object_id = OBJECT_ID(N'[dbo].[tblSubHTMLTemplates]'))
+ALTER TABLE [dbo].[tblSubHTMLTemplates] DROP CONSTRAINT [FK_tblSubHTMLTemplates_tblHTMLTemplates]
+GO
+
+/****** Object:  Table [dbo].[tblSubHTMLTemplates]    Script Date: 04-05-2016 14:31:40 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tblSubHTMLTemplates]') AND type in (N'U'))
+DROP TABLE [dbo].[tblSubHTMLTemplates]
+GO
+
+/****** Object:  Table [dbo].[tblSubHTMLTemplates]    Script Date: 04-05-2016 14:31:40 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tblSubHTMLTemplates]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[tblSubHTMLTemplates](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[HTMLTemplateID] [int] NULL,
+	[SubHTMLName] [varchar](50) NOT NULL,
+	[HTMLSubject] [varchar](4000) NOT NULL,
+	[HTMLHeader] [nvarchar](max) NULL,
+	[HTMLBody] [nvarchar](max) NOT NULL,
+	[HTMLFooter] [nvarchar](max) NULL,
+	[Updated_On] [date] NULL,
+ CONSTRAINT [PK_tblSubHTMLTemplates] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+END
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_tblSubHTMLTemplates_tblHTMLTemplates]') AND parent_object_id = OBJECT_ID(N'[dbo].[tblSubHTMLTemplates]'))
+ALTER TABLE [dbo].[tblSubHTMLTemplates]  WITH CHECK ADD  CONSTRAINT [FK_tblSubHTMLTemplates_tblHTMLTemplates] FOREIGN KEY([HTMLTemplateID])
+REFERENCES [dbo].[tblHTMLTemplates] ([Id])
+GO
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_tblSubHTMLTemplates_tblHTMLTemplates]') AND parent_object_id = OBJECT_ID(N'[dbo].[tblSubHTMLTemplates]'))
+ALTER TABLE [dbo].[tblSubHTMLTemplates] CHECK CONSTRAINT [FK_tblSubHTMLTemplates_tblHTMLTemplates]
+GO
+
+
+Insert into tblsubhtmltemplates (HTMLTemplateID, SubHTMLName,HTMLSubject, HTMLHeader, HTMLBody, HTMLFooter,Updated_On)
+Select id, Html_Name,isnull(HTMLSubject,''),HTMLHeader,HTMLBody,HTMLFooter,GETDATE() from tblHTMLTemplates 
+Where id in (14,15,16,100,101,102,103,104,105,106,107)
+GO 
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_tblCustomerAttachment_tblHTMLTemplates]') AND parent_object_id = OBJECT_ID(N'[dbo].[tblCustomerAttachment]'))
+ALTER TABLE [dbo].[tblCustomerAttachment] DROP CONSTRAINT [FK_tblCustomerAttachment_tblHTMLTemplates]
+GO
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_tblCustomerAttachment_tblSubHTMLTemplates]') AND parent_object_id = OBJECT_ID(N'[dbo].[tblCustomerAttachment]'))
+ALTER TABLE [dbo].[tblCustomerAttachment] DROP CONSTRAINT [FK_tblCustomerAttachment_tblSubHTMLTemplates]
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_tblCustomerAttachment_tblSubHTMLTemplates]') AND parent_object_id = OBJECT_ID(N'[dbo].[tblCustomerAttachment]'))
+ALTER TABLE [dbo].[tblCustomerAttachment]  WITH CHECK ADD  CONSTRAINT [FK_tblCustomerAttachment_tblSubHTMLTemplates] FOREIGN KEY([HTMLTemplateID])
+REFERENCES [dbo].[tblSubHTMLTemplates] ([Id])
+GO
+
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_tblCustomerAttachment_tblSubHTMLTemplates]') AND parent_object_id = OBJECT_ID(N'[dbo].[tblCustomerAttachment]'))
+ALTER TABLE [dbo].[tblCustomerAttachment] CHECK CONSTRAINT [FK_tblCustomerAttachment_tblSubHTMLTemplates]
+GO
+
+
+Update tblsubhtmltemplates Set SubHTMLName = 'Regular Template' WHERE SubHTMLName = 'Interview Date Auto Email'
+GO
+
+Insert into tblsubhtmltemplates (HTMLTemplateID, SubHTMLName,HTMLSubject, HTMLHeader, HTMLBody, HTMLFooter,Updated_On)
+VALUES(104, 'Sales User', '','','','',GETDATE())
+GO
+
+Insert into tblsubhtmltemplates (HTMLTemplateID, SubHTMLName,HTMLSubject, HTMLHeader, HTMLBody, HTMLFooter,Updated_On)
+VALUES(104, 'Installer', '','','','',GETDATE())
+GO
+
+Insert into tblsubhtmltemplates (HTMLTemplateID, SubHTMLName,HTMLSubject, HTMLHeader, HTMLBody, HTMLFooter,Updated_On)
+VALUES(104, 'Sub Contractor', '','','','',GETDATE())
+GO
+
+Insert into tblsubhtmltemplates (HTMLTemplateID, SubHTMLName,HTMLSubject, HTMLHeader, HTMLBody, HTMLFooter,Updated_On)
+VALUES(104, 'IT Interview Template', '','','','',GETDATE())
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_GETAutoEmailTemplates]    Script Date: 04-05-2016 16:43:24 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_GETAutoEmailTemplates]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_GETAutoEmailTemplates]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_GETAutoEmailTemplates]    Script Date: 04-05-2016 16:43:24 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_GETAutoEmailTemplates]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[USP_GETAutoEmailTemplates] AS' 
+END
+GO
+
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-04-22
+-- Description:	This procedure will get HTML Template and it's attached files
+-- =============================================
+ALTER PROCEDURE [dbo].[USP_GETAutoEmailTemplates] 
+(
+	@HTMLTemplateID INT,
+	@SubHTMLTempID INT
+)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	SELECT Id,SubHtmlName FROM tblsubhtmltemplates WHERE HTMLTemplateID = @HTMLTemplateID
+
+	IF(@SubHTMLTempID = 0)
+	BEGIN
+		SELECT TOP 1 id, SubHTMLName, ISNULL(HTMLSubject,'') AS HTMLSubject, HTMLHeader, HTMLBody, HTMLFooter, GETDATE()  FROM tblsubhtmltemplates 
+		WHERE HTMLTemplateID = @HTMLTemplateID
+
+		SELECT * FROM tblCustomerAttachment WHERE HTMLTemplateID in (SELECT TOP 1 id FROM tblsubhtmltemplates WHERE HTMLTemplateID = @HTMLTemplateID)
+	END
+	ELSE 
+	BEGIN
+		SELECT TOP 1 id, SubHTMLName, ISNULL(HTMLSubject,'') AS HTMLSubject, HTMLHeader, HTMLBody, HTMLFooter, GETDATE()  FROM tblsubhtmltemplates 
+		WHERE HTMLTemplateID = @HTMLTemplateID AND ID = @SubHTMLTempID
+		
+		SELECT * FROM tblCustomerAttachment WHERE HTMLTemplateID = @SubHTMLTempID
+	END
+	
+END
+
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[USP_SaveHTMLTemplate]    Script Date: 04-05-2016 16:51:04 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_SaveHTMLTemplate]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_SaveHTMLTemplate]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_SaveHTMLTemplate]    Script Date: 04-05-2016 16:51:04 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_SaveHTMLTemplate]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[USP_SaveHTMLTemplate] AS' 
+END
+GO
+
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-04-22
+-- Description:	This procedure will save html template
+-- =============================================
+ALTER PROCEDURE [dbo].[USP_SaveHTMLTemplate] 
+	@EmailTemplateHeader nvarchar(max),
+	@EmailTemplateFooter nvarchar(max),
+	@EmailTemplateBody nvarchar(max),
+	@AttachmentPath VARCHAR(MAX) = '',
+	@Subject VARCHAR(MAX) = '',
+	@SubHTMLTemplateID INT
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+	UPDATE tblsubhtmltemplates 
+		SET HTMLHeader = @EmailTemplateHeader,
+		HTMLBody = @EmailTemplateBody,
+		HTMLFooter = @EmailTemplateFooter,
+		HTMLSubject = @Subject
+		WHERE Id = @SubHTMLTemplateID
+END
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[UDP_AddCustomerFile]    Script Date: 04-05-2016 16:53:38 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UDP_AddCustomerFile]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[UDP_AddCustomerFile]
+GO
+
+/****** Object:  StoredProcedure [dbo].[UDP_AddCustomerFile]    Script Date: 04-05-2016 16:53:38 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UDP_AddCustomerFile]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[UDP_AddCustomerFile] AS' 
+END
+GO
+
+
+ALTER Proc [dbo].[UDP_AddCustomerFile]
+	@DocumentName varchar(200),
+	@DocumentPath varchar(500),
+	@SubHTMLTemplateID INT
+AS 
+BEGIN
+   if not exists (select Id from dbo.tblCustomerAttachment where DocumentName=@DocumentName)
+   BEGIN
+      Insert Into tblCustomerAttachment (DocumentName,DocumentPath,HTMLTemplateID) 
+    values (@DocumentName,@DocumentPath,@SubHTMLTemplateID)
+
+	END
+	ELSE --#Shabbir: This query does not make sense, but I will keep it here so that existing functionality does not get messed up
+       UPDATE tblCustomerAttachment set DocumentName=@DocumentName, DocumentPath=@DocumentPath
+                                     where DocumentName=@DocumentName AND HTMLTemplateID = @SubHTMLTemplateID
+ END
+
+
+GO
+
+
+
+
+/****** Object:  StoredProcedure [dbo].[USP_GetEmailTemplate]    Script Date: 04-05-2016 18:36:18 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_GetEmailTemplate]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_GetEmailTemplate]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_GetEmailTemplate]    Script Date: 04-05-2016 18:36:18 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_GetEmailTemplate]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[USP_GetEmailTemplate] AS' 
+END
+GO
+
+
+
+ALTER Proc [dbo].[USP_GetEmailTemplate]  
+(
+	@TemplateName VARCHAR(500)
+)
+AS  
+BEGIN  
+	SET NOCOUNT ON;
+	SELECT 
+		HTMLHeader,
+		HTMLBody,
+		HTMLFooter,
+		HTMLSubject 
+	FROM tblSubHtmlTemplates  
+	WHERE SubHTMLName = @TemplateName
+
+	SELECT * 
+	FROM tblCustomerAttachment 
+	WHERE HTMLTemplateID IN (SELECT ID FROM tblSubHtmlTemplates WHERE SubHTMLName = @TemplateName)
+
+END
+GO
+
+

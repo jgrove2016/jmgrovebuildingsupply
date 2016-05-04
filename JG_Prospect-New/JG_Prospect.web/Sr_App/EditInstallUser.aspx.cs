@@ -1220,7 +1220,18 @@ namespace JG_Prospect.Sr_App
             {
                 string fullname = FName + " " + LName;
                 string HTML_TAG_PATTERN = "<.*?>";
-                DataSet ds = AdminBLL.Instance.FetchContractTemplate(104);
+                DataSet ds = new DataSet(); //AdminBLL.Instance.GetEmailTemplate("Sales Auto Email");// AdminBLL.Instance.FetchContractTemplate(104);
+
+                if (Designition.Contains("Install"))
+                {
+                    ds = AdminBLL.Instance.GetEmailTemplate("Installer");// AdminBLL.Instance.FetchContractTemplate(104);
+                }
+                else
+                {
+                    ds = AdminBLL.Instance.GetEmailTemplate("Sub Contractor");// AdminBLL.Instance.FetchContractTemplate(104);
+                }
+                
+
 
                 string strHeader = ds.Tables[0].Rows[0]["HTMLHeader"].ToString(); //GetEmailHeader(status);
                 string strBody = ds.Tables[0].Rows[0]["HTMLBody"].ToString(); //GetEmailBody(status);
