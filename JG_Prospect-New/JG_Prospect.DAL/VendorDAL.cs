@@ -466,6 +466,7 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@PaymentTerms", DbType.String, objvendor.PaymentTerms);
                     database.AddInParameter(command, "@PaymentMethod", DbType.String, objvendor.PaymentMethod);
                     database.AddInParameter(command, "@TempID", DbType.String, objvendor.TempID);
+                    database.AddInParameter(command, "@NotesTempID", DbType.String, objvendor.NotesTempID);
 
                     database.ExecuteNonQuery(command);
                     return true;
@@ -988,6 +989,56 @@ namespace JG_Prospect.DAL
                     DbCommand command = database.GetStoredProcCommand("GETInvetoryCatogriesList");
                     command.CommandType = CommandType.StoredProcedure;
                     database.AddInParameter(command, "@ManufacturerType", DbType.String, ManufactureType);
+                    DS = database.ExecuteDataSet(command);
+                    return DS;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public bool SaveVendorNotes(int VendorId, string Notes, string TempId)
+        {
+            try
+            {
+                string consString = ConfigurationManager.ConnectionStrings[DBConstants.CONFIG_CONNECTION_STRING_KEY].ConnectionString;
+                using (SqlConnection con = new SqlConnection(consString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_vendorNotes"))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Connection = con;
+                        cmd.Parameters.AddWithValue("@Notes", Notes);
+                        cmd.Parameters.AddWithValue("@VendorId", VendorId);
+                        cmd.Parameters.AddWithValue("@TempId", TempId);
+                        cmd.Parameters.AddWithValue("@action", 1);
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public DataSet GetVendorNotes(int VendorId, string TempId)
+        {
+            try
+            {
+                {
+                    SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                    DS = new DataSet();
+                    DbCommand command = database.GetStoredProcCommand("sp_vendorNotes");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@action", DbType.String, "2");
+                    database.AddInParameter(command, "@TempId", DbType.String, TempId);
+                    database.AddInParameter(command, "@VendorId", DbType.Int32, VendorId);
                     DS = database.ExecuteDataSet(command);
                     return DS;
                 }

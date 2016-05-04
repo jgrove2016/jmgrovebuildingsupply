@@ -218,6 +218,16 @@ namespace JG_Prospect.BLL
         {
             return VendorDAL.Instance.GETInvetoryCatogriesList(ManufactureType);
         }
+
+        public bool SaveVendorNotes(int VendorId, string Notes, string TempId)
+        {
+            return VendorDAL.Instance.SaveVendorNotes(VendorId, Notes, TempId);
+        }
+
+        public DataSet GetVendorNotes(int VendorId, string TempId)
+        {
+            return VendorDAL.Instance.GetVendorNotes(VendorId, TempId);
+        }
     }
 
 

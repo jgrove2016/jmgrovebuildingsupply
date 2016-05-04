@@ -41,6 +41,19 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
+        #tblPrimaryEmail tr td, #tblSecEmail tr td, #tblAltEmail tr td {
+            width: 20%;
+        }
+
+            #tblPrimaryEmail tr td input, #tblSecEmail tr td input, #tblAltEmail tr td input {
+                max-width: 170px;
+            }
+
+        .newcontactdiv input {
+            width: inherit !important;
+            margin-bottom: 5px;
+        }
     </style>
     <script type="text/javascript">
         function ClosePopup() {
@@ -78,6 +91,13 @@
                                             "<br/><a TabIndex='1' onclick='AddEmail(this)' style='cursor: pointer' data-emailtype='" + EmailType + "' data-type='" + subCount + "'>Add Email</a><br/></div></td>" +
                                             "<td><input TabIndex='1' type='text' id='txt" + EmailType + "FName" + subCount + "' name='nametxt" + EmailType + "FName" + subCount + "' placeholder='First Name' clientidmode='Static' /></td>" +
                                             "<td><input TabIndex='1' type='text' id='txt" + EmailType + "LName" + subCount + "' name='nametxt" + EmailType + "LName" + subCount + "' placeholder='Last Name' clientidmode='Static' /></td>" +
+                                           "<td><select TabIndex='1' id='ddl" + EmailType + "Title" + subCount + "' name='nameddl" + EmailType + "Title" + subCount + "' clientidmode='Static'>" +
+                                            "<option value=''>Select</option>" +
+                                            "<option value='DM'>DM</option>" +
+                                            "<option value='Spouse'>Spouse</option>" +
+                                            "<option value='Partner'>Partner</option>" +
+                                            "<option value='Others'>Others</option>" +
+                                            "</select></td>" +
                                             "<td><div class='newcontactdiv'>" +
                                             "<input TabIndex='1' type='text' id='txt" + EmailType + "Contact" + subCount + "' name='nametxt" + EmailType + "Contact" + subCount + "' style='width:50%' class='clsmaskphone' maxlength='10' placeholder='___-___-____' clientidmode='Static' />" +
                                             "&nbsp;<input TabIndex='1' type='text' id='txt" + EmailType + "ContactExten" + subCount + "' name='nametxt" + EmailType + "ContactExten" + subCount + "' style='width:35%' maxlength='6' class='clsmaskphoneexten' placeholder='Extension' clientidmode='Static' />" +
@@ -112,7 +132,6 @@
 
 
         function GetVendorDetails(e) {
-
             var AddressData = [];
             var VendorEmailData = [];
             var vid = $('.clsvendorid').val();
@@ -124,6 +143,7 @@
                 AddressType: $(".clstxtAddressType0").val(),
                 Address: $(".clstxtAddress0").val(),
                 City: $(".clstxtCity0").val(),
+                State: $(".clstxtState0").val(),
                 Zip: $(".clstxtZip0").val(),
                 Country: $(".clstxtCountry0").val()
             })
@@ -134,6 +154,7 @@
                     AddressType: $("#ddlAddressType1" + index).val(),
                     Address: $("#txtAddress1" + index).val(),
                     City: $("#txtCity1" + index).val(),
+                    State: $("#txtState1" + index).val(),
                     Zip: $("#txtZip1" + index).val()
                 })
             });
@@ -154,6 +175,7 @@
                     Email: Emails,
                     FirstName: $("input[name=nametxtPrimaryFName" + index + "]").val(),
                     LastName: $("input[name=nametxtPrimaryLName" + index + "]").val(),
+                    Title: $("#ddlPrimaryTitle" + index).val() == undefined ? "" : $("#ddlPrimaryTitle" + index).val(),
                     Contact: c,
                     AddressID: $(".clsvendoraddress").val() == undefined || $(".clsvendoraddress").val() == "Select" ? "0" : $(".clsvendoraddress").val(),
                 };
@@ -177,6 +199,7 @@
                     Email: Emails,
                     FirstName: $("#txtSecFName" + index).val(),
                     LastName: $("#txtSecLName" + index).val(),
+                    Title: $("#ddlSecTitle" + index).val() == undefined ? "" : $("#ddlSecTitle" + index).val(),
                     Contact: c,
                     AddressID: $(".clsvendoraddress").val() == undefined || $(".clsvendoraddress").val() == "Select" ? "0" : $(".clsvendoraddress").val(),
                 };
@@ -200,6 +223,7 @@
                     Email: Emails,
                     FirstName: $("#txtAltFName" + index).val(),
                     LastName: $("#txtAltLName" + index).val(),
+                    Title: $("#ddlAltTitle" + index).val() == undefined ? "" : $("#ddlAltTitle" + index).val(),
                     Contact: c,
                     AddressID: $(".clsvendoraddress").val() == undefined || $(".clsvendoraddress").val() == "Select" ? "0" : $(".clsvendoraddress").val(),
                 };
@@ -217,6 +241,7 @@
                 data: JSON.stringify({ vendorid: vid, Address: AddressData, VendorEmails: VendorEmailData }),
                 success: function (data) {
                     console.log(data);
+                    checkAddress();
                     //AddOldEmailContent(datalength);
                 }
             });
@@ -287,6 +312,7 @@
             var EmailType = data.EmailType;
             var FName = data.FName;
             var LName = data.LName;
+            var Title = data.Title;
             var SeqNo = data.SeqNo;
             var VendorId = data.VendorId;
             var TempID = data.TempID;
@@ -298,9 +324,20 @@
                 MainHTML += '<a TabIndex="1" onclick="AddEmail(this)" style="cursor: pointer" data-emailtype="Primary" data-type="1">Add Email</a><br></div></td>';
                 MainHTML += '<td><input TabIndex="1" type="text" id="txt' + ID + 'FName' + NewRow + '" name="nametxt' + ID + 'FName' + NewRow + '" value="' + FName + '" placeholder="First Name" clientidmode="Static"></td>';
                 MainHTML += '<td><input TabIndex="1" type="text" id="txt' + ID + 'LName' + NewRow + '" name="nametxt' + ID + 'LName' + NewRow + '" value="' + LName + '" placeholder="Last Name" clientidmode="Static"></td>';
+
+                MainHTML += '<td><select TabIndex="1" id="ddl' + ID + 'Title' + NewRow + '" name="nameddl' + ID + 'Title' + NewRow + '" clientidmode="Static">'
+                    + '<option value="">Select</option>'
+                    + '<option value="DM">DM</option>'
+                    + '<option value="Spouse">Spouse</option>'
+                    + '<option value="Partner">Partner</option>'
+                    + '<option value="Others">Others</option>'
+                    + '</select></td>';
+
                 MainHTML += '<td><div class="newcontactdiv"><input type="text" id="txt' + ID + 'Contact' + NewRow + '" name="nametx' + ID + 'Contact' + NewRow + '" value="' + Contact[0].Number + '" style="width:50%" class="clsmaskphone" maxlength="10" TabIndex="1" placeholder="___-___-____" clientidmode="Static"/>&nbsp;<input TabIndex="1" type="text" id="txt' + ID + 'ContactExten' + NewRow + '" name="nametxt' + ID + 'ContactExten' + NewRow + '" value="' + Contact[0].Extension + '" style="width:35%" maxlength="6" class="clsmaskphoneexten" placeholder="Extension" clientidmode="Static"/>';
                 MainHTML += '<a TabIndex="1" onclick="AddContact(this)" style="cursor:pointer" data-type="1" data-emailtype="Primary" clientidmode="Static">Add Contact</a><br></div></td></tr>';
                 $("#tbl" + ID + "Email").find("tr:last-child").after(MainHTML);
+
+                $("#ddl" + ID + "Title" + NewRow).val(Title);
                 for (j = 1; j < Email.length; j++) {
                     var HTML = '<br/>';
                     HTML += '<div class="newEmaildiv"><input TabIndex="1" type="text" id="txt' + ID + 'Email' + NewRow + '' + j + '" name="nametxt' + ID + 'Email' + NewRow + '' + j + '" class="clsemail" value="' + Email[j].Email + '" clientidmode="Static"?></div>';
@@ -320,6 +357,7 @@
                 $("#txt" + ID + "Email" + NewRow).val(Email[0].Email);
                 $("#txt" + ID + "FName" + NewRow).val(FName);
                 $("#txt" + ID + "LName" + NewRow).val(LName);
+                $("#ddl" + ID + "Title" + NewRow).val(Title);
                 $("#" + ContentPlaceHolder + "txt" + ID + "ContactExten" + NewRow).val(Contact[0].Extension);
                 $("#" + ContentPlaceHolder + "txt" + ID + "Contact" + NewRow).val(Contact[0].Number);
                 for (j = 1; j < Email.length; j++) {
@@ -339,7 +377,7 @@
             }
         }
 
-        
+
     </script>
 
 
@@ -1024,6 +1062,48 @@
                                                     </tr>
                                                     <tr>
                                                         <td colspan="4" style="padding: 0px;">
+                                                            <div class="grid_h">
+                                                                Notes
+                                                            </div>
+
+                                                            <div class="grid">
+                                                                <asp:GridView ID="grdTouchPointLog" runat="server" AutoGenerateColumns="false" CssClass="tableClass" Width="100%" style="margin:0px;">
+                                                                    <Columns>
+                                                                        <asp:TemplateField HeaderText="Date">
+                                                                            <ItemTemplate>
+                                                                                <%#Eval("CreatedOn")%>
+                                                                            </ItemTemplate>
+                                                                        </asp:TemplateField>
+                                                                        <asp:TemplateField HeaderText="Notes">
+                                                                            <ItemTemplate>
+                                                                                <%#Eval("Notes")%>
+                                                                            </ItemTemplate>
+                                                                        </asp:TemplateField>
+                                                                    </Columns>
+                                                                    <EmptyDataTemplate>
+                                                                        No Data Found.
+                                                                    </EmptyDataTemplate>
+                                                                </asp:GridView>
+                                                            </div>
+                                                            <br />
+                                                            <table cellspacing="0" cellpadding="0" width="950px" border="1" style="width: 100%; border-collapse: collapse;">
+                                                                <tr>
+                                                                    <td>
+                                                                        <div class="btn_sec">
+                                                                            <asp:Button ID="btnAddNotes" runat="server" Text="Add Notes" OnClick="btnAddNotes_Click" />
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="">
+                                                                            <asp:TextBox ID="txtAddNotes" runat="server" TextMode="MultiLine" Height="33px" Width="407px"></asp:TextBox>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4" style="padding: 0px;">
                                                             <fieldset style="margin: 0px !important;">
                                                                 <legend style="width: 100%;">
                                                                     <span style="font-weight: bold; font-size: 15px; font-style: normal; padding: 15px 15px 5px; display: inline-block;">Vendor Address</span>
@@ -1047,6 +1127,10 @@
                                                                             <td style="width: 12%">
                                                                                 <label>City:</label><br />
                                                                                 <asp:TextBox ID="txtPrimaryCity" runat="server" TabIndex="1" placeholder="City" CssClass="clstxtCity0"></asp:TextBox>
+                                                                            </td>
+                                                                            <td>
+                                                                                <label>State</label><br />
+                                                                                <asp:TextBox ID="txtPrimaryState" runat="server" TabIndex="1" placeholder="State" CssClass="clstxtState0"></asp:TextBox>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
@@ -1346,6 +1430,16 @@
 
                                                                     </td>
                                                                     <td>
+                                                                        <label>Title</label><br />
+                                                                        <select id="ddlPrimaryTitle0" name="nameddlPrimaryTitle0" cliendidmode="static" tabindex="1">
+                                                                            <option value="">Select</option>
+                                                                            <option value="DM">DM</option>
+                                                                            <option value="Spouse">Spouse</option>
+                                                                            <option value="Partner">Partner</option>
+                                                                            <option value="Others">Others</option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td>
                                                                         <label>
                                                                             Contact #
                                                                         </label>
@@ -1389,6 +1483,16 @@
                                                                         <%--  <asp:TextBox ID="txtSecLName0" runat="server" MaxLength="50"></asp:TextBox>--%>
                                                                         <br />
 
+                                                                    </td>
+                                                                    <td>
+                                                                        <label>Title</label><br />
+                                                                        <select id="ddlSecTitle0" name="nameddlSecTitle0" cliendidmode="static" tabindex="1">
+                                                                            <option value="">Select</option>
+                                                                            <option value="DM">DM</option>
+                                                                            <option value="Spouse">Spouse</option>
+                                                                            <option value="Partner">Partner</option>
+                                                                            <option value="Others">Others</option>
+                                                                        </select>
                                                                     </td>
                                                                     <td>
                                                                         <label>
@@ -1439,6 +1543,16 @@
                                                                         <br />
                                                                     </td>
                                                                     <td>
+                                                                        <label>Title</label><br />
+                                                                        <select id="ddlAltTitle0" name="nameddlAltTitle0" cliendidmode="static" tabindex="1">
+                                                                            <option value="">Select</option>
+                                                                            <option value="DM">DM</option>
+                                                                            <option value="Spouse">Spouse</option>
+                                                                            <option value="Partner">Partner</option>
+                                                                            <option value="Others">Others</option>
+                                                                        </select>
+                                                                    </td>
+                                                                    <td>
                                                                         <label>
                                                                             Contact #
                                                                         </label>
@@ -1457,15 +1571,15 @@
                                                     </tr>
 
                                                 </table>
-                                                <div style="text-align: right;">
-                                                    <asp:LinkButton ID="BtnSaveLoaction" CssClass="btnSaveAddress" TabIndex="1" runat="server" Text="Save Address" OnClientClick="GetVendorDetails(this)" ValidationGroup="addaddress" OnClick="BtnSaveLoaction_Click" />
+                                                <div style="text-align: right;" runat="server" visible="false">
+                                                    <asp:LinkButton ID="BtnSaveLoaction" CssClass="btnSaveAddress" TabIndex="1" runat="server" Text="Save Address" OnClientClick="return GetVendorDetails(this)" ValidationGroup="addaddress" OnClick="BtnSaveLoaction_Click" />
                                                     <br />
                                                     <asp:Label ID="lbladdress" runat="server" ForeColor="Red"></asp:Label>
                                                 </div>
                                             </li>
                                         </ul>
                                         <div class="btn_sec">
-                                            <asp:Button ID="btnSave" runat="server" TabIndex="1" Text="Save" OnClientClick="return checkAddress()" OnClick="btnSave_Click" ValidationGroup="addvendor" /><%--OnClick="btnSave_Click" ValidationGroup="addvendor"--%>
+                                            <asp:Button ID="btnSave" runat="server" TabIndex="1" Text="Save" OnClientClick="return GetVendorDetails(this);" OnClick="btnSave_Click" ValidationGroup="addvendor" /><%--OnClick="btnSave_Click" ValidationGroup="addvendor"--%>
                                             <br />
                                             <asp:Label ID="LblSave" runat="server" ForeColor="Red"></asp:Label>
                                         </div>
@@ -1781,7 +1895,7 @@
     <link href="../css/jquery-ui.css" rel="stylesheet" />
     <script src="../js/jquery-ui.js"></script>
     <script src="../Scripts/jquery.maskedinput.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&key=AIzaSyD0X4v7eqMFcWCR-VZAJwEMfb47id9IZao"></script>
+    <%--<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyD0X4v7eqMFcWCR-VZAJwEMfb47id9IZao"></script>--%>
 
     <style type="text/css">
         #tabs.ui-tabs {
@@ -1812,7 +1926,7 @@
     <script type="text/javascript">
         SearchText();
         SearchZipCode();
-  
+
         $('.clsmaskphone').mask("(999) 999-9999");
         $('.clsmaskphoneexten').mask("999999");
 
@@ -1837,7 +1951,6 @@
 
         function getAllAddressOnMap() {
             var manufacturer = "Manufacturer";
-            console.log($("#<%=rdoRetailWholesale.ClientID%>").attr("checked"));
             if ($("#<%=rdoRetailWholesale.ClientID%>").attr("checked") == "checked") {
                 manufacturer = "Retail/Wholesale";
             }
@@ -1856,7 +1969,7 @@
                 dataType: "json",
                 data: '{manufacturer:"' + manufacturer + '", productId: "' + productId + '", vendorCatId: "' + vendorCatId + '", vendorSubCatId:"' + vendorSubCatId + '" }',
                 success: function (data) {
-                    if (data != '') {
+                    if (data.d != "") {
                         initializeMapIcon(JSON.parse(data.d));
                     }
                 }
@@ -1864,67 +1977,67 @@
         }
 
         function initializeMapIcon(MapJSON) {
-                // Setup the different icons and shadows
-                var iconURLPrefix = 'http://maps.google.com/mapfiles/ms/icons/';
+            // Setup the different icons and shadows
+            var iconURLPrefix = 'http://maps.google.com/mapfiles/ms/icons/';
 
-                var icons = [
-                iconURLPrefix + 'red-dot.png',
-                iconURLPrefix + 'green-dot.png',
-                iconURLPrefix + 'blue-dot.png',
-                iconURLPrefix + 'orange-dot.png',
-                iconURLPrefix + 'purple-dot.png',
-                iconURLPrefix + 'pink-dot.png',
-                iconURLPrefix + 'yellow-dot.png'];
+            var icons = [
+            iconURLPrefix + 'red-dot.png',
+            iconURLPrefix + 'green-dot.png',
+            iconURLPrefix + 'blue-dot.png',
+            iconURLPrefix + 'orange-dot.png',
+            iconURLPrefix + 'purple-dot.png',
+            iconURLPrefix + 'pink-dot.png',
+            iconURLPrefix + 'yellow-dot.png'];
 
-                var icons_length = icons.length;
+            var icons_length = icons.length;
 
-                for (var i = 0; i < MapJSON.length; i++) {
-                    var address = MapJSON[i];
-                    var VendorName = address["VendorName"];
-                    var Latitude = address["Latitude"];
-                    var Longitude = address["Longitude"];
-                    var AddressType = address["AddressType"];
-                    var VendorStatus = address["VendorStatus"]
-                    if (Latitude != null && Latitude != "" && Longitude != null && Longitude != "") {
-                        var iconCounter = 0;
-                        //if (AddressType == "Primary") {
-                        //    iconCounter = 0;
-                        //}
-                        //if (AddressType == "Secondary") {
-                        //    iconCounter = 2;
-                        //}
-                        //if (AddressType == "Billing") {
-                        //    iconCounter = 3;
-                        //}
-                        if (VendorStatus == "Prospect") {
-                            iconCounter = 0;
-                        }
-                        if (VendorStatus == "Active-Past") {
-                            iconCounter = 2;
-                        }
-                        if (VendorStatus == "Deactivate") {
-                            iconCounter = 3;
-                        }
-                        var infowindow = new google.maps.InfoWindow({
-                            maxWidth: 160
-                        });
-
-                        var marker = new google.maps.Marker({
-                            position: new google.maps.LatLng(Latitude, Longitude),
-                            map: map,
-                            icon: icons[iconCounter],
-                            title: VendorName
-                        });
-
-                        google.maps.event.addListener(marker, 'click', (function (marker, i) {
-                            return function () {
-                                var FullAddress = "<b>" + MapJSON[i]['VendorName'] + "</b><p> " + MapJSON[i]['Address'] + ", " + MapJSON[i]['City'] + ", " + MapJSON[i]['Country'] + ", " + MapJSON[i]['Zip'] + "</p>";
-                                infowindow.setContent(FullAddress);
-                                infowindow.open(map, marker);
-                            }
-                        })(marker, i));
+            for (var i = 0; i < MapJSON.length; i++) {
+                var address = MapJSON[i];
+                var VendorName = address["VendorName"];
+                var Latitude = address["Latitude"];
+                var Longitude = address["Longitude"];
+                var AddressType = address["AddressType"];
+                var VendorStatus = address["VendorStatus"]
+                if (Latitude != null && Latitude != "" && Longitude != null && Longitude != "") {
+                    var iconCounter = 0;
+                    //if (AddressType == "Primary") {
+                    //    iconCounter = 0;
+                    //}
+                    //if (AddressType == "Secondary") {
+                    //    iconCounter = 2;
+                    //}
+                    //if (AddressType == "Billing") {
+                    //    iconCounter = 3;
+                    //}
+                    if (VendorStatus == "Prospect") {
+                        iconCounter = 0;
                     }
+                    if (VendorStatus == "Active-Past") {
+                        iconCounter = 2;
+                    }
+                    if (VendorStatus == "Deactivate") {
+                        iconCounter = 3;
+                    }
+                    var infowindow = new google.maps.InfoWindow({
+                        maxWidth: 160
+                    });
+
+                    var marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(Latitude, Longitude),
+                        map: map,
+                        icon: icons[iconCounter],
+                        title: VendorName
+                    });
+
+                    google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                        return function () {
+                            var FullAddress = "<b>" + MapJSON[i]['VendorName'] + "</b><p> " + MapJSON[i]['Address'] + ", " + MapJSON[i]['City'] + ", " + MapJSON[i]['State'] + ", " + MapJSON[i]['Country'] + ", " + MapJSON[i]['Zip'] + "</p>";
+                            infowindow.setContent(FullAddress);
+                            infowindow.open(map, marker);
+                        }
+                    })(marker, i));
                 }
+            }
         }
 
         function SearchText() {
@@ -1967,8 +2080,7 @@
                     //alert(data.d);
                     var dataInput = (data.d).split("@^");
                     $("#<%=txtPrimaryCity.ClientID%>").val(dataInput[0]);
-                    //$(e).closest('tr').next().find('input').val(dataInput[0]);
-                    //$(e).closest('tr').next().next().find('input').val(dataInput[1]);
+                    $("#<%=txtPrimaryState.ClientID%>").val(dataInput[1]);
                 }
             });
         }
@@ -1986,8 +2098,7 @@
                     //alert(data.d);
                     var dataInput = (data.d).split("@^");
                     $("#<%=txtPrimaryCity.ClientID%>").val(dataInput[0]);
-                    //$(source._element).closest('tr').next().find('input').val(dataInput[0]);
-                    //$(source._element).closest('tr').next().next().find('input').val(dataInput[1]);
+                    $("#<%=txtPrimaryState.ClientID%>").val(dataInput[1]);
                 }
             });
         }

@@ -44,8 +44,8 @@ namespace JG_Prospect.Sr_App
         {
             if (Session["loginid"] == null)
             {
-               // ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('You have to login first');", true);
-             //   Response.Redirect("~/login.aspx");
+                // ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('You have to login first');", true);
+                //   Response.Redirect("~/login.aspx");
             }
             else
             {
@@ -143,6 +143,7 @@ namespace JG_Prospect.Sr_App
                             ddlSource.Items.Add("Select Source");
                             ddlSource.SelectedIndex = 0;
                         }
+                        BindVendorNotes();
                     }
                     catch (Exception ex)
                     {
@@ -501,6 +502,7 @@ namespace JG_Prospect.Sr_App
                 dtVendorEmail.Columns.Add("Email");
                 dtVendorEmail.Columns.Add("FName");
                 dtVendorEmail.Columns.Add("LName");
+                dtVendorEmail.Columns.Add("Title");
                 dtVendorEmail.Columns.Add("Contact");
                 dtVendorEmail.Columns.Add("AddressID");
                 dtVendorEmail.Columns.Add("TempID");
@@ -518,6 +520,7 @@ namespace JG_Prospect.Sr_App
                     drow["Email"] = serializedEmailJson;
                     drow["FName"] = VendorEmails[i].FirstName.ToString();
                     drow["LName"] = VendorEmails[i].LastName.ToString();
+                    drow["Title"] = VendorEmails[i].Title.ToString();
                     JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
                     string serializedContactJson = jsSerializer.Serialize(VendorEmails[i].Contact);
                     drow["Contact"] = serializedContactJson;
@@ -538,6 +541,7 @@ namespace JG_Prospect.Sr_App
                 dtVendorAddress.Columns.Add("AddressType");
                 dtVendorAddress.Columns.Add("Address");
                 dtVendorAddress.Columns.Add("City");
+                dtVendorAddress.Columns.Add("State");
                 dtVendorAddress.Columns.Add("Zip");
                 dtVendorAddress.Columns.Add("Country");
                 dtVendorAddress.Columns.Add("AddressID");
@@ -556,16 +560,17 @@ namespace JG_Prospect.Sr_App
                     AddressRow["AddressType"] = Address[i].AddressType.ToString();
                     AddressRow["Address"] = Address[i].Address.ToString();
                     AddressRow["City"] = Address[i].City.ToString();
+                    AddressRow["State"] = Address[i].State.ToString();
                     AddressRow["Zip"] = Address[i].Zip.ToString();
                     AddressRow["Country"] = Address[i].Country.ToString();
                     AddressRow["TempID"] = NewTempID;
 
                     DataTable dtCoordinates = new DataTable();
 
-                    string VendorAddress = AddressRow["Address"].ToString() + " " + AddressRow["City"].ToString() + " " + AddressRow["Country"].ToString() + " " + AddressRow["Zip"].ToString();
+                    string VendorAddress = AddressRow["Address"].ToString() + " " + AddressRow["City"].ToString() + " " + AddressRow["State"].ToString() + " " + AddressRow["Country"].ToString() + " " + AddressRow["Zip"].ToString();
                     try
                     {
-                        string url = "http://maps.google.com/maps/api/geocode/xml?address=" + VendorAddress + "&sensor=false";
+                        string url = "http://maps.google.com/maps/api/geocode/xml?address=" + VendorAddress;
                         WebRequest request = WebRequest.Create(url);
                         using (WebResponse response = (HttpWebResponse)request.GetResponse())
                         {
@@ -590,7 +595,7 @@ namespace JG_Prospect.Sr_App
                     {
                     }
 
-                    
+
                     if (dtCoordinates.Rows.Count != 0)
                     {
                         AddressRow["Latitude"] = dtCoordinates.Rows[0]["Latitude"].ToString();
@@ -637,7 +642,7 @@ namespace JG_Prospect.Sr_App
             //obj.EditVendor(Convert.ToInt16(vendorid));
         }
 
-         [WebMethod]
+        [WebMethod]
         public static string GetCityState(string strZip)
         {
             DataSet ds = new DataSet();
@@ -659,13 +664,13 @@ namespace JG_Prospect.Sr_App
 
         }
 
-          [WebMethod]
+        [WebMethod]
         public static string GetZipcodes(string prefixText)
         {
             List<string> ZipCodes = new List<string>();
             DataSet dds = new DataSet();
             dds = UserBLL.Instance.fetchzipcode(prefixText);
-            
+
             List<AutoCompleteVendor> lstResult = new List<AutoCompleteVendor>();
             int i = 0;
             foreach (DataRow item in dds.Tables[0].Rows)
@@ -720,7 +725,7 @@ namespace JG_Prospect.Sr_App
             //}
             else
             {
-
+                SaveAddressAndVendorEmail();
                 //if (ddlVendorName.SelectedValue != "")
                 //    objvendor.vendor_id = Convert.ToInt32(ddlVendorName.SelectedValue);
                 //else
@@ -788,6 +793,7 @@ namespace JG_Prospect.Sr_App
                 objvendor.PaymentMethod = DrpPaymentMode.SelectedValue;
 
                 string NewTempID = "";
+                string NotesTempID = "";
                 if (string.IsNullOrEmpty(objvendor.vendor_id.ToString()) || objvendor.vendor_id == 0 || btnSave.Text == "Save")
                 {
                     if (HttpContext.Current.Session["TempID"] == null)
@@ -798,8 +804,19 @@ namespace JG_Prospect.Sr_App
                     {
                         NewTempID = Convert.ToString(HttpContext.Current.Session["TempID"]);
                     }
+
+
+                    if (HttpContext.Current.Session["NotesTempID"] == null)
+                    {
+                        NotesTempID = Guid.NewGuid().ToString();
+                    }
+                    else
+                    {
+                        NotesTempID = Convert.ToString(HttpContext.Current.Session["NotesTempID"]);
+                    }
                 }
                 objvendor.TempID = NewTempID;
+                objvendor.NotesTempID = NotesTempID;
 
                 bool res = VendorBLL.Instance.savevendor(objvendor);
                 HttpContext.Current.Session["TempID"] = null;
@@ -845,6 +862,7 @@ namespace JG_Prospect.Sr_App
             DrpPaymentMode.ClearSelection();
             DrpPaymentTerms.ClearSelection();
             txtPrimaryCity.Text = "";
+            txtPrimaryState.Text = "";
             txtPrimaryZip.Text = "";
             txtPrimaryAddress.Text = "";
             ddlCountry.ClearSelection();
@@ -853,6 +871,10 @@ namespace JG_Prospect.Sr_App
             DrpVendorAddress.Items.Add(new System.Web.UI.WebControls.ListItem("Select", "Select"));
             txtPrimaryContactExten0.Text = txtPrimaryContact0.Text = txtSecContactExten0.Text = txtSecContact0.Text = txtAltContactExten0.Text = txtAltContact0.Text = null;
             btnSave.Text = "Save";
+
+            HttpContext.Current.Session["TempID"] = "";
+            HttpContext.Current.Session["NotesTempID"] = "";
+            BindVendorNotes();
         }
 
         #endregion
@@ -909,6 +931,13 @@ namespace JG_Prospect.Sr_App
             ddlVendorCatPopup.DataValueField = ds.Tables[0].Columns[0].ToString();
             ddlVendorCatPopup.DataBind();
             ddlVendorCatPopup.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select", "Select"));
+
+
+            ddlvendercategoryname.DataSource = ds;
+            ddlvendercategoryname.DataTextField = ds.Tables[0].Columns[1].ToString();
+            ddlvendercategoryname.DataValueField = ds.Tables[0].Columns[0].ToString();
+            ddlvendercategoryname.DataBind();
+            ddlvendercategoryname.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select", "Select"));
 
         }
 
@@ -3142,7 +3171,7 @@ namespace JG_Prospect.Sr_App
             }
         }
         #endregion
-        
+
         #region Edit Click
         protected void lnkVendorName_Click(object sender, EventArgs e)
         {
@@ -3163,6 +3192,9 @@ namespace JG_Prospect.Sr_App
             {
                 clear();
                 DataSet dsProduct = VendorBLL.Instance.GetProductCategoryByVendorCatID(Convert.ToString(ds.Tables[0].Rows[0]["VendorCategoryId"]) == "Select" ? "0" : Convert.ToString(ds.Tables[0].Rows[0]["VendorCategoryId"]));
+
+                SetManufacturerType(Convert.ToString(ds.Tables[0].Rows[0]["ManufacturerType"]));
+
                 if (!string.IsNullOrEmpty(Convert.ToString(dsProduct.Tables[0].Rows[0]["ProductCategoryId"])))
                 {
                     ddlprdtCategory.SelectedValue = Convert.ToString(dsProduct.Tables[0].Rows[0]["ProductCategoryId"]) == "0" ? "Select" : Convert.ToString(dsProduct.Tables[0].Rows[0]["ProductCategoryId"]);
@@ -3219,7 +3251,6 @@ namespace JG_Prospect.Sr_App
             //txtNotes.Text = ds.Tables[0].Rows[0]["Notes"].ToString();
             ddlVendorStatus.SelectedValue = Convert.ToString(ds.Tables[0].Rows[0]["VendorStatus"]);
             txtTaxId.Text = Convert.ToString(ds.Tables[0].Rows[0]["TaxId"]);
-            SetManufacturerType(Convert.ToString(ds.Tables[0].Rows[0]["ManufacturerType"]));
             txtWebsite.Text = Convert.ToString(ds.Tables[0].Rows[0]["Website"]);
             //txtBillingAddr.Text = Convert.ToString(ds.Tables[0].Rows[0]["BillingAddress"]);
 
@@ -3237,7 +3268,7 @@ namespace JG_Prospect.Sr_App
 
             DrpVendorAddress.Items.Clear();
             DrpVendorAddress.Items.Add(new System.Web.UI.WebControls.ListItem("Select", "Select"));
-            if (dsAddress!=null && dsAddress.Tables[0].Rows.Count > 0)
+            if (dsAddress != null && dsAddress.Tables[0].Rows.Count > 0)
             {
                 for (int i = 0; i < dsAddress.Tables[0].Rows.Count; i++)
                 {
@@ -3248,6 +3279,7 @@ namespace JG_Prospect.Sr_App
                     {
                         ddlAddressType.SelectedValue = Convert.ToString(dr["AddressType"]);
                         txtPrimaryCity.Text = Convert.ToString(dr["City"]);
+                        txtPrimaryState.Text = Convert.ToString(dr["State"]);
                         txtPrimaryZip.Text = Convert.ToString(dr["Zip"]);
                         txtPrimaryAddress.Text = Convert.ToString(dr["Address"]);
                         ddlCountry.SelectedValue = Convert.ToString(dr["Country"]);
@@ -3288,7 +3320,7 @@ namespace JG_Prospect.Sr_App
             {
                 DrpPaymentMode.SelectedValue = Convert.ToString(ds.Tables[0].Rows[0]["PaymentMethod"]);
             }
-
+            BindVendorNotes();
             LoadVendorEmails(VendorIdToEdit, Convert.ToInt32(ds.Tables[0].Rows[0]["AddressID"] == DBNull.Value ? "0" : ds.Tables[0].Rows[0]["AddressID"]));
 
             btnSave.Text = "Update";
@@ -3298,7 +3330,8 @@ namespace JG_Prospect.Sr_App
         #endregion
 
         #region Address Add Edit
-        protected void BtnSaveLoaction_Click(object sender, EventArgs e)
+
+        public void SaveAddressAndVendorEmail()
         {
             DataTable tblVendorAddress = (DataTable)HttpContext.Current.Session["dtVendorAddress"];
             int addressID = VendorBLL.Instance.InsertVendorAddress(tblVendorAddress);
@@ -3311,6 +3344,10 @@ namespace JG_Prospect.Sr_App
             {
                 addr += ", " + txtPrimaryCity.Text;
             }
+            if (!string.IsNullOrEmpty(txtPrimaryState.Text))
+            {
+                addr += ", " + txtPrimaryState.Text;
+            }
             if (ddlCountry.SelectedValue != "")
             {
                 addr += ", " + ddlCountry.SelectedValue;
@@ -3321,11 +3358,14 @@ namespace JG_Prospect.Sr_App
                 DrpVendorAddress.Items.Add(new System.Web.UI.WebControls.ListItem(addr, addressID.ToString()));
                 DrpVendorAddress.SelectedValue = addressID.ToString();
             }
-            int VendorIdToEdit = Convert.ToInt32(string.IsNullOrEmpty(txtVendorId.Text) ? "0" : txtVendorId.Text);
-            LoadVendorEmails(VendorIdToEdit, addressID);
-            lbladdress.Text = "Address Saved/Updated Successfully.";
-            //ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Vendor Saved/Updated Successfully');", true);
+            //int VendorIdToEdit = Convert.ToInt32(string.IsNullOrEmpty(txtVendorId.Text) ? "0" : txtVendorId.Text);
+            //LoadVendorEmails(VendorIdToEdit, addressID);
+            //lbladdress.Text = "Address Saved/Updated Successfully.";
+        }
 
+        protected void BtnSaveLoaction_Click(object sender, EventArgs e)
+        {
+            SaveAddressAndVendorEmail();
         }
         #endregion
 
@@ -3336,6 +3376,7 @@ namespace JG_Prospect.Sr_App
 
             ddlAddressType.ClearSelection();
             txtPrimaryCity.Text = "";
+            txtPrimaryState.Text = "";
             txtPrimaryZip.Text = "";
             txtPrimaryAddress.Text = "";
             ddlCountry.ClearSelection();
@@ -3361,6 +3402,7 @@ namespace JG_Prospect.Sr_App
                     {
                         ddlAddressType.SelectedValue = Convert.ToString(dr["AddressType"]);
                         txtPrimaryCity.Text = Convert.ToString(dr["City"]);
+                        txtPrimaryState.Text = Convert.ToString(dr["State"]);
                         txtPrimaryZip.Text = Convert.ToString(dr["Zip"]);
                         txtPrimaryAddress.Text = Convert.ToString(dr["Address"]);
                         ddlCountry.SelectedValue = Convert.ToString(dr["Country"]);
@@ -3430,9 +3472,9 @@ namespace JG_Prospect.Sr_App
         #region Get All Vendors Address Detail
         [WebMethod]
         [System.Web.Script.Services.ScriptMethod()]
-        public static string GetAllVendorsAddressDetail(string manufacturer,string productId,string vendorCatId,string vendorSubCatId)
+        public static string GetAllVendorsAddressDetail(string manufacturer, string productId, string vendorCatId, string vendorSubCatId)
         {
-            DataSet ds = VendorBLL.Instance.GetALLVendorAddress(manufacturer,productId, vendorCatId, vendorSubCatId);
+            DataSet ds = VendorBLL.Instance.GetALLVendorAddress(manufacturer, productId, vendorCatId, vendorSubCatId);
             if (ds != null)
             {
                 string AddressJSON = JsonConvert.SerializeObject(ds.Tables[0]);
@@ -3457,6 +3499,7 @@ namespace JG_Prospect.Sr_App
             DrpVendorAddress.ClearSelection();
             ddlAddressType.ClearSelection();
             txtPrimaryCity.Text = "";
+            txtPrimaryState.Text = "";
             txtPrimaryZip.Text = "";
             txtPrimaryAddress.Text = "";
             ddlCountry.ClearSelection();
@@ -3470,7 +3513,7 @@ namespace JG_Prospect.Sr_App
             txtAltContact0.Text = "";
         }
 
-        #region Bind Vendor Grid 
+        #region Bind Vendor Grid
         public void BindVendorGrid()
         {
             string ManufacturerType = GetManufacturerType();
@@ -3509,6 +3552,49 @@ namespace JG_Prospect.Sr_App
             }
         }
         #endregion
+
+        public void BindVendorNotes()
+        {
+            int VendorID = Convert.ToInt32(string.IsNullOrEmpty(txtVendorId.Text) ? "0" : txtVendorId.Text);
+            string TempId = "";
+            if (VendorID==0)
+            {
+                if (HttpContext.Current.Session["NotesTempID"] == null)
+                {
+                    TempId = Guid.NewGuid().ToString();
+                }
+                else
+                {
+                    TempId = Convert.ToString(HttpContext.Current.Session["NotesTempID"]);
+                }
+                HttpContext.Current.Session["NotesTempID"] = TempId;
+            }
+            DataSet ds = VendorBLL.Instance.GetVendorNotes(VendorID, TempId);
+            grdTouchPointLog.DataSource = ds;
+            grdTouchPointLog.DataBind();
+            txtAddNotes.Text = string.Empty;
+        }
+
+        protected void btnAddNotes_Click(object sender, EventArgs e)
+        {
+            int VendorID = Convert.ToInt32(string.IsNullOrEmpty(txtVendorId.Text) ? "0" : txtVendorId.Text);
+            string Notes = txtAddNotes.Text;
+            string TempId = "";
+            if (VendorID == 0)
+            {
+                if (HttpContext.Current.Session["NotesTempID"] == null)
+                {
+                    TempId = Guid.NewGuid().ToString();
+                }
+                else
+                {
+                    TempId = Convert.ToString(HttpContext.Current.Session["NotesTempID"]);
+                }
+                HttpContext.Current.Session["NotesTempID"] = TempId;
+            }
+            Boolean Save = VendorBLL.Instance.SaveVendorNotes(VendorID, Notes, TempId);
+            BindVendorNotes();
+        }
     }
 
     public class NameValue
@@ -3523,6 +3609,7 @@ namespace JG_Prospect.Sr_App
         public string AddressType { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
+        public string State { get; set; }
         public string Zip { get; set; }
         public string Country { get; set; }
         public string TempID { get; set; }
@@ -3533,6 +3620,7 @@ namespace JG_Prospect.Sr_App
         public List<EmailCls> Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string Title { get; set; }
         public List<ContactClass> Contact { get; set; }
         public string AddressID { get; set; }
     }
