@@ -39,7 +39,7 @@ set @strVendorSubCategory='SELECT TVCVS.VendorCategoryId,TVSC.VendorSubCategoryI
  print @strQuery  
  EXECUTE sp_executesql @strQuery,N'@ManufacturerType nvarchar(30)',@ManufacturerType
 End
-
+go
 
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[sp_VendorCategory]') AND type in (N'P', N'PC'))
