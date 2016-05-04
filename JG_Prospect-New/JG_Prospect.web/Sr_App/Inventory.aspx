@@ -193,23 +193,22 @@
             }
     </style>
     <script type="text/javascript">
-        $(function () {
+        function bindClickEvent() {
             $(".inventroy .left_inventroy ul li a").click(function () {
                 //$(this).parent("li").siblings().find("ul").hide();
                 $(this).parent("li").find("ul:first").toggleClass('active');
             });
-
-        });
+        }
 
         function productClick(btn, productId, productName) {
-            $(btn).find("ul:first").toggleClass('active');
+            //$(btn).find("ul:first").toggleClass('active');
             $(".breadcrumb .vSName").hide();
             $(".breadcrumb .vName").hide();
             $(".breadcrumb .pName").show();
             $(".breadcrumb .pName .text").html(productName);
         }
         function vendorClick(btn, productId, productName, vId, vName, IsRetail_Wholesale, IsManufacturer) {
-            $(btn).find("ul:first").toggleClass('active');
+            //$(btn).find("ul:first").toggleClass('active');
             $(".breadcrumb .vSName").hide();
             $(".breadcrumb .pName").show();
             $(".breadcrumb .vName").show();

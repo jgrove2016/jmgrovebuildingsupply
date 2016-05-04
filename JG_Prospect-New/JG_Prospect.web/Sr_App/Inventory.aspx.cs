@@ -27,6 +27,7 @@ namespace JG_Prospect.Sr_App
                     string Mtype = GetManufacturerType();
                     GetInventoryCategoryList(Mtype);
                 }
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "BindEvent", "bindClickEvent();", true);
             }
         }
 
