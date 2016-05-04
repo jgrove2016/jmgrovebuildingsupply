@@ -55,7 +55,7 @@ BEGIN
  EXECUTE sp_executesql @BaseQuery,N'@FilterParams nvarchar(max),@FilterBy nvarchar(50),@ManufacturerType nvarchar(20),@VendorCategoryId nvarchar(10)',  
        @FilterParams,@FilterBy,@ManufacturerType,@VendorCategoryId  
 END  
-  
+  go
   
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[sp_VendorAddress]') AND type in (N'P', N'PC'))
