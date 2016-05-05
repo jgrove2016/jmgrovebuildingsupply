@@ -801,7 +801,7 @@ namespace JG_Prospect.DAL
             }
         }
 
-        public DataSet GetALLVendorAddress(string manufacturer,string productId,string vendorCatId,string vendorSubCatId)
+        public DataSet GetALLVendorAddress(string manufacturer, string productId, string vendorCatId, string vendorSubCatId)
         {
             try
             {
@@ -908,7 +908,7 @@ namespace JG_Prospect.DAL
             }
         }
 
-        public DataSet GetVendorAddress(int VendorId,string TempID)
+        public DataSet GetVendorAddress(int VendorId, string TempID)
         {
             try
             {
@@ -1040,6 +1040,34 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@action", DbType.String, "2");
                     database.AddInParameter(command, "@TempId", DbType.String, TempId);
                     database.AddInParameter(command, "@VendorId", DbType.Int32, VendorId);
+                    DS = database.ExecuteDataSet(command);
+                    return DS;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+
+        public DataSet GetVendorMaterialList(string ManufacturerType, string VendorId, string ProductCatId, string VendorCatId, string VendorSubCatId, string PeriodStart, string PeriodEnd, string PayPeriod)
+        {
+            try
+            {
+                {
+                    SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                    DS = new DataSet();
+                    DbCommand command = database.GetStoredProcCommand("sp_GetVendorMaterialList");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@ManufacturerType", DbType.String, ManufacturerType);
+                    database.AddInParameter(command, "@VendorId", DbType.String, VendorId);
+                    database.AddInParameter(command, "@ProductCatId", DbType.String, ProductCatId);
+                    database.AddInParameter(command, "@VendorCatId", DbType.String, VendorCatId);
+                    database.AddInParameter(command, "@VendorSubCatId", DbType.String, VendorSubCatId);
+                    database.AddInParameter(command, "@PeriodStart", DbType.String, PeriodStart);
+                    database.AddInParameter(command, "@PeriodEnd", DbType.String, PeriodEnd);
+                    database.AddInParameter(command, "@PayPeriod", DbType.String, PayPeriod);
                     DS = database.ExecuteDataSet(command);
                     return DS;
                 }

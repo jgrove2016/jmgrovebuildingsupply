@@ -1067,9 +1067,9 @@
                                                             </div>
 
                                                             <div class="grid">
-                                                                <asp:GridView ID="grdTouchPointLog" runat="server" AutoGenerateColumns="false" CssClass="tableClass" Width="100%" style="margin:0px;">
+                                                                <asp:GridView ID="grdTouchPointLog" runat="server" ShowHeaderWhenEmpty="true" AutoGenerateColumns="false" CssClass="tableClass" Width="100%" Style="margin: 0px;">
                                                                     <Columns>
-                                                                         <asp:TemplateField HeaderText="User Id">
+                                                                        <asp:TemplateField HeaderText="User Id">
                                                                             <ItemTemplate>
                                                                                 <%#Eval("userid")%>
                                                                             </ItemTemplate>
@@ -1597,133 +1597,166 @@
                             <p>&nbsp</p>
                         </div>
                     </div>
-                    <div class="form_panel_custom vendorFilter">
-                        <table id="Table1" cellpadding="0" cellspacing="0" border="0" runat="server">
-                            <tr>
-                                <td>
-                                    <label>
-                                        <strong>Select Period: </strong><span>*</span>
-                                    </label>
-                                </td>
-                                <td>&nbsp;
-                                </td>
-                                <td>
-                                    <label style="width: 50%;">
-                                        <strong>Select Pay Period : </strong>
-                                    </label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <label>
-                                        From :
-                                    </label>
-                                    <asp:TextBox ID="txtfrmdate" runat="server" TabIndex="2" CssClass="date"
-                                        onkeypress="return false" MaxLength="10" AutoPostBack="true"
-                                        Style="width: 150px;"></asp:TextBox>
-                                    <label></label>
-                                    <asp:RequiredFieldValidator ID="requirefrmdate" ControlToValidate="txtfrmdate"
-                                        runat="server" ErrorMessage=" Select From date" ForeColor="Red" ValidationGroup="display">
-                                    </asp:RequiredFieldValidator>
-                                </td>
-                                <td>
-                                    <label style="width: 50px; text-align: right;">
-                                        <span>*</span> To :
-                                    </label>
-                                    <asp:TextBox ID="txtTodate" CssClass="date" onkeypress="return false"
-                                        MaxLength="10" runat="server" TabIndex="3" AutoPostBack="true"
-                                        Style="width: 150px;"></asp:TextBox>
-
-                                    <asp:RequiredFieldValidator ID="Requiretodate" ControlToValidate="txtTodate"
-                                        runat="server" ErrorMessage=" Select To date" ForeColor="Red" ValidationGroup="display">
-                                    </asp:RequiredFieldValidator>
-                                </td>
-                                <td>
-
-                                    <asp:DropDownList ID="drpPayPeriod" runat="server" Width="250px" AutoPostBack="true"
-                                        OnSelectedIndexChanged="drpPayPeriod_SelectedIndexChanged">
-                                    </asp:DropDownList>
-                                </td>
-                            </tr>
-                        </table>
-                        <br />
-                        <br />
-                        <div class="grid">
-
-                            <asp:GridView ID="grdtransations" runat="server" AutoGenerateColumns="false" Width="100%"
-                                CssClass="tableClass" HeaderStyle-Wrap="true" ShowHeaderWhenEmpty="true">
-                                <Columns>
-                                    <asp:BoundField HeaderText="Date" DataField="Date" />
-                                    <asp:BoundField HeaderText="Total Amount" DataField="TotalAmount" />
-                                    <asp:BoundField HeaderText="Description" DataField="Description" />
-                                    <asp:BoundField HeaderText="Payment Method" DataField="PaymentMethod" />
-                                    <asp:BoundField HeaderText="Transaction # - Transaction type" DataField="Transations" />
-                                    <asp:BoundField HeaderText="Status" DataField="Status" />
-                                    <asp:BoundField HeaderText="Invoice Attachement" DataField="InvoiceAttach" />
-                                </Columns>
-                            </asp:GridView>
-                        </div>
-                        <br />
-                        <br />
-                        <div class="grid">
-                            <div style="float: left; width: 23%;">
-                                <table style="width: 100%;">
+                    <asp:UpdatePanel ID="updateMaterialList" UpdateMode="Conditional" runat="server">
+                        <ContentTemplate>
+                            <div class="form_panel_custom vendorFilter">
+                                <table id="Table1" cellpadding="0" cellspacing="0" border="0" runat="server">
                                     <tr>
                                         <td>
-                                            <asp:CheckBox ID="rdoRetailWholesale1" runat="server" Text="Retail/Wholesale" GroupName="MT" />
-                                            <br />
-                                            <asp:CheckBox ID="rdoManufacturer1" runat="server" Text="Manufacturer" GroupName="MT" />
+                                            <label>
+                                                <strong>Select Period: </strong><span>*</span>
+                                            </label>
+                                        </td>
+                                        <td>&nbsp;
+                                        </td>
+                                        <td>
+                                            <label style="width: 50%;">
+                                                <strong>Select Pay Period : </strong>
+                                            </label>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td>Product Category
-                                            <br />
-                                            <asp:DropDownList ID="ddlprdtCategory1" runat="server" Width="162px" AutoPostBack="true" OnSelectedIndexChanged="ddlprdtCategory1_SelectedIndexChanged"></asp:DropDownList>
+                                        <td>
+                                            <label>
+                                                From :
+                                            </label>
+                                            <asp:TextBox ID="txtfrmdate" runat="server" TabIndex="2" CssClass="date"
+                                                onkeypress="return false" MaxLength="10" AutoPostBack="true"
+                                                Style="width: 150px;"></asp:TextBox>
+                                            <label></label>
+                                            <asp:RequiredFieldValidator ID="requirefrmdate" ControlToValidate="txtfrmdate"
+                                                runat="server" ErrorMessage=" Select From date" ForeColor="Red" ValidationGroup="display">
+                                            </asp:RequiredFieldValidator>
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Vendor Category
-                                            <br />
-                                            <asp:DropDownList ID="ddlVndrCategory1" runat="server" Width="162px" AutoPostBack="True" OnSelectedIndexChanged="ddlVndrCategory1_SelectedIndexChanged"></asp:DropDownList>
+                                        <td>
+                                            <label style="width: 50px; text-align: right;">
+                                                <span>*</span> To :
+                                            </label>
+                                            <asp:TextBox ID="txtTodate" CssClass="date" onkeypress="return false"
+                                                MaxLength="10" runat="server" TabIndex="3" AutoPostBack="true"
+                                                Style="width: 150px;"></asp:TextBox>
+
+                                            <asp:RequiredFieldValidator ID="Requiretodate" ControlToValidate="txtTodate"
+                                                runat="server" ErrorMessage=" Select To date" ForeColor="Red" ValidationGroup="display">
+                                            </asp:RequiredFieldValidator>
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Vendor Sub Category
-                                            <br />
-                                            <asp:DropDownList ID="ddlVendorSubCategory1" runat="server" Width="162px" AutoPostBack="True"></asp:DropDownList>
-                                            <%--OnSelectedIndexChanged="ddlVendorSubCategory1_SelectedIndexChanged"--%>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>SKU
-                                            <br />
-                                            <asp:DropDownList ID="DrpSku" runat="server" Width="162px">
-                                                <asp:ListItem>--Select</asp:ListItem>
-                                                <asp:ListItem Value="SOF001">SOF001</asp:ListItem>
+                                        <td>
+
+                                            <asp:DropDownList ID="drpPayPeriod" runat="server" Width="250px" AutoPostBack="true"
+                                                OnSelectedIndexChanged="drpPayPeriod_SelectedIndexChanged">
                                             </asp:DropDownList>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>Description
-                                            <br />
-                                            <asp:TextBox ID="TxtDescription" runat="server" Width="150px"></asp:TextBox>
-                                        </td>
-                                    </tr>
                                 </table>
+                                <br />
+                                <br />
+                                <div class="grid">
+                                    <asp:GridView ID="grdtransations" runat="server" ShowHeaderWhenEmpty="true" AutoGenerateColumns="false" CssClass="tableClass" Width="100%" Style="margin: 0px;">
+                                        <Columns>
+                                            <asp:TemplateField HeaderText="Date">
+                                                <ItemTemplate>
+                                                    <%#Eval("Date")%>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Total Amount">
+                                                <ItemTemplate>
+                                                    <%#Eval("TotalAmount")%>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Description">
+                                                <ItemTemplate>
+                                                    <%#Eval("Description")%>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Payment Method">
+                                                <ItemTemplate>
+                                                    <%#Eval("PaymentMethod")%>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Transaction # - Transaction type">
+                                                <ItemTemplate>
+                                                    <%#Eval("Transations")%>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Status">
+                                                <ItemTemplate>
+                                                    <%#Eval("Status")%>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Invoice Attachement">
+                                                <ItemTemplate>
+                                                    <%#Eval("InvoiceAttach")%>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                        </Columns>
+                                        <EmptyDataTemplate>
+                                            No Data Found.
+                                        </EmptyDataTemplate>
+                                    </asp:GridView>
+                                </div>
+                                <br />
+                                <br />
+                                <div class="grid">
+                                    <div style="float: left; width: 23%;">
+                                        <table style="width: 100%;">
+                                            <tr>
+                                                <td>
+                                                    <asp:CheckBox ID="rdoRetailWholesale1" runat="server" Text="Retail/Wholesale" GroupName="MT" />
+                                                    <br />
+                                                    <asp:CheckBox ID="rdoManufacturer1" runat="server" Text="Manufacturer" GroupName="MT" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Product Category
+                                            <br />
+                                                    <asp:DropDownList ID="ddlprdtCategory1" runat="server" Width="162px" AutoPostBack="true" OnSelectedIndexChanged="ddlprdtCategory1_SelectedIndexChanged"></asp:DropDownList>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Vendor Category
+                                            <br />
+                                                    <asp:DropDownList ID="ddlVndrCategory1" runat="server" Width="162px" AutoPostBack="True" OnSelectedIndexChanged="ddlVndrCategory1_SelectedIndexChanged"></asp:DropDownList>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Vendor Sub Category
+                                            <br />
+                                                    <asp:DropDownList ID="ddlVendorSubCategory1" runat="server" Width="162px" AutoPostBack="True"></asp:DropDownList>
+                                                    <%--OnSelectedIndexChanged="ddlVendorSubCategory1_SelectedIndexChanged"--%>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>SKU
+                                            <br />
+                                                    <asp:DropDownList ID="DrpSku" runat="server" Width="162px">
+                                                        <asp:ListItem>--Select</asp:ListItem>
+                                                        <asp:ListItem Value="SOF001">SOF001</asp:ListItem>
+                                                    </asp:DropDownList>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Description
+                                            <br />
+                                                    <asp:TextBox ID="TxtDescription" runat="server" Width="150px"></asp:TextBox>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div style="float: right; width: 76%; vertical-align: top;">
+                                        <asp:GridView ID="grdprimaryvendor" runat="server" AutoGenerateColumns="false" Width="100%"
+                                            CssClass="tableClass" HeaderStyle-Wrap="true" ShowHeaderWhenEmpty="true">
+                                            <Columns>
+                                                <asp:BoundField HeaderText="Primary vendor - Vendor List" DataField="PrimaryVendor" />
+                                                <asp:BoundField HeaderText="Total Cost:$ - Notes & fees " DataField="TotalCost" />
+                                                <asp:BoundField HeaderText="UOM - $Unit Cost - $Bulk Cost" DataField="UnitCost" />
+                                                <asp:BoundField HeaderText="Vendor Part#- Model#" DataField="VendorPart" />
+                                            </Columns>
+                                        </asp:GridView>
+                                    </div>
+                                </div>
                             </div>
-                            <div style="float: right; width: 76%; vertical-align: top;">
-                                <asp:GridView ID="grdprimaryvendor" runat="server" AutoGenerateColumns="false" Width="100%"
-                                    CssClass="tableClass" HeaderStyle-Wrap="true" ShowHeaderWhenEmpty="true">
-                                    <Columns>
-                                        <asp:BoundField HeaderText="Primary vendor - Vendor List" DataField="PrimaryVendor" />
-                                        <asp:BoundField HeaderText="Total Cost:$ - Notes & fees " DataField="TotalCost" />
-                                        <asp:BoundField HeaderText="UOM - $Unit Cost - $Bulk Cost" DataField="UnitCost" />
-                                        <asp:BoundField HeaderText="Vendor Part#- Model#" DataField="VendorPart" />
-                                    </Columns>
-                                </asp:GridView>
-                            </div>
-                        </div>
-                    </div>
+                        </ContentTemplate>
+                    </asp:UpdatePanel>
 
                     <br />
                     <asp:Panel ID="pnlpopupMaterialList" runat="server" BackColor="White" Height="175px" Width="300px"

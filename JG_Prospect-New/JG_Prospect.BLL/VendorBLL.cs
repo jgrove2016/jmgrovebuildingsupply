@@ -228,6 +228,11 @@ namespace JG_Prospect.BLL
         {
             return VendorDAL.Instance.GetVendorNotes(VendorId, TempId);
         }
+
+        public DataSet GetVendorMaterialList(string ManufacturerType,string VendorId, string ProductCatId, string VendorCatId, string VendorSubCatId, string PeriodStart, string PeriodEnd, string PayPeriod)
+        {
+            return VendorDAL.Instance.GetVendorMaterialList(ManufacturerType,VendorId, ProductCatId, VendorCatId, VendorSubCatId, PeriodStart, PeriodEnd, PayPeriod);
+        }
     }
 
 

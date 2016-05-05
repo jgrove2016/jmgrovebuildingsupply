@@ -159,9 +159,8 @@ namespace JG_Prospect.Sr_App
                     DateTime toDate = Convert.ToDateTime(dsCurrentPeriod.Tables[0].Rows[0]["ToDate"].ToString());
 
                     bindPayPeriod(dsCurrentPeriod);
-
-                    grdtransations.DataSource = new List<JG_Prospect.BLL.clsProcurementData>();
-                    grdtransations.DataBind();
+                    
+                    
                     grdprimaryvendor.DataSource = new List<JG_Prospect.BLL.clsProcurementDataAll>();
                     grdprimaryvendor.DataBind();
                 }
@@ -173,6 +172,24 @@ namespace JG_Prospect.Sr_App
             }
         }
 
+        #endregion
+
+        #region Bind VendorMaterialList
+        public void bindVendorMaterialList()
+        {
+            string VendorId = string.IsNullOrEmpty(txtVendorId.Text) ? "" : txtVendorId.Text;
+            string ProductCatId = ddlprdtCategory.SelectedValue.ToString() == "Select" ? "" : ddlprdtCategory.SelectedValue.ToString();
+            string VendorCatId = ddlVndrCategory.SelectedValue.ToString() == "Select" ? "" : ddlVndrCategory.SelectedValue.ToString();
+            string VendorSubCatId = ddlVendorSubCategory.SelectedValue.ToString() == "Select" ? "" : ddlVendorSubCategory.SelectedValue.ToString();
+            string PeriodStart = txtfrmdate.Text;
+            string PeriodEnd = txtTodate.Text;
+            string PayPeriod = drpPayPeriod.SelectedValue.ToString() == "0" ? "" : drpPayPeriod.SelectedValue.ToString();
+            string ManufacturerType = GetManufacturerType();
+            DataSet dsMaterial = VendorBLL.Instance.GetVendorMaterialList(ManufacturerType, VendorId, ProductCatId, VendorCatId, VendorSubCatId, PeriodStart, PeriodEnd, PayPeriod);
+            grdtransations.DataSource = dsMaterial;
+            grdtransations.DataBind();
+            updateMaterialList.Update();
+        }
         #endregion
 
         #region drpPayPeriod SelectedIndexChanged
@@ -466,6 +483,8 @@ namespace JG_Prospect.Sr_App
                 grdVendorList.DataSource = ds;
                 grdVendorList.DataBind();
             }
+
+            bindVendorMaterialList();
 
             int VendorID = Convert.ToInt32(string.IsNullOrEmpty(txtVendorId.Text) ? "0" : txtVendorId.Text);
             int AddressID = Convert.ToInt32(DrpVendorAddress.SelectedValue == "Select" ? "0" : DrpVendorAddress.SelectedValue);
@@ -3333,6 +3352,7 @@ namespace JG_Prospect.Sr_App
             BindVendorNotes();
             LoadVendorEmails(VendorIdToEdit, Convert.ToInt32(AddressID));
 
+            bindVendorMaterialList();
             btnSave.Text = "Update";
 
         }
