@@ -3588,6 +3588,11 @@ namespace JG_Prospect.Sr_App
         protected void btnAddNotes_Click(object sender, EventArgs e)
         {
             int VendorID = Convert.ToInt32(string.IsNullOrEmpty(txtVendorId.Text) ? "0" : txtVendorId.Text);
+            string UserId = "";
+            if (Session["loginid"] != null)
+            {
+                UserId = Session["loginid"].ToString();
+            }
             string Notes = txtAddNotes.Text;
             string TempId = "";
             if (VendorID == 0)
@@ -3602,7 +3607,7 @@ namespace JG_Prospect.Sr_App
                 }
                 HttpContext.Current.Session["NotesTempID"] = TempId;
             }
-            Boolean Save = VendorBLL.Instance.SaveVendorNotes(VendorID, Notes, TempId);
+            Boolean Save = VendorBLL.Instance.SaveVendorNotes(VendorID, UserId, Notes, TempId);
             BindVendorNotes();
         }
     }

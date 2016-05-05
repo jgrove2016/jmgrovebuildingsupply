@@ -1069,6 +1069,11 @@
                                                             <div class="grid">
                                                                 <asp:GridView ID="grdTouchPointLog" runat="server" AutoGenerateColumns="false" CssClass="tableClass" Width="100%" style="margin:0px;">
                                                                     <Columns>
+                                                                         <asp:TemplateField HeaderText="User Id">
+                                                                            <ItemTemplate>
+                                                                                <%#Eval("userid")%>
+                                                                            </ItemTemplate>
+                                                                        </asp:TemplateField>
                                                                         <asp:TemplateField HeaderText="Date">
                                                                             <ItemTemplate>
                                                                                 <%#Eval("CreatedOn")%>

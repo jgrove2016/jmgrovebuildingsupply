@@ -219,9 +219,9 @@ namespace JG_Prospect.BLL
             return VendorDAL.Instance.GETInvetoryCatogriesList(ManufactureType);
         }
 
-        public bool SaveVendorNotes(int VendorId, string Notes, string TempId)
+        public bool SaveVendorNotes(int VendorId, string UserId, string Notes, string TempId)
         {
-            return VendorDAL.Instance.SaveVendorNotes(VendorId, Notes, TempId);
+            return VendorDAL.Instance.SaveVendorNotes(VendorId, UserId, Notes, TempId);
         }
 
         public DataSet GetVendorNotes(int VendorId, string TempId)

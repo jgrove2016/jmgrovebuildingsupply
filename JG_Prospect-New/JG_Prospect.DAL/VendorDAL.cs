@@ -999,7 +999,7 @@ namespace JG_Prospect.DAL
             }
         }
 
-        public bool SaveVendorNotes(int VendorId, string Notes, string TempId)
+        public bool SaveVendorNotes(int VendorId, string UserId, string Notes, string TempId)
         {
             try
             {
@@ -1011,6 +1011,7 @@ namespace JG_Prospect.DAL
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Connection = con;
                         cmd.Parameters.AddWithValue("@Notes", Notes);
+                        cmd.Parameters.AddWithValue("@userid", UserId);
                         cmd.Parameters.AddWithValue("@VendorId", VendorId);
                         cmd.Parameters.AddWithValue("@TempId", TempId);
                         cmd.Parameters.AddWithValue("@action", 1);
