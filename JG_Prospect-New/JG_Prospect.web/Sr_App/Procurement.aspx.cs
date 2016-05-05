@@ -883,7 +883,7 @@ namespace JG_Prospect.Sr_App
         protected void btneditVendor_Click(object sender, EventArgs e)
         {
             string vid = Request.Form["vendorId"];
-            EditVendor(Convert.ToInt16(vid));
+            EditVendor(Convert.ToInt16(vid), "");
             updtpnlAddVender.Update();
         }
 
@@ -3178,11 +3178,12 @@ namespace JG_Prospect.Sr_App
             LinkButton lnkbtnVendorName = sender as LinkButton;
             GridViewRow gr = (GridViewRow)lnkbtnVendorName.Parent.Parent;
             HiddenField hdnVendorId = (HiddenField)gr.FindControl("hdnVendorId");
-            EditVendor(Convert.ToInt16(hdnVendorId.Value));
+            HiddenField hdnVendorAddressId = (HiddenField)gr.FindControl("hdnVendorAddressId");
+            EditVendor(Convert.ToInt16(hdnVendorId.Value), hdnVendorAddressId.Value.ToString());
             updtpnlAddVender.Update();
         }
 
-        public void EditVendor(int VendorIdToEdit)
+        public void EditVendor(int VendorIdToEdit, string hdnVendorAddressId)
         {
 
             DataSet ds = new DataSet();
@@ -3266,6 +3267,14 @@ namespace JG_Prospect.Sr_App
             }
             DataSet dsAddress = VendorBLL.Instance.GetVendorAddress(Convert.ToInt32(txtVendorId.Text), NewTempID);
 
+            string AddressID = ds.Tables[0].Rows[0]["AddressID"] == DBNull.Value ? "0" : ds.Tables[0].Rows[0]["AddressID"].ToString();
+
+            if (hdnVendorAddressId != "")
+            {
+                AddressID = hdnVendorAddressId;
+            }
+
+
             DrpVendorAddress.Items.Clear();
             DrpVendorAddress.Items.Add(new System.Web.UI.WebControls.ListItem("Select", "Select"));
             if (dsAddress != null && dsAddress.Tables[0].Rows.Count > 0)
@@ -3275,7 +3284,7 @@ namespace JG_Prospect.Sr_App
                     DataRow dr = dsAddress.Tables[0].Rows[i];
 
                     //Set Address Value on Update            
-                    if (Convert.ToString(ds.Tables[0].Rows[0]["AddressID"]) == Convert.ToString(dr["Id"]))
+                    if (AddressID == Convert.ToString(dr["Id"]))
                     {
                         ddlAddressType.SelectedValue = Convert.ToString(dr["AddressType"]);
                         txtPrimaryCity.Text = Convert.ToString(dr["City"]);
@@ -3302,16 +3311,17 @@ namespace JG_Prospect.Sr_App
             {
                 ddlSource.SelectedValue = Convert.ToString(ds.Tables[0].Rows[0]["Vendrosource"]);
             }
-            if (!string.IsNullOrEmpty(Convert.ToString(ds.Tables[0].Rows[0]["AddressID"])))
+            if (!string.IsNullOrEmpty(AddressID))
             {
                 try
                 {
-                    DrpVendorAddress.SelectedValue = ds.Tables[0].Rows[0]["AddressID"].ToString();
+                    DrpVendorAddress.SelectedValue = AddressID;
                 }
                 catch (Exception ex)
                 {
                 }
             }
+
             if (!string.IsNullOrEmpty(Convert.ToString(ds.Tables[0].Rows[0]["PaymentTerms"])))
             {
                 DrpPaymentTerms.SelectedValue = Convert.ToString(ds.Tables[0].Rows[0]["PaymentTerms"]);
@@ -3321,7 +3331,7 @@ namespace JG_Prospect.Sr_App
                 DrpPaymentMode.SelectedValue = Convert.ToString(ds.Tables[0].Rows[0]["PaymentMethod"]);
             }
             BindVendorNotes();
-            LoadVendorEmails(VendorIdToEdit, Convert.ToInt32(ds.Tables[0].Rows[0]["AddressID"] == DBNull.Value ? "0" : ds.Tables[0].Rows[0]["AddressID"]));
+            LoadVendorEmails(VendorIdToEdit, Convert.ToInt32(AddressID));
 
             btnSave.Text = "Update";
 
@@ -3557,7 +3567,7 @@ namespace JG_Prospect.Sr_App
         {
             int VendorID = Convert.ToInt32(string.IsNullOrEmpty(txtVendorId.Text) ? "0" : txtVendorId.Text);
             string TempId = "";
-            if (VendorID==0)
+            if (VendorID == 0)
             {
                 if (HttpContext.Current.Session["NotesTempID"] == null)
                 {
