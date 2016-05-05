@@ -297,7 +297,7 @@ namespace JG_Prospect.Sr_App
 
                         if (IsEmail)
                         {
-                            SendEmailToCustomer(tempInvoiceFileName);
+                            SendEmailToCustomer(tempInvoiceFileName,"");
                         }
                         RefreshData();
                         //GeneratePDF(path, tempWorkOrderFilename , false, createWorkOrder("Work Order-" + Session["CustomerId"].ToString(), int.Parse(ViewState["EstimateId"].ToString())));
@@ -1442,24 +1442,13 @@ namespace JG_Prospect.Sr_App
             }
             return finalEmail;
         }
-
-        public DataSet fetchCustomerEmailTemplate()
-        {
-            //DataSet ds = new DataSet();
-            //ds = AdminBLL.Instance.FetchContractTemplate(20);
-            //return ds;
-            DataSet ds = new DataSet();
-            ds = AdminBLL.Instance.GetEmailTemplate("Sales Auto Email");
-            return ds;
-        }
-
-        protected void SendEmailToCustomer(string contractName)
+        
+        protected void SendEmailToCustomer(string contractName, string triggerOrgin)
         {
             string finalEmail = GetCustomerEmail();
             if (finalEmail != string.Empty)
             {
-                //bool emailStatus = true;
-                string htmlBody = string.Empty;
+                StringBuilder lHTMLBody = new StringBuilder();
                 try
                 {
 
@@ -1476,8 +1465,8 @@ namespace JG_Prospect.Sr_App
                     m.To.Add(new MailAddress(mailId, ""));
                     m.Bcc.Add(new MailAddress("shabbir.kanchwala@straitapps.com", "Shabbir Kanchwala"));
                     m.CC.Add(new MailAddress("jgrove.georgegrove@gmail.com", "Justin Grove"));
-                    
-                    DataSet dsEmailTemplate = fetchCustomerEmailTemplate();//#trackingid#
+
+                    DataSet dsEmailTemplate = AdminBLL.Instance.GetEmailTemplate(triggerOrgin); //#- triggerOrigin is the sub email template name.
 
                     m.Subject = "JMGrove proposal " + "C" + customerId.ToString() + "-" + QuoteNumber;
                     m.IsBodyHtml = true;
@@ -1485,70 +1474,12 @@ namespace JG_Prospect.Sr_App
                     if (dsEmailTemplate.Tables[0].Rows.Count > 0)
                     {
                         m.Subject = dsEmailTemplate.Tables[0].Rows[0]["HTMLSubject"].ToString().Replace("#trackingid#", "C" + customerId.ToString() + "-" + QuoteNumber);
-                        string templateHeader = dsEmailTemplate.Tables[0].Rows[0][0].ToString();
-                        StringBuilder tHeader = new StringBuilder();
-                        tHeader.Append(templateHeader);
-                        var replacedHeader = tHeader.Replace("src=\"../img/Email art header.png\"", "src=cid:myImageHeader")
-                                                    .Replace("lblJobId", "C" + customerId.ToString() + "-" + QuoteNumber)
-                                                    .Replace("lblCustomerId", "C" + customerId.ToString());
-                        htmlBody = replacedHeader.ToString();
-                        htmlBody += "</br></br></br>";
-                        string templateBody = dsEmailTemplate.Tables[0].Rows[0][1].ToString();
-
-                        StringBuilder tbody = new StringBuilder();
-                        tbody.Append(templateBody);
-
-                        htmlBody += templateBody.ToString();
-
-                        htmlBody += "</br></br></br>";
-
-                        string templateFooter = dsEmailTemplate.Tables[0].Rows[0][2].ToString();
-                        StringBuilder tFooter = new StringBuilder();
-                        tFooter.Append(templateFooter);
-                        var replacedFooter = tFooter.Replace("src=\"../img/JG-Logo.gif\"", "src=cid:myImageLogo")
-                                                      .Replace("src=\"../img/Email footer.png\"", "src=cid:myImageFooter")
-                                                   .Replace("src=\"../img/facebook.jpg\"", "src=cid:myImageFooterF")
-                                                   .Replace("src=\"../img/twitter.jpg\"", "src=cid:myImageFooterT")
-                                                  .Replace("src=\"../img/g+.png\"", "src=cid:myImageFooterG");
-                        htmlBody += replacedFooter.ToString();
+                        lHTMLBody.Append(dsEmailTemplate.Tables[0].Rows[0]["HTMLHeader"].ToString() + "<br/><br/>");
+                        lHTMLBody.Append(dsEmailTemplate.Tables[0].Rows[0]["HTMLBody"].ToString() + "<br/><br/>");
+                        lHTMLBody.Append(dsEmailTemplate.Tables[0].Rows[0]["HTMLFooter"].ToString() + "<br/><br/>");
                     }
-                    AlternateView htmlView = AlternateView.CreateAlternateViewFromString(htmlBody, null, "text/html");
 
-                    //string imageSourceHeader = Server.MapPath(@"~\img") + @"\Email art header.png";
-                    //LinkedResource theEmailImageHeader = new LinkedResource(imageSourceHeader);
-                    //theEmailImageHeader.ContentId = "myImageHeader";
-
-                    //string imageSourceLogo = Server.MapPath(@"~\img") + @"\JG-Logo.gif";
-                    //LinkedResource theEmailImageLogo = new LinkedResource(imageSourceLogo);
-                    //theEmailImageLogo.ContentId = "myImageLogo";
-
-                    //string imageFooter = Server.MapPath(@"~\img") + @"\Email footer.png";
-                    //LinkedResource theImageFooter = new LinkedResource(imageFooter);
-                    //theImageFooter.ContentId = "myImageFooter";
-
-                    //string imageFooterF = Server.MapPath(@"~\img") + @"\facebook.jpg";
-                    //LinkedResource theImageFooterF = new LinkedResource(imageFooterF);
-                    //theImageFooterF.ContentId = "myImageFooterF";
-
-                    //string imageFooterT = Server.MapPath(@"~\img") + @"\twitter.jpg";
-                    //LinkedResource theImageFooterT = new LinkedResource(imageFooterT);
-                    //theImageFooterT.ContentId = "myImageFooterT";
-
-                    //string imageFooterG = Server.MapPath(@"~\img") + @"\g+.png";
-                    //LinkedResource theImageFooterG = new LinkedResource(imageFooterG);
-                    //theImageFooterG.ContentId = "myImageFooterG";
-
-                    ////Add the Image to the Alternate view
-                    //htmlView.LinkedResources.Add(theEmailImageHeader);
-                    //htmlView.LinkedResources.Add(theEmailImageLogo);
-                    //htmlView.LinkedResources.Add(theImageFooterF);
-                    //htmlView.LinkedResources.Add(theImageFooter);
-                    //htmlView.LinkedResources.Add(theImageFooterT);
-                    //htmlView.LinkedResources.Add(theImageFooterG);
-
-                    m.AlternateViews.Add(htmlView);
-
-                    m.Body = htmlBody;
+                    m.Body = lHTMLBody.ToString().Replace("lblJobId", "C" + customerId.ToString() + "-" + QuoteNumber).Replace("lblCustomerId", "C" + customerId.ToString()).Replace("#trackingid#", "C" + customerId.ToString() + "-" + QuoteNumber);
 
                     string sourceDirContract = Server.MapPath("~/CustomerDocs/Pdfs/");
                     try
@@ -1564,11 +1495,11 @@ namespace JG_Prospect.Sr_App
                         DataSet ds = AdminBLL.Instance.FetchCustomerAttachments();
                         string sourceDirDocs = Server.MapPath("~/CustomerDocs/CustomerEmailDocument/");
 
-                        if (ds.Tables[0].Rows.Count > 0)
+                        if (dsEmailTemplate.Tables[1].Rows.Count > 0)
                         {
-                            for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                            for (int i = 0; i < dsEmailTemplate.Tables[1].Rows.Count; i++)
                             {
-                                string filename = ds.Tables[0].Rows[i][i].ToString();
+                                string filename = dsEmailTemplate.Tables[1].Rows[i]["DocumentName"].ToString();
                                 Attachment attachment1 = new Attachment(sourceDirDocs + "\\" + filename);
                                 attachment1.Name = filename;
                                 m.Attachments.Add(attachment1);
@@ -1586,13 +1517,10 @@ namespace JG_Prospect.Sr_App
 
                     sc.DeliveryMethod = SmtpDeliveryMethod.Network;
                     sc.EnableSsl = Convert.ToBoolean(ConfigurationManager.AppSettings["enableSSL"].ToString()); // runtime encrypt the SMTP communications using SSL
-                    try
+                    sc.Send(m);
+                    if (triggerOrgin == "Sold Job")
                     {
-                        sc.Send(m);
-                    }
-                    catch (Exception ex)
-                    {
-                       
+                        SendOffertoInstallers(contractName);
                     }
                 }
                 catch (Exception ex)
@@ -1601,6 +1529,93 @@ namespace JG_Prospect.Sr_App
                 }
             }
         }
+
+        protected void SendOffertoInstallers(string ContractName)
+        {
+            DataSet lDsInstEmails = AdminBLL.Instance.GetInstallerEmails();
+
+            StringBuilder lHTMLBody = new StringBuilder();
+            try
+            {
+                string mailId = "";
+                for (int i = 0; i < lDsInstEmails.Tables[0].Rows.Count; i++)
+                {
+                    mailId += lDsInstEmails.Tables[0].Rows[i]["email"].ToString() + ",";
+                }
+                
+                // string vendorName = dr["VendorName"].ToString();
+
+                MailMessage m = new MailMessage();
+                SmtpClient sc = new SmtpClient(ConfigurationManager.AppSettings["smtpHost"].ToString(), Convert.ToInt32(ConfigurationManager.AppSettings["smtpPort"].ToString()));
+
+                string userName = ConfigurationManager.AppSettings["CustomerEmailUsername"].ToString();
+                string password = ConfigurationManager.AppSettings["CustomerEmailPassword"].ToString();
+
+                m.From = new MailAddress(userName, "JMGROVECONSTRUCTION");
+               // m.To.Add(new MailAddress(mailId, ""));
+                m.CC.Add(new MailAddress("shabbir.kanchwala@straitapps.com", "Shabbir Kanchwala"));
+                m.To.Add(new MailAddress("jgrove.georgegrove@gmail.com", "Justin Grove"));
+
+                DataSet dsEmailTemplate = AdminBLL.Instance.GetEmailTemplate("Foreman Mailer"); //#- triggerOrigin is the sub email template name.
+
+                m.Subject = "JMGrove proposal " + "C" + customerId.ToString() + "-" + QuoteNumber;
+                m.IsBodyHtml = true;
+
+                if (dsEmailTemplate.Tables[0].Rows.Count > 0)
+                {
+                    m.Subject = dsEmailTemplate.Tables[0].Rows[0]["HTMLSubject"].ToString().Replace("#trackingid#", "C" + customerId.ToString() + "-" + QuoteNumber);
+                    lHTMLBody.Append("Email TO:" + mailId + "<br/><br/><br/>");
+                    lHTMLBody.Append(dsEmailTemplate.Tables[0].Rows[0]["HTMLHeader"].ToString() + "<br/><br/>");
+                    lHTMLBody.Append(dsEmailTemplate.Tables[0].Rows[0]["HTMLBody"].ToString() + "<br/><br/>");
+                    lHTMLBody.Append(dsEmailTemplate.Tables[0].Rows[0]["HTMLFooter"].ToString() + "<br/><br/>");
+                }
+
+                m.Body = lHTMLBody.ToString().Replace("lblJobId", "C" + customerId.ToString() + "-" + QuoteNumber).Replace("lblCustomerId", "C" + customerId.ToString()).Replace("#trackingid#", "C" + customerId.ToString() + "-" + QuoteNumber);
+
+                string sourceDirContract = Server.MapPath("~/CustomerDocs/Pdfs/");
+                try
+                {
+                    if (ContractName != string.Empty)
+                    {
+                        Attachment attachment = new Attachment(sourceDirContract + "\\" + ContractName);
+                        attachment.Name = ContractName;
+                        m.Attachments.Add(attachment);
+                    }
+
+
+                    string sourceDirDocs = Server.MapPath("~/CustomerDocs/CustomerEmailDocument/");
+                    if (dsEmailTemplate.Tables[1].Rows.Count > 0)
+                    {
+                        for (int i = 0; i < dsEmailTemplate.Tables[1].Rows.Count; i++)
+                        {
+                            string filename = dsEmailTemplate.Tables[1].Rows[i]["DocumentName"].ToString();
+                            Attachment attachment1 = new Attachment(sourceDirDocs + "\\" + filename);
+                            attachment1.Name = filename;
+                            m.Attachments.Add(attachment1);
+                        }
+                    }
+                }
+                catch
+                {
+
+                }
+
+                NetworkCredential ntw = new System.Net.NetworkCredential(userName, password);
+                sc.UseDefaultCredentials = false;
+                sc.Credentials = ntw;
+
+                sc.DeliveryMethod = SmtpDeliveryMethod.Network;
+                sc.EnableSsl = Convert.ToBoolean(ConfigurationManager.AppSettings["enableSSL"].ToString()); // runtime encrypt the SMTP communications using SSL
+                sc.Send(m);
+         
+            }
+            catch (Exception ex)
+            {
+                // ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('" + ex.Message + "');", true);
+            }
+
+        }
+
         protected void btnSaveEmailSold_Click(object sender, EventArgs e)
         {
             if (txtEmailSold.Text.Trim() != "")
@@ -1741,7 +1756,7 @@ namespace JG_Prospect.Sr_App
 
                             if (IsEmail)
                             {
-                                SendEmailToCustomer(tempInvoiceFileName);
+                                SendEmailToCustomer(tempInvoiceFileName, "Sold Job");
                             }
                             RefreshData();
                             //GeneratePDF(path, tempWorkOrderFilename , false, createWorkOrder("Work Order-" + Session["CustomerId"].ToString(), int.Parse(ViewState["EstimateId"].ToString())));
@@ -1996,7 +2011,7 @@ namespace JG_Prospect.Sr_App
 
             if (IsEmail)
             {
-                SendEmailToCustomer(tempInvoiceFileName);
+                SendEmailToCustomer(tempInvoiceFileName, "Not Sold Job");
             }
 
             RefreshData();

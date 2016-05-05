@@ -51,6 +51,10 @@ namespace JG_Prospect.BLL
         {
             return AdminDAL.Instance.GetEmailTemplate(pTemplateName);
         }
+        public DataSet GetInstallerEmails()
+        {
+            return AdminDAL.Instance.GetInstallerEmails();
+        }
 
         public DataSet GetAutoEmailTemplate(int pHTMLTemplateID, int pSubHTMLTemplateID = 0)
         {

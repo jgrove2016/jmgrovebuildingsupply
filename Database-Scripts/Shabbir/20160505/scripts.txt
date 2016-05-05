@@ -1,0 +1,53 @@
+Update tblSubHTMLTemplates SET SubHTMLName = 'Not Sold Job' WHERE SubHTMLName = 'Sales Auto Email'
+GO 
+
+IF NOT EXISTS(Select * from tblSubHTMLTemplates where SubHTMLName='Sold Job')
+Insert into tblsubhtmltemplates (HTMLTemplateID, SubHTMLName,HTMLSubject, HTMLHeader, HTMLBody, HTMLFooter,Updated_On)
+VALUES(100, 'Sold Job', '','','','',GETDATE())
+GO
+
+IF NOT EXISTS(Select * from tblSubHTMLTemplates where SubHTMLName='Foreman Mailer')
+Insert into tblsubhtmltemplates (HTMLTemplateID, SubHTMLName,HTMLSubject, HTMLHeader, HTMLBody, HTMLFooter,Updated_On)
+VALUES(100, 'Foreman Mailer', '','','','',GETDATE())
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[USP_GetInstallerEmailAddress]    Script Date: 05-05-2016 13:46:42 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_GetInstallerEmailAddress]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_GetInstallerEmailAddress]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_GetInstallerEmailAddress]    Script Date: 05-05-2016 13:46:42 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_GetInstallerEmailAddress]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[USP_GetInstallerEmailAddress] AS' 
+END
+GO
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-05-05
+-- Description:	Get Installers email addresses
+-- =============================================
+ALTER PROCEDURE [dbo].[USP_GetInstallerEmailAddress]
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	SELECT Id, FristName, LastName, Email
+	FROM tblInstallUsers
+	WHERE Status in ('Active','OfferMade','Offe rMade') AND Email is not null and Email <> ''
+
+END
+
+GO
+
+

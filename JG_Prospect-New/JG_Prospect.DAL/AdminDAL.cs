@@ -114,6 +114,26 @@ namespace JG_Prospect.DAL
             }
         }
 
+        public DataSet GetInstallerEmails()
+        {
+            DataSet result = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_GetInstallerEmailAddress");
+                    command.CommandType = CommandType.StoredProcedure;
+                    result = database.ExecuteDataSet(command);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+                return null;
+            }
+        }
+
         public DataSet AutoFill(string prefix)
         {
             DataSet result = new DataSet();
