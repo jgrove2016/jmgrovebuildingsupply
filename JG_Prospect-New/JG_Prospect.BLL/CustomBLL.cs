@@ -59,6 +59,14 @@ namespace JG_Prospect.BLL
         {
             return CustomDAL.Instance.UpdateEmailStatusOfCustomMaterialList(jobid, emailStatus);//, productTypeId, estimateId);
         }
+        public bool UpdateEmailStatusOfCustomMaterialList(string jobid, Int32 pProdCatID, string emailStatus)//, int productTypeId, int estimateId)
+        {
+            return CustomDAL.Instance.UpdateEmailStatusOfCustomMaterialList(jobid, pProdCatID, emailStatus);//, productTypeId, estimateId);
+        }
+        public bool UpdateStatusOfJobProdCat(string jobid, int prodCatID, string emailStatus)
+        {
+            return CustomDAL.Instance.UpdateStatusOfJobProdCat(jobid, prodCatID, emailStatus);
+        }
 
         public int UpdateForemanPermissionOfCustomMaterialList2(string jobid, char permissionStatus, string FormanEmail)//, int productTypeId, int estimateId)
         {
@@ -123,6 +131,10 @@ namespace JG_Prospect.BLL
         public int CheckPermissionsForVendors(string jobid)//, int productTypeId, int estimateId)
         {
             return CustomDAL.Instance.CheckPermissionsForVendors(jobid);//, productTypeId, estimateId);
+        }
+        public int CheckPermissionsForVendorsByProdCat(string jobid, int pProdCatID)//, int productTypeId, int estimateId)
+        {
+            return CustomDAL.Instance.CheckPermissionsForVendorsByProdCat(jobid, pProdCatID);
         }
         public int UpdateSrSalesmanPermissionOfCustomMaterialList(string jobid, char permissionStatus, int updatedby)//, int productTypeId, int estimateId)
         {
@@ -243,6 +255,10 @@ namespace JG_Prospect.BLL
         public void UpdateDefaultVendorsInProdLine(Boolean pDefaultVendor, Int32 pProductCatID, Int32 pProdLineID, String pSoldJobID)
         {
             CustomDAL.Instance.UpdateDefaultVendorsInProdLine(pDefaultVendor, pProductCatID, pProdLineID, pSoldJobID);
+        }
+        public void UpdateVendorForPO(Int32 pVendorID, Int32 pProductCatID, Int32 pProdLineID, String pSoldJobID)
+        {
+            CustomDAL.Instance.UpdateVendorForPO(pVendorID, pProductCatID, pProdLineID, pSoldJobID);
         }
         public void UpdateVendorIDForSpecMaterial(String pVendorIDs, Int32 pMaterialListID)
         {

@@ -94,7 +94,7 @@ namespace JG_Prospect.BLL
             return AdminDAL.Instance.UpdateEmailVendorTemplate(EmailTemplateHeader, EmailTemplateFooter, subject, pHTMLTemplateID, custList);
         }
 
-        public int AddMaterialListAttachment(String pSoldJobID, Int32 pProductCatID, List<CustomerDocument> pAttachmentList, int pAttachmentType, int pVendorID)
+        public string AddMaterialListAttachment(String pSoldJobID, Int32 pProductCatID, List<CustomerDocument> pAttachmentList, int pAttachmentType, int pVendorID)
         {
             return AdminDAL.Instance.AddMaterialListAttachment(pSoldJobID, pProductCatID, pAttachmentList, pAttachmentType, pVendorID);
         }

@@ -1222,16 +1222,29 @@ namespace JG_Prospect.Sr_App
                 string HTML_TAG_PATTERN = "<.*?>";
                 DataSet ds = new DataSet(); //AdminBLL.Instance.GetEmailTemplate("Sales Auto Email");// AdminBLL.Instance.FetchContractTemplate(104);
 
-                if (Designition.Contains("Install"))
+                ds = AdminBLL.Instance.GetEmailTemplate(Designition);// AdminBLL.Instance.FetchContractTemplate(104);
+                if (ds == null)
                 {
-                    ds = AdminBLL.Instance.GetEmailTemplate("Installer");// AdminBLL.Instance.FetchContractTemplate(104);
+                    if (Designition.Contains("Install"))
+                    {
+                        ds = AdminBLL.Instance.GetEmailTemplate("Installer - Helper");// AdminBLL.Instance.FetchContractTemplate(104);
+                    }
+                    else
+                    {
+                        ds = AdminBLL.Instance.GetEmailTemplate("SubContractor");// AdminBLL.Instance.FetchContractTemplate(104);
+                    }
                 }
-                else
+                else if (ds.Tables[0].Rows.Count == 0)
                 {
-                    ds = AdminBLL.Instance.GetEmailTemplate("Sub Contractor");// AdminBLL.Instance.FetchContractTemplate(104);
+                    if (Designition.Contains("Install"))
+                    {
+                        ds = AdminBLL.Instance.GetEmailTemplate("Installer - Helper");// AdminBLL.Instance.FetchContractTemplate(104);
+                    }
+                    else
+                    {
+                        ds = AdminBLL.Instance.GetEmailTemplate("SubContractor");// AdminBLL.Instance.FetchContractTemplate(104);
+                    }
                 }
-                
-
 
                 string strHeader = ds.Tables[0].Rows[0]["HTMLHeader"].ToString(); //GetEmailHeader(status);
                 string strBody = ds.Tables[0].Rows[0]["HTMLBody"].ToString(); //GetEmailBody(status);

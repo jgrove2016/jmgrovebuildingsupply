@@ -353,7 +353,43 @@
                 }
             });
         }
+        function updateVendor(lID, lProdCatID, vendorid, obj){
+            
+            if(!obj.checked){
+                return;
+            }
 
+            $.ajax({
+                type: "POST",
+                url: "Custom_MaterialList.aspx/UpdateVendorPO",
+                data: "{'pProductLineID':'" +lID + "', 'pProductCatID':'" + lProdCatID + "', 'pVendorID': "+ vendorid  +"}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "JSON",
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(errorThrown);
+                },
+                success: function (result) {
+                    if (result != null) {
+                        var flg = (result.d);
+                        if (flg == "1") {
+                            var spanID = '';
+                            var lnkID='';
+                            $("#" + sender.parentElement.id).children().each(function (index, elem) {
+                                if (elem.id.indexOf('lblVendorName') >= 0) {spanID=elem;}
+                                if (elem.id.indexOf('lnkAddVen') >= 0) {lnkID=elem;}
+                                if (elem.id.indexOf('chkDefault') >= 0) {
+                                    spanID.style.display = (elem.checked?'none':'');
+                                    lnkID.style.display = (elem.checked?'none':'');
+                                }
+                            });
+                        }
+                        else {
+                            alert('Transaction failed');
+                        }
+                    }
+                }
+            });
+        }
         function UpdateDefault(sender){
             var lProdCatID = sender.parentElement.className;
             var lID = sender.parentElement.id;
@@ -710,7 +746,9 @@
                                     <asp:LinkButton ID="lnkDeleteProdCat" CommandArgument='<%#Eval("ProductCatID") %>' OnClick="lnkDeleteProdCat_Click" runat="server" OnClientClick="return confirm('Deleting product category will delete all associated line items. Are you sure you want to delete?')">Delete</asp:LinkButton>
 
                                 </div>
-                       
+                                <div style="float: right; width: 34%; display:none">
+                                    <b>Status: </b><asp:Label ID="lblProdCatStatus" runat="server" Text=""></asp:Label>
+                                </div>
                                 <div style="float: right; width: 34%; display:none">
                                     Vendor Category:
                                             <asp:DropDownList ID="dldVendorCategory" Width="70%" AutoPostBack="false" OnSelectedIndexChanged="dldVendorCategory_SelectedIndexChanged" runat="server"></asp:DropDownList><br />
@@ -773,8 +811,8 @@
                                                         <%--<asp:ListBox onchange="SaveVendor(this)" ID="lstVendorName" Width="25%" SelectionMode="Multiple" CssClass="form-contr2ol" runat="server"></asp:ListBox>--%>
                                                         <asp:Label ID="lblVendorNames" runat="server" Text=""></asp:Label>
                                                         <asp:LinkButton ID="lnkAddVendors" runat="server" CommandArgument='<%#Eval("Id") %>' CommandName="AddVendor" OnClick="lnkAddVendors_Click">+ Add</asp:LinkButton>
-                                                        <asp:CheckBox onclick="UpdateDefault(this);" ID="chkDefault" Text="Default" runat="server" />
-                                                        <asp:LinkButton ID="lnkaddvendorquotes" runat="server" Text="Attach Quotes" OnClick="lnkaddvendorquotes_Click" HeaderStyle-Width="200px">Attach Quotes</asp:LinkButton>
+                                                        <asp:CheckBox Style="display:none" onclick="UpdateDefault(this);" ID="chkDefault" Text="Default" runat="server" />
+                                                        <asp:LinkButton ID="lnkaddvendorquotes" Visible="false" runat="server" Text="Attach Quotes" OnClick="lnkaddvendorquotes_Click" HeaderStyle-Width="200px">Attach Quotes</asp:LinkButton>
                                                         
                                                     </div>
                                                     
@@ -832,7 +870,7 @@
                                 </div>
                                 <div style="float: left; width: 30%; vertical-align: top; padding-top: 0px;">
                                     <h5 style="margin-top: 0px;">Attached Quotes:</h5>
-                                    <asp:DataList ID="grdPurchaseOrder" runat="server" RepeatLayout="Table" RepeatColumns="3">
+                                    <asp:DataList ID="grdPurchaseOrder" runat="server" RepeatLayout="Table" RepeatColumns="1">
                                         <ItemTemplate>
                                             <span style="width: 250px; background-color: #f8f5f5; padding: 5px;">
                                                 <a href='<%#Eval("DocumentPath") %>' target="_blank">
@@ -846,6 +884,7 @@
                             </fieldset>
                             <div class="btn_sec">
                                 <asp:Button ID="btnSendEmailToVendorsForProd" runat="server" CommandArgument='<%#Eval("ProductCatId") %>' Text="Send Mail to Vendors" OnClick="btnSendEmailToVendorsForProd_Click" OnClientClick="return ValidatePermissions()" />
+                                <asp:Button ID="btnSendPurchaseOrder" runat="server" CommandArgument='<%#Eval("ProductCatId") %>' Text="Send PO to Vendors" OnClick="btnSendPurchaseOrder_Click" OnClientClick="return ValidatePermissions()" />
                             </div>
                             <hr style="border: none; background: #ccc; height: 2px; margin-top: 10px; margin-bottom: 20px" />
 
@@ -853,6 +892,7 @@
                         <Triggers>
                             <asp:PostBackTrigger ControlID="btnAttachFile" />
                             <asp:PostBackTrigger ControlID="btnSendEmailToVendorsForProd" />
+                            <asp:AsyncPostBackTrigger ControlID="btnSendPurchaseOrder" />
                         </Triggers>
                     </asp:UpdatePanel>
                 </ItemTemplate>

@@ -1615,7 +1615,7 @@ namespace JG_Prospect.Sr_App
         public DataSet fetchVendorCategoryEmailTemplate()
         {
             DataSet ds = new DataSet();
-            ds = AdminBLL.Instance.GetEmailTemplate("VendorCategoryEmail_Template");
+            ds = AdminBLL.Instance.GetEmailTemplate("Manufacturer");
             return ds;
         }
         protected bool sendEmailToVendorCategories(List<CustomMaterialList> cmList)
@@ -1742,7 +1742,7 @@ namespace JG_Prospect.Sr_App
         public DataSet fetchVendorEmailTemplate()
         {
             DataSet ds = new DataSet();
-            ds = AdminBLL.Instance.FetchContractTemplate(100);
+            ds = AdminBLL.Instance.GetEmailTemplate("VendorEmail_Template"); ;
             return ds;
         }
 
@@ -2154,6 +2154,20 @@ namespace JG_Prospect.Sr_App
         {
             string lResult = "1";
             CustomBLL.Instance.UpdateDefaultVendorsInProdLine(pDefaultVendor, pProductCatID, pProductLineID, jobId);
+            return lResult;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pProductCatID"></param>
+        /// <param name="pVendorIds"></param>
+        /// <param name="pProductLineID"></param>
+        /// <returns></returns>
+        [WebMethod]
+        public static string UpdateVendorPO(Int32 pProductCatID, Int32 pVendorID, Int32 pProductLineID)
+        {
+            string lResult = "1";
+            CustomBLL.Instance.UpdateVendorForPO(pVendorID, pProductCatID, pProductLineID, jobId);
             return lResult;
         }
         /// <summary>
@@ -2996,7 +3010,7 @@ namespace JG_Prospect.Sr_App
                     {
                         if (lRow["VendorID"].ToString() == lVendorId)
                         {
-                            lblVendorNames.Text += lRow["VendorName"].ToString() + " <a href='javascript:void(0);' onclick='ShowAttachQuotes(" + lProdCatID + "," + lVendorId + ")'>Attach Quote</a><br/>";
+                            lblVendorNames.Text += "<input type='radio' " + ((lDr["VendorID"].ToString() == lVendorId.ToString()) ? "checked='checked'" : "") + " onclick='updateVendor(" + lDr["id"] + "," + lProdCatID + "," + lVendorId + ", this)'  id='rdo" + lDr["id"] + "' name='grp" + lDr["id"] + "' /> <label for='rdo" + lDr["id"] + "'>" + lRow["VendorName"].ToString() + "</label> <a href='javascript:void(0);' onclick='ShowAttachQuotes(" + lProdCatID + "," + lVendorId + ")'>Attach Quote</a><br/>";
                         }
                     }
                 }
@@ -3352,6 +3366,9 @@ namespace JG_Prospect.Sr_App
                 RadioButton rdoManufacturer = (RadioButton)e.Item.FindControl("rdoManufacturer");
                 RadioButton rdoWholeSaler = (RadioButton)e.Item.FindControl("rdoWholeSaler");
 
+                Button btnSendEmailToVendorsForProd = (Button)e.Item.FindControl("btnSendEmailToVendorsForProd");
+                Button btnSendPurchaseOrder = (Button)e.Item.FindControl("btnSendPurchaseOrder");
+
                 DropDownList ddlCategory = (DropDownList)e.Item.FindControl("ddlCategory");
                 ddlCategory.DataSource = ProductDataset;
                 ddlCategory.DataTextField = "ProductName";
@@ -3360,6 +3377,16 @@ namespace JG_Prospect.Sr_App
                 
                 DataRowView lDrView = (DataRowView)e.Item.DataItem;
                 int lProdCatID = Convert.ToInt32(lDrView["ProductCatID"]);
+                if (lDrView["EmailStatus"].ToString() == "C")
+                {
+                    btnSendEmailToVendorsForProd.Text = "Resend Quote Request";
+                   // btnSendPurchaseOrder.Visible = true;
+                }
+                else
+                {
+                    btnSendEmailToVendorsForProd.Text = "Request Quotes";
+                    //btnSendPurchaseOrder.Visible = false;
+                }
 
                 DataList grdAttachment = (DataList)e.Item.FindControl("grdAttachment");
                 grdAttachment.DataSource = new DataView(MaterialListAttachment, "ProductCatId=" + lProdCatID + " and AttachmentType=1", "Id desc", DataViewRowState.CurrentRows);
@@ -3542,8 +3569,8 @@ namespace JG_Prospect.Sr_App
                     string password = ConfigurationManager.AppSettings["VendorCategoryPassword"].ToString();
 
                     m.From = new MailAddress(userName, "JGrove Construction");
-                    m.To.Add(new MailAddress(mailId, vendorName));
-                    m.Bcc.Add(new MailAddress("shabbir.kanchwala@straitapps.com", "Shabbir Kanchwala"));
+                   // m.To.Add(new MailAddress(mailId, vendorName));
+                    m.To.Add(new MailAddress("shabbir.kanchwala@straitapps.com", "Shabbir Kanchwala"));
                  
                     m.CC.Add(new MailAddress("jgrove.georgegrove@gmail.com", "Justin Grove"));
                     m.Subject = "J.M. Grove " + jobId + " quote request ";
@@ -3585,25 +3612,6 @@ namespace JG_Prospect.Sr_App
                         htmlBody += replacedFooter.ToString();
                     }
                     AlternateView htmlView = AlternateView.CreateAlternateViewFromString(htmlBody, null, "text/html");
-
-                    //string imageSourceHeader = Server.MapPath(@"~\img") + @"\Email art header.png";
-                    //LinkedResource theEmailImageHeader = new LinkedResource(imageSourceHeader);
-                    //theEmailImageHeader.ContentId = "myImageHeader";
-
-                    //string imageSourceLogo = Server.MapPath(@"~\img") + @"\JG-Logo-white.gif";
-                    //LinkedResource theEmailImageLogo = new LinkedResource(imageSourceLogo);
-                    //theEmailImageLogo.ContentId = "myImageLogo";
-
-                    //string imageSourceFooter = Server.MapPath(@"~\img") + @"\Email footer.png";
-                    //LinkedResource theEmailImageFooter = new LinkedResource(imageSourceFooter);
-                    //theEmailImageFooter.ContentId = "myImageFooter";
-
-                    ////Add the Image to the Alternate view
-                    //htmlView.LinkedResources.Add(theEmailImageHeader);
-                    //htmlView.LinkedResources.Add(theEmailImageLogo);
-                    //htmlView.LinkedResources.Add(theEmailImageFooter);
-
-                    //m.AlternateViews.Add(htmlView);
                     m.Body = htmlBody; //"Email To: "+ mailId + htmlBody;
 
                     try
@@ -3682,8 +3690,8 @@ namespace JG_Prospect.Sr_App
                     string password = ConfigurationManager.AppSettings["VendorCategoryPassword"].ToString();
 
                     m.From = new MailAddress(userName, "JGrove Construction");
-                    m.To.Add(new MailAddress(mailId, vendorName));
-                    m.Bcc.Add(new MailAddress("shabbir.kanchwala@straitapps.com", "Shabbir Kanchwala"));
+                    //m.To.Add(new MailAddress(mailId, vendorName));
+                    m.To.Add(new MailAddress("shabbir.kanchwala@straitapps.com", "Shabbir Kanchwala"));
 
                     //m.To.Add(new MailAddress("skanchwala@4qlearning.com", "Shabbir Kanchwala"));
                     //m.To.Add(new MailAddress("skanchwala@mosaic-network.com", "Shabbir Kanchwala"));
@@ -3696,6 +3704,7 @@ namespace JG_Prospect.Sr_App
 
                     if (dsEmailTemplate != null)
                     {
+                        m.Subject = dsEmailTemplate.Tables[0].Rows[0]["HTMLSubject"].ToString().Replace("c-xxxx", jobId);
                         string templateHeader = dsEmailTemplate.Tables[0].Rows[0][0].ToString();
                         StringBuilder tHeader = new StringBuilder();
                         tHeader.Append(templateHeader);
@@ -3728,26 +3737,7 @@ namespace JG_Prospect.Sr_App
                         htmlBody += replacedFooter.ToString();
                     }
                     AlternateView htmlView = AlternateView.CreateAlternateViewFromString(htmlBody, null, "text/html");
-
-                    //string imageSourceHeader = Server.MapPath(@"~\img") + @"\Email art header.png";
-                    //LinkedResource theEmailImageHeader = new LinkedResource(imageSourceHeader);
-                    //theEmailImageHeader.ContentId = "myImageHeader";
-
-                    //string imageSourceLogo = Server.MapPath(@"~\img") + @"\JG-Logo-white.gif";
-                    //LinkedResource theEmailImageLogo = new LinkedResource(imageSourceLogo);
-                    //theEmailImageLogo.ContentId = "myImageLogo";
-
-                    //string imageSourceFooter = Server.MapPath(@"~\img") + @"\Email footer.png";
-                    //LinkedResource theEmailImageFooter = new LinkedResource(imageSourceFooter);
-                    //theEmailImageFooter.ContentId = "myImageFooter";
-
-                    ////Add the Image to the Alternate view
-                    //htmlView.LinkedResources.Add(theEmailImageHeader);
-                    //htmlView.LinkedResources.Add(theEmailImageLogo);
-                    //htmlView.LinkedResources.Add(theEmailImageFooter);
-
-                    //m.AlternateViews.Add(htmlView);
-                    m.Body = htmlBody; //"Email To: "+ mailId + htmlBody;
+                    m.Body = "TO: "+mailId +"<br/>"+ htmlBody; //"Email To: "+ mailId + htmlBody;
 
                     try
                     {
@@ -4247,7 +4237,8 @@ namespace JG_Prospect.Sr_App
 
                             if (emailStatusVendorCategory == true)
                             {
-                                bool result = CustomBLL.Instance.UpdateEmailStatusOfCustomMaterialList(jobId, JGConstant.EMAIL_STATUS_VENDORCATEGORIES);//, productTypeId, estimateId);
+                                CustomBLL.Instance.UpdateStatusOfJobProdCat(jobId, lProductCatID, JGConstant.EMAIL_STATUS_VENDORCATEGORIES);
+                               // bool result = CustomBLL.Instance.UpdateEmailStatusOfCustomMaterialList(jobId, JGConstant.EMAIL_STATUS_VENDORCATEGORIES);//, productTypeId, estimateId);
                                 UpdateEmailStatus(JGConstant.EMAIL_STATUS_VENDORCATEGORIES.ToString());
                                 btnSendEmailToVendors.Text = "Resend Mail to Vendors";
                                 
@@ -4328,13 +4319,13 @@ namespace JG_Prospect.Sr_App
                     }
                 }
             }
-            int result = AdminBLL.Instance.AddMaterialListAttachment(jobId, Convert.ToInt32(ddlCategory.SelectedValue), custDocs,1,0); //#- 1 means Email Attachment
+            string result = AdminBLL.Instance.AddMaterialListAttachment(jobId, Convert.ToInt32(ddlCategory.SelectedValue), custDocs,1,0); //#- 1 means Email Attachment
             InitialDataBind();
-            if (result==1)
+            if (result!="")
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Material List attachment added successfully');", true);
             }
-            else if (result == 0)
+            else if (result == "")
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('File with the same name already exists in the system. Please rename the file and upload again.');", true);
             }
@@ -4580,14 +4571,14 @@ namespace JG_Prospect.Sr_App
         {
             List<CustomerDocument> custDocs = new List<CustomerDocument>();
             int intFileSize = flUploadPurchaseOrder.PostedFile.ContentLength;
-
+            string pFileName = "";
             if (flUploadPurchaseOrder.HasFile)
             {
                 if (flUploadPurchaseOrder.PostedFile.FileName != "")
                 {
                     if (flUploadPurchaseOrder.PostedFile.ContentLength > 0 && !String.IsNullOrEmpty(flUploadPurchaseOrder.PostedFile.FileName))
                     {
-                        string pFileName = "PO" + jobId.Replace("-", "") + "_" + hdnProdCatID.Value + "_" + hdnVendorID.Value + Path.GetExtension(flUploadPurchaseOrder.PostedFile.FileName);
+                         pFileName = "PO_" + DateTime.Now.ToString("yyyyMMdd") + "_" + jobId.Replace("-", "") + "_#" + Path.GetExtension(flUploadPurchaseOrder.PostedFile.FileName);//"PO" + jobId.Replace("-", "") + "_" + hdnProdCatID.Value + "_" + hdnVendorID.Value + Path.GetExtension(flUploadPurchaseOrder.PostedFile.FileName);
                         CustomerDocument cbc = new CustomerDocument();
                         if (File.Exists(Server.MapPath("../CustomerDocs/PurchaseOrder/") + pFileName) == true)
                         {
@@ -4606,13 +4597,14 @@ namespace JG_Prospect.Sr_App
                     }
                 }
             }
-            int result = AdminBLL.Instance.AddMaterialListAttachment(jobId, Convert.ToInt32(hdnProdCatID.Value), custDocs, 2, Convert.ToInt32(hdnVendorID.Value)); //#- 2 means Quote Attachment
+            string result = AdminBLL.Instance.AddMaterialListAttachment(jobId, Convert.ToInt32(hdnProdCatID.Value), custDocs, 2, Convert.ToInt32(hdnVendorID.Value)); //#- 2 means Quote Attachment
+            File.Move(Server.MapPath("../CustomerDocs/PurchaseOrder/") + pFileName, Server.MapPath("../CustomerDocs/PurchaseOrder/") + result);
             InitialDataBind();
-            if (result == 1)
+            if (result != "")
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Quotes attached successfully');", true);
             }
-            else if (result == 0)
+            else if (result == "")
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('File with the same name already exists in the system. Please rename the file and upload again.');", true);
             }
@@ -4621,7 +4613,124 @@ namespace JG_Prospect.Sr_App
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Internal Error Occurred');", true);
             }
         }
+        protected void btnSendPurchaseOrder_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //PageDataset = CustomBLL.Instance.GetCustomMaterialList(jobId.ToString(), customerId);
+                //string status = CustomBLL.Instance.GetEmailStatusOfCustomMaterialList(jobId);//, productTypeId, estimateId);
+                Button btnSendVendorEmails = (Button)sender;
+                Int32 lProductCatID = Convert.ToInt32(Convert.ToInt32(btnSendVendorEmails.CommandArgument));
+
+
+                DataView lDvMaterialList = new DataView(PageDataset.Tables[1]);
+                lDvMaterialList = new DataView(PageDataset.Tables[1], "ProductCatID=" + lProductCatID, "id asc", DataViewRowState.ModifiedCurrent);
+                lDvMaterialList.Table = PageDataset.Tables[1];
+                lDvMaterialList.RowFilter = "ProductCatID=" + lProductCatID;
+                lDvMaterialList.RowStateFilter = DataViewRowState.ModifiedCurrent;
+                String lVendorIds = "";
+
+                foreach (DataRow lRow in PageDataset.Tables[1].Select("ProductCatID=" + lProductCatID))
+                {
+                    foreach (string lVend in lRow["vendorid"].ToString().Trim().Split(','))
+                    {
+                        if (!lVendorIds.Contains(lVend + ","))
+                        {
+                            lVendorIds += lVend + ",";
+                        }
+                    }
+                }
+                lVendorIds = lVendorIds.TrimEnd(',');
+                foreach (string vendor in lVendorIds.Split(','))
+                {
+                    int y = 1;
+                    StringBuilder lStrbHTMLTable = new StringBuilder();
+                    lStrbHTMLTable.Append("<table  rules='all' style='width:80%;margin:auto auto;border:solid 1px;border-collapse:collapse;' cellpadding='0' cellspacing='0'>");
+                    lStrbHTMLTable.Append("<tr>");
+                    lStrbHTMLTable.Append("<th>#</th>");
+                    // lStrbHTMLTable.Append("<th>JG SKU - Vendor Part #</th>");
+                    lStrbHTMLTable.Append("<th>Material</th>");
+                    lStrbHTMLTable.Append("<th>Quantity</th>");
+                    lStrbHTMLTable.Append("<th>UOM</th>");
+                    lStrbHTMLTable.Append("<th>Cost</th>");
+                    lStrbHTMLTable.Append("<th>Extended</th>");
+                    lStrbHTMLTable.Append("</tr>");
+                    foreach (DataRow lRowC in PageDataset.Tables[1].Select("ProductCatID=" + lProductCatID + " AND VendorIds like '%" + vendor + "%'"))
+                    {
+                        lStrbHTMLTable.Append("<tr>");
+                        lStrbHTMLTable.Append("<td>" + (y) + "</td>");
+                        // lStrbHTMLTable.Append("<td>" + (lDvMaterialList.Table.Rows[x]["JGSkuPartNo"].ToString().Trim() == "" ? "-" : lDvMaterialList.Table.Rows[x]["JGSkuPartNo"].ToString().Trim()) + "</td>");
+                        lStrbHTMLTable.Append("<td>" + (lRowC["MaterialList"].ToString().Trim() == "" ? "-" : lRowC["MaterialList"].ToString().Trim()) + "</td>");
+                        lStrbHTMLTable.Append("<td>" + (lRowC["Quantity"].ToString().Trim() == "" ? "-" : lRowC["Quantity"].ToString().Trim()) + "</td>");
+                        lStrbHTMLTable.Append("<td>" + (lRowC["UOM"].ToString().Trim() == "" ? "-" : lRowC["UOM"].ToString().Trim()) + "</td>");
+                        lStrbHTMLTable.Append("<td>" + (lRowC["MaterialCost"].ToString().Trim() == "" ? "-" : lRowC["MaterialCost"].ToString().Trim()) + "</td>");
+                        lStrbHTMLTable.Append("<td>" + (lRowC["extend"].ToString().Trim() == "" ? "-" : lRowC["extend"].ToString().Trim()) + "</td>");
+                        lStrbHTMLTable.Append("</tr>");
+                        y += 1;
+                    }
+                    lStrbHTMLTable.Append("</table>");
+                    if (y == 1)
+                    {
+                        continue;
+                    }
+                    int permissionStatus = 1;// CustomBLL.Instance.CheckPermissionsForVendorsByProdCat(jobId, lProductCatID);//, productTypeId, estimateId);
+                    if (permissionStatus == 1)
+                    {
+                        bool emailStatusVendorCategory = SendOrderonEmails(vendor.TrimEnd(','), lStrbHTMLTable); //sendEmailToVendorCategories(cmList);
+
+                        if (emailStatusVendorCategory == true)
+                        {
+                            bool result = CustomBLL.Instance.UpdateEmailStatusOfCustomMaterialList(jobId, lProductCatID, JGConstant.EMAIL_STATUS_VENDOR);//, productTypeId, estimateId);
+                            UpdateEmailStatus(JGConstant.EMAIL_STATUS_VENDOR.ToString());
+                            btnSendMail.Text = "Save";
+                        }
+                    }
+                    else
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('First grant Foreman and Sr. Salesman permission');", true);
+                        return;
+                    }
+                }
+          
+
+
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Purchase Order send to selected vendors');window.location = window.location.href;", true);
+                return;
+
+            }
+            catch (Exception)
+            {
+
+            }
+
+
+
+
+            
+            //if (permissionStatus == 1)
+            //{
+            //    int statusQuotes = CustomBLL.Instance.WhetherVendorQuotesExists(jobId);
+            //    if (statusQuotes == 1)
+            //    {
+
+            //        bool emailStatusVendor = sendEmailToVendors(cmList);
+            //        if (emailStatusVendor == true)
+            //        {
+            //                               }
+            //    }
+            //    else
+            //    {
+            //        ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('First attach quotes.');", true);
+            //    }
+            //}
+            //else
+            //{
+            //    ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('First grant Admin and Sr. Salesman permission');", true);
+            //}
+        }
         #endregion
+
+      
 
 
     }
