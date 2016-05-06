@@ -47,77 +47,119 @@ namespace JG_Prospect.Sr_App
             try
             {
                 DataSet ds = VendorBLL.Instance.GETInvetoryCatogriesList(ManufacturerType);
-                str.Append("<ul class=\"clearfix inventory_main\">");
-                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                List<InventoryProduct> lstVendorProducts = new List<InventoryProduct>();
+                List<InventoryVendorCat> lstVendorCat = new List<InventoryVendorCat>();
+                List<InventoryVendorSubCat> lstVendorSubCat = new List<InventoryVendorSubCat>();
+                List<InventoryVendor> lstVendor = new List<InventoryVendor>();
+                if (ds != null)
                 {
-                    DataRow dr = ds.Tables[0].Rows[i];
-                    int PrdouctID = Convert.ToInt32(dr["ProductId"].ToString());
-                    string ProductName = dr["ProductName"].ToString();
-
-
-                    str.Append("<li>");
-                    str.AppendFormat("<a href=\"javascript:;\"><span class=\"text\" onclick=\"productClick(this,'{0}','{1}')\">{1}</span><span class=\"buttons\"><i class=\"\" onclick=\"AddVenodrCat('{0}','{1}')\">Add</i></span></a>", PrdouctID, ProductName);
-
-                    Boolean isCate = true;
-                    for (int j = 0; j < ds.Tables[1].Rows.Count; j++)
+                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                     {
-                        DataRow dr1 = ds.Tables[1].Rows[j];
-                        int ProductCategoryId = Convert.ToInt32(dr1["ProductCategoryId"] == DBNull.Value ? "0" : dr1["ProductCategoryId"].ToString());
-                        if (PrdouctID == ProductCategoryId)
-                        {
-                            if (isCate)
-                            {
-                                str.Append("<ul class=\"clearfix inventory_cat\">");
-                            }
-                            isCate = false;
-                            string VendorCategoryName = dr1["VendorCategoryNm"].ToString();
-                            int VendorCategoryId = Convert.ToInt32(dr1["VendorCategpryId"] == DBNull.Value ? "0" : dr1["VendorCategpryId"].ToString());
-
-                            Boolean IsVRetail_Wholesale = Convert.ToBoolean(dr1["IsRetail_Wholesale"].ToString());
-                            Boolean IsVManufacturer = Convert.ToBoolean(dr1["IsManufacturer"].ToString());
-
-
-                            str.Append("<li>");
-                            str.AppendFormat("<a href=\"javascript:;\"><span class=\"text\" onclick=\"vendorClick(this,'{0}','{1}','{2}','{3}','{4}','{5}')\">{3}</span><span class=\"buttons\"><i class=\"\" onclick=\"AddSubCat('{2}','{3}')\">Add</i><i class=\"\" onclick=\"EditVendorCat({0},'{1}','{2}','{3}','{4}','{5}')\">Edit</i><i class=\"\" onclick=\"DeleteVendorCat({0},'{1}','{2}','{3}','{4}','{5}')\">Delete</i></span></a>", ProductCategoryId, ProductName, VendorCategoryId, VendorCategoryName, IsVRetail_Wholesale, IsVManufacturer);
-                            //str.AppendFormat("")
-                            Boolean isSubCate = true;
-                            for (int k = 0; k < ds.Tables[2].Rows.Count; k++)
-                            {
-                                DataRow dr2 = ds.Tables[2].Rows[k];
-                                int VendorCategoryId2 = Convert.ToInt32(dr2["VendorCategoryId"] == DBNull.Value ? "0" : dr2["VendorCategoryId"].ToString());
-                                if (VendorCategoryId == VendorCategoryId2)
-                                {
-                                    if (isSubCate)
-                                    {
-                                        str.Append("<ul class=\"clearfix inventory_subcat\">");
-                                    }
-                                    isSubCate = false;
-                                    int VendorSubCategoryId = Convert.ToInt32(dr2["VendorSubCategoryId"] == DBNull.Value ? "0" : dr2["VendorSubCategoryId"].ToString());
-                                    string VendorSubCategoryName = dr2["VendorSubCategoryName"].ToString();
-                                    Boolean IsRetail_Wholesale = Convert.ToBoolean(dr2["IsRetail_Wholesale"].ToString());
-                                    Boolean IsManufacturer = Convert.ToBoolean(dr2["IsManufacturer"].ToString());
-
-                                    str.Append("<li>");
-                                    str.AppendFormat("<a href=\"javascript:;\"><span class=\"text\" onclick=\"vendorSubClick(this,'{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}')\">{1}</span><span class=\"buttons\"><i class=\"\" onclick=\"EditSubCat({0},'{1}','{2}','{3}','{4}','{5}')\">Edit</i><i class=\"\" onclick=\"DeleteSubCat({0},'{1}','{2}','{3}','{4}','{5}')\">Delete</i></span></a>", VendorSubCategoryId, VendorSubCategoryName, VendorCategoryId, VendorCategoryName, IsRetail_Wholesale, IsManufacturer,ProductCategoryId,ProductName);
-                                    str.Append("</li>");
-                                }
-                            }
-                            if (!isSubCate)
-                            {
-                                str.Append("</ul>");
-                            }
-                            str.Append("</li>");
-                        }
+                        InventoryProduct obj = new InventoryProduct();
+                        DataRow dr = ds.Tables[0].Rows[i];
+                        int PrdouctID = Convert.ToInt32(dr["ProductId"] == DBNull.Value ? "0" : dr["ProductId"].ToString());
+                        string ProductName = dr["ProductName"].ToString();
+                        obj.ProductId = PrdouctID;
+                        obj.ProductName = ProductName;
+                        lstVendorProducts.Add(obj);
+                    }
+                    for (int i = 0; i < ds.Tables[1].Rows.Count; i++)
+                    {
+                        InventoryVendorCat obj = new InventoryVendorCat();
+                        DataRow dr = ds.Tables[1].Rows[i];
+                        int ProductCategoryId = Convert.ToInt32(dr["ProductCategoryId"] == DBNull.Value ? "0" : dr["ProductCategoryId"].ToString());
+                        string VendorCategoryName = dr["VendorCategoryNm"].ToString();
+                        int VendorCategoryId = Convert.ToInt32(dr["VendorCategpryId"] == DBNull.Value ? "0" : dr["VendorCategpryId"].ToString());
+                        Boolean IsRetail_Wholesale = Convert.ToBoolean(dr["IsRetail_Wholesale"] == DBNull.Value ? "false" : dr["IsRetail_Wholesale"].ToString());
+                        Boolean IsManufacturer = Convert.ToBoolean(dr["IsManufacturer"] == DBNull.Value ? "false" : dr["IsManufacturer"].ToString());
+                        obj.ProductCategoryId = ProductCategoryId;
+                        obj.VendorCategoryId = VendorCategoryId;
+                        obj.VendorCategoryName = VendorCategoryName;
+                        obj.IsRetail_Wholesale = IsRetail_Wholesale;
+                        obj.IsManufacturer = IsManufacturer;
+                        lstVendorCat.Add(obj);
+                    }
+                    for (int i = 0; i < ds.Tables[2].Rows.Count; i++)
+                    {
+                        InventoryVendorSubCat obj = new InventoryVendorSubCat();
+                        DataRow dr = ds.Tables[2].Rows[i];
+                        int VendorCategoryId = Convert.ToInt32(dr["VendorCategoryId"] == DBNull.Value ? "0" : dr["VendorCategoryId"].ToString());
+                        string VendorCategoryName = dr["VendorSubCategoryName"].ToString();
+                        int VendorSubCategoryId = Convert.ToInt32(dr["VendorSubCategoryId"] == DBNull.Value ? "0" : dr["VendorSubCategoryId"].ToString());
+                        Boolean IsRetail_Wholesale = Convert.ToBoolean(dr["IsRetail_Wholesale"] == DBNull.Value ? "false" : dr["IsRetail_Wholesale"].ToString());
+                        Boolean IsManufacturer = Convert.ToBoolean(dr["IsManufacturer"] == DBNull.Value ? "false" : dr["IsManufacturer"].ToString());
+                        obj.VendorCategoryId = VendorCategoryId;
+                        obj.VendorSubCategoryId = VendorSubCategoryId;
+                        obj.VendorSubCategoryName = VendorCategoryName;
+                        obj.IsRetail_Wholesale = IsRetail_Wholesale;
+                        obj.IsManufacturer = IsManufacturer;
+                        lstVendorSubCat.Add(obj);
                     }
 
-                    if (!isCate)
+                    for (int i = 0; i < ds.Tables[3].Rows.Count; i++)
                     {
-                        str.Append("</ul>");
+                        InventoryVendor obj = new InventoryVendor();
+                        DataRow dr = ds.Tables[3].Rows[i];
+                        int VendorId = Convert.ToInt32(dr["VendorId"] == DBNull.Value ? "0" : dr["VendorId"].ToString());
+                        string VendorName = dr["VendorName"].ToString();
+                        int VendorSubCatId = Convert.ToInt32(dr["VendorSubCatId"] == DBNull.Value ? "0" : dr["VendorSubCatId"].ToString());
+                        obj.VendorId = VendorId;
+                        obj.VendorName = VendorName;
+                        obj.VendorSubCatId = VendorSubCatId;
+                        lstVendor.Add(obj);
                     }
+
                 }
 
-                str.Append("</li>");
-                str.Append("</ul>");
+                if (lstVendorProducts.Count > 0)
+                {
+                    str.Append("<ul class=\"clearfix inventory_main\">");
+                    foreach (var item in lstVendorProducts)
+                    {
+                        int isCate = lstVendorCat.Where(a => a.ProductCategoryId == item.ProductId).Count();
+                       
+                        str.Append("<li>");
+                        str.AppendFormat("<a href=\"javascript:;\"><span class=\"text\" onclick=\"productClick(this,'{0}','{1}')\">{1} ({2})</span><span class=\"buttons\"><i class=\"\" onclick=\"AddVenodrCat(this,'{0}','{1}')\">Add</i></span></a>", item.ProductId, item.ProductName, isCate);
+
+                        if (isCate > 0)
+                        {
+                            string productClass = "";
+                            if (ActiveProductID == item.ProductId)
+                            {
+                                productClass = "active";
+                            }
+                            str.AppendFormat("<ul class=\"clearfix inventory_cat {0}\">", productClass);
+                            foreach (var cat in lstVendorCat.Where(a => a.ProductCategoryId == item.ProductId))
+                            {
+                                int isSubCate = lstVendorSubCat.Where(a => a.VendorCategoryId == cat.VendorCategoryId).Count();
+                                str.Append("<li>");
+                                str.AppendFormat("<a href=\"javascript:;\"><span class=\"text\" onclick=\"vendorClick(this,'{0}','{1}','{2}','{3}','{4}','{5}')\">{3} ({6})</span><span class=\"buttons\"><i class=\"\" onclick=\"AddSubCat(this,'{0}','{1}','{2}','{3}','{4}','{5}')\">Add</i><i class=\"\" onclick=\"EditVendorCat(this,'{0}','{1}','{2}','{3}','{4}','{5}')\">Edit</i><i class=\"\" onclick=\"DeleteVendorCat(this,'{0}','{1}','{2}','{3}','{4}','{5}')\">Delete</i></span></a>", cat.ProductCategoryId, item.ProductName, cat.VendorCategoryId, cat.VendorCategoryName, cat.IsRetail_Wholesale, cat.IsManufacturer, isSubCate);
+                                                                
+                                if (isSubCate > 0)
+                                {
+                                    string catClass = "";
+                                    if (ActiveCategoryID == cat.VendorCategoryId)
+                                    {
+                                        catClass = "active";
+                                    }
+                                    str.AppendFormat("<ul class=\"clearfix inventory_subcat {0}\">", catClass);
+                                    foreach (var subcat in lstVendorSubCat.Where(a => a.VendorCategoryId == cat.VendorCategoryId))
+                                    {
+                                        int VendorCount = lstVendor.Where(a => a.VendorSubCatId == subcat.VendorSubCategoryId).Count();
+                                        str.Append("<li>");
+                                        str.AppendFormat("<a href=\"javascript:;\"><span class=\"text\" onclick=\"vendorSubClick(this,'{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}')\">{1} ({8})</span><span class=\"buttons\"><i class=\"\" onclick=\"EditSubCat(this,'{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}')\">Edit</i><i class=\"\" onclick=\"DeleteSubCat(this,'{0}','{1}','{2}','{3}','{4}','{5}','{6}','{7}')\">Delete</i></span></a>", subcat.VendorSubCategoryId, subcat.VendorSubCategoryName, subcat.VendorCategoryId, cat.VendorCategoryName, subcat.IsRetail_Wholesale, subcat.IsManufacturer, item.ProductId, item.ProductName, VendorCount);
+                                        str.Append("</li>");
+                                    }
+                                    str.Append("</ul>");
+                                }
+                                str.Append("</li>");
+                            }
+                            str.Append("</ul>");
+                        }
+                        str.Append("</li>");
+                    }
+                    str.Append("</ul>");
+                }
             }
             catch (Exception ex)
             {
@@ -144,6 +186,10 @@ namespace JG_Prospect.Sr_App
             objVendorSubCat.IsRetail_Wholesale = chkVSCRetail_WholesaleEdit.Checked;
             objVendorSubCat.IsManufacturer = chkVSCManufacturerEdit.Checked;
             objVendorSubCat.Name = txtVendorSubCatEdit.Text;
+
+            ActiveProductID = Convert.ToInt32(hdnProductID.Value.ToString());
+            ActiveCategoryID = Convert.ToInt32(hdnVendorCatID.Value.ToString());
+
             bool res = VendorBLL.Instance.SaveNewVendorSubCat(objVendorSubCat);
             if (res)
             {
@@ -165,6 +211,10 @@ namespace JG_Prospect.Sr_App
             objVendorSubCat.IsManufacturer = chkVSCManufacturerEdit.Checked;
             objVendorSubCat.Name = txtVendorSubCatEdit.Text;
             bool res = VendorBLL.Instance.UpdateVendorSubCat(objVendorSubCat);
+
+            ActiveProductID = Convert.ToInt32(hdnProductID.Value.ToString());
+            ActiveCategoryID = Convert.ToInt32(hdnVendorCatID.Value.ToString());
+
             if (res)
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Data has been Updated Successfully');", true);
@@ -179,6 +229,9 @@ namespace JG_Prospect.Sr_App
 
         protected void btnDeleteVendorSubCat_Click(object sender, EventArgs e)
         {
+            ActiveProductID = Convert.ToInt32(hdnProductID.Value.ToString());
+            ActiveCategoryID = Convert.ToInt32(hdnVendorCatID.Value.ToString());
+
             VendorSubCategory objVendorSubCat = new VendorSubCategory();
             objVendorSubCat.Id = hdnSubCategoryId.Value.ToString();
             //objVendorSubCat.IsRetail_Wholesale = chkVSCRetail_WholesaleEdit.Checked;
@@ -204,6 +257,9 @@ namespace JG_Prospect.Sr_App
             Boolean IsRetail_Wholesale = chkVendorCRetail_WholesaleEdit.Checked; ;
             Boolean IsManufacturer = chkVendorCManufacturerEdit.Checked;
 
+
+            ActiveProductID = Convert.ToInt32(hdnProductID.Value.ToString());
+            ActiveCategoryID = 0;
 
             NewVendorCategory objNewVendor = new NewVendorCategory();
 
@@ -235,6 +291,9 @@ namespace JG_Prospect.Sr_App
             Boolean IsManufacturer = chkVendorCManufacturerEdit.Checked;
 
 
+            ActiveProductID = Convert.ToInt32(hdnProductID.Value.ToString());
+            ActiveCategoryID =0;
+
             NewVendorCategory objNewVendor = new NewVendorCategory();
 
             objNewVendor.VendorName = VendorName;
@@ -258,6 +317,9 @@ namespace JG_Prospect.Sr_App
 
         protected void btnDeleteVendorCat_Click(object sender, EventArgs e)
         {
+            ActiveProductID = Convert.ToInt32(hdnProductID.Value.ToString());
+            ActiveCategoryID =0;
+
             int vendorcategogyid = Convert.ToInt32(hdnVendorID.Value.ToString());
             bool res = VendorBLL.Instance.deletevendorcategory(vendorcategogyid);
             if (res)
@@ -272,5 +334,69 @@ namespace JG_Prospect.Sr_App
             }
         }
 
+
+        public int ActiveProductID
+        {
+            get
+            {
+                if (ViewState["ActiveProductID"] == null)
+                {
+                    return 0;
+                }
+
+                return (int)ViewState["ActiveProductID"];
+            }
+            set
+            {
+                ViewState["ActiveProductID"] = value;
+            }
+        }
+
+        public int ActiveCategoryID
+        {
+            get
+            {
+                if (ViewState["ActiveCategoryID"] == null)
+                {
+                    return 0;
+                }
+
+                return (int)ViewState["ActiveCategoryID"];
+            }
+            set
+            {
+                ViewState["ActiveCategoryID"] = value;
+            }
+        }
+
+    }
+
+    public class InventoryVendor
+    {
+        public int VendorId { get; set; }
+        public string VendorName { get; set; }
+        public int VendorSubCatId { get; set; }
+    }
+
+    public class InventoryProduct
+    {
+        public int ProductId { get; set; }
+        public string ProductName { get; set; }
+    }
+    public class InventoryVendorCat
+    {
+        public int ProductCategoryId { get; set; }
+        public int VendorCategoryId { get; set; }
+        public string VendorCategoryName { get; set; }
+        public bool IsRetail_Wholesale { get; set; }
+        public bool IsManufacturer { get; set; }
+    }
+    public class InventoryVendorSubCat
+    {
+        public int VendorCategoryId { get; set; }
+        public int VendorSubCategoryId { get; set; }
+        public string VendorSubCategoryName { get; set; }
+        public bool IsRetail_Wholesale { get; set; }
+        public bool IsManufacturer { get; set; }
     }
 }

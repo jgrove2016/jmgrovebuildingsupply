@@ -6,7 +6,15 @@
     <style type="text/css">
         .inventroy {
         }
-
+        .invetory_heading {
+                margin-left: 10px;
+    font-size: 20px;
+    color: #fff;
+    background: #B94C4E;
+    padding: 10px;
+    border-radius: 5px 5px 0px 0px;
+    margin-bottom: -9px;
+        }
             .inventroy .left_inventroy {
                 display: inline-block;
                 width: 320px;
@@ -170,26 +178,26 @@
         }
 
         .inventroy .right_inventroy .breadcrumb {
-                font-size: 13px;
+            font-size: 13px;
         }
-        
+
             .inventroy .right_inventroy .breadcrumb .pName {
-                display:none;
-                    margin-left: 5px;
+                display: none;
+                margin-left: 5px;
             }
 
             .inventroy .right_inventroy .breadcrumb .vName {
-                display:none;
-                    margin-left: 5px;
+                display: none;
+                margin-left: 5px;
             }
 
             .inventroy .right_inventroy .breadcrumb .vSName {
-                display:none;
-                    margin-left: 5px;
+                display: none;
+                margin-left: 5px;
             }
 
             .inventroy .right_inventroy .breadcrumb .text {
-                    margin-left: 5px;
+                margin-left: 5px;
             }
     </style>
     <script type="text/javascript">
@@ -215,7 +223,7 @@
             $(".breadcrumb .pName .text").html(productName);
             $(".breadcrumb .vName .text").html(vName);
         }
-        function vendorSubClick(btn, vsId, vsName, vId, vName, IsRetail_Wholesale, IsManufacturer,productId,productName) {
+        function vendorSubClick(btn, vsId, vsName, vId, vName, IsRetail_Wholesale, IsManufacturer, productId, productName) {
             $(".breadcrumb .pName").show();
             $(".breadcrumb .vName").show();
             $(".breadcrumb .vSName").show();
@@ -261,7 +269,7 @@
             $("#deleteVendorSubCat").hide();
         }
 
-        function AddVenodrCat(productId, productName) {
+        function AddVenodrCat(btn, productId, productName) {
             ResetAllValue();
             $("#<%=hdnProductID.ClientID%>").val(productId);
             $("#<%=txtProudctName.ClientID%>").val(productName);
@@ -271,8 +279,9 @@
             $("#<%=pnlVendorCat.ClientID%>").show();
         }
 
-        function AddSubCat(vId, vName) {
+        function AddSubCat(btn, productId, productName, vId, vName, IsRetail_Wholesale, IsManufacturer) {
             ResetAllValue();
+            $("#<%=hdnProductID.ClientID%>").val(productId);
             $("#<%=hdnVendorCatID.ClientID%>").val(vId);
             $("#<%=txtVendorCatName.ClientID%>").val(vName);
 
@@ -280,7 +289,7 @@
             $("#<%=btnNewVendorSubCat.ClientID%>").show();
             $("#<%=pnlVendorSubCat.ClientID%>").show();
         }
-        function EditVendorCat(productId, productName, vId, vName, IsRetail_Wholesale, IsManufacturer) {
+        function EditVendorCat(btn, productId, productName, vId, vName, IsRetail_Wholesale, IsManufacturer) {
             ResetAllValue();
             $("#<%=hdnProductID.ClientID%>").val(productId);
             $("#<%=txtProudctName.ClientID%>").val(productName);
@@ -298,7 +307,7 @@
             $("#<%=btnUpdateVendorCat.ClientID%>").show();
             $("#<%=pnlVendorCat.ClientID%>").show();
         }
-        function DeleteVendorCat(productId, productName, vId, vName, IsRetail_Wholesale, IsManufacturer) {
+        function DeleteVendorCat(btn, productId, productName, vId, vName, IsRetail_Wholesale, IsManufacturer) {
             ResetAllValue();
             $("#<%=hdnProductID.ClientID%>").val(productId);
             $("#<%=txtProudctName.ClientID%>").val(productName);
@@ -310,17 +319,19 @@
             }
             if (IsManufacturer == "True") {
                 $("#<%=chkVendorCManufacturerEdit.ClientID%>").attr("checked", true);
-             }
+            }
 
-             $("#deleteVendorCat").show();
-             $("#<%=btnDeleteVendorCat.ClientID%>").show();
-            $("#<%=pnlVendorCat.ClientID%>").show();
+            $("#deleteVendorCat").show();
+            $("#<%=btnDeleteVendorCat.ClientID%>").show();
+             $("#<%=pnlVendorCat.ClientID%>").show();
         }
 
-        function EditSubCat(id, name, vId, vName, IsRetail_Wholesale, IsManufacturer) {
+        function EditSubCat(btn, vsId, vsName, vId, vName, IsRetail_Wholesale, IsManufacturer, productId, productName) {
             ResetAllValue();
-            $("#<%=hdnSubCategoryId.ClientID%>").val(id);
-            $("#<%=txtVendorSubCatEdit.ClientID%>").val(name);
+            $("#<%=hdnProductID.ClientID%>").val(productId);
+
+            $("#<%=hdnSubCategoryId.ClientID%>").val(vsId);
+            $("#<%=txtVendorSubCatEdit.ClientID%>").val(vsName);
 
             $("#<%=hdnVendorCatID.ClientID%>").val(vId);
             $("#<%=txtVendorCatName.ClientID%>").val(vName);
@@ -337,10 +348,12 @@
             $("#<%=pnlVendorSubCat.ClientID%>").show();
         }
 
-        function DeleteSubCat(id, name, vId, vName, IsRetail_Wholesale, IsManufacturer) {
+        function DeleteSubCat(btn, vsId, vsName, vId, vName, IsRetail_Wholesale, IsManufacturer, productId, productName) {
             ResetAllValue();
-            $("#<%=hdnSubCategoryId.ClientID%>").val(id);
-            $("#<%=txtVendorSubCatEdit.ClientID%>").val(name);
+            $("#<%=hdnProductID.ClientID%>").val(productId);
+
+            $("#<%=hdnSubCategoryId.ClientID%>").val(vsId);
+            $("#<%=txtVendorSubCatEdit.ClientID%>").val(vsName);
 
             $("#<%=hdnVendorCatID.ClientID%>").val(vId);
             $("#<%=txtVendorCatName.ClientID%>").val(vName);
@@ -480,17 +493,18 @@
                         </table>
                     </asp:Panel>
                     <div class="clearfix inventroy">
-                <div class="left_inventroy">
-                    <asp:Literal ID="ltrInventoryCategoryList" runat="server"></asp:Literal>
-                </div>
-                <div class="right_inventroy">
-                    <div class="breadcrumb"><span class="text">JG Inventory</span><span class="pName">>><span class="text"></span></span><span class="vName">>><span class="text"></span></span><span class="vSName">>><span class="text"></span></span></div>
-                </div>
-            </div>
+                        <div class="left_inventroy">
+                            <div class="invetory_heading">Product Category</div>
+                            <asp:Literal ID="ltrInventoryCategoryList" runat="server"></asp:Literal>
+                        </div>
+                        <div class="right_inventroy">
+                            <div class="breadcrumb"><span class="text">JG Inventory</span><span class="pName">>><span class="text"></span></span><span class="vName">>><span class="text"></span></span><span class="vSName">>><span class="text"></span></span></div>
+                        </div>
+                    </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
 
-            
+
         </div>
     </div>
 </asp:Content>
