@@ -58,7 +58,8 @@ namespace JG_Prospect.Sr_App
                         InventoryProduct obj = new InventoryProduct();
                         DataRow dr = ds.Tables[0].Rows[i];
                         int PrdouctID = Convert.ToInt32(dr["ProductId"] == DBNull.Value ? "0" : dr["ProductId"].ToString());
-                        string ProductName = dr["ProductName"].ToString();
+                        string ProductName = dr["ProductName"].ToString().Trim();
+                        ProductName = ProductName.Replace(System.Environment.NewLine, string.Empty);
                         obj.ProductId = PrdouctID;
                         obj.ProductName = ProductName;
                         lstVendorProducts.Add(obj);
@@ -68,7 +69,8 @@ namespace JG_Prospect.Sr_App
                         InventoryVendorCat obj = new InventoryVendorCat();
                         DataRow dr = ds.Tables[1].Rows[i];
                         int ProductCategoryId = Convert.ToInt32(dr["ProductCategoryId"] == DBNull.Value ? "0" : dr["ProductCategoryId"].ToString());
-                        string VendorCategoryName = dr["VendorCategoryNm"].ToString();
+                        string VendorCategoryName = dr["VendorCategoryNm"].ToString().Trim();
+                        VendorCategoryName = VendorCategoryName.Replace(System.Environment.NewLine, string.Empty);
                         int VendorCategoryId = Convert.ToInt32(dr["VendorCategpryId"] == DBNull.Value ? "0" : dr["VendorCategpryId"].ToString());
                         Boolean IsRetail_Wholesale = Convert.ToBoolean(dr["IsRetail_Wholesale"] == DBNull.Value ? "false" : dr["IsRetail_Wholesale"].ToString());
                         Boolean IsManufacturer = Convert.ToBoolean(dr["IsManufacturer"] == DBNull.Value ? "false" : dr["IsManufacturer"].ToString());
@@ -84,13 +86,14 @@ namespace JG_Prospect.Sr_App
                         InventoryVendorSubCat obj = new InventoryVendorSubCat();
                         DataRow dr = ds.Tables[2].Rows[i];
                         int VendorCategoryId = Convert.ToInt32(dr["VendorCategoryId"] == DBNull.Value ? "0" : dr["VendorCategoryId"].ToString());
-                        string VendorCategoryName = dr["VendorSubCategoryName"].ToString();
+                        string VendorSubCategoryName = dr["VendorSubCategoryName"].ToString().Trim();
+                        VendorSubCategoryName = VendorSubCategoryName.Replace(System.Environment.NewLine, string.Empty);
                         int VendorSubCategoryId = Convert.ToInt32(dr["VendorSubCategoryId"] == DBNull.Value ? "0" : dr["VendorSubCategoryId"].ToString());
                         Boolean IsRetail_Wholesale = Convert.ToBoolean(dr["IsRetail_Wholesale"] == DBNull.Value ? "false" : dr["IsRetail_Wholesale"].ToString());
                         Boolean IsManufacturer = Convert.ToBoolean(dr["IsManufacturer"] == DBNull.Value ? "false" : dr["IsManufacturer"].ToString());
                         obj.VendorCategoryId = VendorCategoryId;
                         obj.VendorSubCategoryId = VendorSubCategoryId;
-                        obj.VendorSubCategoryName = VendorCategoryName;
+                        obj.VendorSubCategoryName = VendorSubCategoryName;
                         obj.IsRetail_Wholesale = IsRetail_Wholesale;
                         obj.IsManufacturer = IsManufacturer;
                         lstVendorSubCat.Add(obj);
@@ -101,7 +104,8 @@ namespace JG_Prospect.Sr_App
                         InventoryVendor obj = new InventoryVendor();
                         DataRow dr = ds.Tables[3].Rows[i];
                         int VendorId = Convert.ToInt32(dr["VendorId"] == DBNull.Value ? "0" : dr["VendorId"].ToString());
-                        string VendorName = dr["VendorName"].ToString();
+                        string VendorName = dr["VendorName"].ToString().Trim();
+                        VendorName = VendorName.Replace(System.Environment.NewLine, string.Empty);
                         int VendorSubCatId = Convert.ToInt32(dr["VendorSubCatId"] == DBNull.Value ? "0" : dr["VendorSubCatId"].ToString());
                         obj.VendorId = VendorId;
                         obj.VendorName = VendorName;
