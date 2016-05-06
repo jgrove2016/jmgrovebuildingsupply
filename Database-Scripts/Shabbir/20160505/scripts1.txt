@@ -1,0 +1,312 @@
+/****** Object:  StoredProcedure [dbo].[USP_UpdateCustomMaterialList]    Script Date: 05-05-2016 18:54:08 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_UpdateCustomMaterialList]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_UpdateCustomMaterialList]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_UpdateCustomMaterialList]    Script Date: 05-05-2016 18:54:08 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_UpdateCustomMaterialList]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[USP_UpdateCustomMaterialList] AS' 
+END
+GO
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-05-05
+-- Description:	This procedure will update the status of custom material list
+-- =============================================
+ALTER PROCEDURE [dbo].[USP_UpdateCustomMaterialList]
+(
+	@JobID VARCHAR(100),
+	@ProdCatID INT,
+	@EmailStatus VARCHAR(20)
+)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	UPDATE tblCustom_MaterialList
+	SET [EmailStatus]=@emailStatus 
+	WHERE SoldJobId=@JobID AND ProductCatId = @ProdCatID
+
+END
+
+GO
+
+
+
+/****** Object:  StoredProcedure [dbo].[USP_GetCustomMaterialList]    Script Date: 05-05-2016 20:22:28 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_GetCustomMaterialList]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_GetCustomMaterialList]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_GetCustomMaterialList]    Script Date: 05-05-2016 20:22:28 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_GetCustomMaterialList]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[USP_GetCustomMaterialList] AS' 
+END
+GO
+
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-03-08
+-- Description:	This procedure will return custom material list
+-- Test Run:    USP_GetCustomMaterialList 'C3690-SJ1', 3690
+-- =============================================
+ALTER PROCEDURE [dbo].[USP_GetCustomMaterialList]
+(
+	@soldJobId varchar(50),
+	@customerID int
+)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+SELECT 
+	DISTINCT c.ProductCatID, c.EmailStatus,
+	PM.ProductName, 
+	'' AS RequestStatus --#Shabbir: Placeholder for business logic
+FROM tblCustom_MaterialList c 
+INNER JOIN tblProductMaster PM ON PM.productid = c.ProductCatID
+WHERE c.SoldJobID = @SoldJobID
+
+SELECT cm.MaterialList
+	,cm.VendorCategoryId 
+	,vc.VendorCategoryNm
+	,v.VendorName  
+	,cm.Amount 
+	,cm.VendorId 
+	,cm.Line 
+	,cm.JGSkuPartNo
+	,cm.Quantity
+	,cm.UOM
+	,cm.MaterialCost
+	,cm.extend
+	,cm.VendorIds
+	,cm.Total
+	,cd.DocName
+	,cd.TempName
+	,cm.Id
+	,cm.ProductCatID
+	,cm.InstallerID
+	,cm.RequestStatus
+	,cm.EmailStatus
+	,ISNULL(cm.DefaultVendorForCategory,0) AS DefaultVendorForCategory
+	,PM.ProductName
+	,ISNULL(cm.IsForemanPermission,'') as IsForemanPermission
+	,ISNULL(cm.IsSrSalemanPermissionF,'') as IsSrSalemanPermissionF
+	,ISNULL(cm.IsAdminPermission,'') as IsAdminPermission
+	,ISNULL(cm.IsSrSalemanPermissionA,'') as IsSrSalemanPermissionA
+	,ISNULL(cm.EmailStatus,'') as EmailStatus
+	,ISNULL(up.Id, 0) AS lastUpdatedByID	,ISNULL(up.firstname, '') as lastUpdatedByFirstName, ISNULL(up.LastName, '') as lastUpdatedByLastName, ISNULL(up.Username, '') as lastUpdatedByUserName
+	,ISNULL(FM.Id, 0) AS foremanID	,ISNULL(FM.firstname, '') as foremanFirstName, ISNULL(FM.LastName, '') as foremanLastName, ISNULL(FM.Username, '') as foremanUserName
+	,ISNULL(SLF.Id, 0) AS SLFID	,ISNULL(SLF.firstname, '') as SLFFirstName, ISNULL(SLF.LastName, '') as SLFLastName, ISNULL(SLF.Username, '') as SLFUserName
+	,ISNULL(SLA.Id, 0) AS SLAID	,ISNULL(SLA.firstname, '') as SLAFirstName, ISNULL(SLA.LastName, '') as SLALastName, ISNULL(SLA.Username, '') as SLAUserName
+	,ISNULL(AD.Id, 0) AS ADID	,ISNULL(AD.firstname, '') as ADFirstName, ISNULL(AD.LastName, '') as ADLastName, ISNULL(AD.Username, '') as ADUserName
+	FROM tblCustom_MaterialList cm 
+	LEFT OUTER JOIN tblVendorCategory vc on vc.VendorCategpryId =cm.VendorCategoryId
+	LEFT OUTER JOIN tblProductMaster PM ON PM.productid = cm.ProductCatID
+	LEFT OUTER JOIN tblVendors v on v.VendorId =cm.VendorId 
+	--inner join tblJobSequence js on js.SoldJobId=cm.SoldJobId--js.Id=cm.JobSequenceId 
+	LEFT JOIN tblVendorQuotes cd on cd.SoldJobId=cm.SoldJobId and cd.VendorId=cm.VendorId
+	-- tblCustomersDocument cd on cd.CustomerId =js.CustomerId and cd.ProductId=js.EstimateId and cd.ProductTypeId=js.ProductId and cd.VendorId=cm.VendorId and cd.DocType= 'VendorQuotes' 
+	LEFT OUTER JOIN tblUsers FM on FM.id = cm.ForemanApproverID
+	LEFT OUTER JOIN tblUsers SLF on SLF.id = cm.SrSalesFApproverID
+	LEFT OUTER JOIN tblUsers SLA on SLA.id = cm.SrSalesAApproverID
+	LEFT OUTER JOIN tblUsers AD on AD.id = cm.AdminApproverID
+	LEFT OUTER JOIN tblUsers up on up.id = cm.updatedby
+	WHERE cm.SoldJobId=@soldJobId
+	ORDER BY cm.Id
+	
+	EXEC UDP_GetSoldJobsForProcurementBySoldJobID @soldJobId   
+    
+    SELECT IU.Id,IU.FristName +' '+ IU.LastName  as QualifiedName from tblInstallUsers IU Where IU.Status IN ('Active', 'Offer Made') 
+	AND NOT EXISTS (Select 1 from tblCustomMaterialInstaller CSI WHERE CSI.SoldJobID = @soldJobId AND IU.Id = CSI.InstallerID)
+
+	SELECT 
+		CSI.ID,
+		CSI.InstallerID,
+		IU.FristName + ' ' + IU.LastName AS QualifiedName,
+		CSI.AddedDateTime,
+		CSI.UpdatedDateTime 
+	FROM tblCustomMaterialInstaller CSI 
+	INNER JOIN tblInstallUsers IU ON IU.Id = CSI.InstallerID
+	WHERE CSI.SoldJobID = @soldJobId
+	
+	SELECT 
+		pv.ProductCategoryId,
+		pv.VendorCategoryId,
+		tc.VendorCategoryNm AS VendorCategoryName
+	FROM [dbo].[tblProductVendorCat] pv
+	INNER JOIN [tblVendorCategory] tc ON pv.VendorCategoryId=tc.[VendorCategpryId]
+
+	SELECT 
+		DISTINCT VendorCategpryId,
+		VendorCategoryNm, PC.ProductCategoryId 
+	FROM tblVendorCategory vc 
+	INNER JOIN tblVendors v ON vc.VendorCategpryId =v.VendorCategoryId 
+	INNER JOIN tblProductVendorCat PC ON PC.VendorCategoryId = VC.VendorCategpryId
+	WHERE vc.VendorCategpryId = v.VendorCategoryId 
+	ORDER BY vc.VendorCategoryNm	
+
+	SELECT DISTINCT
+		v.VendorId, V.VendorName, V.Email, VC.VendorCategpryId, PC.ProductCategoryId, VC.IsRetail_Wholesale, VC.IsManufacturer
+	FROM tblvendors V
+	INNER JOIN tbl_Vendor_VendorCat VVC ON VVC.VendorID = V.VendorId 
+	INNER JOIN tblVendorCategory VC ON VC.VendorCategpryID = VVC.VendorCatID
+	INNER JOIN tblProductVendorCat PC ON PC.VendorCategoryId = VC.VendorCategpryId
+
+	SELECT * FROM tblMaterialListAttachment WHERE SoldJobID = @soldJobId
+END
+
+
+
+
+GO
+
+
+
+/****** Object:  StoredProcedure [dbo].[USP_CheckPermissionsForVendorsByProdCat]    Script Date: 05-05-2016 20:33:39 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_CheckPermissionsForVendorsByProdCat]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_CheckPermissionsForVendorsByProdCat]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_CheckPermissionsForVendorsByProdCat]    Script Date: 05-05-2016 20:33:39 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_CheckPermissionsForVendorsByProdCat]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[USP_CheckPermissionsForVendorsByProdCat] AS' 
+END
+GO
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-05-05
+-- Description:	This procedure will get permission status by prod cat id
+-- =============================================
+ALTER PROCEDURE [dbo].[USP_CheckPermissionsForVendorsByProdCat]
+@soldJobId varchar(50),
+@prodcatid int,
+@result int out
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+ 	SET @result =0
+	IF	EXISTS(SELECT 1 FROM tblCustom_MaterialList WHERE SoldJobId=@soldJobId AND ProductCatId = @prodcatid  AND [IsAdminPermission]='G' AND [IsSrSalemanPermissionA]='G')	
+	BEGIN
+		SET @result =1
+	END
+END
+
+GO
+
+
+
+
+/****** Object:  StoredProcedure [dbo].[USP_UpdateEmailStatusOfJobProdCatPO]    Script Date: 05-05-2016 20:41:34 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_UpdateEmailStatusOfJobProdCatPO]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_UpdateEmailStatusOfJobProdCatPO]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_UpdateEmailStatusOfJobProdCatPO]    Script Date: 05-05-2016 20:41:34 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_UpdateEmailStatusOfJobProdCatPO]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[USP_UpdateEmailStatusOfJobProdCatPO] AS' 
+END
+GO
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-05-05
+-- Description:	This procedure will update the product category status of material list
+-- =============================================
+ALTER PROCEDURE [dbo].[USP_UpdateEmailStatusOfJobProdCatPO]
+@soldJobId varchar(50),
+@ProdCatID int,
+--@estimateId int,
+@emailStatus char(1)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	update tblCustom_MaterialList
+		set [EmailStatus]=@emailStatus 
+		where SoldJobId=@soldJobId and ProductCatId=@ProdCatID
+END
+
+GO
+
+
+
+/****** Object:  StoredProcedure [dbo].[USP_UpdatePOVendor]    Script Date: 05-05-2016 20:59:55 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_UpdatePOVendor]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_UpdatePOVendor]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_UpdatePOVendor]    Script Date: 05-05-2016 20:59:55 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_UpdatePOVendor]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[USP_UpdatePOVendor] AS' 
+END
+GO
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-05-05
+-- Description:	This procedure will update vendor in material list
+-- =============================================
+ALTER PROCEDURE [dbo].[USP_UpdatePOVendor]
+	@ProductLineID INT,
+	@ProductCatID INT,
+	@SoldJobID VARCHAR(200),
+	@VendorID INT
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	UPDATE tblCustom_MaterialList SET VendorId = @VendorID WHERE Id = @ProductLineID
+	
+END
+
+GO
+
+

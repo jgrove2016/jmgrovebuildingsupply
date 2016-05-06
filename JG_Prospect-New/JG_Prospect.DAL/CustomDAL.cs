@@ -246,6 +246,58 @@ namespace JG_Prospect.DAL
             return result > JGConstant.RETURN_ZERO ? JGConstant.RETURN_TRUE : JGConstant.RETURN_FALSE;
         }
 
+        public bool UpdateEmailStatusOfCustomMaterialList(string jobid, Int32 pProdCatID, string emailStatus)//, int productTypeId, int estimateId)
+        {
+            int result = JGConstant.RETURN_ZERO;
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("UDP_UpdateEmailStatusOfCustomMaterialList");
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    database.AddInParameter(command, "@soldJobId", DbType.String, jobid);
+                    database.AddInParameter(command, "@emailStatus", DbType.String, emailStatus);
+                    database.AddInParameter(command, "@ProdCatID", DbType.Int16, pProdCatID);
+                    //database.AddInParameter(command, "@estimateId", DbType.Int16, estimateId);
+
+                    result = database.ExecuteNonQuery(command);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return result > JGConstant.RETURN_ZERO ? JGConstant.RETURN_TRUE : JGConstant.RETURN_FALSE;
+        }
+
+        public bool UpdateStatusOfJobProdCat(string jobid, int prodCatID, string emailStatus)
+        {
+            int result = JGConstant.RETURN_ZERO;
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_UpdateCustomMaterialList");
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    database.AddInParameter(command, "@JobID", DbType.String, jobid);
+                    database.AddInParameter(command, "@EmailStatus", DbType.String, emailStatus);
+                    database.AddInParameter(command, "@ProdCatID", DbType.Int16, prodCatID);
+                    
+
+                    result = database.ExecuteNonQuery(command);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return result > JGConstant.RETURN_ZERO ? JGConstant.RETURN_TRUE : JGConstant.RETURN_FALSE;
+        }
+
         public int UpdateSrSalesmanPermissionOfCustomMaterialList(string jobid, char permissionStatus, string SrSalesEmail)//, int productTypeId, int estimateId)
         {
             int result = JGConstant.RETURN_ZERO;
@@ -459,6 +511,31 @@ namespace JG_Prospect.DAL
                    // database.AddInParameter(command, "@productId", DbType.Int16, productTypeId);
                   //  database.AddInParameter(command, "@estimateId", DbType.Int16, estimateId);
 
+                    database.ExecuteNonQuery(command);
+                    result = Convert.ToInt16(database.GetParameterValue(command, "@result"));
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return result;
+        }
+
+        public int CheckPermissionsForVendorsByProdCat(string jobid, int pProdCatID)//, int productTypeId, int estimateId)
+        {
+            int result = JGConstant.RETURN_ZERO;
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_CheckPermissionsForVendorsByProdCat");
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    database.AddInParameter(command, "@soldJobId", DbType.String, jobid);
+                    database.AddOutParameter(command, "@result", DbType.Int16, result);
+                    database.AddInParameter(command, "@prodcatid", DbType.Int16, pProdCatID);
                     database.ExecuteNonQuery(command);
                     result = Convert.ToInt16(database.GetParameterValue(command, "@result"));
                 }
@@ -1008,6 +1085,21 @@ namespace JG_Prospect.DAL
                 database.AddInParameter(command, "@ProductCatID", DbType.Int32, pProductCatID);
                 database.AddInParameter(command, "@ProdLineID", DbType.Int32, pProdLineID);
                 database.AddInParameter(command, "@VendorIDs", DbType.String, pVendorIDs);
+                database.AddInParameter(command, "@SoldJobID", DbType.String, pSoldJobID);
+                database.ExecuteNonQuery(command);
+            }
+        }
+
+
+        public void UpdateVendorForPO(Int32 pVendorID, Int32 pProductCatID, Int32 pProdLineID, String pSoldJobID)
+        {
+            SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+            {
+                DbCommand command = database.GetStoredProcCommand("USP_UpdatePOVendor");
+                command.CommandType = CommandType.StoredProcedure;
+                database.AddInParameter(command, "@ProductLineID", DbType.Int32, pProdLineID);
+                database.AddInParameter(command, "@ProductCatID", DbType.Int32, pProductCatID);
+                database.AddInParameter(command, "@VendorID", DbType.Int32, pVendorID);
                 database.AddInParameter(command, "@SoldJobID", DbType.String, pSoldJobID);
                 database.ExecuteNonQuery(command);
             }

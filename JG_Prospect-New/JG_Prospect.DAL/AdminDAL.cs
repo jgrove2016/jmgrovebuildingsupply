@@ -329,9 +329,9 @@ namespace JG_Prospect.DAL
             }
 
         }
-        public int AddMaterialListAttachment(String pSoldJobID, Int32 pProductCatID, List<CustomerDocument> pAttachmentList, int pAttachmentType, int pVendorID)
+        public string AddMaterialListAttachment(String pSoldJobID, Int32 pProductCatID, List<CustomerDocument> pAttachmentList, int pAttachmentType, int pVendorID)
         {
-            int result = -1;
+            string result = "";
             try
             {
 
@@ -348,14 +348,14 @@ namespace JG_Prospect.DAL
                         database.AddInParameter(command2, "@ProductCatID", DbType.String, pProductCatID);
                         database.AddInParameter(command2, "@AttachmentType", DbType.Int32, pAttachmentType);
                         database.AddInParameter(command2, "@VendorID", DbType.Int32, pVendorID);
-                        result = Convert.ToInt32(database.ExecuteScalar(command2));
+                        result = Convert.ToString(database.ExecuteScalar(command2));
                     }
                 }
                 return result;
             }
             catch (Exception ex)
             {
-                return -1;
+                return "";
             }
 
         }
