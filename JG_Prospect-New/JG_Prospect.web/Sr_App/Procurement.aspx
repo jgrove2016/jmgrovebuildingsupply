@@ -1621,7 +1621,7 @@
                                                 From :
                                             </label>
                                             <asp:TextBox ID="txtfrmdate" runat="server" TabIndex="2" CssClass="date"
-                                                onkeypress="return false" MaxLength="10" AutoPostBack="true"
+                                                MaxLength="10" AutoPostBack="true" OnTextChanged="txtfrmdate_TextChanged"
                                                 Style="width: 150px;"></asp:TextBox>
                                             <label></label>
                                             <asp:RequiredFieldValidator ID="requirefrmdate" ControlToValidate="txtfrmdate"
@@ -1632,8 +1632,8 @@
                                             <label style="width: 50px; text-align: right;">
                                                 <span>*</span> To :
                                             </label>
-                                            <asp:TextBox ID="txtTodate" CssClass="date" onkeypress="return false"
-                                                MaxLength="10" runat="server" TabIndex="3" AutoPostBack="true"
+                                            <asp:TextBox ID="txtTodate" CssClass="date" 
+                                                MaxLength="10" runat="server" TabIndex="3" AutoPostBack="true" OnTextChanged="txtTodate_TextChanged"
                                                 Style="width: 150px;"></asp:TextBox>
 
                                             <asp:RequiredFieldValidator ID="Requiretodate" ControlToValidate="txtTodate"
@@ -2069,7 +2069,22 @@
 
                     google.maps.event.addListener(marker, 'click', (function (marker, i) {
                         return function () {
-                            var FullAddress = "<b>" + MapJSON[i]['VendorName'] + "</b><p> " + MapJSON[i]['Address'] + ", " + MapJSON[i]['City'] + ", " + MapJSON[i]['State'] + ", " + MapJSON[i]['Country'] + ", " + MapJSON[i]['Zip'] + "</p>";
+                            var FullAddress = "";
+                            if (MapJSON[i]['VendorName'] != null)
+                                FullAddress += "<b>" + MapJSON[i]['VendorName'] + "</b>";
+                            FullAddress += "<p>";
+                            if (MapJSON[i]['Address'] != null)
+                                FullAddress += MapJSON[i]['Address'];
+                            if (MapJSON[i]['City'] != null)
+                                FullAddress +=", "+ MapJSON[i]['City'];
+                            if (MapJSON[i]['State'] != null)
+                                FullAddress += ", " + MapJSON[i]['State'];
+                            if (MapJSON[i]['Country'] != null)
+                                FullAddress += ", " + MapJSON[i]['Country'];
+                            if (MapJSON[i]['Zip'] != null)
+                                FullAddress += ", " + MapJSON[i]['Zip'];
+                            FullAddress += "</p>";
+
                             infowindow.setContent(FullAddress);
                             infowindow.open(map, marker);
                         }

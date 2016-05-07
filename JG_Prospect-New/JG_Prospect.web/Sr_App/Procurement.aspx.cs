@@ -3630,6 +3630,16 @@ namespace JG_Prospect.Sr_App
             Boolean Save = VendorBLL.Instance.SaveVendorNotes(VendorID, UserId, Notes, TempId);
             BindVendorNotes();
         }
+
+        protected void txtfrmdate_TextChanged(object sender, EventArgs e)
+        {
+            bindVendorMaterialList();
+        }
+
+        protected void txtTodate_TextChanged(object sender, EventArgs e)
+        {
+            bindVendorMaterialList();
+        }
     }
 
     public class NameValue
