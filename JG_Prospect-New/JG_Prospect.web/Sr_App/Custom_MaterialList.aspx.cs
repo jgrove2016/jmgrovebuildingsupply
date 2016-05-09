@@ -3142,6 +3142,9 @@ namespace JG_Prospect.Sr_App
             VendorList = PageDataset.Tables[7];
             MaterialListAttachment = PageDataset.Tables[8];
 
+            rptVendorTotals.DataSource = PageDataset.Tables[9];
+            rptVendorTotals.DataBind();
+
             if (PageDataset.Tables[1].Rows.Count <= 0) //#-Shabbir: If this is the new record.
             {
                 CustomMaterialList cm = new CustomMaterialList();

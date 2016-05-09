@@ -309,4 +309,54 @@ END
 
 GO
 
+/****** Object:  StoredProcedure [dbo].[USP_AddMaterialListAttachment]    Script Date: 06-05-2016 14:11:12 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_AddMaterialListAttachment]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_AddMaterialListAttachment]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_AddMaterialListAttachment]    Script Date: 06-05-2016 14:11:12 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_AddMaterialListAttachment]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[USP_AddMaterialListAttachment] AS' 
+END
+GO
+
+
+ALTER Proc [dbo].[USP_AddMaterialListAttachment]
+	@DocumentName varchar(200),
+	@DocumentPath varchar(500),
+	@SoldJobID VARCHAR(50),
+	@ProductCatID INT,
+	@AttachmentType INT,
+	@VendorID INT
+AS 
+BEGIN
+   IF NOT EXISTS (select Id from dbo.tblCustomerAttachment where DocumentName=@DocumentName)
+   BEGIN
+		DECLARE @COUNT INT;
+		SELECT @COUNT=COUNT(1) FROM tblMaterialListAttachment WHERE VendorID=@VendorID
+		SET @COUNT = @COUNT+1
+		SET @DocumentName = REPLACE(@DocumentName, '#', Replicate(0, 5- LEN(CONVERT(NVARCHAR, @COUNT))) + CONVERT(NVARCHAR, @COUNT))
+		SET @DocumentPath = REPLACE(@DocumentPath, '#', Replicate(0, 5- LEN(CONVERT(NVARCHAR, @COUNT))) + CONVERT(NVARCHAR, @COUNT))
+
+		Insert Into tblMaterialListAttachment (DocumentName,DocumentPath,SoldJobID, ProductCatID, CreatedDate,AttachmentType, VendorID) 
+		values (@DocumentName,@DocumentPath,@SoldJobID,@ProductCatID,GETDATE(),@AttachmentType, @VendorID)
+		SELECT @DocumentName AS Result
+	END
+	ELSE 
+		SELECT @DocumentName AS Result
+	
+END
+
+
+GO
+
+
+
 

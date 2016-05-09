@@ -68,18 +68,18 @@
             z-index: 9999;
         }
         .form_panel2 {
-    background: #efeeee url(../img/form-bg.png) repeat-x top;
-    min-height: 200px;
-    border-top: #000 10px solid;
-    padding: 10px 5px 50px;
-}
+        
+        /* min-height: 200px;*/
+        
+        /*padding: 10px 5px 50px;*/
+        }
         .form_panel2 table tr td, .form_panel2 table tr td {
-    background: url(../img/line.png) bottom repeat-x;
-    padding: 10px 15px 12px 15px;
-    line-height: 15px;
-    min-height: 5px;
-    vertical-align: top;
-}
+            background: url(../img/line.png) bottom repeat-x;
+            padding: 10px 15px 12px 15px;
+            line-height: 15px;
+            min-height: 5px;
+            vertical-align: top;
+        }
     </style>
     <link href="../css/jquery.multiselect.css" rel="stylesheet" />
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
@@ -558,6 +558,19 @@
             -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
             transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
         }
+        .btn_sec21{
+            text-align:center
+        }
+        .btn_sec21 input {
+            background-color:#A13738;
+            line-height: 30px;
+            padding: 0px 10px 0px 10px;
+            color: #fff;
+            font-size: 14px;
+            margin: 5px 10px;
+            cursor: pointer;
+            border-radius: 0px;
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -643,7 +656,7 @@
 
                         <asp:DropDownList ID="ddlInstaller" runat="server">
                         </asp:DropDownList>
-                        <span class="btn_sec">
+                        <span class="btn_sec21">
                             <asp:Button ID="btnAddInstaller" runat="server" OnClick="btnAddInstaller_Click" Text="Add Installer" /></span>
                         <div>
                             <asp:Repeater ID="rptInstaller" runat="server" OnItemDataBound="rptInstaller_ItemDataBound" OnItemCommand="rptInstaller_ItemCommand">
@@ -710,10 +723,10 @@
                 </asp:ListView>
             </fieldset>
         </div>
-        <div class="grid">
+        <div class="grid" >
             <%-- <asp:UpdatePanel ID="updMaterialList" runat="server">
                 <ContentTemplate>--%>
-            <div class="btn_sec">
+            <div class="btn_sec21">
                 Select Product Category:
                         <asp:DropDownList ID="ddlCategoryH" Width="150px" runat="server">
                         </asp:DropDownList>
@@ -851,7 +864,7 @@
                                 <div style="float: left; width: 40%;">
                                     Attach File:
                                             <asp:FileUpload ID="flMaterialList" runat="server" class="multi" />
-                                    <div class="btn_sec">
+                                    <div class="btn_sec21">
                                         <asp:Button ID="btnAttachFile" runat="server" Text="Attach" OnClick="btnAttachFile_Click" />
                                     </div>
                                 </div>
@@ -882,7 +895,7 @@
 
                                 </div>
                             </fieldset>
-                            <div class="btn_sec">
+                            <div class="btn_sec21">
                                 <asp:Button ID="btnSendEmailToVendorsForProd" runat="server" CommandArgument='<%#Eval("ProductCatId") %>' Text="Send Mail to Vendors" OnClick="btnSendEmailToVendorsForProd_Click" OnClientClick="return ValidatePermissions()" />
                                 <asp:Button ID="btnSendPurchaseOrder" runat="server" CommandArgument='<%#Eval("ProductCatId") %>' Text="Send PO to Vendors" OnClick="btnSendPurchaseOrder_Click" OnClientClick="return ValidatePermissions()" />
                             </div>
@@ -966,7 +979,7 @@
             </asp:UpdatePanel>--%>
         </div>
 
-        <div class="btn_sec">
+        <div class="btn_sec21">
             <asp:Button ID="btnSendMail" runat="server" Text="Save" OnClick="btnSendMail_Click" OnClientClick="return ValidatePermissions()"
                 Style="background: url(../img/btn1.png) no-repeat;" Width="300" Visible="false" />
             <asp:Button ID="btnSendEmailToVendors" runat="server" Text="Send Mail to All Vendors" OnClick="btnSendEmailToVendors_Click" OnClientClick="return ValidatePermissions()" />
@@ -1068,6 +1081,109 @@
                     </tr>
                 </table>
             </asp:Panel>
+        </div>
+        <style>
+            .Total{
+                float:right;width:40%;background-color:#FFFF99;
+            }
+            .Total table{
+                width:100%
+            }
+            .Total h4{
+                background-color:#121212;
+                color:#ffffff;
+                border-radius:0px;
+            }
+            .Total table td.Cell {
+                background-color:#CCCC66;
+                padding:5px 5px 15px 5px;
+                margin:0 0 0 0;
+                border-bottom:solid 2px;
+            }
+            .Total table td.CellAlt {
+                background-color:#FFFFCC;
+                padding:5px 5px 5px 5px;
+                margin:0 0 0 0;
+                border-bottom:solid 2px;
+            }
+            .Total div.Items{
+                font-size:14px;
+                margin-right:15px;
+                text-align:right;
+            }
+            .Total div.Items span {
+                display:block;
+                margin:5px 5px;
+            }
+            .Total div.Items span input {
+                width:170px;
+                padding:1px 1px;
+                height:25px;
+                font-size:14px;
+
+            }
+            .Total div.Items span select {
+                width:170px;
+                padding:1px 1px;
+                height:25px;
+                font-size:14px;
+
+            }
+        </style>
+        <div class="Total">
+            <h3>Total</h3>
+            <hr style="color:#000000" />
+            <asp:Repeater ID="rptVendorTotals" runat="server">
+                <HeaderTemplate>
+                    <table style="width:100%;" cellpadding="3">
+                </HeaderTemplate>
+                <ItemTemplate>
+                    <tr>
+                        <td class="Cell">
+                            <h4><%#Eval("VendorName") %></h4>
+                            <div class="Items">
+                                <span>Delivery: <input type="text" id="txtDelivery" vendorid="<%#Eval("VendorID") %>" /></span>
+                                <span>Freight: <input type="text" id="txtFreight" vendorid="<%#Eval("VendorID") %>" /></span>
+                                <span>Misc. Fee: <input type="text" id="txtMisFee" vendorid="<%#Eval("VendorID") %>" /></span>
+                                <span>Payment Method: 
+                                <select id="drpPay" vendorid="<%#Eval("VendorID") %>">
+                                    <option value="1">Credit Card</option>                
+                                    <option value="2">Wire Transfer</option>                
+                                </select></span>
+                                
+                            </div>
+                        </td>
+                    </tr>
+                </ItemTemplate>
+                <AlternatingItemTemplate>
+                    <tr>
+                        <td class="CellAlt">
+                            <h4><%#Eval("VendorName") %></h4>
+                            <div class="Items">
+                                <span>Delivery: <input type="text" id="txtDelivery" vendorid="<%#Eval("VendorID") %>" /></span>
+                                <span>Freight: <input type="text" id="txtFreight" vendorid="<%#Eval("VendorID") %>" /></span>
+                                <span>Misc. Fee: <input type="text" id="txtMisFee" vendorid="<%#Eval("VendorID") %>" /></span>
+                                <span>Payment Method: 
+                                <select id="drpPay" vendorid="<%#Eval("VendorID") %>">
+                                    <option value="1">Credit Card</option>                
+                                    <option value="2">Wire Transfer</option>                
+                                </select></span>
+                                
+                            </div>
+                        </td>
+                    </tr>
+                </AlternatingItemTemplate>
+                <FooterTemplate>
+                        <tr>
+                            <td class="CellAlt" align="right">
+                                <h4>Sub Total: $9,125/-</h4>
+                            
+                            </td>
+                        </tr>
+                    </table>
+                </FooterTemplate>
+            </asp:Repeater>
+
         </div>
     </div>
 
