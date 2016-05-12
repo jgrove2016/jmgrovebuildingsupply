@@ -14,7 +14,7 @@ namespace JG_Prospect.WebAPI.Models
         public string Status { get; set; }
         public int EmployeeID { get; set; }
     }
-    public class BLLAttendenceRepo
+    public class RepoMisPunch
     {
         public List<clsMisPunch> GetEmployeeReportHistory(int EmployeeID)
         {

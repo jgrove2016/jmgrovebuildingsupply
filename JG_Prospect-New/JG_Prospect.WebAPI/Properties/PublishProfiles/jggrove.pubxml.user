@@ -100,7 +100,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/12/2016 17:05:27</publishTime>
     </File>
     <File Include="bin/JG_Prospect.WebAPI.dll">
-      <publishTime>05/12/2016 18:34:56</publishTime>
+      <publishTime>05/12/2016 19:26:35</publishTime>
     </File>
     <File Include="bin/ko/Microsoft.Data.Edm.resources.dll">
       <publishTime>05/12/2016 17:05:28</publishTime>
@@ -168,6 +168,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="bin/System.Net.Http.dll">
       <publishTime>05/12/2016 17:05:24</publishTime>
     </File>
+    <File Include="bin/System.Net.Http.Formatting.dll">
+      <publishTime>05/12/2016 17:05:23</publishTime>
+    </File>
     <File Include="bin/System.Net.Http.WebRequest.dll">
       <publishTime>05/12/2016 17:05:24</publishTime>
     </File>
@@ -176,6 +179,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="bin/System.Web.Helpers.dll">
       <publishTime>05/12/2016 17:05:22</publishTime>
+    </File>
+    <File Include="bin/System.Web.Http.dll">
+      <publishTime>05/12/2016 17:05:24</publishTime>
     </File>
     <File Include="bin/System.Web.Http.OData.dll">
       <publishTime>05/12/2016 17:05:33</publishTime>

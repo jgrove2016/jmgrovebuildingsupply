@@ -20,7 +20,7 @@ namespace JG_Prospect.WebAPI.Controllers
         {
             try
             {
-                BLLAttendenceRepo objRepo = new BLLAttendenceRepo();
+                RepoMisPunch objRepo = new RepoMisPunch();
 
                 return new ResultClass()
                 {
@@ -44,7 +44,7 @@ namespace JG_Prospect.WebAPI.Controllers
         {
             try
             {
-                BLLAttendenceRepo objRepo = new BLLAttendenceRepo();
+                RepoMisPunch objRepo = new RepoMisPunch();
 
                 return new ResultClass()
                 {
