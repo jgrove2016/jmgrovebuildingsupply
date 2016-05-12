@@ -1,4 +1,3 @@
-
 -- table for attendance history
 CREATE TABLE [dbo].[tbl_AttendanceHistory](
 	[AttendanceHistoryId] [int] IDENTITY(1,1) NOT NULL,
@@ -13,6 +12,7 @@ CREATE TABLE [dbo].[tbl_AttendanceHistory](
 ) ON [PRIMARY]
 
 GO
+
 
 -- table for miss punch report
 CREATE TABLE [dbo].[tbl_MisspunchReport](
@@ -30,7 +30,8 @@ CREATE TABLE [dbo].[tbl_MisspunchReport](
 GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[getAttendanceHistoryByEmployeeId]') AND type in (N'P', N'PC'))
 DROP PROCEDURE [dbo].[getAttendanceHistoryByEmployeeId]
-go
+
+GO
 -- sp for get attendance by employeeid
 CREATE PROCEDURE [dbo].[getAttendanceHistoryByEmployeeId] 
 (
@@ -46,6 +47,11 @@ from tbl_AttendanceHistory
 where Employee_id=@EmployeeID order by Date
 END
 go
+
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[postMissPunchReport]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[postMissPunchReport]
+go
 -- sp for post miss punch reports
 CREATE PROCEDURE [dbo].[postMissPunchReport]
 (
@@ -57,5 +63,15 @@ AS
 BEGIN
 insert into tbl_MisspunchReport(Employee_id,Date,Reason,Status)
 values(@EmployeeID,@Date,@Reason,'Pending')
+END
+go
+--sp for get misspunchreport by employeeid
+Create PROCEDURE getMissPunchReportsByEmployeeId
+(
+@EmployeeID int
+)
+AS
+BEGIN
+select Date,Reason,Status from tbl_MisspunchReport where Employee_id=@EmployeeID
 END
 go
