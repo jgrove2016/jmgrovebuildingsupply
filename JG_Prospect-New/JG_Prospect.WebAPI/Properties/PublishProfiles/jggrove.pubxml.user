@@ -100,7 +100,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/12/2016 17:05:27</publishTime>
     </File>
     <File Include="bin/JG_Prospect.WebAPI.dll">
-      <publishTime>05/12/2016 18:21:44</publishTime>
+      <publishTime>05/12/2016 18:34:56</publishTime>
     </File>
     <File Include="bin/ko/Microsoft.Data.Edm.resources.dll">
       <publishTime>05/12/2016 17:05:28</publishTime>
@@ -182,6 +182,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="bin/System.Web.Http.Tracing.dll">
       <publishTime>05/12/2016 17:05:32</publishTime>
+    </File>
+    <File Include="bin/System.Web.Http.WebHost.dll">
+      <publishTime>05/12/2016 17:05:25</publishTime>
     </File>
     <File Include="bin/System.Web.Mvc.dll">
       <publishTime>05/12/2016 17:05:23</publishTime>

@@ -65,3 +65,5 @@ E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.WebAPI\bin\zh-Hans\
 E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.WebAPI\bin\zh-Hant\System.Spatial.resources.dll
 E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.WebAPI\obj\Release\JG_Prospect.WebAPI.dll
 E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.WebAPI\obj\Release\JG_Prospect.WebAPI.pdb
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.WebAPI\bin\System.Web.Http.WebHost.dll
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.WebAPI\bin\System.Web.Http.WebHost.xml
