@@ -112,6 +112,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminBLL.cs" />
+    <Compile Include="BLLAttendence.cs" />
     <Compile Include="CalendarEvent.cs" />
     <Compile Include="clsProcurementData.cs" />
     <Compile Include="CustomBLL.cs" />
