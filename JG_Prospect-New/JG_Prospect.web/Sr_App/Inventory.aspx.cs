@@ -334,7 +334,7 @@ namespace JG_Prospect.Sr_App
             }
             else
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Unable to Delete Vendor Category. Vendor Cateogry contains Vendors.');", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Unable to Delete Vendor Category. Vendor Category contains Vendors.');", true);
             }
         }
 
