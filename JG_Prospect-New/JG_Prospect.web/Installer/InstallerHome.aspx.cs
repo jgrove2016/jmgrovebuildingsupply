@@ -74,10 +74,17 @@ namespace JG_Prospect.Installer
        
         protected void Page_Load(object sender, EventArgs e)
         {
-            InstallerID = Convert.ToInt32(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()].ToString());
-            if (!IsPostBack)
+            if (Session["loginid"] != null)
             {
-                BindGrid();
+                InstallerID = Convert.ToInt32(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()].ToString());
+                if (!IsPostBack)
+                {
+                    BindGrid();
+                }
+            }
+            else
+            {
+                Response.Redirect("~/login.aspx");
             }
         }
         private void BindGrid()

@@ -197,13 +197,13 @@ namespace JG_Prospect.Sr_App
             bool res = VendorBLL.Instance.SaveNewVendorSubCat(objVendorSubCat);
             if (res)
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Data has been inserted Successfully');", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Vendor Sub Category Added Successfully');", true);
                 string Mtype = GetManufacturerType();
                 GetInventoryCategoryList(Mtype);
             }
             else
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('There is some error');", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Unable to add Vendor Sub Category');", true);
             }
         }
 
@@ -221,13 +221,13 @@ namespace JG_Prospect.Sr_App
 
             if (res)
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Data has been Updated Successfully');", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Vendor Sub Category Updated Successfully');", true);
                 string Mtype = GetManufacturerType();
                 GetInventoryCategoryList(Mtype);
             }
             else
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('There is some error');", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Unable to update Vendor Sub Category');", true);
             }
         }
 
@@ -244,13 +244,13 @@ namespace JG_Prospect.Sr_App
             bool res = VendorBLL.Instance.DeleteVendorSubCat(objVendorSubCat);
             if (res)
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Data has been Deleted Successfully');", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Vendor Sub Category Deleted Successfully');", true);
                 string Mtype = GetManufacturerType();
                 GetInventoryCategoryList(Mtype);
             }
             else
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('There is some error');", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Unable to delete Vendor Sub Category');", true);
             }
         }
 
@@ -276,13 +276,13 @@ namespace JG_Prospect.Sr_App
             bool res = VendorBLL.Instance.SaveNewVendorProduct(objNewVendor);
             if (res)
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Data has been inserted Successfully');", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Vendor Category Added Successfully');", true);
                 string Mtype = GetManufacturerType();
                 GetInventoryCategoryList(Mtype);
             }
             else
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('There is some error');", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Unable to Add Vendor Category');", true);
             }
         }
 
@@ -309,13 +309,13 @@ namespace JG_Prospect.Sr_App
             bool res = VendorBLL.Instance.UpdateVendorCategory(objNewVendor);
             if (res)
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Data has been updated Successfully');", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Vendor Category Updated Successfully');", true);
                 string Mtype = GetManufacturerType();
                 GetInventoryCategoryList(Mtype);
             }
             else
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('There is some error');", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Unable to Update Vendor Category');", true);
             }
         }
 
@@ -328,13 +328,13 @@ namespace JG_Prospect.Sr_App
             bool res = VendorBLL.Instance.deletevendorcategory(vendorcategogyid);
             if (res)
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Data has been Deleted Successfully');", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Vendor Category Deleted Successfully');", true);
                 string Mtype = GetManufacturerType();
                 GetInventoryCategoryList(Mtype);
             }
             else
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('There is some error');", true);
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Unable to Delete Vendor Category. Vendor Cateogry contains Vendors.');", true);
             }
         }
 

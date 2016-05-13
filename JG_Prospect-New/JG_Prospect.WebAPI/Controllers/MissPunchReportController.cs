@@ -40,21 +40,22 @@ namespace JG_Prospect.WebAPI.Controllers
         }
 
         // POST api/misspunchreport
-        public ResultClass Post([FromBody]int EmployeeID, DateTime Date, string Reason)
+        public ResultClass Post(clsMisPunch obj)
         {
             try
             {
                 RepoMisPunch objRepo = new RepoMisPunch();
 
+                Boolean result = false;
+                if (obj!=null && obj.EmployeeID > 0)
+                {
+                    result = objRepo.AddEmployeeReport(obj);
+                }
                 return new ResultClass()
                 {
-                    Message = "Found Successfully",
+                    Message = result ? "Added Successfully" : "Unable To add",
                     Status = true,
-                    Result = objRepo.AddEmployeeReport(new clsMisPunch(){
-                        Date = Date.ToShortDateString(),
-                        EmployeeID = EmployeeID,
-                        Reason = Reason
-                    })
+                    Result = result
                 };
             }
             catch (Exception ex)
@@ -63,6 +64,7 @@ namespace JG_Prospect.WebAPI.Controllers
                 {
                     Message = ex.Message,
                     Status = false,
+                    Result = false
                 };
             }
         }
