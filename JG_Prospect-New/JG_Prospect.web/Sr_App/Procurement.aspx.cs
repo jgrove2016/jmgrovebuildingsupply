@@ -49,6 +49,10 @@ namespace JG_Prospect.Sr_App
             }
             else
             {
+                if (Request.QueryString["vid"] != null && Request.QueryString["vid"].ToString()!="")
+                {
+                    EditVendor(Convert.ToInt32(Request.QueryString["vid"].ToString()), "");
+                }
                 Session["VendorId"] = "1";
                 setPermissions();
                 if (!IsPostBack)

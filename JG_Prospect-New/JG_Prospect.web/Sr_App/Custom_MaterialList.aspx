@@ -251,6 +251,28 @@
                 }
             });
         }
+        function UpdateSpecificPaymentDet(pFldName, pFldVal, pVendorID, pProdCatID) {
+            ShowProgress();
+            $.ajax({
+                type: "POST",
+                url: "Custom_MaterialList.aspx/UpdatePaymentDetails",
+                data: "{'pFieldName':'" + pFldName + "', 'pFieldValue':'" + escape(pFldVal) + "','pProdCatID':'" + pProdCatID + "', 'pVendorID':'"+pVendorID+"'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "JSON",
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert(errorThrown);
+                    HideProgress();
+                },
+                success: function (result) {
+                    if (result != null) {
+                        var flg = (result.d);
+                        if (flg == "1") {
+                            HideProgress();
+                        }
+                    }
+                }
+            });
+        }
         var onload = false;
         function SaveVendor(sender) {
             var lProdCatID = sender.parentElement.className;
@@ -571,6 +593,13 @@
             cursor: pointer;
             border-radius: 0px;
         }
+        .grid th{
+            border: #fff 1px solid;
+            min-width: 10px;
+            background: #ccc;
+            padding: 5px;
+            text-transform: capitalize;
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -771,94 +800,164 @@
                                 <div style="clear: both"></div>
                             </div>
 
-                            <asp:GridView ID="grdProdLines" Width="100%" runat="server" OnRowDataBound="grdProdLines_RowDataBound" AutoGenerateColumns="false">
-                                <Columns>
-                                    <asp:TemplateField HeaderText="Line" HeaderStyle-Width="2%" ItemStyle-Width="2%">
-                                        <ItemTemplate>
-                                            <asp:TextBox CssClass="text-style" ID="txtLine" Text='<%# Eval("Line") %>' MaxLength="4" runat="server" ClientIDMode="Static" Enabled="false"></asp:TextBox>
-                                            <asp:HiddenField ID="hdnMaterialListId" runat="server" Value='<%#Eval("Id")%>' />
-                                            <asp:HiddenField ID="hdnEmailStatus" runat="server" Value='<%#Eval("EmailStatus")%>' />
-                                            <asp:HiddenField ID="hdnForemanPermission" runat="server" Value='<%#Eval("IsForemanPermission")%>' />
-                                            <asp:HiddenField ID="hdnSrSalesmanPermissionF" runat="server" Value='<%#Eval("IsSrSalemanPermissionF")%>' />
-                                            <asp:HiddenField ID="hdnAdminPermission" runat="server" Value='<%#Eval("IsAdminPermission")%>' />
-                                            <asp:HiddenField ID="hdnSrSalesmanPermissionA" runat="server" Value='<%#Eval("IsSrSalemanPermissionA")%>' />
-                                            <asp:HiddenField ID="hdnProductCatID" runat="server" Value='<%#Eval("ProductCatID")%>' />
-                                            <asp:HiddenField ID="hdnVendorIDs" runat="server" Value='<%#Eval("VendorIDs")%>' />
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="JG sku- vendor part #" ItemStyle-Width="5%" HeaderStyle-Width="5%">
-                                        <ItemTemplate>
-                                            <asp:TextBox ID="txtSkuPartNo" CssClass="text-style" Text='<%# Eval("JGSkuPartNo") %>' MaxLength="18" runat="server" onblur="UpdateSpecificProdMat('JGSkuPartNo',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>'></asp:TextBox>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Description" HeaderStyle-Width="25%" ItemStyle-Width="25%">
-                                        <ItemTemplate>
-                                            <asp:TextBox ID="txtDescription" CssClass="text-style" Text='<%# Eval("MaterialList") %>' onblur="UpdateSpecificProdMat('MaterialList',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>' runat="server"></asp:TextBox>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Quantity" HeaderStyle-Width="9%" ItemStyle-Width="9%">
-                                        <ItemTemplate>
-                                            <asp:TextBox ID="txtQTY" runat="server" CssClass="text-style" MaxLength="4" onblur="UpdateSpecificProdMat('Quantity',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>' Text='<%# Eval("Quantity") %>' onkeypress="return isNumberKey(event)"></asp:TextBox>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="UOM" HeaderStyle-Width="5%" ItemStyle-Width="5%">
-                                        <ItemTemplate>
-                                            <asp:TextBox ID="txtUOM" runat="server" CssClass="text-style" onblur="UpdateSpecificProdMat('UOM',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>' onfocus="document.getElementById('__LASTFOCUS').value=this.id;" Text='<%# Eval("UOM") %>'></asp:TextBox>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Cost" HeaderStyle-Width="5%" ItemStyle-Width="5%"><%--Material Cost Per Item--%>
-                                        <ItemTemplate>
-                                            <asp:TextBox ID="txtMaterialCost" onblur="UpdateSpecificProdMat('MaterialCost',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>' CssClass="text-style" onfocus="document.getElementById('__LASTFOCUS').value=this.id;" Text='<%# Eval("MaterialCost") %>' runat="server" onkeypress="return onlyDotsAndNumbers(event)"></asp:TextBox>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Extended" HeaderStyle-Width="10%" ItemStyle-Width="10%">
-                                        <ItemTemplate>
-                                            <asp:TextBox ID="txtExtended" onblur="UpdateSpecificProdMat('extend',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>' runat="server" onfocus="document.getElementById('__LASTFOCUS').value=this.id;" CssClass="text-style" Text='<%# Eval("Extend") %>'></asp:TextBox>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Vendor Quotes/Invoice" Visible="true" HeaderStyle-Width="250px" ItemStyle-Width="250px" ItemStyle-Height="20px">
-                                        <ItemTemplate>
-                                            <asp:UpdatePanel ID="updVend" runat="server">
-                                                <ContentTemplate>
-                                                    <div id='<%#Eval("id")   %>' class='<%#Eval("ProductCatID")%>'>
-                                                        <%--<asp:ListBox onchange="SaveVendor(this)" ID="lstVendorName" Width="25%" SelectionMode="Multiple" CssClass="form-contr2ol" runat="server"></asp:ListBox>--%>
-                                                        <asp:Label ID="lblVendorNames" runat="server" Text=""></asp:Label>
-                                                        <asp:LinkButton ID="lnkAddVendors" runat="server" CommandArgument='<%#Eval("Id") %>' CommandName="AddVendor" OnClick="lnkAddVendors_Click">+ Add</asp:LinkButton>
-                                                        <asp:CheckBox Style="display:none" onclick="UpdateDefault(this);" ID="chkDefault" Text="Default" runat="server" />
-                                                        <asp:LinkButton ID="lnkaddvendorquotes" Visible="false" runat="server" Text="Attach Quotes" OnClick="lnkaddvendorquotes_Click" HeaderStyle-Width="200px">Attach Quotes</asp:LinkButton>
+                            <div>
+                                <div style="float:left;width:70%">
+                                    <asp:GridView ID="grdProdLines" Width="100%" runat="server" OnRowDataBound="grdProdLines_RowDataBound" AutoGenerateColumns="false">
+                                        <Columns>
+                                            <asp:TemplateField HeaderText="#" HeaderStyle-Width="1%" ItemStyle-Width="1%">
+                                                <ItemTemplate>
+                                                    <asp:TextBox CssClass="text-style" Style="display:none" ID="txtLine" Text='<%# Eval("Line") %>' MaxLength="4" runat="server" ClientIDMode="Static" Enabled="false"></asp:TextBox>
+                                                    <span><%#Eval("Line") %></span>
+                                                    <asp:HiddenField ID="hdnMaterialListId" runat="server" Value='<%#Eval("Id")%>' />
+                                                    <asp:HiddenField ID="hdnEmailStatus" runat="server" Value='<%#Eval("EmailStatus")%>' />
+                                                    <asp:HiddenField ID="hdnForemanPermission" runat="server" Value='<%#Eval("IsForemanPermission")%>' />
+                                                    <asp:HiddenField ID="hdnSrSalesmanPermissionF" runat="server" Value='<%#Eval("IsSrSalemanPermissionF")%>' />
+                                                    <asp:HiddenField ID="hdnAdminPermission" runat="server" Value='<%#Eval("IsAdminPermission")%>' />
+                                                    <asp:HiddenField ID="hdnSrSalesmanPermissionA" runat="server" Value='<%#Eval("IsSrSalemanPermissionA")%>' />
+                                                    <asp:HiddenField ID="hdnProductCatID" runat="server" Value='<%#Eval("ProductCatID")%>' />
+                                                    <asp:HiddenField ID="hdnVendorIDs" runat="server" Value='<%#Eval("VendorIDs")%>' />
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="JG sku- vendor part #" ItemStyle-Width="5%" HeaderStyle-Width="5%">
+                                                <ItemTemplate>
+                                                    <asp:TextBox ID="txtSkuPartNo" CssClass="text-style" Text='<%# Eval("JGSkuPartNo") %>' MaxLength="18" runat="server" onblur="UpdateSpecificProdMat('JGSkuPartNo',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>'></asp:TextBox>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Description" HeaderStyle-Width="20%" ItemStyle-Width="20%">
+                                                <ItemTemplate>
+                                                    <asp:TextBox ID="txtDescription" CssClass="text-style" Text='<%# Eval("MaterialList") %>' onblur="UpdateSpecificProdMat('MaterialList',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>' runat="server"></asp:TextBox>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Qty" HeaderStyle-Width="4%" ItemStyle-Width="4%">
+                                                <ItemTemplate>
+                                                    <asp:TextBox ID="txtQTY" runat="server" CssClass="text-style" MaxLength="4" onblur="UpdateSpecificProdMat('Quantity',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>' Text='<%# Eval("Quantity") %>' onkeypress="return isNumberKey(event)"></asp:TextBox>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="UOM" HeaderStyle-Width="5%" ItemStyle-Width="5%">
+                                                <ItemTemplate>
+                                                    <asp:TextBox ID="txtUOM" runat="server" CssClass="text-style" onblur="UpdateSpecificProdMat('UOM',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>' onfocus="document.getElementById('__LASTFOCUS').value=this.id;" Text='<%# Eval("UOM") %>'></asp:TextBox>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Cost" HeaderStyle-Width="5%" ItemStyle-Width="5%"><%--Material Cost Per Item--%>
+                                                <ItemTemplate>
+                                                    <asp:TextBox ID="txtMaterialCost" onblur="UpdateSpecificProdMat('MaterialCost',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>' CssClass="text-style" onfocus="document.getElementById('__LASTFOCUS').value=this.id;" Text='<%# Eval("MaterialCost") %>' runat="server" onkeypress="return onlyDotsAndNumbers(event)"></asp:TextBox>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Extended" HeaderStyle-Width="5%" ItemStyle-Width="5%">
+                                                <ItemTemplate>
+                                                    <asp:TextBox ID="txtExtended" onblur="UpdateSpecificProdMat('extend',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>' runat="server" onfocus="document.getElementById('__LASTFOCUS').value=this.id;" CssClass="text-style" Text='<%# Eval("Extend") %>'></asp:TextBox>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Vendor Quotes/Invoice" Visible="true" HeaderStyle-Width="250px" ItemStyle-Width="250px" ItemStyle-Height="20px">
+                                                <ItemTemplate>
+                                                    <asp:UpdatePanel ID="updVend" runat="server">
+                                                        <ContentTemplate>
+                                                            <div id='<%#Eval("id")   %>' class='<%#Eval("ProductCatID")%>'>
+                                                                <%--<asp:ListBox onchange="SaveVendor(this)" ID="lstVendorName" Width="25%" SelectionMode="Multiple" CssClass="form-contr2ol" runat="server"></asp:ListBox>--%>
+                                                                <asp:Label ID="lblVendorNames" runat="server" Text=""></asp:Label>
+                                                                <asp:LinkButton ID="lnkAddVendors" runat="server" CommandArgument='<%#Eval("Id") %>' CommandName="AddVendor" OnClick="lnkAddVendors_Click">+ Add</asp:LinkButton>
+                                                                <asp:CheckBox Style="display:none" onclick="UpdateDefault(this);" ID="chkDefault" Text="Default" runat="server" />
+                                                                <asp:LinkButton ID="lnkaddvendorquotes" Visible="false" runat="server" Text="Attach Quotes" OnClick="lnkaddvendorquotes_Click" HeaderStyle-Width="200px">Attach Quotes</asp:LinkButton>
                                                         
-                                                    </div>
+                                                            </div>
                                                     
-                                                </ContentTemplate>
-                                            </asp:UpdatePanel>
+                                                        </ContentTemplate>
+                                                    </asp:UpdatePanel>
 
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Total" HeaderStyle-Width="8%" ItemStyle-Width="8%">
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="" HeaderStyle-Width="5%" ItemStyle-Width="5%">
+                                                <ItemTemplate>
+                                                    <asp:LinkButton ID="lnkDeleteLineItems" runat="server" CommandArgument='<%#Eval("Id") %>' CommandName="DeleteLine" OnClick="lnkDeleteLineItems_Click">Delete</asp:LinkButton>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                            <asp:TemplateField HeaderText="Total" Visible="false">
+                                                <ItemTemplate>
+
+
+                                                    <%--<asp:Label ID="lblTotal" runat="server" Text='<%# Eval("Total") %>' ClientIDMode="Static"></asp:Label>--%>
+                                                    <asp:LinkButton ID="lblTotal" data-toggle="modal" data-target="#myModal" runat="server" Text='<%# Eval("Total") %>' ClientIDMode="Static"></asp:LinkButton>
+                                                    <asp:LinkButton ID="lnkAttachQuotes" Text="Attach Quotes" runat="server" OnClick="lnkAttachQuotes_Click" ClientIDMode="Static"></asp:LinkButton>
+
+
+
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+                                        </Columns>
+                                    </asp:GridView>
+                                    <asp:LinkButton ID="lnkAddLines" CommandName="AddLine" CommandArgument='<%#Eval("ProductCatId") %>' OnClick="lnkAddLines_Click1" runat="server">Add Line</asp:LinkButton>
+                                </div>
+                                <div class="Total">
+                                    <h3>Total</h3>
+                                    <hr style="color:#000000" />
+                                    <asp:Repeater ID="rptVendorTotalsByProdCat" runat="server">
+                                        <HeaderTemplate>
+                                            <table style="width:100%;" cellpadding="3">
+                                        </HeaderTemplate>
                                         <ItemTemplate>
-                                            
+                                            <tr>
+                                                <td class="Cell">
+                                                    <h4><a href="Procurement.aspx?vid=<%#Eval("VendorID") %>" target="_blank"><%#Eval("VendorName") %> - <%#Eval("VendorID") %></a> Sub Total: $<%#Eval("SubTotal") %>/-</h4>
+                                                    <div class="Items">
+                                                        <span> <select id="drpDelivery" vendorid="<%#Eval("VendorID") %>" value='<%#Eval("DeliveryType") %>'  onchange="UpdateSpecificPaymentDet('DeliveryType',this.value,'<%#Eval("VendorID") %>','<%#Eval("ProductCatID") %>')">
+                                                                            <option value="1" <%#Eval("DeliveryType").ToString() =="1"?"selected":"" %>>Jobsite Delivery</option>
+                                                                            <option value="2" <%#Eval("DeliveryType").ToString() =="2"?"selected":"" %>>Office Delivery</option>
+                                                                            <option value="3" <%#Eval("DeliveryType").ToString() =="3"?"selected":"" %>>Store Pickup</option>
+                                                                            <option value="4" <%#Eval("DeliveryType").ToString() =="4"?"selected":"" %>>JG Stock</option>
+                                                                        </select>: <input type="text" id="txtPDeliveryC" value="<%#Eval("Delivery") %>" vendorid="<%#Eval("VendorID") %>" onblur="UpdateSpecificPaymentDet('Delivery',this.value,'<%#Eval("VendorID") %>','<%#Eval("ProductCatID") %>')" /></span>
+                                                        
+                                                        <span>Misc. Fee: <input type="text" id="txtPMisFee" value="<%#Eval("MiscFee") %>" vendorid="<%#Eval("VendorID") %>"  onblur="UpdateSpecificPaymentDet('MiscFee',this.value,'<%#Eval("VendorID") %>','<%#Eval("ProductCatID") %>')" /></span>
+                                                        <span>Tax: <input type="text" id="txtPRax" vendorid="<%#Eval("VendorID") %>" value="<%#Eval("Tax") %>" onblur="UpdateSpecificPaymentDet('Tax',this.value,'<%#Eval("VendorID") %>','<%#Eval("ProductCatID") %>')" /></span>
+                                                        <span>Payment Method: 
+                                                        <select id="drpPay" vendorid="<%#Eval("VendorID") %>">
+                                                            <option value="1">Credit Card</option>                
+                                                            <option value="2">Wire Transfer</option>                
+                                                        </select></span>
+                                                        <h4>Total: $<%# Convert.ToDouble( Eval("SubTotal")) + Convert.ToDouble( Eval("Delivery")) + Convert.ToDouble( Eval("MiscFee")) +Convert.ToDouble( Eval("Tax"))   %>/-</h4>
+                                                    </div>
+                                                </td>
+                                            </tr>
                                         </ItemTemplate>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="" HeaderStyle-Width="5%" ItemStyle-Width="5%">
-                                        <ItemTemplate>
-                                            <asp:LinkButton ID="lnkDeleteLineItems" runat="server" CommandArgument='<%#Eval("Id") %>' CommandName="DeleteLine" OnClick="lnkDeleteLineItems_Click">Delete</asp:LinkButton>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Total" Visible="false">
-                                        <ItemTemplate>
+                                        <AlternatingItemTemplate>
+                                            <tr>
+                                                <td class="CellAlt">
+                                                    <h4><a  target="_blank" href="Procurement.aspx?vid=<%#Eval("VendorID") %>"><%#Eval("VendorName") %> - <%#Eval("VendorID") %></a> Sub Total: $<%#Eval("SubTotal") %>/-</h4>
+                                                    <div class="Items">
+                                                        <span> <select id="drpDelivery" vendorid="<%#Eval("VendorID") %>" value='<%#Eval("DeliveryType") %>'  onchange="UpdateSpecificPaymentDet('DeliveryType',this.value,'<%#Eval("VendorID") %>','<%#Eval("ProductCatID") %>')">
+                                                                            <option value="1" <%#Eval("DeliveryType").ToString() =="1"?"selected":"" %>>Jobsite Delivery</option>
+                                                                            <option value="2" <%#Eval("DeliveryType").ToString() =="2"?"selected":"" %>>Office Delivery</option>
+                                                                            <option value="3" <%#Eval("DeliveryType").ToString() =="3"?"selected":"" %>>Store Pickup</option>
+                                                                            <option value="4" <%#Eval("DeliveryType").ToString() =="4"?"selected":"" %>>JG Stock</option>
+                                                                        </select>: <input type="text" id="txtPDeliveryC" value="<%#Eval("Delivery") %>" vendorid="<%#Eval("VendorID") %>" onblur="UpdateSpecificPaymentDet('Delivery',this.value,'<%#Eval("VendorID") %>','<%#Eval("ProductCatID") %>')" /></span>
+                                                        
+                                                        <span>Misc. Fee: <input type="text" id="txtPMisFee" value="<%#Eval("MiscFee") %>" vendorid="<%#Eval("VendorID") %>"  onblur="UpdateSpecificPaymentDet('MiscFee',this.value,'<%#Eval("VendorID") %>','<%#Eval("ProductCatID") %>')" /></span>
+                                                        <span>Tax: <input type="text" id="txtPRax" vendorid="<%#Eval("VendorID") %>" value="<%#Eval("Tax") %>" onblur="UpdateSpecificPaymentDet('Tax',this.value,'<%#Eval("VendorID") %>','<%#Eval("ProductCatID") %>')" /></span>
+                                                        <span>Payment Method: 
+                                                        <select id="drpPay" vendorid="<%#Eval("VendorID") %>">
+                                                            <option value="1">Credit Card</option>                
+                                                            <option value="2">Wire Transfer</option>                
+                                                        </select></span>
+                                                        <h4>Total: $<%# Convert.ToDouble( Eval("SubTotal")) + Convert.ToDouble( Eval("Delivery")) + Convert.ToDouble( Eval("MiscFee")) +Convert.ToDouble( Eval("Tax"))   %>/-</h4>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </AlternatingItemTemplate>
+                                        <FooterTemplate>
+                                                <tr>
+                                                    <td class="CellAlt" align="right">
+                                                       
+                            
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </FooterTemplate>
+                                    </asp:Repeater>
 
-
-                                            <%--<asp:Label ID="lblTotal" runat="server" Text='<%# Eval("Total") %>' ClientIDMode="Static"></asp:Label>--%>
-                                            <asp:LinkButton ID="lblTotal" data-toggle="modal" data-target="#myModal" runat="server" Text='<%# Eval("Total") %>' ClientIDMode="Static"></asp:LinkButton>
-                                            <asp:LinkButton ID="lnkAttachQuotes" Text="Attach Quotes" runat="server" OnClick="lnkAttachQuotes_Click" ClientIDMode="Static"></asp:LinkButton>
-
-
-
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                </Columns>
-                            </asp:GridView>
-                            <asp:LinkButton ID="lnkAddLines" CommandName="AddLine" CommandArgument='<%#Eval("ProductCatId") %>' OnClick="lnkAddLines_Click1" runat="server">Add Line</asp:LinkButton>
+                                </div>
+                                <div style="clear:both"></div>
+                            </div>
+                      
+                            
                             <fieldset style="border: 1px solid">
                                 <legend>Attachments</legend>
                                 <div style="float: left; width: 40%;">
@@ -894,6 +993,7 @@
                                     </asp:DataList>
 
                                 </div>
+
                             </fieldset>
                             <div class="btn_sec21">
                                 <asp:Button ID="btnSendEmailToVendorsForProd" runat="server" CommandArgument='<%#Eval("ProductCatId") %>' Text="Send Mail to Vendors" OnClick="btnSendEmailToVendorsForProd_Click" OnClientClick="return ValidatePermissions()" />
@@ -1084,7 +1184,7 @@
         </div>
         <style>
             .Total{
-                float:right;width:40%;background-color:#FFFF99;
+                float:right;width:30%;background-color:#FFFF99;
             }
             .Total table{
                 width:100%
@@ -1093,6 +1193,7 @@
                 background-color:#121212;
                 color:#ffffff;
                 border-radius:0px;
+                font-size:14px;
             }
             .Total table td.Cell {
                 background-color:#CCCC66;
@@ -1116,21 +1217,21 @@
                 margin:5px 5px;
             }
             .Total div.Items span input {
-                width:170px;
+                width:125px;
                 padding:1px 1px;
                 height:25px;
                 font-size:14px;
 
             }
             .Total div.Items span select {
-                width:170px;
+                width:125px;
                 padding:1px 1px;
                 height:25px;
                 font-size:14px;
 
             }
         </style>
-        <div class="Total">
+        <div class="Total" style="display:none">
             <h3>Total</h3>
             <hr style="color:#000000" />
             <asp:Repeater ID="rptVendorTotals" runat="server">
@@ -1140,17 +1241,23 @@
                 <ItemTemplate>
                     <tr>
                         <td class="Cell">
-                            <h4><%#Eval("VendorName") %></h4>
+                            <h4><%#Eval("VendorName") %> - <%#Eval("VendorID") %> Sub Total: $<%#Eval("SubTotal") %>/-</h4>
                             <div class="Items">
-                                <span>Delivery: <input type="text" id="txtDelivery" vendorid="<%#Eval("VendorID") %>" /></span>
-                                <span>Freight: <input type="text" id="txtFreight" vendorid="<%#Eval("VendorID") %>" /></span>
-                                <span>Misc. Fee: <input type="text" id="txtMisFee" vendorid="<%#Eval("VendorID") %>" /></span>
+                                <span> <select id="drpDelivery" vendorid="<%#Eval("VendorID") %>" value='<%#Eval("DeliveryType") %>' >
+                                                    <option>Jobsite Delivery</option>
+                                                    <option>Office Delivery</option>
+                                                    <option>Store Pickup</option>
+                                                    <option>JG Stock</option>
+                                                </select>: <input type="text" id="txtPDeliveryC" vendorid="<%#Eval("VendorID") %>" /></span>
+                                                        
+                                <span>Misc. Fee: <input type="text" id="txtPMisFee" vendorid="<%#Eval("VendorID") %>" /></span>
+                                <span>Tax: <input type="text" id="txtPRax" vendorid="<%#Eval("VendorID") %>" /></span>
                                 <span>Payment Method: 
                                 <select id="drpPay" vendorid="<%#Eval("VendorID") %>">
                                     <option value="1">Credit Card</option>                
                                     <option value="2">Wire Transfer</option>                
                                 </select></span>
-                                
+                                <h4>Total: $<%# Convert.ToDouble( Eval("SubTotal")) + Convert.ToDouble( Eval("Delivery")) + Convert.ToDouble( Eval("MiscFee")) +Convert.ToDouble( Eval("Tax"))   %>/-</h4>
                             </div>
                         </td>
                     </tr>
@@ -1158,17 +1265,23 @@
                 <AlternatingItemTemplate>
                     <tr>
                         <td class="CellAlt">
-                            <h4><%#Eval("VendorName") %></h4>
+                            <h4><%#Eval("VendorName") %> - <%#Eval("VendorID") %> Sub Total: $<%#Eval("SubTotal") %>/-</h4>
                             <div class="Items">
-                                <span>Delivery: <input type="text" id="txtDelivery" vendorid="<%#Eval("VendorID") %>" /></span>
-                                <span>Freight: <input type="text" id="txtFreight" vendorid="<%#Eval("VendorID") %>" /></span>
-                                <span>Misc. Fee: <input type="text" id="txtMisFee" vendorid="<%#Eval("VendorID") %>" /></span>
+                                <span> <select id="drpDelivery" vendorid="<%#Eval("VendorID") %>" value='<%#Eval("DeliveryType") %>' >
+                                                    <option value="1">Jobsite Delivery</option>
+                                                    <option value="2">Office Delivery</option>
+                                                    <option value="3">Store Pickup</option>
+                                                    <option value="4">JG Stock</option>
+                                                </select>: <input type="text" id="txtPDeliveryC" vendorid="<%#Eval("VendorID") %>" /></span>
+                                                        
+                                <span>Misc. Fee: <input type="text" id="txtPMisFee" vendorid="<%#Eval("VendorID") %>" /></span>
+                                <span>Tax: <input type="text" id="txtPRax" vendorid="<%#Eval("VendorID") %>" /></span>
                                 <span>Payment Method: 
                                 <select id="drpPay" vendorid="<%#Eval("VendorID") %>">
                                     <option value="1">Credit Card</option>                
                                     <option value="2">Wire Transfer</option>                
                                 </select></span>
-                                
+                                <h4>Total: $<%# Convert.ToDouble( Eval("SubTotal")) + Convert.ToDouble( Eval("Delivery")) + Convert.ToDouble( Eval("MiscFee")) +Convert.ToDouble( Eval("Tax"))   %>/-</h4>
                             </div>
                         </td>
                     </tr>
@@ -1176,7 +1289,7 @@
                 <FooterTemplate>
                         <tr>
                             <td class="CellAlt" align="right">
-                                <h4>Sub Total: $9,125/-</h4>
+                                <h4>Sub Total: $<%#Eval("SubTotal")  %>/-</h4>
                             
                             </td>
                         </tr>

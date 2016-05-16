@@ -123,7 +123,7 @@
 
 
 
-        // function ValidateFileCirtificate() {
+        /* function ValidateFileCirtificate() {
         //   var file = document.getElementById("");
 
         // var path = file.value;
@@ -144,7 +144,7 @@
 
         }
         return isValidFile;
-        }
+        }*/
     </script>
     <script language="javascript" type="text/javascript">
         $(document).ready(function () {
@@ -1639,7 +1639,13 @@
                                             <asp:ListItem Text="Recruiter" Value="Recruiter"></asp:ListItem>
                                             <asp:ListItem Text="Sales Manager" Value="Sales Manager"></asp:ListItem>
                                             <asp:ListItem Text="Sr. Sales" Value="Sr. Sales"></asp:ListItem>
-                                            <asp:ListItem Text="IT Developer" Value="ITDeveloper"></asp:ListItem>
+                                            <%--<asp:ListItem Text="IT Developer" Value="ITDeveloper"></asp:ListItem>--%>
+                                            <asp:ListItem Text="IT - Network Admin" Value="ITNetworkAdmin"></asp:ListItem>
+                                            <asp:ListItem Text="IT - Jr .Net Developer" Value="ITJr.NetDeveloper"></asp:ListItem>
+                                            <asp:ListItem Text="IT - Sr .Net Developer" Value="ITSr.NetDeveloper"></asp:ListItem>
+                                            <asp:ListItem Text="IT - Android Developer" Value="ITAndroidDeveloper"></asp:ListItem>
+                                            <asp:ListItem Text="IT - PHP Developer" Value="ITPHPDeveloper"></asp:ListItem>
+                                            <asp:ListItem Text="IT - SEO / BackLinking" Value="ITSEOBackLinking"></asp:ListItem>
                                         </asp:DropDownList>
                                         <%--</ContentTemplate>
                                 </asp:UpdatePanel>--%>
@@ -3537,5 +3543,8 @@
             <%--</div>--%>
     </div>
         </ContentTemplate>
+        <Triggers>
+            <asp:PostBackTrigger ControlID="btncreate" />
+        </Triggers>
     </asp:UpdatePanel>
 </asp:Content>

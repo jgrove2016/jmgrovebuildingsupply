@@ -146,10 +146,12 @@
                     OnRowDataBound="GridViewUser_RowDataBound" OnSelectedIndexChanged="GridViewUser_SelectedIndexChanged"
                     Width="1243px" OnRowCommand="GridViewUser_RowCommand" OnSorting="GridViewUser_Sorting">
                     <Columns>
-                        <asp:TemplateField HeaderText="Edit">
+                        <asp:TemplateField HeaderText="Action">
                             <ItemTemplate>
                                 <asp:LinkButton ID="lbltest" Text="Edit" CommandName="Edit" runat="server"
-                                    CommandArgument='<%#Eval("Id")%>'></asp:LinkButton>
+                                    CommandArgument='<%#Eval("Id")%>'></asp:LinkButton>&nbsp;
+                                <asp:LinkButton ID="lnkDelete" Text="Delete" CommandName="Delete" runat="server" OnClientClick="return confirm('Are you sure you want to delete this record?')"
+                                    CommandArgument='<%#Eval("Id")%>' ></asp:LinkButton>
                             </ItemTemplate>
                         </asp:TemplateField>
                         <asp:TemplateField ShowHeader="True" HeaderText="Id" ControlStyle-ForeColor="Black"
@@ -245,15 +247,26 @@
                             </ItemTemplate>
                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                         </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Hire Date" SortExpression="HireDate" ItemStyle-HorizontalAlign="Center">
-                            <EditItemTemplate>
-                                <asp:TextBox ID="txtHireDate" runat="server" Text='<%#Eval("HireDate")%>'></asp:TextBox>
-                            </EditItemTemplate>
+                        <asp:TemplateField HeaderText="Added By" SortExpression="AddedBy" ItemStyle-HorizontalAlign="Center">
                             <ItemTemplate>
-                                <asp:Label ID="lblHireDate" runat="server" Text='<%#Eval("HireDate")%>'></asp:Label>
+                                <asp:Label ID="lblAddedBy" runat="server" Text='<%#Eval("AddedBy")%>'></asp:Label>
                             </ItemTemplate>
                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                         </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Added On" SortExpression="CreatedDateTime" ItemStyle-HorizontalAlign="Center">
+                            <ItemTemplate>
+                                <asp:Label ID="lblHireDate" runat="server" Text='<%#Eval("CreatedDateTime")%>'></asp:Label>
+                            </ItemTemplate>
+                            <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Source" SortExpression="Source" ItemStyle-HorizontalAlign="Center">
+                            <ItemTemplate>
+                                <asp:Label ID="lblSource" runat="server" Text='<%#Eval("Source")%>'></asp:Label>
+                            </ItemTemplate>
+                            <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                        </asp:TemplateField>
+                        
+
                         <asp:TemplateField HeaderText="Phone" ItemStyle-HorizontalAlign="Center" SortExpression="Phone">
                             <EditItemTemplate>
                                 <asp:TextBox ID="txtPhone" runat="server" Text='<%# Bind("Phone") %>'></asp:TextBox>

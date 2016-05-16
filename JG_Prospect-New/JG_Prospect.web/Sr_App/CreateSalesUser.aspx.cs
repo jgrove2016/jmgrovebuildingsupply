@@ -2282,7 +2282,7 @@ namespace JG_Prospect.Sr_App
                 objuser.UserType = "SalesUser";
                 DataSet dsCheckDuplicate = InstallUserBLL.Instance.CheckInstallUser(txtemail.Text, txtPhone.Text);
               //  if (dsCheckDuplicate.Tables[0].Rows.Count > 0)
-                if (dsCheckDuplicate.Tables.Count > 0 && dsCheckDuplicate.Tables.Count > 0)
+                if (dsCheckDuplicate.Tables.Count > 0 && dsCheckDuplicate.Tables[0].Rows.Count > 0)
                 {
                     Session["EmailEdiId"] = Convert.ToInt32(dsCheckDuplicate.Tables[0].Rows[0][0]);
                     ScriptManager.RegisterStartupScript(this, GetType(), "overlay", "overlay();", true);
@@ -2309,7 +2309,7 @@ namespace JG_Prospect.Sr_App
                     {
                         bool result = InstallUserBLL.Instance.AddUser(objuser);
 
-                        GoogleCalendarEvent.CreateCalendar(txtemail.Text, txtaddress.Text);
+                        //GoogleCalendarEvent.CreateCalendar(txtemail.Text, txtaddress.Text);
                         //lblmsg.Visible = true;
                         //lblmsg.CssClass = "success";
                         //lblmsg.Text = "User has been created successfully";

@@ -97,7 +97,7 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@UOM", DbType.String, cm.UOM);
                     //database.AddInParameter(command, "@VendorQuotesPath"	varchar(MAX) = '',
                     database.AddInParameter(command, "@MaterialCost", DbType.Decimal, cm.MaterialCost);
-                    database.AddInParameter(command, "@extend", DbType.String, cm.extend);
+                    database.AddInParameter(command, "@extend", DbType.Double, cm.extend);
                     database.AddInParameter(command, "@Total", DbType.Decimal, cm.Total);
                     database.AddInParameter(command, "@JobSeqId", DbType.Int32, cm.JobSeqId);
                     database.AddInParameter(command, "@VendorIds", DbType.String, cm.VendorIds);
@@ -1128,6 +1128,20 @@ namespace JG_Prospect.DAL
                 database.AddInParameter(command, "@FieldName", DbType.String, pFieldName);
                 database.AddInParameter(command, "@Value", DbType.String, pFieldValue);
                 database.AddInParameter(command, "@ID", DbType.Int32, pID);
+                database.AddInParameter(command, "@SoldJobID", DbType.String, pSoldJobID);
+                database.ExecuteNonQuery(command);
+            }
+        }
+        public void UpdateSpecificPaymentDetails(string pFieldName, String pFieldValue, Int32 pProdCatID, Int32 pVendorID, String pSoldJobID)
+        {
+            SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+            {
+                DbCommand command = database.GetStoredProcCommand("USP_UpdatePaymentDetails");
+                command.CommandType = CommandType.StoredProcedure;
+                database.AddInParameter(command, "@FieldName", DbType.String, pFieldName);
+                database.AddInParameter(command, "@Value", DbType.String, pFieldValue);
+                database.AddInParameter(command, "@ProdCatID", DbType.Int32, pProdCatID);
+                database.AddInParameter(command, "@VendorID", DbType.Int32, pVendorID);
                 database.AddInParameter(command, "@SoldJobID", DbType.String, pSoldJobID);
                 database.ExecuteNonQuery(command);
             }

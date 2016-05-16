@@ -2116,6 +2116,20 @@ namespace JG_Prospect.Sr_App
         }
 
         /// <summary>
+        /// This method will save payment details
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        [WebMethod]
+        public static string UpdatePaymentDetails(string pFieldName, String pFieldValue, Int32 pProdCatID, Int32 pVendorID)
+        {
+            string lResult = "1";
+            CustomBLL.Instance.UpdateSpecificPaymentDetails(pFieldName, HttpUtility.UrlDecode(pFieldValue), pProdCatID, pVendorID, jobId);
+            return lResult;
+        }
+
+
+        /// <summary>
         /// This method will save vendor ids
         /// </summary>
         /// <param name="sender"></param>
@@ -2976,7 +2990,7 @@ namespace JG_Prospect.Sr_App
                 Label lblVendorNames = (Label)e.Row.FindControl("lblVendorNames");
                 LinkButton lnkAddVendors = (LinkButton)e.Row.FindControl("lnkAddVendors");
                 CheckBox chkDefault = (CheckBox)e.Row.FindControl("chkDefault");
-                chkDefault.Checked = lDefVendorCat;
+                chkDefault.Checked = false; //lDefVendorCat;
 
                 if (e.Row.RowIndex == 0)
                 {
@@ -3010,7 +3024,7 @@ namespace JG_Prospect.Sr_App
                     {
                         if (lRow["VendorID"].ToString() == lVendorId)
                         {
-                            lblVendorNames.Text += "<input type='radio' " + ((lDr["VendorID"].ToString() == lVendorId.ToString()) ? "checked='checked'" : "") + " onclick='updateVendor(" + lDr["id"] + "," + lProdCatID + "," + lVendorId + ", this)'  id='rdo" + lDr["id"] + "' name='grp" + lDr["id"] + "' /> <label for='rdo" + lDr["id"] + "'>" + lRow["VendorName"].ToString() + "</label> <a href='javascript:void(0);' onclick='ShowAttachQuotes(" + lProdCatID + "," + lVendorId + ")'>Attach Quote</a><br/>";
+                            lblVendorNames.Text += "<input type='radio' " + ((lDr["VendorID"].ToString() == lVendorId.ToString()) ? "checked='checked'" : "") + " onclick='updateVendor(" + lDr["id"] + "," + lProdCatID + "," + lVendorId + ", this)'  id='rdo" + lDr["id"] + "' name='grp" + lDr["id"] + "' /> <label for='rdo" + lDr["id"] + "'> <a href='Procurement.aspx?vid="+lRow["VendorID"]+"' target='_blank'>" + lRow["VendorName"].ToString() + "</a></label> <a href='javascript:void(0);' onclick='ShowAttachQuotes(" + lProdCatID + "," + lVendorId + ")'>Attach Quote</a><br/>";
                         }
                     }
                 }
@@ -3398,7 +3412,10 @@ namespace JG_Prospect.Sr_App
                 DataList grdPurchaseOrder = (DataList)e.Item.FindControl("grdPurchaseOrder");
                 grdPurchaseOrder.DataSource = new DataView(MaterialListAttachment, "ProductCatId=" + lProdCatID + " and AttachmentType=2", "Id desc", DataViewRowState.CurrentRows);
                 grdPurchaseOrder.DataBind();
-                
+
+                Repeater rptVendorTotalsByProdCat = (Repeater)e.Item.FindControl("rptVendorTotalsByProdCat");
+                rptVendorTotalsByProdCat.DataSource = new DataView(PageDataset.Tables[9], "ProductCatId=" + lProdCatID , "VendorName asc", DataViewRowState.CurrentRows);
+                rptVendorTotalsByProdCat.DataBind();
                
                 ddlCategory.SelectedValue = lProdCatID.ToString();
                 GridView grdProdLines = (GridView)e.Item.FindControl("grdProdLines");
@@ -3480,6 +3497,9 @@ namespace JG_Prospect.Sr_App
             cm.EmailStatus = JGConstant.EMAIL_STATUS_NONE;
             cm.InstallerID = 0;
             cm.RequestStatus = 0;
+            cm.extend = "0";
+            cm.Quantity = 0;
+            cm.MaterialCost = 0;
             bool result = CustomBLL.Instance.AddCustomMaterialList(cm, jobId);
             InitialDataBind();
         }
@@ -4470,7 +4490,7 @@ namespace JG_Prospect.Sr_App
                         if (item.Value == Vendor)
                         {
                             item.Selected = true;
-                            lblGotQuotesFrom.Text += item.Text + ", ";
+                            lblGotQuotesFrom.Text += "<a href='Procurement.aspx?vid="+item.Value+"' target='_blank'>" +item.Text + "</a>, ";
                         }
                     }
                 }
