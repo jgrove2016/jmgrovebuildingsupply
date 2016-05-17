@@ -4,8 +4,8 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="../Styles/dd.css" rel="stylesheet" />
-    <script src="../js/jquery.dd.min.js"></script>
-    <script src="~/Scripts/jquery.MultiFile.js" type="text/javascript"></script>
+
+    <script src="../Scripts/jquery.MultiFile.js" type="text/javascript"></script>
     <script type="text/javascript">
         function hidePnl() {
             $("#ContentPlaceHolder1_pnlpopup").hide();
@@ -70,15 +70,7 @@
             document.getElementById('light').style.display = 'block';
             document.getElementById('fade').style.display = 'block';
         }
-        $(document).ready(function () {
-            $("#ddlstatus").click(function () {
-                if ($('#ddlstatus').val() == "Active") {
-                    $('#pnlcolaps').show(500);
-                } else {
-                    $("#pnlcolaps").hide(500);
-                }
-            });
-        });
+      
     </script>
     <script type="text/javascript">
         function sync()
@@ -147,39 +139,7 @@
         }*/
     </script>
     <script language="javascript" type="text/javascript">
-        $(document).ready(function () {
-            var des = $("#ddldesignation").val();
-            $("#lnkW9").hide();
-            $("#lnkw4").hide();
-            $("#lnkI9").hide();
-            $("#lnkEsrow").hide();
-            $("#lnkface").hide();
-            if (des == "ForeMan") {
-                $("#lnkW9").hide();
-                $("#lnkw4").show();
-                $("#lnkI9").show();
-                $("#lnkEsrow").hide();
-                $("#lnkface").hide();
-                Installer;
-            }
-            else if (des == "Installer") {
-                $("#lnkW9").hide();
-                $("#lnkw4").show();
-                $("#lnkI9").show();
-                $("#lnkEsrow").hide();
-                $("#lnkface").hide();
-
-            }
-            else if (des == "SubContractor") {
-                $("#lnkW9").show();
-                $("#lnkw4").hide();
-                $("#lnkI9").show();
-                $("#lnkEsrow").show();
-                $("#lnkface").show();
-
-            }
-
-        });
+       
 
     </script>
     <style type="text/css">
@@ -333,32 +293,6 @@
             var btnImageUploadClick = document.getElementById("btnUploadSkills");
             btn_UploadFiles.click();
         }
-    </script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            try {
-                $("body select").msDropDown();
-            } catch (e) {
-                alert(e.message);
-            }
-            //On UpdatePanel Refresh
-            //debugger;
-            var prm = Sys.WebForms.PageRequestManager.getInstance();
-            if (prm != null) {
-                // debugger;
-                prm.add_beginRequest(function (sender, e) {
-                    if (sender._postBackSettings.panelsToUpdate != null) {
-                        $(".loading").show();
-                    }
-                });
-                prm.add_endRequest(function (sender, e) {
-                    if (sender._postBackSettings.panelsToUpdate != null) {
-                        $(".loading").hide();
-                        $("body select").msDropDown();
-                    }
-                });
-            };
-        });
     </script>
     <style>
         /* Absolute Center Spinner */
@@ -3547,4 +3481,75 @@
             <asp:PostBackTrigger ControlID="btncreate" />
         </Triggers>
     </asp:UpdatePanel>
+
+    <script src="../js/jquery.dd.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+           
+            $("#<%=ddlstatus.ClientID%>").click(function () {
+                if ($('#<%=ddlstatus.ClientID%>').val() == "Active") {
+                    $('#pnlcolaps').show(500);
+                } else {
+                    $("#pnlcolaps").hide(500);
+                }
+            });
+            var des = $("#ddldesignation").val();
+            $("#lnkW9").hide();
+            $("#lnkw4").hide();
+            $("#lnkI9").hide();
+            $("#lnkEsrow").hide();
+            $("#lnkface").hide();
+            if (des == "ForeMan") {
+                $("#lnkW9").hide();
+                $("#lnkw4").show();
+                $("#lnkI9").show();
+                $("#lnkEsrow").hide();
+                $("#lnkface").hide();
+                Installer;
+            }
+            else if (des == "Installer") {
+                $("#lnkW9").hide();
+                $("#lnkw4").show();
+                $("#lnkI9").show();
+                $("#lnkEsrow").hide();
+                $("#lnkface").hide();
+
+            }
+            else if (des == "SubContractor") {
+                $("#lnkW9").show();
+                $("#lnkw4").hide();
+                $("#lnkI9").show();
+                $("#lnkEsrow").show();
+                $("#lnkface").show();
+
+            }
+
+
+            //On UpdatePanel Refresh
+            //debugger;
+            var prm = Sys.WebForms.PageRequestManager.getInstance();
+            if (prm != null) {
+                // debugger;
+                prm.add_beginRequest(function (sender, e) {
+                    if (sender._postBackSettings.panelsToUpdate != null) {
+                        $(".loading").show();
+                    }
+                });
+                prm.add_endRequest(function (sender, e) {
+                    if (sender._postBackSettings.panelsToUpdate != null) {
+                        $(".loading").hide();
+                        $("#<%=ddlstatus.ClientID %>").msDropDown();
+                    }
+                });
+            };
+        });
+
+        try {
+            $("#<%=ddlstatus.ClientID%>").msDropDown();
+        } catch (e) {
+          alert(e.message);
+        }
+    </script>
+
 </asp:Content>

@@ -33,7 +33,7 @@ namespace JG_Prospect.Sr_App
         {
             if (Session["Username"] != null)
             {
-                txtSource.Text = Session["Username"].ToString();
+               // txtSource.Text = Session["Username"].ToString();
             }
             else
             {
@@ -2285,23 +2285,8 @@ namespace JG_Prospect.Sr_App
                 if (dsCheckDuplicate.Tables.Count > 0 && dsCheckDuplicate.Tables[0].Rows.Count > 0)
                 {
                     Session["EmailEdiId"] = Convert.ToInt32(dsCheckDuplicate.Tables[0].Rows[0][0]);
-                    ScriptManager.RegisterStartupScript(this, GetType(), "overlay", "overlay();", true);
-                    //ModalPopupExtender2.Show();
+                    ScriptManager.RegisterStartupScript(this, GetType(), "overlay", "alert('Record already exists. Please use different phone number or email address.');", true);
                     return;
-                    //string confirmValue = Request.Form["confirm_value"];
-                    //if (confirmValue == "Yes")
-                    //{
-                    //    bool result = InstallUserBLL.Instance.UpdateInstallUser(objuser, Convert.ToInt32(dsCheckDuplicate.Tables[0].Rows[0][0]));
-                    //    ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('User has been updated successfully');", true);
-                    //    clearcontrols();
-                    //    Server.Transfer("EditInstallUser.aspx");
-                    //    return;
-                    //}
-                    //else
-                    //{
-                    //    ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Use diffrent Email & phone number.');", true);
-                    //    return;
-                    //}
                 }
                 else
                 {

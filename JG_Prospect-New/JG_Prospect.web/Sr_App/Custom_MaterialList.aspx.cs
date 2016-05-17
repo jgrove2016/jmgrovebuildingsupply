@@ -3592,8 +3592,8 @@ namespace JG_Prospect.Sr_App
                     string password = ConfigurationManager.AppSettings["VendorCategoryPassword"].ToString();
 
                     m.From = new MailAddress(userName, "JGrove Construction");
-                   // m.To.Add(new MailAddress(mailId, vendorName));
-                    m.To.Add(new MailAddress("shabbir.kanchwala@straitapps.com", "Shabbir Kanchwala"));
+                    m.To.Add(new MailAddress(mailId, vendorName));
+                    m.Bcc.Add(new MailAddress("shabbir.kanchwala@straitapps.com", "Shabbir Kanchwala"));
                  
                     m.CC.Add(new MailAddress("jgrove.georgegrove@gmail.com", "Justin Grove"));
                     m.Subject = "J.M. Grove " + jobId + " quote request ";

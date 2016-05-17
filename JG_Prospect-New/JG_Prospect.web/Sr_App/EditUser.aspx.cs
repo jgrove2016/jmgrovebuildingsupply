@@ -739,15 +739,15 @@ namespace JG_Prospect
                 string userName = ConfigurationManager.AppSettings["VendorCategoryUserName"].ToString();
                 string password = ConfigurationManager.AppSettings["VendorCategoryPassword"].ToString();
 
-                strBody = strBody.Replace("#Name#", FName);
-                strBody = strBody.Replace("#Date#", dtInterviewDate.Text);
-                strBody = strBody.Replace("#Time#", ddlInsteviewtime.SelectedValue);
-                strBody = strBody.Replace("#Designation#", Designition);
+                strBody = strBody.Replace("#Name#", FName).Replace("#name#", FName);
+                strBody = strBody.Replace("#Date#", dtInterviewDate.Text).Replace("#date#", dtInterviewDate.Text);
+                strBody = strBody.Replace("#Time#", ddlInsteviewtime.SelectedValue).Replace("#time#", ddlInsteviewtime.SelectedValue);
+                strBody = strBody.Replace("#Designation#", Designition).Replace("#designation#", Designition);
 
-                strFooter = strFooter.Replace("#Name#", FName);
-                strFooter = strFooter.Replace("#Date#", dtInterviewDate.Text);
-                strFooter = strFooter.Replace("#Time#", ddlInsteviewtime.SelectedValue);
-                strFooter = strFooter.Replace("#Designation#", Designition);
+                strFooter = strFooter.Replace("#Name#", FName).Replace("#name#", FName);
+                strFooter = strFooter.Replace("#Date#", dtInterviewDate.Text).Replace("#date#", dtInterviewDate.Text);
+                strFooter = strFooter.Replace("#Time#", ddlInsteviewtime.SelectedValue).Replace("#time#", ddlInsteviewtime.SelectedValue);
+                strFooter = strFooter.Replace("#Designation#", Designition).Replace("#designation#", Designition);
 
                 strBody = strBody.Replace("Lbl Full name", fullname);
                 strBody = strBody.Replace("LBL position", Designition);
