@@ -132,6 +132,7 @@
 
 
         function GetVendorDetails(e) {
+            $("#divModalPopup").show();
             var AddressData = [];
             var VendorEmailData = [];
             var vid = $('.clsvendorid').val();
@@ -705,6 +706,7 @@
                                             </div>
                                         </td>
                                         <input type="hidden" id="hdnvendorId" name="vendorId" />
+                                        <input type="hidden" id="hdnVendorAddId" name="hdnVendorAddId" />
                                         <asp:Button ID="btnEditVendor" runat="server" Text="EditVendor" CssClass="clsbtnEditVendor" OnClick="btneditVendor_Click" />
 
                                     </tr>
@@ -1583,6 +1585,13 @@
                                                 </div>
                                             </li>
                                         </ul>
+                                        <div id="divModalPopup" style="display:none;">
+                                            <div class="modal">
+                                                <div class="center">
+                                                    <img alt="Loading..." src="../img/loader.gif" />
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="btn_sec">
                                             <asp:Button ID="btnSave" runat="server" TabIndex="1" Text="Save" OnClientClick="return GetVendorDetails(this);" OnClick="btnSave_Click" ValidationGroup="addvendor" /><%--OnClick="btnSave_Click" ValidationGroup="addvendor"--%>
                                             <br />
@@ -1632,7 +1641,7 @@
                                             <label style="width: 50px; text-align: right;">
                                                 <span>*</span> To :
                                             </label>
-                                            <asp:TextBox ID="txtTodate" CssClass="date" 
+                                            <asp:TextBox ID="txtTodate" CssClass="date"
                                                 MaxLength="10" runat="server" TabIndex="3" AutoPostBack="true" OnTextChanged="txtTodate_TextChanged"
                                                 Style="width: 150px;"></asp:TextBox>
 
@@ -2076,7 +2085,7 @@
                             if (MapJSON[i]['Address'] != null)
                                 FullAddress += MapJSON[i]['Address'];
                             if (MapJSON[i]['City'] != null)
-                                FullAddress +=", "+ MapJSON[i]['City'];
+                                FullAddress += ", " + MapJSON[i]['City'];
                             if (MapJSON[i]['State'] != null)
                                 FullAddress += ", " + MapJSON[i]['State'];
                             if (MapJSON[i]['Country'] != null)
@@ -2114,6 +2123,7 @@
                 select: function (event, ui) {
                     $(".VendorSearchBox").val(ui.item.value);
                     $("#hdnvendorId").val(ui.item.id);
+                    $("#hdnVendorAddId").val(ui.item.addressId);
                     $(".clsbtnEditVendor").trigger("click");
                     return false;
                 }

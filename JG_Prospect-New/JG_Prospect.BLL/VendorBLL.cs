@@ -204,7 +204,8 @@ namespace JG_Prospect.BLL
                 {
                     id = Convert.ToInt32(item["VendorId"].ToString()),
                     label = Convert.ToString(item["VendorName"]),
-                    value = Convert.ToString(item["VendorName"])
+                    value = Convert.ToString(item["VendorName"]),
+                    addressId = Convert.ToString(item["addressId"])
                 });
             }
             return lstResult;
@@ -241,5 +242,6 @@ namespace JG_Prospect.BLL
         public int id { get; set; }
         public string value { get; set; }
         public string label { get; set; }
+        public string addressId { get; set; }
     }
 }

@@ -906,7 +906,8 @@ namespace JG_Prospect.Sr_App
         protected void btneditVendor_Click(object sender, EventArgs e)
         {
             string vid = Request.Form["vendorId"];
-            EditVendor(Convert.ToInt16(vid), "");
+            string vendorAddressID = Request.Form["hdnVendorAddId"];
+            EditVendor(Convert.ToInt16(vid), vendorAddressID);
             updtpnlAddVender.Update();
         }
 
@@ -3219,7 +3220,7 @@ namespace JG_Prospect.Sr_App
 
                 SetManufacturerType(Convert.ToString(ds.Tables[0].Rows[0]["ManufacturerType"]));
 
-                if (!string.IsNullOrEmpty(Convert.ToString(dsProduct.Tables[0].Rows[0]["ProductCategoryId"])))
+                if (dsProduct.Tables[0].Rows.Count>0 && !string.IsNullOrEmpty(Convert.ToString(dsProduct.Tables[0].Rows[0]["ProductCategoryId"])))
                 {
                     ddlprdtCategory.SelectedValue = Convert.ToString(dsProduct.Tables[0].Rows[0]["ProductCategoryId"]) == "0" ? "Select" : Convert.ToString(dsProduct.Tables[0].Rows[0]["ProductCategoryId"]);
                     BindVendorByProdCat(ddlprdtCategory.SelectedValue.ToString());
@@ -3228,7 +3229,7 @@ namespace JG_Prospect.Sr_App
                 {
                     ddlprdtCategory.SelectedValue = "Select";
                 }
-                if (!string.IsNullOrEmpty(Convert.ToString(ds.Tables[0].Rows[0]["VendorCategoryId"])))
+                if (dsProduct.Tables[0].Rows.Count > 0 && !string.IsNullOrEmpty(Convert.ToString(ds.Tables[0].Rows[0]["VendorCategoryId"])))
                 {
                     ddlVndrCategory.SelectedValue = Convert.ToString(ds.Tables[0].Rows[0]["VendorCategoryId"]) == "0" ? "Select" : Convert.ToString(ds.Tables[0].Rows[0]["VendorCategoryId"]);
                     BindVendorSubCatByVendorCat(ddlVndrCategory.SelectedValue.ToString());
@@ -3237,7 +3238,7 @@ namespace JG_Prospect.Sr_App
                 {
                     ddlVndrCategory.SelectedValue = "Select";
                 }
-                if (!string.IsNullOrEmpty(Convert.ToString(ds.Tables[0].Rows[0]["VendorSubCategoryId"])))
+                if (dsProduct.Tables[0].Rows.Count > 0 && !string.IsNullOrEmpty(Convert.ToString(ds.Tables[0].Rows[0]["VendorSubCategoryId"])))
                 {
                     ddlVendorSubCategory.SelectedValue = Convert.ToString(ds.Tables[0].Rows[0]["VendorSubCategoryId"]) == "0" ? "Select" : Convert.ToString(ds.Tables[0].Rows[0]["VendorSubCategoryId"]);
                 }
