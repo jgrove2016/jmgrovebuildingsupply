@@ -114,6 +114,29 @@ namespace JG_Prospect.DAL
             }
         }
 
+        public DataSet GetJobInformation(String pSoldJobID, Int32 pProductCatID, Int32 pVendorID)
+        {
+            DataSet result = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_GetPurchaseOrderEmailContent");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@SoldJobID", DbType.String, pSoldJobID);
+                    database.AddInParameter(command, "@ProductCatID", DbType.String, pProductCatID);
+                    database.AddInParameter(command, "@VendorID", DbType.String, pVendorID);
+                    result = database.ExecuteDataSet(command);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+                return null;
+            }
+        }
+
         public DataSet GetInstallerEmails()
         {
             DataSet result = new DataSet();

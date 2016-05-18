@@ -3688,7 +3688,7 @@ namespace JG_Prospect.Sr_App
             return emailStatus;
         }
 
-        public bool SendOrderonEmails(string pVendorCategoryIds, StringBuilder pStrMaterialListTable)
+        public bool SendOrderonEmails(string pVendorCategoryIds, StringBuilder pStrMaterialListTable, Int32 pProductCatID)
         {
             bool emailStatus = true;
             string mailNotSendIds = string.Empty;
@@ -3724,7 +3724,7 @@ namespace JG_Prospect.Sr_App
                     m.Subject = "J.M. Grove " + jobId + " quote request ";
                     m.IsBodyHtml = true;
                     DataSet dsEmailTemplate = fetchVendorEmailTemplate();
-
+                    DataSet lDsJobInformation = AdminBLL.Instance.GetJobInformation(jobId, pProductCatID, Convert.ToInt32(dr["VendorID"].ToString()));
                     if (dsEmailTemplate != null)
                     {
                         m.Subject = dsEmailTemplate.Tables[0].Rows[0]["HTMLSubject"].ToString().Replace("c-xxxx", jobId);
@@ -3749,7 +3749,14 @@ namespace JG_Prospect.Sr_App
 
                         htmlBody += replacedBody.ToString();
 
-                        htmlBody += "</br></br></br>";
+                        htmlBody += "<br/>";
+                        htmlBody += "<b>Delivery Type:</b> " + lDsJobInformation.Tables[0].Rows[0]["DeliveryMethod"].ToString() + "<br/>";
+                        htmlBody += "<b>Delivery Address:</b> " + lDsJobInformation.Tables[0].Rows[0]["DeliverySite"].ToString() + ",<br/>" + lDsJobInformation.Tables[0].Rows[0]["City"].ToString() + ", " + lDsJobInformation.Tables[0].Rows[0]["State"].ToString()  + (lDsJobInformation.Tables[0].Rows[0]["ZipCode"].ToString() == "" ? "" : "(" + lDsJobInformation.Tables[0].Rows[0]["ZipCode"].ToString() + ")");
+                        htmlBody += "</br></br>";
+                        htmlBody += "<b>Material Storage:</b> " + lDsJobInformation.Tables[2].Rows[0]["MaterialStorage"].ToString();
+                        htmlBody += "<br/><br/>";
+                        htmlBody += "<b>Primary Delivery Contact:</b> " + lDsJobInformation.Tables[1].Rows[0]["CustomerName"].ToString() + " (" + lDsJobInformation.Tables[1].Rows[0]["CellPh"].ToString()+")";
+                        htmlBody += "<br/><br/><br/>";
 
 
                         string templateFooter = dsEmailTemplate.Tables[0].Rows[0][2].ToString();
@@ -4699,7 +4706,7 @@ namespace JG_Prospect.Sr_App
                     int permissionStatus = 1;// CustomBLL.Instance.CheckPermissionsForVendorsByProdCat(jobId, lProductCatID);//, productTypeId, estimateId);
                     if (permissionStatus == 1)
                     {
-                        bool emailStatusVendorCategory = SendOrderonEmails(vendor.TrimEnd(','), lStrbHTMLTable); //sendEmailToVendorCategories(cmList);
+                        bool emailStatusVendorCategory = SendOrderonEmails(vendor.TrimEnd(','), lStrbHTMLTable, lProductCatID); //sendEmailToVendorCategories(cmList);
 
                         if (emailStatusVendorCategory == true)
                         {

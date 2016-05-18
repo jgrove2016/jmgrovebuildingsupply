@@ -51,6 +51,10 @@ namespace JG_Prospect.BLL
         {
             return AdminDAL.Instance.GetEmailTemplate(pTemplateName);
         }
+        public DataSet GetJobInformation(String pSoldJobID, Int32 pProductCatID, Int32 pVendorID)
+        {
+            return AdminDAL.Instance.GetJobInformation(pSoldJobID, pProductCatID, pVendorID);
+        }
         public DataSet GetInstallerEmails()
         {
             return AdminDAL.Instance.GetInstallerEmails();

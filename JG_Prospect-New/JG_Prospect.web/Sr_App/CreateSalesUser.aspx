@@ -3479,6 +3479,7 @@
         </ContentTemplate>
         <Triggers>
             <asp:PostBackTrigger ControlID="btncreate" />
+            <asp:PostBackTrigger ControlID="txtZip" />
         </Triggers>
     </asp:UpdatePanel>
 

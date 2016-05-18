@@ -229,6 +229,17 @@
                 }
             });
         }
+        
+        function UpdateExt(sender,cmd){
+            if(cmd == 'QTY'){
+                document.getElementById(sender.id.replace('txtQTY','txtExtended')).value = parseFloat(sender.value == "" ? "0":sender.value) * parseFloat(document.getElementById(sender.id.replace('txtQTY','txtMaterialCost')).value==""?"0":document.getElementById(sender.id.replace('txtQTY','txtMaterialCost')).value);
+            }
+            else if (cmd == 'CST'){
+                document.getElementById(sender.id.replace('txtMaterialCost','txtExtended')).value = parseFloat(sender.value == "" ? "0":sender.value) * parseFloat(document.getElementById(sender.id.replace('txtMaterialCost','txtQTY')).value==""?"0":document.getElementById(sender.id.replace('txtMaterialCost','txtQTY')).value);
+            }
+            UpdateSpecificProdMat('extend',document.getElementById(sender.id.replace('txtMaterialCost','txtExtended')).value,document.getElementById(sender.id.replace('txtMaterialCost','txtExtended')).getAttribute('materialid'));
+        }
+
         function UpdateSpecificProdMat(pFldName, pFldVal, pID) {
             ShowProgress();
             $.ajax({
@@ -830,7 +841,7 @@
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Qty" HeaderStyle-Width="4%" ItemStyle-Width="4%">
                                                 <ItemTemplate>
-                                                    <asp:TextBox ID="txtQTY" runat="server" CssClass="text-style" MaxLength="4" onblur="UpdateSpecificProdMat('Quantity',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>' Text='<%# Eval("Quantity") %>' onkeypress="return isNumberKey(event)"></asp:TextBox>
+                                                    <asp:TextBox ID="txtQTY" runat="server" CssClass="text-style" MaxLength="4" onblur="UpdateSpecificProdMat('Quantity',this.value,this.getAttribute('materialid'));UpdateExt(this,'QTY');" materialid='<%#Eval("Id") %>' Text='<%# Eval("Quantity") %>' onkeypress="return isNumberKey(event)"></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="UOM" HeaderStyle-Width="5%" ItemStyle-Width="5%">
@@ -838,12 +849,12 @@
                                                     <asp:TextBox ID="txtUOM" runat="server" CssClass="text-style" onblur="UpdateSpecificProdMat('UOM',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>' onfocus="document.getElementById('__LASTFOCUS').value=this.id;" Text='<%# Eval("UOM") %>'></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Cost" HeaderStyle-Width="5%" ItemStyle-Width="5%"><%--Material Cost Per Item--%>
+                                            <asp:TemplateField HeaderText="Cost ($)" HeaderStyle-Width="5%" ItemStyle-Width="5%"><%--Material Cost Per Item--%>
                                                 <ItemTemplate>
-                                                    <asp:TextBox ID="txtMaterialCost" onblur="UpdateSpecificProdMat('MaterialCost',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>' CssClass="text-style" onfocus="document.getElementById('__LASTFOCUS').value=this.id;" Text='<%# Eval("MaterialCost") %>' runat="server" onkeypress="return onlyDotsAndNumbers(event)"></asp:TextBox>
+                                                    <asp:TextBox ID="txtMaterialCost" onblur="UpdateSpecificProdMat('MaterialCost',this.value,this.getAttribute('materialid'));UpdateExt(this,'CST');" materialid='<%#Eval("Id") %>' CssClass="text-style" onfocus="document.getElementById('__LASTFOCUS').value=this.id;" Text='<%# Eval("MaterialCost") %>' runat="server" onkeypress="return onlyDotsAndNumbers(event)"></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField HeaderText="Extended" HeaderStyle-Width="5%" ItemStyle-Width="5%">
+                                            <asp:TemplateField HeaderText="Extended ($)" HeaderStyle-Width="5%" ItemStyle-Width="5%">
                                                 <ItemTemplate>
                                                     <asp:TextBox ID="txtExtended" onblur="UpdateSpecificProdMat('extend',this.value,this.getAttribute('materialid'));" materialid='<%#Eval("Id") %>' runat="server" onfocus="document.getElementById('__LASTFOCUS').value=this.id;" CssClass="text-style" Text='<%# Eval("Extend") %>'></asp:TextBox>
                                                 </ItemTemplate>
