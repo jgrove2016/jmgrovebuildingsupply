@@ -52,6 +52,10 @@
             height: 24px;
             width: 100%;
         }
+        .text-style2 {
+            height: 24px;
+            width: 50%;
+        }
 
         .chk-style {
             height: 24px;
@@ -629,20 +633,42 @@
         </ul>
         <h1 id="h1Heading" runat="server">Material List</h1>
 
-        <table width="100%">
+        <table style="width:100%;border:solid 1px;">
             <tr id="trUpdatedRow">
-                <td>&nbsp;</td>
-                <td>&nbsp;</td>
-                <td valign="top">
-                    <fieldset style="border-style: solid; border-width: 1px; padding: 5px;">
+                <td style="width:25%;vertical-align:top;border:solid 0px;"><fieldset style="border-style: solid; border-width: 1px; padding: 5px;">
                         <legend>Job Details</legend>
                         <b>Job ID: </b><%=ElabJobID %><br />
                         <b>Customer Name:</b> <%=CustomerName %><br />
                     </fieldset>
                 </td>
-                <td>&nbsp;</td>
-                <td valign="top">
-                    <fieldset style='border-style: solid; border-width: 1px; padding: 5px; display: <%=(StaffID!=0?"":"none") %>'>
+                <td style="width:25%;vertical-align:bottom;border:solid 0px;">
+                    <asp:Panel ID="pnlForeman" runat="server">
+                        <asp:LinkButton ID="lnkForemanPermission" runat="server" Text="Foreman Permission" Visible="false"></asp:LinkButton>
+                        <span id="spnforemanelabel" style='display: <%=(ForemanPwdVisibility==""?"none":"")%>'>Foreman Password:</span>
+                        <asp:TextBox ID="txtForemanManPwd"  CssClass="text-style2" runat="server" onblur="VerifyForemanManPwd()"></asp:TextBox>
+                        <span id="lblForemanPermission" style='display: <%=ForemanPwdVisibility%>'><%=ForemanMessage %></span>
+                    </asp:Panel>
+                </td>
+                <td style="width:25%;vertical-align:bottom;border:solid 0px;">
+                    <asp:Panel ID="pnlSrSalesman" runat="server">
+                        <asp:LinkButton ID="lnkSrSalesmanPermissionA" runat="server" Text="Salesman Permission 1" Visible="false"></asp:LinkButton>
+                        <span id="spnsrsalesmanelabel" style='display: <%=(SrSalesmanPwdVisibility==""?"none":"")%>'>Salesman Password:</span>
+                        <asp:TextBox ID="txtSrSales1Pwd" CssClass="text-style2" runat="server" onblur="VerifySalesManPwd1()"></asp:TextBox>
+                        <span id="lblSrSalesmanPermission" style='display: <%=SrSalesmanPwdVisibility%>'><%=SrSalesManMessage %></span>
+                    </asp:Panel>
+                </td>
+                <td style="width:25%;vertical-align:bottom;border:solid 0px;">
+                    <asp:Panel ID="pnlAdmin" runat="server">
+                        <asp:LinkButton ID="lnkAdminPermission" runat="server" Text="Admin Permission" Visible="false"></asp:LinkButton>
+                        <span id="spnadminlabel" style='display: <%=(AdminPwdVisibility==""?"none":"")%>'>Admin Password:</span>
+                        <asp:TextBox ID="txtAdminPwd" CssClass="text-style2" runat="server" onblur="VerifyAdminPwd()"></asp:TextBox>
+                        <span id="lblAdminPermission" style='display: <%=AdminPwdVisibility%>'><%=AdminMessage %></span>
+                    </asp:Panel>
+                </td>
+              
+            </tr>
+            <tr>
+                <td> <fieldset style='border-style: solid; border-width: 1px; padding: 5px; display: <%=(StaffID!=0?"":"none") %>'>
                         <legend>Last Edited By</legend>
                         <b>Staff Internal ID:</b> <%=StaffID %>
                         <br />
@@ -650,46 +676,16 @@
                         <br />
                     </fieldset>
                 </td>
-            </tr>
-            <tr>
-                <td>&nbsp;
-                </td>
-                <td>&nbsp;
-                </td>
-                <td>
-                    <asp:Panel ID="pnlForeman" runat="server">
-                        <asp:LinkButton ID="lnkForemanPermission" runat="server" Text="Foreman Permission" Visible="false"></asp:LinkButton>
-                        <span id="spnforemanelabel" style='display: <%=(ForemanPwdVisibility==""?"none":"")%>'>Foreman Password:</span>
-                        <asp:TextBox ID="txtForemanManPwd" runat="server" onblur="VerifyForemanManPwd()"></asp:TextBox>
-                        <span id="lblForemanPermission" style='display: <%=ForemanPwdVisibility%>'><%=ForemanMessage %></span>
-                    </asp:Panel>
-                    <asp:Panel ID="pnlAdmin" runat="server">
-                        <asp:LinkButton ID="lnkAdminPermission" runat="server" Text="Admin Permission" Visible="false"></asp:LinkButton>
-                        <span id="spnadminlabel" style='display: <%=(AdminPwdVisibility==""?"none":"")%>'>Admin Password:</span>
-                        <asp:TextBox ID="txtAdminPwd" runat="server" onblur="VerifyAdminPwd()"></asp:TextBox>
-                        <span id="lblAdminPermission" style='display: <%=AdminPwdVisibility%>'><%=AdminMessage %></span>
-                    </asp:Panel>
-
-                </td>
-                <td>&nbsp;&nbsp;&nbsp;&nbsp;
-                </td>
-
-                <td>
-                    <asp:Panel ID="pnlSrSalesman" runat="server">
-                        <asp:LinkButton ID="lnkSrSalesmanPermissionA" runat="server" Text="Sr. Salesman Permission 1" Visible="false"></asp:LinkButton>
-                        <span id="spnsrsalesmanelabel" style='display: <%=(SrSalesmanPwdVisibility==""?"none":"")%>'>Sr. Salesman Password:</span>
-                        <asp:TextBox ID="txtSrSales1Pwd" runat="server" onblur="VerifySalesManPwd1()"></asp:TextBox>
-                        <span id="lblSrSalesmanPermission" style='display: <%=SrSalesmanPwdVisibility%>'><%=SrSalesManMessage %></span>
-                    </asp:Panel>
-
-                    <asp:Panel ID="pnlSalesF" runat="server">
-                        <asp:LinkButton ID="lnkSrSalesmanPermissionF" runat="server" Text="Sr. Salesman Permission 2 " Visible="false"></asp:LinkButton>
-                        <span id="spnsalesmanelabel" style='display: <%=(SalesmanPwdVisibility==""?"none":"")%>'>Sr. Salesman Password:</span>
-                        <asp:TextBox ID="txtSrSalesManPwd" runat="server" onblur="VerifySalesManPwd()"></asp:TextBox>
-                        <span id="lblSalesmanPermission" style='display: <%=SalesmanPwdVisibility%>'><%=SalesmanMessage %></span>
-                    </asp:Panel>
-                </td>
-                <td rowspan="2" align="right">
+                <td>                    
+                    <div style="display:none">
+                        <asp:Panel ID="pnlSalesF" runat="server">
+                            <asp:LinkButton ID="lnkSrSalesmanPermissionF" runat="server" Text="Sr. Salesman Permission 2 " Visible="false"></asp:LinkButton>
+                            <span id="spnsalesmanelabel" style='display: <%=(SalesmanPwdVisibility==""?"none":"")%>'>Sr. Salesman Password:</span>
+                            <asp:TextBox ID="txtSrSalesManPwd" runat="server" onblur="VerifySalesManPwd()"></asp:TextBox>
+                            <span id="lblSalesmanPermission" style='display: <%=SalesmanPwdVisibility%>'><%=SalesmanMessage %></span>
+                        </asp:Panel>
+                    </div></td>
+                <td colspan="2" align="right"><br />
                     <fieldset style="border-style: solid; border-width: 1px; padding: 5px;">
                         <legend>Add Installer</legend>
 
@@ -1007,7 +1003,7 @@
 
                             </fieldset>
                             <div class="btn_sec21">
-                                <asp:Button ID="btnSendEmailToVendorsForProd" runat="server" CommandArgument='<%#Eval("ProductCatId") %>' Text="Send Mail to Vendors" OnClick="btnSendEmailToVendorsForProd_Click" OnClientClick="return ValidatePermissions()" />
+                                <asp:Button ID="btnSendEmailToVendorsForProd" runat="server" CommandArgument='<%#Eval("ProductCatId") %>' Text="Send Mail to Vendors" OnClick="btnSendEmailToVendorsForProd_Click"  />
                                 <asp:Button ID="btnSendPurchaseOrder" runat="server" CommandArgument='<%#Eval("ProductCatId") %>' Text="Send PO to Vendors" OnClick="btnSendPurchaseOrder_Click" OnClientClick="return ValidatePermissions()" />
                             </div>
                             <hr style="border: none; background: #ccc; height: 2px; margin-top: 10px; margin-bottom: 20px" />

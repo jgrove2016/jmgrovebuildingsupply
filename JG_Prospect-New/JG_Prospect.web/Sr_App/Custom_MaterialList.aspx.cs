@@ -236,8 +236,8 @@ namespace JG_Prospect.Sr_App
                     //#- Since we have text boxes, we don't need this controls.
                     lnkForemanPermission.Visible = false;
                     lnkSrSalesmanPermissionF.Visible = false;
-                    pnlAdmin.Visible = false;
-                    pnlSrSalesman.Visible = false;
+                   // pnlAdmin.Visible = false;
+                   // pnlSrSalesman.Visible = false;
 
                     if (Convert.ToChar(ds.Tables[0].Rows[0]["IsForemanPermission"].ToString().Trim()) == JGConstant.PERMISSION_STATUS_GRANTED)
                     {
@@ -260,8 +260,8 @@ namespace JG_Prospect.Sr_App
                 }
                 if (lnkAdminPermission.Visible == true)
                 {
-                    pnlForeman.Visible = false;
-                    pnlSalesF.Visible = false;
+                    //pnlForeman.Visible = false;
+                    //pnlSalesF.Visible = false;
                     lnkAdminPermission.Visible = false;
                     lnkSrSalesmanPermissionA.Visible = false;
                     if (Convert.ToChar(ds.Tables[0].Rows[0]["IsAdminPermission"].ToString().Trim()) == JGConstant.PERMISSION_STATUS_GRANTED)
@@ -4260,7 +4260,7 @@ namespace JG_Prospect.Sr_App
                         {
                             continue;
                         }
-                        int permissionStatus = CustomBLL.Instance.CheckPermissionsForCategories(jobId, lProductCatID);//, productTypeId, estimateId);
+                        int permissionStatus = 1; //CustomBLL.Instance.CheckPermissionsForCategories(jobId, lProductCatID);//, productTypeId, estimateId);
                         if (permissionStatus == 1)
                         {
                             bool emailStatusVendorCategory = SendEmailToVendors(vendor.TrimEnd(','), lStrbHTMLTable); //sendEmailToVendorCategories(cmList);
