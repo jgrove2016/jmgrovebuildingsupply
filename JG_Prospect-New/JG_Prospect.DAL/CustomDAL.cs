@@ -1157,6 +1157,98 @@ namespace JG_Prospect.DAL
                 database.ExecuteNonQuery(command);
             }
         }
+
+        public int AddBankDetails( String pPersonName, String pBankName,  String pBankBranch, String pAccountName, String pAccountNumber, String IFSCCode, String SwiftCode)
+        {
+            Int32 lBankID = 0;
+            SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+            {
+                DbCommand command = database.GetStoredProcCommand("USP_AddBank");
+                command.CommandType = CommandType.StoredProcedure;
+                //database.AddInParameter(command, "@BankID", DbType.String, pMaterialListID);
+                database.AddInParameter(command, "@PersonName", DbType.String, pPersonName);
+                database.AddInParameter(command, "@BankName", DbType.String, pBankName);
+                database.AddInParameter(command, "@BankBranch", DbType.String, pBankBranch);
+                database.AddInParameter(command, "@AccountName", DbType.String, pAccountName);
+                database.AddInParameter(command, "@AccountNumber", DbType.String, pAccountNumber);
+                database.AddInParameter(command, "@IFSCCode", DbType.String, IFSCCode);
+                database.AddInParameter(command, "@SWIFTCode", DbType.String, SwiftCode);
+                database.AddInParameter(command, "@BankID", DbType.Int32, 0);
+                database.ExecuteNonQuery(command);
+                lBankID = Convert.ToInt16(database.GetParameterValue(command, "@BankID"));
+            }
+            return lBankID;
+        }
+        public void UpdateBankDetails(Int32 pBankID, String pPersonName, String pBankName, String pBankBranch, String pAccountName, String pAccountNumber, String IFSCCode, String SwiftCode)
+        {
+            Int32 lBankID = 0;
+            SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+            {
+                DbCommand command = database.GetStoredProcCommand("USP_UpdateBankRecord");
+                command.CommandType = CommandType.StoredProcedure;
+                database.AddInParameter(command, "@BankID", DbType.Int32, pBankID);
+                database.AddInParameter(command, "@PersonName", DbType.String, pPersonName);
+                database.AddInParameter(command, "@BankName", DbType.String, pBankName);
+                database.AddInParameter(command, "@BankBranch", DbType.String, pBankBranch);
+                database.AddInParameter(command, "@AccountName", DbType.String, pAccountName);
+                database.AddInParameter(command, "@AccountNumber", DbType.String, pAccountNumber);
+                database.AddInParameter(command, "@IFSCCode", DbType.String, IFSCCode);
+                database.AddInParameter(command, "@SWIFTCode", DbType.String, SwiftCode);
+                database.ExecuteNonQuery(command);
+            }
+        }
+       
+        public void DeleteBankDetails(Int32 pBankID)
+        {
+            SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+            {
+                DbCommand command = database.GetStoredProcCommand("USP_DeleteBankRecord");
+                command.CommandType = CommandType.StoredProcedure;
+                database.AddInParameter(command, "@BankID", DbType.Int32, pBankID);
+                database.ExecuteNonQuery(command);
+            }
+        }
+        public DataSet GetBanks()
+        {
+            DataSet returndata = null;
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    returndata = new DataSet();
+                    DbCommand command = database.GetStoredProcCommand("USP_GetBanks");
+                    command.CommandType = CommandType.StoredProcedure;
+                
+                    returndata = database.ExecuteDataSet(command);
+
+                    return returndata;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public DataSet GetBanks(Int32 pBankID)
+        {
+            DataSet returndata = null;
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    returndata = new DataSet();
+                    DbCommand command = database.GetStoredProcCommand("USP_GetBankById");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@BankID", DbType.Int32, pBankID);
+                    returndata = database.ExecuteDataSet(command);
+                    return returndata;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
 

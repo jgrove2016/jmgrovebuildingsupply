@@ -272,5 +272,26 @@ namespace JG_Prospect.BLL
         {
             CustomDAL.Instance.UpdateSpecificPaymentDetails(pFieldName, pFieldValue, pProdCatID, pVendorID, pSoldJobID);
         }
+        public int AddBankDetails(String pPersonName, String pBankName, String pBankBranch, String pAccountName, String pAccountNumber, String IFSCCode, String SwiftCode)
+        {
+            return CustomDAL.Instance.AddBankDetails(pPersonName, pBankName, pBankBranch, pAccountName, pAccountNumber, IFSCCode, SwiftCode);
+        }
+       
+        public void UpdateBankDetails(Int32 pBankID, String pPersonName, String pBankName, String pBankBranch, String pAccountName, String pAccountNumber, String IFSCCode, String SwiftCode)
+        {
+            CustomDAL.Instance.UpdateBankDetails(pBankID, pPersonName, pBankName, pBankBranch, pAccountName, pAccountNumber, IFSCCode, SwiftCode);
+        }
+        public void DeleteBankDetails(Int32 pBankID)
+        {
+            CustomDAL.Instance.DeleteBankDetails(pBankID);
+        }
+        public DataSet GetBanks()
+        {
+            return CustomDAL.Instance.GetBanks();
+        }
+        public DataSet GetBanks(Int32 pBankID)
+        {
+           return CustomDAL.Instance.GetBanks(pBankID);
+        }
     }
 }

@@ -3745,14 +3745,20 @@ namespace JG_Prospect.Sr_App
                         StringBuilder tbody = new StringBuilder();
                         tbody.Append(templateBody);
 
-                        var replacedBody = tbody.Replace("lblMaterialList", pStrMaterialListTable.ToString());
+                        string lTotalComponents = "<tr><td colspan='5' style='font-size:13px;padding:5px;text-align:right;'>Sub Total:</td><td>$" + Convert.ToDouble(lDsJobInformation.Tables[3].Rows[0]["SubTotal"].ToString()).ToString("N2") + "/-</td>";
+                        lTotalComponents += "<tr><td colspan='5'  style='font-size:13px;padding:5px;text-align:right;'>Delivery:</td><td>$" + Convert.ToDouble(lDsJobInformation.Tables[3].Rows[0]["Delivery"].ToString()).ToString("N2") + "/-</td>";
+                        lTotalComponents += "<tr><td colspan='5'  style='font-size:13px;padding:5px;text-align:right;'>Misc Fee:</td><td>$" + Convert.ToDouble(lDsJobInformation.Tables[3].Rows[0]["MiscFee"].ToString()).ToString("N2") + "/-</td>";
+                        lTotalComponents += "<tr><td colspan='5'  style='font-size:13px;padding:5px;text-align:right;'>Tax:</td><td>$" + Convert.ToDouble(lDsJobInformation.Tables[3].Rows[0]["Tax"].ToString()).ToString("N2") + "/-</td>";
+                        lTotalComponents += "<tr><td colspan='5'  style='font-size:14px;font-weight:bold;padding:5px;text-align:right;'>Total:</td><td>$" + Convert.ToDouble(Convert.ToDouble(lDsJobInformation.Tables[3].Rows[0]["SubTotal"].ToString()) + Convert.ToDouble(lDsJobInformation.Tables[3].Rows[0]["Delivery"].ToString()) + Convert.ToDouble(lDsJobInformation.Tables[3].Rows[0]["MiscFee"].ToString()) + Convert.ToDouble(lDsJobInformation.Tables[3].Rows[0]["Tax"].ToString())).ToString("N2") + "/-</td>";
+
+                        var replacedBody = tbody.Replace("lblMaterialList", pStrMaterialListTable.ToString().Replace("#ProdVendTot#", lTotalComponents));
 
                         htmlBody += replacedBody.ToString();
 
                         htmlBody += "<br/>";
                         htmlBody += "<b>Delivery Type:</b> " + lDsJobInformation.Tables[0].Rows[0]["DeliveryMethod"].ToString() + "<br/>";
                         htmlBody += "<b>Delivery Address:</b> " + lDsJobInformation.Tables[0].Rows[0]["DeliverySite"].ToString() + ",<br/>" + lDsJobInformation.Tables[0].Rows[0]["City"].ToString() + ", " + lDsJobInformation.Tables[0].Rows[0]["State"].ToString()  + (lDsJobInformation.Tables[0].Rows[0]["ZipCode"].ToString() == "" ? "" : "(" + lDsJobInformation.Tables[0].Rows[0]["ZipCode"].ToString() + ")");
-                        htmlBody += "</br></br>";
+                        htmlBody += "<br/><br/>";
                         htmlBody += "<b>Material Storage:</b> " + lDsJobInformation.Tables[2].Rows[0]["MaterialStorage"].ToString();
                         htmlBody += "<br/><br/>";
                         htmlBody += "<b>Primary Delivery Contact:</b> " + lDsJobInformation.Tables[1].Rows[0]["CustomerName"].ToString() + " (" + lDsJobInformation.Tables[1].Rows[0]["CellPh"].ToString()+")";
@@ -4675,29 +4681,31 @@ namespace JG_Prospect.Sr_App
                 {
                     int y = 1;
                     StringBuilder lStrbHTMLTable = new StringBuilder();
-                    lStrbHTMLTable.Append("<table  rules='all' style='width:80%;margin:auto auto;border:solid 1px;border-collapse:collapse;' cellpadding='0' cellspacing='0'>");
+                    
+                    lStrbHTMLTable.Append("<table  rules='all' style='width:580px;margin:auto auto;border:solid 1px;border-collapse:collapse;' cellpadding='0' cellspacing='0'>");
                     lStrbHTMLTable.Append("<tr>");
-                    lStrbHTMLTable.Append("<th>#</th>");
+                    lStrbHTMLTable.Append("<th style='backgroud-color:#ECECEC;padding:5px;font-weight:bold;color:#9C0401;'>#</th>");
                     // lStrbHTMLTable.Append("<th>JG SKU - Vendor Part #</th>");
-                    lStrbHTMLTable.Append("<th>Material</th>");
-                    lStrbHTMLTable.Append("<th>Quantity</th>");
-                    lStrbHTMLTable.Append("<th>UOM</th>");
-                    lStrbHTMLTable.Append("<th>Cost</th>");
-                    lStrbHTMLTable.Append("<th>Extended</th>");
+                    lStrbHTMLTable.Append("<th style='padding:5px;font-weight:bold;'>Material</th>");
+                    lStrbHTMLTable.Append("<th style='padding:5px;font-weight:bold;'>Quantity</th>");
+                    lStrbHTMLTable.Append("<th style='padding:5px;font-weight:bold;'>UOM</th>");
+                    lStrbHTMLTable.Append("<th style='padding:5px;font-weight:bold;'>Cost</th>");
+                    lStrbHTMLTable.Append("<th style='padding:5px;font-weight:bold;'>Extended</th>");
                     lStrbHTMLTable.Append("</tr>");
                     foreach (DataRow lRowC in PageDataset.Tables[1].Select("ProductCatID=" + lProductCatID + " AND VendorIds like '%" + vendor + "%'"))
                     {
                         lStrbHTMLTable.Append("<tr>");
                         lStrbHTMLTable.Append("<td>" + (y) + "</td>");
                         // lStrbHTMLTable.Append("<td>" + (lDvMaterialList.Table.Rows[x]["JGSkuPartNo"].ToString().Trim() == "" ? "-" : lDvMaterialList.Table.Rows[x]["JGSkuPartNo"].ToString().Trim()) + "</td>");
-                        lStrbHTMLTable.Append("<td>" + (lRowC["MaterialList"].ToString().Trim() == "" ? "-" : lRowC["MaterialList"].ToString().Trim()) + "</td>");
-                        lStrbHTMLTable.Append("<td>" + (lRowC["Quantity"].ToString().Trim() == "" ? "-" : lRowC["Quantity"].ToString().Trim()) + "</td>");
-                        lStrbHTMLTable.Append("<td>" + (lRowC["UOM"].ToString().Trim() == "" ? "-" : lRowC["UOM"].ToString().Trim()) + "</td>");
-                        lStrbHTMLTable.Append("<td>" + (lRowC["MaterialCost"].ToString().Trim() == "" ? "-" : lRowC["MaterialCost"].ToString().Trim()) + "</td>");
+                        lStrbHTMLTable.Append("<td style='padding:5px;'>" + (lRowC["MaterialList"].ToString().Trim() == "" ? "-" : lRowC["MaterialList"].ToString().Trim()) + "</td>");
+                        lStrbHTMLTable.Append("<td style='padding:5px;'>" + (lRowC["Quantity"].ToString().Trim() == "" ? "-" : lRowC["Quantity"].ToString().Trim()) + "</td>");
+                        lStrbHTMLTable.Append("<td style='padding:5px;'>" + (lRowC["UOM"].ToString().Trim() == "" ? "-" : lRowC["UOM"].ToString().Trim()) + "</td>");
+                        lStrbHTMLTable.Append("<td style='padding:5px;'>" + (lRowC["MaterialCost"].ToString().Trim() == "" ? "-" : lRowC["MaterialCost"].ToString().Trim()) + "</td>");
                         lStrbHTMLTable.Append("<td>" + (lRowC["extend"].ToString().Trim() == "" ? "-" : lRowC["extend"].ToString().Trim()) + "</td>");
                         lStrbHTMLTable.Append("</tr>");
                         y += 1;
                     }
+                    lStrbHTMLTable.Append("#ProdVendTot#");
                     lStrbHTMLTable.Append("</table>");
                     if (y == 1)
                     {
