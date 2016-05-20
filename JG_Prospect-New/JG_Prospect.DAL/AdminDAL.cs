@@ -1962,6 +1962,28 @@ namespace JG_Prospect.DAL
             }
         }
 
+        public DataSet GetAllVendorCategory(bool Isretail_wholesale, bool IsManufacturer)
+        {
+            DataSet result = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_GetProductVendor");
+                    database.AddInParameter(command, "@IsRetail_Wholesale", DbType.Boolean, Isretail_wholesale);
+                    database.AddInParameter(command, "@IsManufacturer", DbType.Boolean, IsManufacturer);
+                    command.CommandType = CommandType.StoredProcedure;
+                    result = database.ExecuteDataSet(command);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+                return null;
+            }
+        }
+
         public DataSet GetVendorCategory(string ProductCategoryId,bool Isretail_wholesale, bool IsManufacturer)
         {
             DataSet result = new DataSet();

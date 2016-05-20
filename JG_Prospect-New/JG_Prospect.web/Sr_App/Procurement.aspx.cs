@@ -49,7 +49,7 @@ namespace JG_Prospect.Sr_App
             }
             else
             {
-                if (Request.QueryString["vid"] != null && Request.QueryString["vid"].ToString()!="")
+                if (Request.QueryString["vid"] != null && Request.QueryString["vid"].ToString() != "")
                 {
                     EditVendor(Convert.ToInt32(Request.QueryString["vid"].ToString()), "");
                 }
@@ -125,12 +125,14 @@ namespace JG_Prospect.Sr_App
                         //lnkVendor.ForeColor = System.Drawing.Color.Blue;
                         // lblerrornew.Text = Convert.ToString(strerror);
                         BindProductCategory();
+                        BindAllVendorCategory();
+                        BindvendorSubCatAfter();
                         GetAllVendorSubCat();
                         BindVendorByProdCat(ddlprdtCategory.SelectedValue.ToString());
                         BindVendorByProdCat1(ddlprdtCategory1.SelectedValue.ToString());
                         BindVendorSubCatByVendorCat(ddlVndrCategory.SelectedValue.ToString());
                         string ManufacturerType = GetManufacturerType();
-                        FilterVendors("", "ProductCategoryAll", ManufacturerType, "");
+                        FilterVendors("", "ProductCategoryAll", ManufacturerType, "", GetVendorStatus());
                         DataSet dsSource;
                         dsSource = InstallUserBLL.Instance.GetSource();
                         if (dsSource.Tables[0].Rows.Count > 0)
@@ -163,8 +165,8 @@ namespace JG_Prospect.Sr_App
                     DateTime toDate = Convert.ToDateTime(dsCurrentPeriod.Tables[0].Rows[0]["ToDate"].ToString());
 
                     bindPayPeriod(dsCurrentPeriod);
-                    
-                    
+
+
                     grdprimaryvendor.DataSource = new List<JG_Prospect.BLL.clsProcurementDataAll>();
                     grdprimaryvendor.DataBind();
                 }
@@ -264,6 +266,17 @@ namespace JG_Prospect.Sr_App
 
         }
 
+        public void BindAllVendorCategory()
+        {
+            DataSet ds = new DataSet();
+            ds = VendorBLL.Instance.fetchvendorcategory(rdoRetailWholesale.Checked, rdoManufacturer.Checked);
+            ddlVndrCategory.DataSource = ds;
+            ddlVndrCategory.DataTextField = ds.Tables[0].Columns[1].ToString();
+            ddlVndrCategory.DataValueField = ds.Tables[0].Columns[0].ToString();
+            ddlVndrCategory.DataBind();
+            ddlVndrCategory.Items.Insert(0, new System.Web.UI.WebControls.ListItem("Select", "Select"));
+        }
+
         public string GetManufacturerType()
         {
             string MType = "";
@@ -321,6 +334,26 @@ namespace JG_Prospect.Sr_App
             ddlVendorSubCategory.SelectedIndex = -1;
             ddlProductCatgoryPopup.SelectedIndex = -1;
         }
+        protected void ddlVendorStatusfltr_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string ManufacturerType = GetManufacturerType();
+            if (ddlVendorSubCategory.SelectedValue.ToString() != "Select")
+            {
+                FilterVendors(ddlVendorSubCategory.SelectedValue.ToString(), "VendorSubCategory", ManufacturerType, ddlVndrCategory.SelectedValue.ToString(), GetVendorStatus());
+            }
+            else if (ddlVndrCategory.SelectedValue.ToString() != "Select")
+            {
+                FilterVendors(ddlVndrCategory.SelectedValue.ToString(), "VendorCategory", ManufacturerType, "", GetVendorStatus());
+            }
+            else if (ddlprdtCategory.SelectedValue.ToString() != "Select")
+            {
+                FilterVendorByProductCategory();
+            }
+            else
+            {
+                FilterVendors("", "ProductCategoryAll", ManufacturerType, "", GetVendorStatus());
+            }
+        }
         protected void ddlprdtCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
             ddlVndrCategory.SelectedIndex = -1;
@@ -336,8 +369,9 @@ namespace JG_Prospect.Sr_App
             {
                 string ManufacturerType = GetManufacturerType();
                 //FilterVendors("", "ManufacturerType", ManufacturerType, "");
+                BindAllVendorCategory();
                 //Added by harshit
-                FilterVendors("", "ProductCategoryAll", ManufacturerType, "");
+                FilterVendors("", "ProductCategoryAll", ManufacturerType, "", GetVendorStatus());
             }
 
         }
@@ -397,7 +431,7 @@ namespace JG_Prospect.Sr_App
 
                 FilterParams = strVendorCategory.Remove(strVendorCategory.Length - 1, 1).ToString();
                 string ManufacturerType = GetManufacturerType();
-                FilterVendors(FilterParams, "ProductCategory", ManufacturerType, "");
+                FilterVendors(FilterParams, "ProductCategory", ManufacturerType, "", GetVendorStatus());
             }
             else
             {
@@ -415,7 +449,7 @@ namespace JG_Prospect.Sr_App
             {
                 ddlVendorCatPopup.SelectedValue = ddlVndrCategory.SelectedValue;
                 ddlvendercategoryname.SelectedValue = ddlVndrCategory.SelectedValue;
-                FilterVendors(ddlVndrCategory.SelectedValue.ToString(), "VendorCategory", ManufacturerType, "");
+                FilterVendors(ddlVndrCategory.SelectedValue.ToString(), "VendorCategory", ManufacturerType, "", GetVendorStatus());
             }
             else
             {
@@ -468,20 +502,26 @@ namespace JG_Prospect.Sr_App
         {
             string ManufacturerType = GetManufacturerType();
             if (ddlVendorSubCategory.SelectedValue.ToString() != "Select")
-                FilterVendors(ddlVendorSubCategory.SelectedValue.ToString(), "VendorSubCategory", ManufacturerType, ddlVndrCategory.SelectedValue.ToString());
+                FilterVendors(ddlVendorSubCategory.SelectedValue.ToString(), "VendorSubCategory", ManufacturerType, ddlVndrCategory.SelectedValue.ToString(), GetVendorStatus());
             else if (ddlVndrCategory.SelectedValue.ToString() != "Select")
-                FilterVendors(ddlVndrCategory.SelectedValue.ToString(), "VendorCategory", ManufacturerType, "");
+                FilterVendors(ddlVndrCategory.SelectedValue.ToString(), "VendorCategory", ManufacturerType, "", GetVendorStatus());
             else
                 FilterVendorByProductCategory();
 
         }
 
-        public void FilterVendors(string FilterParams, string FilterBy, string ManufacturerType, string VendorCategoryId)
+        public string GetVendorStatus()
+        {
+            string vendorStatus = ((ddlVendorStatusfltr.SelectedValue.ToString() == "Select") ? null : ddlVendorStatusfltr.SelectedValue.ToString());
+            return vendorStatus;
+        }
+
+        public void FilterVendors(string FilterParams, string FilterBy, string ManufacturerType, string VendorCategoryId, string VendorStatus)
         {
             grdVendorList.DataSource = null;
             grdVendorList.DataBind();
             DataSet ds = new DataSet();
-            ds = VendorBLL.Instance.GetVendorList(FilterParams, FilterBy, ManufacturerType, VendorCategoryId);
+            ds = VendorBLL.Instance.GetVendorList(FilterParams, FilterBy, ManufacturerType, VendorCategoryId, VendorStatus);
             if (ds != null)
             {
                 grdVendorList.DataSource = ds;
@@ -527,6 +567,7 @@ namespace JG_Prospect.Sr_App
                 dtVendorEmail.Columns.Add("LName");
                 dtVendorEmail.Columns.Add("Title");
                 dtVendorEmail.Columns.Add("Contact");
+                dtVendorEmail.Columns.Add("Fax");
                 dtVendorEmail.Columns.Add("AddressID");
                 dtVendorEmail.Columns.Add("TempID");
             }
@@ -547,6 +588,7 @@ namespace JG_Prospect.Sr_App
                     JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
                     string serializedContactJson = jsSerializer.Serialize(VendorEmails[i].Contact);
                     drow["Contact"] = serializedContactJson;
+                    drow["Fax"] = VendorEmails[i].Fax.ToString();
                     drow["AddressID"] = VendorEmails[i].AddressID.ToString();
                     drow["TempID"] = NewTempID.ToString();
                     dtVendorEmail.Rows.Add(drow);
@@ -602,9 +644,9 @@ namespace JG_Prospect.Sr_App
                                 DataSet dsResult = new DataSet();
                                 dsResult.ReadXml(reader);
                                 dtCoordinates.Columns.AddRange(new DataColumn[4] { new DataColumn("Id", typeof(int)),
-                        new DataColumn("Address", typeof(string)),
-                        new DataColumn("Latitude",typeof(string)),
-                        new DataColumn("Longitude",typeof(string)) });
+                                                                                    new DataColumn("Address", typeof(string)),
+                                                                                    new DataColumn("Latitude",typeof(string)),
+                                                                                    new DataColumn("Longitude",typeof(string)) });
                                 foreach (DataRow row in dsResult.Tables["result"].Rows)
                                 {
                                     string geometry_id = dsResult.Tables["geometry"].Select("result_id = " + row["result_id"].ToString())[0]["geometry_id"].ToString();
@@ -791,7 +833,7 @@ namespace JG_Prospect.Sr_App
                         }
                     }
                 }
-                objvendor.fax = txtVendorFax.Text;
+                objvendor.fax = "";
                 objvendor.mail = primaryEmail;
                 objvendor.contract_person = fName + " " + lName;
                 objvendor.contract_number = contactNo;
@@ -858,11 +900,11 @@ namespace JG_Prospect.Sr_App
                         string ManufacturerType = GetManufacturerType();
                         if (ddlVendorSubCategory.SelectedValue == "Select")
                         {
-                            FilterVendors(ddlVndrCategory.SelectedValue.ToString(), "VendorCategory", ManufacturerType, null);
+                            FilterVendors(ddlVndrCategory.SelectedValue.ToString(), "VendorCategory", ManufacturerType, null, GetVendorStatus());
                         }
                         else
                         {
-                            FilterVendors(ddlVendorSubCategory.SelectedValue.ToString(), "VendorSubCategory", ManufacturerType, ddlVndrCategory.SelectedValue.ToString());
+                            FilterVendors(ddlVendorSubCategory.SelectedValue.ToString(), "VendorSubCategory", ManufacturerType, ddlVndrCategory.SelectedValue.ToString(), GetVendorStatus());
                         }
                     }
                 }
@@ -881,7 +923,7 @@ namespace JG_Prospect.Sr_App
             ddlVendorStatus.ClearSelection();
             ddlSource.ClearSelection();
             ddlAddressType.ClearSelection();
-            txtTaxId.Text = txtWebsite.Text = txtVendorFax.Text = null;
+            txtTaxId.Text = txtWebsite.Text = null;
             DrpPaymentMode.ClearSelection();
             DrpPaymentTerms.ClearSelection();
             txtPrimaryCity.Text = "";
@@ -3220,7 +3262,7 @@ namespace JG_Prospect.Sr_App
 
                 SetManufacturerType(Convert.ToString(ds.Tables[0].Rows[0]["ManufacturerType"]));
 
-                if (dsProduct.Tables[0].Rows.Count>0 && !string.IsNullOrEmpty(Convert.ToString(dsProduct.Tables[0].Rows[0]["ProductCategoryId"])))
+                if (dsProduct.Tables[0].Rows.Count > 0 && !string.IsNullOrEmpty(Convert.ToString(dsProduct.Tables[0].Rows[0]["ProductCategoryId"])))
                 {
                     ddlprdtCategory.SelectedValue = Convert.ToString(dsProduct.Tables[0].Rows[0]["ProductCategoryId"]) == "0" ? "Select" : Convert.ToString(dsProduct.Tables[0].Rows[0]["ProductCategoryId"]);
                     BindVendorByProdCat(ddlprdtCategory.SelectedValue.ToString());
@@ -3270,7 +3312,7 @@ namespace JG_Prospect.Sr_App
             // txtContact1.Text = Convert.ToString(ds.Tables[0].Rows[0]["ContactNumber"]);
             //txtContactExten1.Text = Convert.ToString(ds.Tables[0].Rows[0]["ContactExten"]);
 
-            txtVendorFax.Text = Convert.ToString(ds.Tables[0].Rows[0]["Fax"]);
+            //txtVendorFax.Text = Convert.ToString(ds.Tables[0].Rows[0]["Fax"]);
             //txtprimaryemail.Text = Convert.ToString(ds.Tables[0].Rows[0]["Email"]);
             //txtPrimaryAddress.Text = Convert.ToString(ds.Tables[0].Rows[0]["Address"]);
             //txtNotes.Text = ds.Tables[0].Rows[0]["Notes"].ToString();
@@ -3554,15 +3596,15 @@ namespace JG_Prospect.Sr_App
             string ManufacturerType = GetManufacturerType();
             if (ddlVendorSubCategory.SelectedValue != "Select")
             {
-                FilterVendors(ddlVendorSubCategory.SelectedValue.ToString(), "VendorSubCategory", ManufacturerType, ddlVndrCategory.SelectedValue.ToString());
+                FilterVendors(ddlVendorSubCategory.SelectedValue.ToString(), "VendorSubCategory", ManufacturerType, ddlVndrCategory.SelectedValue.ToString(), GetVendorStatus());
             }
             else if (ddlVndrCategory.SelectedValue != "Select")
             {
-                FilterVendors(ddlVndrCategory.SelectedValue.ToString(), "VendorCategory", ManufacturerType, null);
+                FilterVendors(ddlVndrCategory.SelectedValue.ToString(), "VendorCategory", ManufacturerType, null, GetVendorStatus());
             }
             else
             {
-                FilterVendors("", "ProductCategoryAll", ManufacturerType, "");
+                FilterVendors("", "ProductCategoryAll", ManufacturerType, "", GetVendorStatus());
             }
         }
         #endregion
@@ -3645,6 +3687,8 @@ namespace JG_Prospect.Sr_App
         {
             bindVendorMaterialList();
         }
+
+
     }
 
     public class NameValue
@@ -3672,6 +3716,7 @@ namespace JG_Prospect.Sr_App
         public string LastName { get; set; }
         public string Title { get; set; }
         public List<ContactClass> Contact { get; set; }
+        public string Fax { get; set; }
         public string AddressID { get; set; }
     }
     public class EmailCls
@@ -3682,5 +3727,6 @@ namespace JG_Prospect.Sr_App
     {
         public string Extension { get; set; }
         public string Number { get; set; }
+        public string PhoneType { get; set; }
     }
 }

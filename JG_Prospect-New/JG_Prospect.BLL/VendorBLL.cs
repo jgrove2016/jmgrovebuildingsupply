@@ -124,9 +124,9 @@ namespace JG_Prospect.BLL
         }
 
 
-        public DataSet GetVendorList(string FilterParams, string FilterBy, string ManufacturerType, string VendorCategoryId)
+        public DataSet GetVendorList(string FilterParams, string FilterBy, string ManufacturerType, string VendorCategoryId, string VendorStatus)
         {
-            return VendorDAL.Instance.GetVendorList(FilterParams, FilterBy, ManufacturerType, VendorCategoryId);
+            return VendorDAL.Instance.GetVendorList(FilterParams, FilterBy, ManufacturerType, VendorCategoryId, VendorStatus);
         }
 
         public string SaveNewVendorCategory(NewVendorCategory objNewVendorCat)

@@ -101,7 +101,16 @@
                                             "<td><div class='newcontactdiv'>" +
                                             "<input TabIndex='1' type='text' id='txt" + EmailType + "Contact" + subCount + "' name='nametxt" + EmailType + "Contact" + subCount + "' style='width:50%' class='clsmaskphone' maxlength='10' placeholder='___-___-____' clientidmode='Static' />" +
                                             "&nbsp;<input TabIndex='1' type='text' id='txt" + EmailType + "ContactExten" + subCount + "' name='nametxt" + EmailType + "ContactExten" + subCount + "' style='width:35%' maxlength='6' class='clsmaskphoneexten' placeholder='Extension' clientidmode='Static' />" +
+                                            "<label> Phone Type</label>" +
+                                            "<select id='ddl" + EmailType + "PhoneType" + subCount + "' name='nameddl" + EmailType + "PhoneType" + subCount + "' class='clsphonetype' cliendidmode='static'>" +
+                                                "<option value=''>Select</option>" +
+                                                "<option value='Cell'>Cell Phone #</option>" +
+                                                "<option value='House'>House Phone  #</option>" +
+                                                "<option value='Work'>Work Phone #</option>" +
+                                                "<option value='Alt'>Alt. Phone #</option>" +
+                                            "</select>" +
                                             "<a TabIndex='1' onclick='AddContact(this)' style='cursor:pointer' data-type='" + subCount + "' data-EmailType='" + EmailType + "' clientidmode='Static'>Add Contact</a><br/></div></td>" +
+                                            " <td><label>Fax</label><br /><input type='text' id='txt" + EmailType + "Fax" + subCount + "' name='nametxt" + EmailType + "Fax" + subCount + "' maxlength='15' clientidmode='Static'><br /></td>" +
                                             "</tr>");
             $('.clsmaskphone').mask("(999) 999-9999");
             $('.clsmaskphoneexten').mask("999999");
@@ -124,6 +133,14 @@
                                             "<br/><div class='newcontactdiv'>" +
                                             "<input TabIndex='1' type='text' id='txt" + EmailType + "Contact" + dataTypeValue + subCount + "' name='nametxt" + EmailType + "Contact" + dataTypeValue + subCount + "' style='width:50%;' maxlength='10' class='clsmaskphone' maxlength='10' placeholder='___-___-____' clientidmode='Static' />" +
                                             "&nbsp;<input TabIndex='1' type='text' id='txt" + EmailType + "ContactExten" + dataTypeValue + subCount + "' name='nametxt" + EmailType + "ContactExten" + dataTypeValue + subCount + "' style='width:35%;' maxlength='6' class='clsmaskphoneexten' placeholder='Extension' clientidmode='Static' />" +
+                                            "<label> Phone Type</label>" +
+                                            "<select id='ddl" + EmailType + "PhoneType" + dataTypeValue + subCount + "' name='nameddl" + EmailType + "PhoneType" + dataTypeValue + subCount + "' class='clsphonetype' cliendidmode='static'>" +
+                                                "<option value=''>Select</option>" +
+                                                "<option value='Cell'>Cell Phone #</option>" +
+                                                "<option value='House'>House Phone  #</option>" +
+                                                "<option value='Work'>Work Phone #</option>" +
+                                                "<option value='Alt'>Alt. Phone #</option>" +
+                                            "</select>" +
                                             "<br/></div>");
             $('.clsmaskphone').mask("(999) 999-9999");
             $('.clsmaskphoneexten').mask("999999");
@@ -168,7 +185,8 @@
                 $(this).find(".newcontactdiv").each(function () {
                     c.push({
                         Extension: $(this).find(".clsmaskphoneexten").val(),
-                        Number: $(this).find(".clsmaskphone").val()
+                        Number: $(this).find(".clsmaskphone").val(),
+                        PhoneType: $(this).find(".clsphonetype option:selected'").val()
                     });
                 });
                 var EmailData = {
@@ -178,6 +196,7 @@
                     LastName: $("input[name=nametxtPrimaryLName" + index + "]").val(),
                     Title: $("#ddlPrimaryTitle" + index).val() == undefined ? "" : $("#ddlPrimaryTitle" + index).val(),
                     Contact: c,
+                    Fax: $("input[name=nametxtPrimaryFax" + index + "]").val(),
                     AddressID: $(".clsvendoraddress").val() == undefined || $(".clsvendoraddress").val() == "Select" ? "0" : $(".clsvendoraddress").val(),
                 };
                 VendorEmailData.push(EmailData);
@@ -192,7 +211,8 @@
                 $(this).find(".newcontactdiv").each(function () {
                     c.push({
                         Extension: $(this).find(".clsmaskphoneexten").val(),
-                        Number: $(this).find(".clsmaskphone").val()
+                        Number: $(this).find(".clsmaskphone").val(),
+                        PhoneType: $(this).find(".clsphonetype option:selected'").val()
                     });
                 });
                 var EmailData = {
@@ -202,6 +222,7 @@
                     LastName: $("#txtSecLName" + index).val(),
                     Title: $("#ddlSecTitle" + index).val() == undefined ? "" : $("#ddlSecTitle" + index).val(),
                     Contact: c,
+                    Fax: $("input[name=nametxtSecFax" + index + "]").val(),
                     AddressID: $(".clsvendoraddress").val() == undefined || $(".clsvendoraddress").val() == "Select" ? "0" : $(".clsvendoraddress").val(),
                 };
                 VendorEmailData.push(EmailData);
@@ -216,7 +237,8 @@
                     // console.log($("#txtPrimaryContact" + index).html());
                     c.push({
                         Extension: $(this).find(".clsmaskphoneexten").val(),
-                        Number: $(this).find(".clsmaskphone").val()
+                        Number: $(this).find(".clsmaskphone").val(),
+                        PhoneType: $(this).find(".clsphonetype option:selected'").val()
                     });
                 });
                 var EmailData = {
@@ -226,6 +248,7 @@
                     LastName: $("#txtAltLName" + index).val(),
                     Title: $("#ddlAltTitle" + index).val() == undefined ? "" : $("#ddlAltTitle" + index).val(),
                     Contact: c,
+                    Fax: $("input[name=nametxtAltFax" + index + "]").val(),
                     AddressID: $(".clsvendoraddress").val() == undefined || $(".clsvendoraddress").val() == "Select" ? "0" : $(".clsvendoraddress").val(),
                 };
                 VendorEmailData.push(EmailData);
@@ -680,6 +703,11 @@
                     </div>
 
                     <div id="divVendorFilter" class="vendorFilter">
+                        <div align="left">
+                            <h2>Vendor Contacts</h2>
+                            <br />
+                        </div>
+
                         <asp:UpdateProgress ID="UpdateProgress1" runat="server" AssociatedUpdatePanelID="updtpnlfilter">
                             <ProgressTemplate>
                                 <div class="modal">
@@ -693,13 +721,23 @@
                             <ContentTemplate>
                                 <table>
                                     <tr>
+                                        <td>Vendor Status</td>
+                                        <td>
+                                            <asp:DropDownList ID="ddlVendorStatusfltr" runat="server" TabIndex="1" Style="width: 120px;" AutoPostBack="true" OnSelectedIndexChanged="ddlVendorStatusfltr_SelectedIndexChanged">
+                                                <asp:ListItem>Select</asp:ListItem>
+                                                <asp:ListItem Selected="True">Prospect</asp:ListItem>
+                                                <asp:ListItem>Active-Past</asp:ListItem>
+                                                <%--<asp:ListItem>No Transactions</asp:ListItem>--%>
+                                                <asp:ListItem>Deactivate</asp:ListItem>
+                                            </asp:DropDownList>
+                                        </td>
                                         <td>
                                             <asp:RadioButton ID="rdoRetailWholesale" runat="server" Checked="true" Text="Retail/Wholesale" GroupName="MT" OnCheckedChanged="rdoRetailWholesale_CheckedChanged" AutoPostBack="true" />
                                         </td>
                                         <td>
                                             <asp:RadioButton ID="rdoManufacturer" runat="server" Text="Manufacturer" GroupName="MT" OnCheckedChanged="rdoManufacturer_CheckedChanged" AutoPostBack="true" />
                                         </td>
-                                        <td colspan="2"></td>
+
                                         <td colspan="2">
                                             <div class="ui-widget">
                                                 <asp:TextBox ID="txtVendorSearchBox" CssClass="VendorSearchBox" runat="server" placeholder="Search" Width="90%"></asp:TextBox>
@@ -1025,14 +1063,12 @@
                                                                 Website:</label><br />
                                                             <asp:TextBox ID="txtWebsite" TabIndex="1" runat="server" MaxLength="100"></asp:TextBox>
                                                         </td>
-                                                        <td>
+                                                        <%-- <td>
                                                             <label>
                                                                 Fax</label><br />
                                                             <asp:TextBox ID="txtVendorFax" TabIndex="1" runat="server" MaxLength="20"></asp:TextBox>
                                                             <br />
-                                                        </td>
-
-
+                                                        </td>--%>
                                                     </tr>
                                                     <tr>
                                                         <td>
@@ -1451,12 +1487,28 @@
                                                                             Contact #
                                                                         </label>
                                                                         <br />
-                                                                        <div class='newcontactdiv'>
+                                                                        <div class='newcontactdiv' style="width: 605px;">
                                                                             <asp:TextBox ID="txtPrimaryContact0" TabIndex="1" runat="server" placeholder='___-___-____' MaxLength="10" CssClass="clsmaskphone" Width="50%"></asp:TextBox>
                                                                             <asp:TextBox ID="txtPrimaryContactExten0" TabIndex="1" runat="server" placeholder="Extension" class="clsmaskphoneexten" MaxLength="6" Width="34%"></asp:TextBox>
+                                                                            <label>Phone Type</label>
+                                                                            <select id="ddlPrimaryPhoneType0" name="nameddlPrimaryPhoneType0" cliendidmode="static" class="clsphonetype">
+                                                                                <option value="">Select</option>
+                                                                                <option value="Cell">Cell Phone #</option>
+                                                                                <option value="House">House Phone  #</option>
+                                                                                <option value="Work">Work Phone #</option>
+                                                                                <option value="Alt">Alt. Phone #</option>
+                                                                            </select>
                                                                             <br />
                                                                             <a onclick="AddContact(this)" tabindex="1" style="cursor: pointer" data-emailtype="Primary" data-type="0">Add Contact</a><br />
                                                                         </div>
+
+                                                                    </td>
+                                                                    <td>
+                                                                        <label>
+                                                                            Fax</label><br />
+                                                                        <input type='text' id="txtPrimaryFax0" tabindex="1" name="nametxtPrimaryFax0" maxlength="15" clientidmode='Static' />
+
+                                                                        <br />
                                                                     </td>
                                                                 </tr>
                                                             </table>
@@ -1506,13 +1558,29 @@
                                                                             Contact #
                                                                         </label>
                                                                         <br />
-                                                                        <div class='newcontactdiv'>
+                                                                        <div class='newcontactdiv' style="width: 605px;">
                                                                             <asp:TextBox ID="txtSecContact0" TabIndex="1" runat="server" MaxLength="10" placeholder='___-___-____' CssClass="clsmaskphone" Width="50%"></asp:TextBox>
                                                                             <asp:TextBox ID="txtSecContactExten0" TabIndex="1" runat="server" MaxLength="6" class="clsmaskphoneexten" placeholder="Extension" Width="35%"></asp:TextBox>
+                                                                            <label>Phone Type</label>
+                                                                            <select id="ddlSecPhoneType0" name="nameddlSecPhoneType0" cliendidmode="static" class="clsphonetype">
+                                                                                <option value="">Select</option>
+                                                                                <option value="Cell">Cell Phone #</option>
+                                                                                <option value="House">House Phone  #</option>
+                                                                                <option value="Work">Work Phone #</option>
+                                                                                <option value="Alt">Alt. Phone #</option>
+                                                                            </select>
                                                                             <br />
                                                                             <a onclick="AddContact(this)" tabindex="1" data-emailtype="Sec" style="cursor: pointer" data-type="0">Add Contact</a>
                                                                             <br />
                                                                         </div>
+
+                                                                    </td>
+                                                                    <td></td>
+                                                                    <td>
+                                                                        <label>
+                                                                            Fax</label><br />
+                                                                        <input type='text' id="txtSecFax0" tabindex="1" name="nametxtSecFax0" maxlength="15" clientidmode='Static' />
+                                                                        <br />
                                                                     </td>
                                                                 </tr>
                                                             </table>
@@ -1564,13 +1632,27 @@
                                                                             Contact #
                                                                         </label>
                                                                         <br />
-                                                                        <div class='newcontactdiv'>
+                                                                        <div class='newcontactdiv' style="width: 605px;">
                                                                             <asp:TextBox ID="txtAltContact0" TabIndex="1" runat="server" MaxLength="10" CssClass="clsmaskphone" placeholder='___-___-____' Width="50%"></asp:TextBox>
                                                                             <asp:TextBox ID="txtAltContactExten0" TabIndex="1" runat="server" MaxLength="6" class="clsmaskphoneexten" placeholder="Extension" Width="32%"></asp:TextBox>
+                                                                            <label>Phone Type</label>
+                                                                            <select id="ddlAltPhoneType0" name="nameddlAltPhoneType0" cliendidmode="static" class="clsphonetype">
+                                                                                <option value="">Select</option>
+                                                                                <option value="Cell">Cell Phone #</option>
+                                                                                <option value="House">House Phone  #</option>
+                                                                                <option value="Work">Work Phone #</option>
+                                                                                <option value="Alt">Alt. Phone #</option>
+                                                                            </select>
                                                                             <br />
                                                                             <a onclick="AddContact(this)" tabindex="1" style="cursor: pointer" data-emailtype="Alt" data-type="0">Add Contact</a>
                                                                             <br />
                                                                         </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <label>
+                                                                            Fax</label><br />
+                                                                        <input type='text' id="txtAltFax0" tabindex="1" name="nametxtAltFax0" maxlength="15" clientidmode='Static' />
+                                                                        <br />
                                                                     </td>
                                                                 </tr>
                                                             </table>
@@ -1585,7 +1667,7 @@
                                                 </div>
                                             </li>
                                         </ul>
-                                        <div id="divModalPopup" style="display:none;">
+                                        <div id="divModalPopup" style="display: none;">
                                             <div class="modal">
                                                 <div class="center">
                                                     <img alt="Loading..." src="../img/loader.gif" />

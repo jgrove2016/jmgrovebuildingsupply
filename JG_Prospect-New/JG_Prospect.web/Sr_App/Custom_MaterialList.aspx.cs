@@ -4489,7 +4489,7 @@ namespace JG_Prospect.Sr_App
             lstVendors.DataSource = null;
             lstVendors.DataBind();
             DataSet ds = new DataSet();
-            ds = VendorBLL.Instance.GetVendorList(FilterParams, FilterBy, ManufacturerType, VendorCategoryId);
+            ds = VendorBLL.Instance.GetVendorList(FilterParams, FilterBy, ManufacturerType, VendorCategoryId,"");
             if (ds != null)
             {
                 lstVendors.DataSource = ds;

@@ -211,6 +211,15 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.UpdatePanel updtpnlfilter;
         
         /// <summary>
+        /// ddlVendorStatusfltr control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlVendorStatusfltr;
+        
+        /// <summary>
         /// rdoRetailWholesale control.
         /// </summary>
         /// <remarks>
@@ -731,15 +740,6 @@ namespace JG_Prospect.Sr_App {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtWebsite;
-        
-        /// <summary>
-        /// txtVendorFax control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtVendorFax;
         
         /// <summary>
         /// DrpPaymentTerms control.

@@ -542,7 +542,7 @@ namespace JG_Prospect.DAL
             }
         }
 
-        public DataSet GetVendorList(string FilterParams, string FilterBy, string ManufacturerType, string VendorCategoryId)
+        public DataSet GetVendorList(string FilterParams, string FilterBy, string ManufacturerType, string VendorCategoryId, string VendorStatus)
         {
             try
             {
@@ -555,6 +555,7 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@FilterBy", DbType.String, FilterBy);
                     database.AddInParameter(command, "@ManufacturerType", DbType.String, ManufacturerType);
                     database.AddInParameter(command, "@VendorCategoryId", DbType.String, VendorCategoryId);
+                    database.AddInParameter(command, "@VendorStatus", DbType.String, VendorStatus);
                     DS = database.ExecuteDataSet(command);
                     return DS;
                 }
