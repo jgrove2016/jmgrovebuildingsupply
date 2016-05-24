@@ -1617,7 +1617,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>False</AutoAssignPort>
-          <DevelopmentServerPort>61395</DevelopmentServerPort>
+          <DevelopmentServerPort>61396</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/JG_Prospect.web</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

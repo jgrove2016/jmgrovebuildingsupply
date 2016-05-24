@@ -467,6 +467,8 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@PaymentMethod", DbType.String, objvendor.PaymentMethod);
                     database.AddInParameter(command, "@TempID", DbType.String, objvendor.TempID);
                     database.AddInParameter(command, "@NotesTempID", DbType.String, objvendor.NotesTempID);
+                    database.AddInParameter(command, "@VendorCategories", DbType.String, objvendor.VendorCategories);
+                    database.AddInParameter(command, "@VendorSubCategories", DbType.String, objvendor.VendorSubCategories);
 
                     database.ExecuteNonQuery(command);
                     return true;
@@ -1078,5 +1080,47 @@ namespace JG_Prospect.DAL
                 return null;
             }
         }
+
+        public DataSet GetCategoryList(string ProductCategory, string VendorCategory,string action)
+        {
+            try
+            {
+                {
+                    SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                    DS = new DataSet();
+                    DbCommand command = database.GetStoredProcCommand("sp_GetCategoryList");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@ProductCategory", DbType.String, ProductCategory);
+                    database.AddInParameter(command, "@VendorCategory", DbType.String, VendorCategory);
+                    database.AddInParameter(command, "@action", DbType.String, action);
+                    DS = database.ExecuteDataSet(command);
+                    return DS;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        public DataSet FetchCategories(string VendorId)
+        {
+            try
+            {
+                {
+                    SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                    DS = new DataSet();
+                    DbCommand command = database.GetStoredProcCommand("sp_FetchCategories");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@VendorId", DbType.String, VendorId);
+                    DS = database.ExecuteDataSet(command);
+                    return DS;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+        
     }
 }

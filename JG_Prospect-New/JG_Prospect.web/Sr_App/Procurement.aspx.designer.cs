@@ -913,6 +913,15 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.TextBox txtAltContactExten0;
         
         /// <summary>
+        /// Div1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Div1;
+        
+        /// <summary>
         /// BtnSaveLoaction control.
         /// </summary>
         /// <remarks>
@@ -931,6 +940,51 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.Label lbladdress;
         
         /// <summary>
+        /// ModalPopupExtender1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.ModalPopupExtender ModalPopupExtender1;
+        
+        /// <summary>
+        /// pnlcategorypopup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlcategorypopup;
+        
+        /// <summary>
+        /// chkProductCategoryList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList chkProductCategoryList;
+        
+        /// <summary>
+        /// chkVendorCategoryList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList chkVendorCategoryList;
+        
+        /// <summary>
+        /// chkVendorSubcategoryList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBoxList chkVendorSubcategoryList;
+        
+        /// <summary>
         /// btnSave control.
         /// </summary>
         /// <remarks>
@@ -938,6 +992,33 @@ namespace JG_Prospect.Sr_App {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnSave;
+        
+        /// <summary>
+        /// btnCancelCategory control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnCancelCategory;
+        
+        /// <summary>
+        /// btnupdateVendor control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnupdateVendor;
+        
+        /// <summary>
+        /// btnOpenCategoryPopup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnOpenCategoryPopup;
         
         /// <summary>
         /// LblSave control.

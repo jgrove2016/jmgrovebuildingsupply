@@ -55,6 +55,32 @@
             margin-bottom: 5px;
         }
     </style>
+    <style type="text/css">
+        #tabs.ui-tabs {
+            background: transparent;
+        }
+
+            #tabs.ui-tabs .ui-tabs-nav {
+                height: auto;
+                margin-left: 0;
+            }
+
+        .ui-tabs .ui-tabs-nav li {
+            width: 20%;
+        }
+
+        #tabs.ui-tabs .ui-tabs-nav li.ui-tabs-selected {
+            background: #ffffff;
+        }
+
+        .ui-tabs.ui-widget-content {
+            border: 1px solid #aaaaaa !important;
+        }
+
+        .ui-tabs .ui-tabs-panel {
+            padding: 10px 0px !important;
+        }
+    </style>
     <script type="text/javascript">
         function ClosePopup() {
             document.getElementById('light').style.display = 'none';
@@ -101,7 +127,7 @@
                                             "<td><div class='newcontactdiv'>" +
                                             "<input TabIndex='1' type='text' id='txt" + EmailType + "Contact" + subCount + "' name='nametxt" + EmailType + "Contact" + subCount + "' style='width:50%' class='clsmaskphone' maxlength='10' placeholder='___-___-____' clientidmode='Static' />" +
                                             "&nbsp;<input TabIndex='1' type='text' id='txt" + EmailType + "ContactExten" + subCount + "' name='nametxt" + EmailType + "ContactExten" + subCount + "' style='width:35%' maxlength='6' class='clsmaskphoneexten' placeholder='Extension' clientidmode='Static' />" +
-                                            "<label> Phone Type</label>" +
+                                            "&nbsp;<label> Phone Type</label>" +
                                             "<select id='ddl" + EmailType + "PhoneType" + subCount + "' name='nameddl" + EmailType + "PhoneType" + subCount + "' class='clsphonetype' cliendidmode='static'>" +
                                                 "<option value=''>Select</option>" +
                                                 "<option value='Cell'>Cell Phone #</option>" +
@@ -133,7 +159,7 @@
                                             "<br/><div class='newcontactdiv'>" +
                                             "<input TabIndex='1' type='text' id='txt" + EmailType + "Contact" + dataTypeValue + subCount + "' name='nametxt" + EmailType + "Contact" + dataTypeValue + subCount + "' style='width:50%;' maxlength='10' class='clsmaskphone' maxlength='10' placeholder='___-___-____' clientidmode='Static' />" +
                                             "&nbsp;<input TabIndex='1' type='text' id='txt" + EmailType + "ContactExten" + dataTypeValue + subCount + "' name='nametxt" + EmailType + "ContactExten" + dataTypeValue + subCount + "' style='width:35%;' maxlength='6' class='clsmaskphoneexten' placeholder='Extension' clientidmode='Static' />" +
-                                            "<label> Phone Type</label>" +
+                                            "&nbsp;<label> Phone Type</label>" +
                                             "<select id='ddl" + EmailType + "PhoneType" + dataTypeValue + subCount + "' name='nameddl" + EmailType + "PhoneType" + dataTypeValue + subCount + "' class='clsphonetype' cliendidmode='static'>" +
                                                 "<option value=''>Select</option>" +
                                                 "<option value='Cell'>Cell Phone #</option>" +
@@ -318,7 +344,7 @@
                         NewRow = SID;
                     }
                     if (EmailType == "Alternate") {
-                        NewRow = SID;
+                        NewRow = AID;
                     }
                 }
 
@@ -333,6 +359,7 @@
             var AddressID = data.AddressID;
             var Email = JSON.parse(data.Email);
             var Contact = JSON.parse(data.Contact);
+            var Fax = data.Fax;
             var EmailType = data.EmailType;
             var FName = data.FName;
             var LName = data.LName;
@@ -358,10 +385,19 @@
                     + '</select></td>';
 
                 MainHTML += '<td><div class="newcontactdiv"><input type="text" id="txt' + ID + 'Contact' + NewRow + '" name="nametx' + ID + 'Contact' + NewRow + '" value="' + Contact[0].Number + '" style="width:50%" class="clsmaskphone" maxlength="10" TabIndex="1" placeholder="___-___-____" clientidmode="Static"/>&nbsp;<input TabIndex="1" type="text" id="txt' + ID + 'ContactExten' + NewRow + '" name="nametxt' + ID + 'ContactExten' + NewRow + '" value="' + Contact[0].Extension + '" style="width:35%" maxlength="6" class="clsmaskphoneexten" placeholder="Extension" clientidmode="Static"/>';
-                MainHTML += '<a TabIndex="1" onclick="AddContact(this)" style="cursor:pointer" data-type="1" data-emailtype="Primary" clientidmode="Static">Add Contact</a><br></div></td></tr>';
+                MainHTML += '&nbsp;<label> Phone Type</label> <select id="ddl' + ID + 'PhoneType' + NewRow + '" name="nameddl' + ID + 'PhoneType' + NewRow + '" class="clsphonetype" cliendidmode="static">' +
+                '<option value="">Select</option>' +
+                '<option value="Cell">Cell Phone #</option>' +
+                '<option value="House">House Phone  #</option>' +
+                '<option value="Work">Work Phone #</option>' +
+                '<option value="Alt">Alt. Phone #</option></select>';
+                MainHTML += '<a TabIndex="1" onclick="AddContact(this)" style="cursor:pointer" data-type="1" data-emailtype="Primary" clientidmode="Static">Add Contact</a><br></div></td>';
+                MainHTML += '<td><input type="text" id="txt' + ID + 'Fax' + NewRow + '" name="nametxt' + ID + 'Fax' + NewRow + '" maxlength="15" value="' + Fax + '" placeholder="Fax" clientidmode="Static"><br /></td></tr>';
                 $("#tbl" + ID + "Email").find("tr:last-child").after(MainHTML);
 
                 $("#ddl" + ID + "Title" + NewRow).val(Title);
+                $("#ddl" + ID + "PhoneType" + NewRow).val(Contact[0].PhoneType);
+
                 for (j = 1; j < Email.length; j++) {
                     var HTML = '<br/>';
                     HTML += '<div class="newEmaildiv"><input TabIndex="1" type="text" id="txt' + ID + 'Email' + NewRow + '' + j + '" name="nametxt' + ID + 'Email' + NewRow + '' + j + '" class="clsemail" value="' + Email[j].Email + '" clientidmode="Static"?></div>';
@@ -371,8 +407,15 @@
                 for (j = 1; j < Contact.length; j++) {
                     var n = j - 1;
                     var HTML = '<br/>';
-                    HTML += '<div class="newcontactdiv"><input type="text" id="txt' + ID + 'Contact0' + n + '" name="nametxt' + ID + 'Contact' + NewRow + '' + n + '" style="width:50%;" maxlength="10" class="clsmaskphone" placeholder="___-___-____" value="' + Contact[j].Number + '" TabIndex="1" clientidmode="Static"/>&nbsp;<input TabIndex="1" type="text" id="txt' + ID + 'ContactExten' + NewRow + '' + n + '" name="nametxt' + ID + 'ContactExten' + NewRow + '' + n + '" style="width:35%;" maxlength="6" class="clsmaskphoneexten" placeholder="Extension" value="' + Contact[j].Extension + '" clientidmode="Static"/><br></div>';
+                    HTML += '<div class="newcontactdiv"><input type="text" id="txt' + ID + 'Contact' + NewRow + '' + n + '" name="nametxt' + ID + 'Contact' + NewRow + '' + n + '" style="width:50%;" maxlength="10" class="clsmaskphone" placeholder="___-___-____" value="' + Contact[j].Number + '" TabIndex="1" clientidmode="Static"/>&nbsp;<input TabIndex="1" type="text" id="txt' + ID + 'ContactExten' + NewRow + '' + n + '" name="nametxt' + ID + 'ContactExten' + NewRow + '' + n + '" style="width:35%;" maxlength="6" class="clsmaskphoneexten" placeholder="Extension" value="' + Contact[j].Extension + '" clientidmode="Static"/>';
+                    HTML += '&nbsp;<label> Phone Type</label> <select id="ddl' + ID + 'PhoneType' + NewRow + '' + n + '" name="nameddl' + ID + 'PhoneType' + NewRow + '' + n + '" class="clsphonetype" cliendidmode="static">' +
+                                '<option value="">Select</option>' +
+                                '<option value="Cell">Cell Phone #</option>' +
+                                '<option value="House">House Phone  #</option>' +
+                                '<option value="Work">Work Phone #</option>' +
+                                '<option value="Alt">Alt. Phone #</option></select></div>';
                     $("#tbl" + ID + "Email").find("tr:last-child .newcontactdiv").append(HTML);
+                    $("#ddl" + ID + "PhoneType" + NewRow + '' + n).val(Contact[j].PhoneType);
                     //$("#" + ContentPlaceHolder + "txt" + ID + "ContactExten0" + j).val(Contact[j].Extension);
                     //$("#" + ContentPlaceHolder + "txt" + ID + "Contact0" + j).val(Contact[j].Number);
                 }
@@ -384,6 +427,9 @@
                 $("#ddl" + ID + "Title" + NewRow).val(Title);
                 $("#" + ContentPlaceHolder + "txt" + ID + "ContactExten" + NewRow).val(Contact[0].Extension);
                 $("#" + ContentPlaceHolder + "txt" + ID + "Contact" + NewRow).val(Contact[0].Number);
+                $("#ddl" + ID + "PhoneType" + NewRow).val(Contact[0].PhoneType);
+                $("#txt" + ID + "Fax" + NewRow).val(Fax);
+
                 for (j = 1; j < Email.length; j++) {
                     var HTML = '<br/>';
                     HTML += '<div class="newEmaildiv"><input TabIndex="1" type="text" id="txt' + ID + 'Email' + NewRow + '' + j + '" name="nametxt' + ID + 'Email' + NewRow + '' + j + '" class="clsemail" value="' + Email[j].Email + '" clientidmode="Static"?></div>';
@@ -393,8 +439,17 @@
                 for (j = 1; j < Contact.length; j++) {
                     var n = j - 1;
                     var HTML = '<br/>';
-                    HTML += '<div class="newcontactdiv"><input type="text" id="txt' + ID + 'Contact0' + n + '" name="nametxt' + ID + 'Contact' + NewRow + '' + n + '" style="width:50%;" maxlength="10" class="clsmaskphone" placeholder="___-___-____" value="' + Contact[j].Number + '" TabIndex="1" clientidmode="Static"/>&nbsp;<input TabIndex="1" type="text" id="txt' + ID + 'ContactExten' + NewRow + '' + n + '" name="nametxt' + ID + 'ContactExten' + NewRow + '' + n + '" style="width:35%;" maxlength="6" class="clsmaskphoneexten" placeholder="Extension" value="' + Contact[j].Extension + '" clientidmode="Static"/><br></div>';
+                    HTML += '<div class="newcontactdiv"><input type="text" id="txt' + ID + 'Contact' + NewRow + '' + n + '" name="nametxt' + ID + 'Contact' + NewRow + '' + n + '" style="width:50%;" maxlength="10" class="clsmaskphone" placeholder="___-___-____" value="' + Contact[j].Number + '" TabIndex="1" clientidmode="Static"/>&nbsp;';
+                    HTML += '<input TabIndex="1" type="text" id="txt' + ID + 'ContactExten' + NewRow + '' + n + '" name="nametxt' + ID + 'ContactExten' + NewRow + '' + n + '" style="width:35%;" maxlength="6" class="clsmaskphoneexten" placeholder="Extension" value="' + Contact[j].Extension + '" clientidmode="Static"/>';
+                    HTML += '&nbsp;<label> Phone Type</label><select id="ddl' + ID + 'PhoneType' + NewRow + '' + n + '" name="nameddl' + ID + 'PhoneType' + NewRow + '' + n + '" class="clsphonetype" cliendidmode="static">' +
+                                '<option value="">Select</option>' +
+                                '<option value="Cell">Cell Phone #</option>' +
+                                '<option value="House">House Phone  #</option>' +
+                                '<option value="Work">Work Phone #</option>' +
+                                '<option value="Alt">Alt. Phone #</option></select>'
+                    HTML += '<br></div>';
                     $("#tbl" + ID + "Email").find("tr:last-child .newcontactdiv").append(HTML);
+                    $("#ddl" + ID + "PhoneType" + NewRow + '' + n).val(Contact[j].PhoneType);
                     //$("#" + ContentPlaceHolder + "txt" + ID + "ContactExten0" + j).val(Contact[j].Extension);
                     //$("#" + ContentPlaceHolder + "txt" + ID + "Contact0" + j).val(Contact[j].Number);
                 }
@@ -457,10 +512,6 @@
             color: black;
         }
 
-
-
-
-
         .tabcontents {
             border: 1px solid black;
             padding: 10px;
@@ -468,8 +519,6 @@
             height: 500px;*/
             background-color: white;
         }
-
-
 
         div.dd_chk_select div#caption {
             width: 152px;
@@ -981,6 +1030,8 @@
                                 </table>
                             </ContentTemplate>
                         </asp:UpdatePanel>
+
+
                     </div>
 
                     <div id="tabs">
@@ -1575,7 +1626,6 @@
                                                                         </div>
 
                                                                     </td>
-                                                                    <td></td>
                                                                     <td>
                                                                         <label>
                                                                             Fax</label><br />
@@ -1660,7 +1710,7 @@
                                                     </tr>
 
                                                 </table>
-                                                <div style="text-align: right;" runat="server" visible="false">
+                                                <div id="Div1" style="text-align: right;" runat="server" visible="false">
                                                     <asp:LinkButton ID="BtnSaveLoaction" CssClass="btnSaveAddress" TabIndex="1" runat="server" Text="Save Address" OnClientClick="return GetVendorDetails(this)" ValidationGroup="addaddress" OnClick="BtnSaveLoaction_Click" />
                                                     <br />
                                                     <asp:Label ID="lbladdress" runat="server" ForeColor="Red"></asp:Label>
@@ -1674,8 +1724,37 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <asp:ModalPopupExtender ID="ModalPopupExtender1" runat="server" TargetControlID="btnOpenCategoryPopup"
+                                            PopupControlID="pnlcategorypopup" CancelControlID="btnCancelCategory">
+                                        </asp:ModalPopupExtender>
+
+                                        <asp:Panel ID="pnlcategorypopup" runat="server" Style="display: none; background: white; border: 5px solid #ccc">
+                                            <div id="categoriesList">
+                                                <div id="productCategory" style="width: 250px; float: left">
+                                                    <asp:CheckBoxList ID="chkProductCategoryList" runat="server" AutoPostBack="true" OnSelectedIndexChanged="chkProductCategoryList_SelectedIndexChanged">
+                                                    </asp:CheckBoxList>
+                                                </div>
+                                                <div id="vendorcategory" style="width: 250px; float: left">
+                                                    <asp:CheckBoxList ID="chkVendorCategoryList" runat="server" AutoPostBack="true" OnSelectedIndexChanged="chkVendorCategoryList_SelectedIndexChanged">
+                                                    </asp:CheckBoxList>
+                                                </div>
+                                                <div id="vendorsubcategory" style="width: 250px; float: left">
+                                                    <asp:CheckBoxList ID="chkVendorSubcategoryList" runat="server" OnSelectedIndexChanged="chkVendorSubcategoryList_SelectedIndexChanged">
+                                                    </asp:CheckBoxList>
+                                                </div>
+                                            </div>
+
+                                            <div class="btn_sec">
+                                                <asp:Button ID="btnSave" runat="server" TabIndex="1" Text="Save" OnClientClick="return GetVendorDetails(this);" OnClick="btnSave_Click" /><%--OnClick="btnSave_Click" ValidationGroup="addvendor"--%>
+
+                                                <asp:Button ID="btnCancelCategory" runat="server" TabIndex="1" Text="Cancel" />
+                                            </div>
+                                        </asp:Panel>
+
                                         <div class="btn_sec">
-                                            <asp:Button ID="btnSave" runat="server" TabIndex="1" Text="Save" OnClientClick="return GetVendorDetails(this);" OnClick="btnSave_Click" ValidationGroup="addvendor" /><%--OnClick="btnSave_Click" ValidationGroup="addvendor"--%>
+                                            <%--<asp:Button ID="btnSave" runat="server" TabIndex="1" Text="Save" OnClientClick="return GetVendorDetails(this);" OnClick="btnSave_Click" />--%><%--OnClick="btnSave_Click" ValidationGroup="addvendor"--%>
+                                            <asp:Button ID="btnupdateVendor" runat="server" Text="Update" Visible="false" OnClick="btnupdateVendor_Click1" />
+                                            <asp:Button ID="btnOpenCategoryPopup" runat="server" TabIndex="1" Text="Save" ValidationGroup="addvendor" />
                                             <br />
                                             <asp:Label ID="LblSave" runat="server" ForeColor="Red"></asp:Label>
                                         </div>
@@ -1683,6 +1762,7 @@
 
                                 </ContentTemplate>
                             </asp:UpdatePanel>
+
                         </div>
                         <div id="tabs-2">
                             <p>&nbsp</p>
@@ -2026,32 +2106,7 @@
     <script src="../Scripts/jquery.maskedinput.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyD0X4v7eqMFcWCR-VZAJwEMfb47id9IZao"></script>
 
-    <style type="text/css">
-        #tabs.ui-tabs {
-            background: transparent;
-        }
 
-            #tabs.ui-tabs .ui-tabs-nav {
-                height: auto;
-                margin-left: 0;
-            }
-
-        .ui-tabs .ui-tabs-nav li {
-            width: 20%;
-        }
-
-        #tabs.ui-tabs .ui-tabs-nav li.ui-tabs-selected {
-            background: #ffffff;
-        }
-
-        .ui-tabs.ui-widget-content {
-            border: 1px solid #aaaaaa !important;
-        }
-
-        .ui-tabs .ui-tabs-panel {
-            padding: 10px 0px !important;
-        }
-    </style>
     <script type="text/javascript">
         SearchText();
         SearchZipCode();

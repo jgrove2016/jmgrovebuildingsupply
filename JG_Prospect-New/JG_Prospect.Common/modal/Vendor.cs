@@ -34,5 +34,7 @@ namespace JG_Prospect.Common.modal
         public string PaymentMethod;
         public string TempID;
         public string NotesTempID;
+        public string VendorCategories;
+        public string VendorSubCategories;
     }
 }

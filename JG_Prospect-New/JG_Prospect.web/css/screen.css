@@ -1349,3 +1349,17 @@ ul.left_nav {
     border-radius: 10px;
     box-shadow: 0 0 10px #a1a0a0;
 }
+
+#categoriesList {
+    height: 500px;
+    width: 800px;
+    overflow: auto;
+}
+
+#categoriesList table tr td label {
+    width: 100%;
+    display: inline-block;
+    margin-right: 2%;
+    padding-top: 5px;
+    font-weight: normal;
+}

@@ -85,7 +85,7 @@ namespace JG_Prospect.BLL
         {
             return VendorDAL.Instance.fetchVendorListByCategoryForEmail(category);
         }
-         /// <summary>
+        /// <summary>
         /// This method will return one or more Vendors/
         /// </summary>
         /// <param name="pVendorIDs">Command separated vendor ids</param>
@@ -164,7 +164,7 @@ namespace JG_Prospect.BLL
         }
         public bool InsertVendorEmail(DataTable tblVendorEmail, int addressID)
         {
-            return VendorDAL.Instance.InsertVendorEmail(tblVendorEmail,addressID);
+            return VendorDAL.Instance.InsertVendorEmail(tblVendorEmail, addressID);
         }
         public DataSet GetVendorEmail(Vendor objVendor)
         {
@@ -180,16 +180,16 @@ namespace JG_Prospect.BLL
         {
             return VendorDAL.Instance.InsertVendorAddress(objvendor);
         }
-        public DataSet GetALLVendorAddress(string manufacturer,string productId,string vendorCatId,string vendorSubCatId)
+        public DataSet GetALLVendorAddress(string manufacturer, string productId, string vendorCatId, string vendorSubCatId)
         {
-            return VendorDAL.Instance.GetALLVendorAddress(manufacturer,productId, vendorCatId, vendorSubCatId);
+            return VendorDAL.Instance.GetALLVendorAddress(manufacturer, productId, vendorCatId, vendorSubCatId);
         }
         public DataSet GetVendorAddress(int VendorId)
         {
             return VendorDAL.Instance.GetVendorAddress(VendorId);
         }
 
-        public DataSet GetVendorAddress(int VendorId,string TempID)
+        public DataSet GetVendorAddress(int VendorId, string TempID)
         {
             return VendorDAL.Instance.GetVendorAddress(VendorId, TempID);
         }
@@ -230,10 +230,21 @@ namespace JG_Prospect.BLL
             return VendorDAL.Instance.GetVendorNotes(VendorId, TempId);
         }
 
-        public DataSet GetVendorMaterialList(string ManufacturerType,string VendorId, string ProductCatId, string VendorCatId, string VendorSubCatId, string PeriodStart, string PeriodEnd, string PayPeriod)
+        public DataSet GetVendorMaterialList(string ManufacturerType, string VendorId, string ProductCatId, string VendorCatId, string VendorSubCatId, string PeriodStart, string PeriodEnd, string PayPeriod)
         {
-            return VendorDAL.Instance.GetVendorMaterialList(ManufacturerType,VendorId, ProductCatId, VendorCatId, VendorSubCatId, PeriodStart, PeriodEnd, PayPeriod);
+            return VendorDAL.Instance.GetVendorMaterialList(ManufacturerType, VendorId, ProductCatId, VendorCatId, VendorSubCatId, PeriodStart, PeriodEnd, PayPeriod);
         }
+        public DataSet GetCategoryList(string ProductCategory, string VendorCategory, string action)
+        {
+            return VendorDAL.Instance.GetCategoryList(ProductCategory, VendorCategory, action);
+        }
+
+        public DataSet FetchCategories(string VendorId)
+        {
+            return VendorDAL.Instance.FetchCategories(VendorId);
+        }
+
+
     }
 
 
