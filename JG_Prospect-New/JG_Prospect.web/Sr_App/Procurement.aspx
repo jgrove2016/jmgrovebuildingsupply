@@ -80,6 +80,21 @@
         .ui-tabs .ui-tabs-panel {
             padding: 10px 0px !important;
         }
+
+        .uiblack {
+            display: block;
+            position: fixed;
+            top: 0%;
+            left: 0%;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.55);
+            z-index: 99;
+            -moz-opacity: 0.8;
+            opacity: .80;
+            filter: alpha(opacity=80);
+            overflow-y: hidden;
+        }
     </style>
     <script type="text/javascript">
         function ClosePopup() {
@@ -1493,6 +1508,9 @@
                                                             </fieldset>
                                                         </td>
                                                     </tr>
+
+                                                </table>
+                                                <table border="0" cellspacing="0" cellpadding="0" style="padding: 0px; margin: 0px;">
                                                     <tr>
                                                         <td colspan="4" style="padding: 0px;">
                                                             <table id="tblPrimaryEmail" style="margin: 0px;">
@@ -1708,7 +1726,6 @@
                                                             </table>
                                                         </td>
                                                     </tr>
-
                                                 </table>
                                                 <div id="Div1" style="text-align: right;" runat="server" visible="false">
                                                     <asp:LinkButton ID="BtnSaveLoaction" CssClass="btnSaveAddress" TabIndex="1" runat="server" Text="Save Address" OnClientClick="return GetVendorDetails(this)" ValidationGroup="addaddress" OnClick="BtnSaveLoaction_Click" />
@@ -1725,7 +1742,7 @@
                                             </div>
                                         </div>
                                         <asp:ModalPopupExtender ID="ModalPopupExtender1" runat="server" TargetControlID="btnOpenCategoryPopup"
-                                            PopupControlID="pnlcategorypopup" CancelControlID="btnCancelCategory">
+                                            PopupControlID="pnlcategorypopup" CancelControlID="btnCancelCategory" BackgroundCssClass="uiblack">
                                         </asp:ModalPopupExtender>
 
                                         <asp:Panel ID="pnlcategorypopup" runat="server" Style="display: none; background: white; border: 5px solid #ccc">
@@ -1745,16 +1762,16 @@
                                             </div>
 
                                             <div class="btn_sec">
-                                                <asp:Button ID="btnSave" runat="server" TabIndex="1" Text="Save" OnClientClick="return GetVendorDetails(this);" OnClick="btnSave_Click" /><%--OnClick="btnSave_Click" ValidationGroup="addvendor"--%>
+                                                <asp:Button ID="btnSave" runat="server" TabIndex="1" Text="Save" CssClass="cssbtnSave" OnClientClick="return GetVendorDetails(this);" OnClick="btnSave_Click" /><%--OnClick="btnSave_Click" ValidationGroup="addvendor"--%>
 
-                                                <asp:Button ID="btnCancelCategory" runat="server" TabIndex="1" Text="Cancel" />
+                                                <asp:Button ID="btnCancelCategory" runat="server" TabIndex="1" CssClass="cssbtnCancelCategory" Text="Cancel" />
                                             </div>
                                         </asp:Panel>
 
                                         <div class="btn_sec">
                                             <%--<asp:Button ID="btnSave" runat="server" TabIndex="1" Text="Save" OnClientClick="return GetVendorDetails(this);" OnClick="btnSave_Click" />--%><%--OnClick="btnSave_Click" ValidationGroup="addvendor"--%>
                                             <asp:Button ID="btnupdateVendor" runat="server" Text="Update" Visible="false" OnClick="btnupdateVendor_Click1" />
-                                            <asp:Button ID="btnOpenCategoryPopup" runat="server" TabIndex="1" Text="Save" ValidationGroup="addvendor" />
+                                            <asp:Button ID="btnOpenCategoryPopup" runat="server" TabIndex="1" Text="Save" CssClass="cssOpenCategoryPopup" ValidationGroup="addvendor" />
                                             <br />
                                             <asp:Label ID="LblSave" runat="server" ForeColor="Red"></asp:Label>
                                         </div>
