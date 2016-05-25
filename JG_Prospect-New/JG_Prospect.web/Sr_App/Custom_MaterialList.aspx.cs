@@ -231,8 +231,8 @@ namespace JG_Prospect.Sr_App
             if (ds.Tables[0].Rows.Count > 0)
             {
                 List<CustomMaterialList> lCustomMaterial = (List<CustomMaterialList>)ViewState["CustomMaterialList"];
-                if (lnkForemanPermission.Visible == true)
-                {
+               // if (lnkForemanPermission.Visible == true)
+                //{
                     //#- Since we have text boxes, we don't need this controls.
                     lnkForemanPermission.Visible = false;
                     lnkSrSalesmanPermissionF.Visible = false;
@@ -257,9 +257,9 @@ namespace JG_Prospect.Sr_App
                         lnkSrSalesmanPermissionF.ForeColor = System.Drawing.Color.DarkGray;
                         popupSrSalesmanPermissionF.TargetControlID = "hdnSrF";
                     }
-                }
-                if (lnkAdminPermission.Visible == true)
-                {
+               // }
+               // if (lnkAdminPermission.Visible == true)
+               // {
                     //pnlForeman.Visible = false;
                     //pnlSalesF.Visible = false;
                     lnkAdminPermission.Visible = false;
@@ -282,7 +282,7 @@ namespace JG_Prospect.Sr_App
                         lnkSrSalesmanPermissionA.ForeColor = System.Drawing.Color.DarkGray;
                         popupSrSalesmanPermissionA.TargetControlID = "hdnSrA";
                     }
-                }
+               // }
             }
             else
             { //#- Since we have text boxes, we don't need this controls.

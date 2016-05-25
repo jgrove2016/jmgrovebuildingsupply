@@ -289,56 +289,6 @@
                         </Columns>
                     </asp:GridView>
                     <asp:Literal ID="LiteralBody2" runat="server"></asp:Literal>
-
-                    <%-- <table width="100%" cellspacing="0" cellpadding="0" border="0" class="no_line" style="font-family: tahoma,geneva,sans-serif; text-align: left; font-size: 10pt;">
-                                        <tbody><tr align="left">
-                                            <td align="justify">
-                                                   
-<p class="MsoNormal"><span style="font-family: 'times new roman', serif; color: black; background: #fafafa;"><font size="3"><span style="font-weight: bold; text-decoration: underline;">Proposal:</span></font><font size="3">&nbsp;</font>Clean, sand &amp; prep as necessary paint area &amp; supply&amp; install:<o:p></o:p></span></p>
-<p class="MsoNormal"><span style="font-family: 'times new roman', serif; color: black; background: #fafafa;">Approx </span><span style="font-family: 'times new roman', serif; color: red; background: #fafafa;">(<i>sqft</i>) </span><span style="font-family: 'times new roman', serif; background: #fafafa;">sqft <span style="color: red;">,</span><i><span style="color: #00b050;"> (# ) </span></i><span style="color: black;">coat(s),<i> </i></span></span><b><span style="font-family: 'times new roman', serif;">(</span></b><i><span style="font-family: 'times new roman', serif; color: #7030a0; background: #fafafa;">Color(s):____________)</span></i><span style="font-family: 'times new roman', serif; color: #002060; background: yellow;">(</span><i><span style="font-family: 'times new roman', serif; color: #f79646; background: yellow;">surface type</span></i><span style="font-family: 'times new roman', serif; color: #002060; background: yellow;"> -</span><span style="font-family: 'times new roman', serif; color: #002060; background: #fafafa;">painttype)<i>(</i></span><i><span style="font-family: 'times new roman', serif; color: #00b0f0; background: #fafafa;">sheen)</span></i><span style="font-family: 'times new roman', serif; color: #00b0f0; background: #fafafa;"> </span><span style="font-family: 'times new roman', serif; color: black; background: #fafafa;">finish <o:p></o:p></span></p>
-<p class="MsoNormal"><br>
-</p>
-<p class="MsoNormal"><span style="font-family: 'times new roman', serif; color: black; background: #fafafa;">Clean any "over painting”, haul away debris and leavejob site clean.<o:p></o:p></span></p>
-<table width="100%" cellspacing="0" cellpadding="0" border="0">
-<tbody> </tbody> </table>            
-<table width="100%" cellspacing="0" cellpadding="0" border="0">  
-<tbody>  
-<tr>  
-<td colspan="2"><br>
-</td>  
-<td colspan="3"><br>
-  </td></tr> </tbody> </table>              
-<table width="100%" cellspacing="0" cellpadding="0" border="0">  
-<tbody>  
-<tr>  
-<td valign="top">&nbsp;</td>  
-<td align="right">   <b> $  100</b><br>
-  <b> Per month:  6%</b><br>
-  </td>  
-<td valign="top">&nbsp;</td>  
-<td valign="top">&nbsp;</td>  
-<td valign="top">&nbsp;</td></tr> </tbody> </table>                          
-<table width="100%" cellspacing="0" cellpadding="0" border="0">  
-<tbody>  
-<tr>  
-<td valign="top">&nbsp;</td>  
-<td align="right"><br>
-  </td>  
-<td valign="top">&nbsp;</td>  
-<td valign="top">&nbsp;</td>  
-<td valign="top">&nbsp;</td></tr> </tbody> </table>             
-<table width="100%" cellspacing="0" cellpadding="0" border="0">  
-<tbody>  
-<tr>  
-<td valign="top"><span style="font-weight: bold;">&nbsp;Special Instructions:</span> </td>  
-<td valign="top"> , </td>  
-<td valign="top"><span style="font-weight: bold;">&nbsp;Work Area:</span> &nbsp;shsdf </td>  
-<td valign="top">,</td>  
-<td valign="top">&nbsp;<span style="font-weight: bold;">Shutter Tops:</span> lblShutterTops</td></tr> </tbody> </table>  <br><hr color="#000000" width="450">
-                                            </td>
-                                        </tr>
-                                    </tbody></table>--%>
-
                     <div class="btn_sec">
                         <asp:Label ID="Label7" runat="server" Text="Label" Visible="false"></asp:Label>
                         <asp:Button ID="btnSold" runat="server" Text="Sold" TabIndex="1" OnClick="btnSold_Click2" />
@@ -947,6 +897,11 @@
                                         </tr>
                                     </table>
                                 </ContentTemplate>
+                                <Triggers>
+                                    <asp:PostBackTrigger ControlID="btnSaveSold2" />
+                                    <asp:PostBackTrigger ControlID="btnsavesold" />
+                                    
+                                </Triggers>
                             </asp:UpdatePanel>
                         </asp:Panel>
                     </div>

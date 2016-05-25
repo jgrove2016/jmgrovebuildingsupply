@@ -97,7 +97,7 @@
                 </LayoutTemplate>
                 <ItemTemplate>
                          <tr>
-                            <td><%=ContainerType.Item. %></td>
+                            <td><%# Container.DataItemIndex + 1%></td>
                             <td><%#Eval("PersonName") %></td>
                             <td><%#Eval("BankName") %></td>
                             <td><%#Eval("BankBranch") %></td>

@@ -1,0 +1,44 @@
+/****** Object:  StoredProcedure [dbo].[USP_GetEmails]    Script Date: 24-05-2016 13:26:11 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_GetEmails]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_GetEmails]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_GetEmails]    Script Date: 24-05-2016 13:26:11 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_GetEmails]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[USP_GetEmails] AS' 
+END
+GO
+
+
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+ALTER PROCEDURE [dbo].[USP_GetEmails] 
+(
+	@Id int = 0
+)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+    -- Insert statements for procedure here
+	--Original SP
+	--SELECT AdditionalEmail,Email,DateOfBirth FROM [dbo].[new_customer]
+	--WHERE id = @id
+
+	--Altered
+	SELECT Email,AdditionalEmail,DateOfBirth, ISNULL(CustomerAddress, '') AS CustomerAddress, ISNULL(ZipCode, '') AS ZipCode, ISNULL(State, '') AS State, ISNULL(City,'') AS City FROM [dbo].[new_customer]
+	WHERE id = @id
+END
+
+GO

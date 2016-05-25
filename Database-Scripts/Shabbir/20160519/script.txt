@@ -1,0 +1,257 @@
+/****** Object:  Table [dbo].[tblBankAccountDetails]    Script Date: 20-05-2016 12:58:38 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tblBankAccountDetails]') AND type in (N'U'))
+DROP TABLE [dbo].[tblBankAccountDetails]
+GO
+
+/****** Object:  Table [dbo].[tblBankAccountDetails]    Script Date: 20-05-2016 12:58:38 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tblBankAccountDetails]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [dbo].[tblBankAccountDetails](
+	[BankID] [int] IDENTITY(1,1) NOT NULL,
+	[PersonName] [nvarchar](50) NOT NULL,
+	[BankName] [nvarchar](50) NOT NULL,
+	[BankBranch] [nvarchar](50) NOT NULL,
+	[AccountName] [nvarchar](50) NOT NULL,
+	[AccountNumber] [nvarchar](50) NOT NULL,
+	[IFSCCode] [nvarchar](50) NULL,
+	[SWIFTCode] [nvarchar](50) NULL,
+ CONSTRAINT [PK_tblBankAccountDetails] PRIMARY KEY CLUSTERED 
+(
+	[BankID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[USP_AddBank]    Script Date: 20-05-2016 13:01:23 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_AddBank]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_AddBank]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_AddBank]    Script Date: 20-05-2016 13:01:23 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_AddBank]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[USP_AddBank] AS' 
+END
+GO
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-05-20
+-- Description:	This procedure will add a record in Bank
+-- =============================================
+ALTER PROCEDURE [dbo].[USP_AddBank]
+	@BankID [int] OUTPUT,
+	@PersonName [nvarchar](50),
+	@BankName [nvarchar](50),
+	@BankBranch [nvarchar](50),
+	@AccountName [nvarchar](50),
+	@AccountNumber [nvarchar](50),
+	@IFSCCode [nvarchar](50),
+	@SWIFTCode [nvarchar](50)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	INSERT INTO [dbo].[tblBankAccountDetails]
+           ([PersonName]
+           ,[BankName]
+           ,[BankBranch]
+           ,[AccountName]
+           ,[AccountNumber]
+           ,[IFSCCode]
+           ,[SWIFTCode])
+     VALUES
+	 (
+		@PersonName,
+		@BankName,
+		@BankBranch,
+		@AccountName,
+		@AccountNumber,
+		@IFSCCode,
+		@SWIFTCode
+	 )
+
+	 SET @BankID = SCOPE_IDENTITY()
+END
+
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[USP_GetBanks]    Script Date: 20-05-2016 13:02:14 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_GetBanks]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_GetBanks]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_GetBanks]    Script Date: 20-05-2016 13:02:14 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_GetBanks]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[USP_GetBanks] AS' 
+END
+GO
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-05-20
+-- Description:	This procedure will get All Bank Details
+-- =============================================
+ALTER PROCEDURE [dbo].[USP_GetBanks]
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	SELECT * FROM tblBankAccountDetails
+END
+
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[USP_GetBankById]    Script Date: 20-05-2016 13:06:29 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_GetBankById]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_GetBankById]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_GetBankById]    Script Date: 20-05-2016 13:06:29 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_GetBankById]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[USP_GetBankById] AS' 
+END
+GO
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-05-20
+-- Description:	This procedure gets a bank record 
+-- =============================================
+ALTER PROCEDURE [dbo].[USP_GetBankById]
+(
+	@BankID INT
+)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	SELECT * FROM tblBankAccountDetails WHERE BankId = @BankID
+
+END
+
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[USP_UpdateBankRecord]    Script Date: 20-05-2016 13:10:56 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_UpdateBankRecord]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_UpdateBankRecord]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_UpdateBankRecord]    Script Date: 20-05-2016 13:10:56 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_UpdateBankRecord]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[USP_UpdateBankRecord] AS' 
+END
+GO
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-05-20
+-- Description:	This procedure will update the bank record
+-- =============================================
+ALTER PROCEDURE [dbo].[USP_UpdateBankRecord]
+	@BankID [int],
+	@PersonName [nvarchar](50),
+	@BankName [nvarchar](50),
+	@BankBranch [nvarchar](50),
+	@AccountName [nvarchar](50),
+	@AccountNumber [nvarchar](50),
+	@IFSCCode [nvarchar](50),
+	@SWIFTCode [nvarchar](50)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	UPDATE [dbo].[tblBankAccountDetails]
+	SET [PersonName] = @PersonName,
+      [BankName] = @BankName,
+      [BankBranch] = @BankBranch,
+      [AccountName] = @AccountName,
+      [AccountNumber] = @AccountNumber,
+      [IFSCCode] = @IFSCCode,
+      [SWIFTCode] = @SWIFTCode
+	WHERE BankID = @BankID
+END
+
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[USP_DeleteBankRecord]    Script Date: 20-05-2016 13:13:36 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_DeleteBankRecord]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_DeleteBankRecord]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_DeleteBankRecord]    Script Date: 20-05-2016 13:13:36 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_DeleteBankRecord]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[USP_DeleteBankRecord] AS' 
+END
+GO
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-05-20
+-- Description:	This procedure deletes the bank record
+-- =============================================
+ALTER PROCEDURE [dbo].[USP_DeleteBankRecord]
+	@BankID INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+	DELETE FROM tblBankAccountDetails WHERE BankID = @BankID
+
+END
+
+GO
+
+

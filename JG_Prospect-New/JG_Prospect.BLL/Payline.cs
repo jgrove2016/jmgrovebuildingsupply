@@ -91,7 +91,72 @@ public class Payline
    
     #endregion
 
-    
+    public Payline ECheckSale(string pCheckName, string pRoutingNumber, string pBnkAcNumber, string pAccountHolderType, string pAccountType, string pSecCode, string pPayment, Decimal pAmount, string pCurrency)
+    {
+        Payline payline = new Payline();
+
+
+        System.Web.HttpServerUtility o = System.Web.HttpContext.Current.Server;
+        string parmList = "";
+
+        parmList = string.Format("username={0}&password={1}&type=sale&amount={2}&currency={3}&checkname={4}&checkaba={5}&checkaccount={6}&account_holder_type={7}&account_type={8}&sec_code=WEB&payment=check", ConfigurationSettings.AppSettings["PlGP:User"], ConfigurationSettings.AppSettings["PlGP:Pwd"], pAmount, pCurrency, pCheckName, pRoutingNumber, pBnkAcNumber, pAccountHolderType, pAccountType);
+
+        payline.Request = parmList;
+
+        // create and setup web request
+        HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(System.Configuration.ConfigurationSettings.AppSettings["PlGP:HostAddress"]);
+        webRequest.Method = "POST";
+        webRequest.ContentType = "application/x-www-form-urlencoded";
+        webRequest.ContentLength = parmList.Length;
+
+        StreamWriter requestStream = null;
+        try
+        {
+            requestStream = new StreamWriter(webRequest.GetRequestStream());
+            requestStream.Write(parmList);
+        }
+        catch (Exception ex)
+        {
+
+            ErrorHandler("Error in GetAllApplicationData function .", ex.Message, ex.StackTrace);
+        }
+        finally
+        {
+            requestStream.Close();
+        }
+
+        HttpWebResponse webResponse = (HttpWebResponse)webRequest.GetResponse();
+        using (StreamReader responseStream = new StreamReader(webResponse.GetResponseStream()))
+        {
+            ResponseOut = o.UrlDecode(responseStream.ReadToEnd());
+            responseStream.Close();
+        }
+
+        payline.Response = ResponseOut;
+
+        string[] segments = ResponseOut.Split("&".ToCharArray());
+        foreach (string segment in segments)
+        {
+            if (segment.StartsWith("response="))
+                payline.IsApproved = segment.Replace("response=", "").Trim().ToLower() == "1";
+            if (segment.StartsWith("responsetext="))
+                payline.Message = segment.Replace("responsetext=", "");
+            if (segment.StartsWith("authcode="))
+                payline.AuthorizationCode = segment.Replace("authcode=", "");
+            if (segment.StartsWith("transactionid="))
+                payline.AuthCaptureId = segment.Replace("transactionid=", "");
+            if (segment.StartsWith("TOKEN="))
+                payline.Token = segment.Replace("TOKEN=", "").Trim();
+            if (segment.ToUpper().StartsWith("PROFILEID="))
+                payline.ProfileId = segment.ToUpper().Replace("PROFILEID=", "").Trim();
+            if (segment.ToUpper().StartsWith("PAYERID="))
+                payline.PayerID = segment.ToUpper().Replace("PAYERID=", "").Trim();
+            if (segment.ToUpper().StartsWith("PAYERSTATUS="))
+                payline.PayerStatus = segment.ToUpper().Replace("PAYERSTATUS=", "").Trim();
+        }
+
+        return payline;
+    }
 
 
     public Payline Sale(string firstName, string lastName, string accountNumber, string expirationMonth, string expirationYear, string securityCode, Decimal amount, string currency, string address1, int zip, string city,string state,string country)
