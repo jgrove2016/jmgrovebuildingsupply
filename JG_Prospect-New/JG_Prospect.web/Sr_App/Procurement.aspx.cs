@@ -32,7 +32,20 @@ namespace JG_Prospect.Sr_App
         #region Variables
         string flag = "";
         private Boolean IsPageRefresh = false;
-        int estimateId = 0, customerId = 0, productTypeId = 0;
+        protected int estimateId {
+            get { return (ViewState["EstimateID"] != null ? Convert.ToInt32(ViewState["EstimateID"]) : 0); }
+            set { ViewState["EstimateID"] = value; }
+        }
+        protected int customerId
+        {
+            get { return (ViewState["customerId"] != null ? Convert.ToInt32(ViewState["customerId"]) : 0); }
+            set { ViewState["customerId"] = value; }
+        }
+        protected int productTypeId
+        {
+            get { return (ViewState["productTypeId"] != null ? Convert.ToInt32(ViewState["productTypeId"]) : 0); }
+            set { ViewState["productTypeId"] = value; }
+        }
 
         private static string UserType = string.Empty;
 
@@ -45,10 +58,21 @@ namespace JG_Prospect.Sr_App
             if (Session["loginid"] == null)
             {
                 // ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('You have to login first');", true);
-                //   Response.Redirect("~/login.aspx");
+                   Response.Redirect("~/login.aspx");
             }
             else
             {
+                if (!IsPostBack)
+                {
+                    ccExpireMonth.Items.Clear();
+                    ccExpireYear.Items.Clear();
+                    for (int i = 1; i <= 12; i++)
+                        ccExpireMonth.Items.Add(new System.Web.UI.WebControls.ListItem((new DateTime(1, i, 1)).ToString("MMMM"), i.ToString("00")));
+
+                    for (int i = DateTime.Now.Year; i <= DateTime.Now.Year + 10; i++)
+                        ccExpireYear.Items.Add(new System.Web.UI.WebControls.ListItem(i.ToString(), i.ToString("0000")));
+
+                }
                 if (Request.QueryString["vid"] != null && Request.QueryString["vid"].ToString() != "")
                 {
                     EditVendor(Convert.ToInt32(Request.QueryString["vid"].ToString()), "");
@@ -2380,204 +2404,222 @@ namespace JG_Prospect.Sr_App
                     Label lblADMPassword = (Label)e.Row.FindControl("lblADMPassword");
                     Label lblfrmPassword = (Label)e.Row.FindControl("lblfrmPassword");
                     Label lblSalePassword = (Label)e.Row.FindControl("lblSalePassword");
-                    // GridView grdAttachQuotes = (GridView)e.Row.FindControl("grdAttachQuotes");
 
-                    //if (lblProductType.Text == JGConstant.PRODUCT_CUSTOM)
+                    DataRowView lDr = (DataRowView)e.Row.DataItem;
+                    if (lDr["ForemanApproverID"].ToString() != "0")
+                    {
+                        lblfrmPassword.Text = "FRM: <a href='InstallCreateUser.aspx?id=" + lDr["ForemanApproverID"].ToString() + "'>" + lDr["ForemanApproverID"].ToString() + "</a> " + lDr["ForemanUserName"].ToString();
+                    }
+                    else { lblfrmPassword.Text = "FRM: Not Approved"; }
+                    if (lDr["SrSalesFApproverID"].ToString() != "0")
+                    {
+                        lblSalePassword.Text = "SLE: <a href='CreateSalesUser.aspx?id=" + lDr["ForemanApproverID"].ToString() + "'>" + lDr["ForemanApproverID"].ToString() + "</a> " + lDr["ForemanUserName"].ToString();
+                    }
+                    else { lblSalePassword.Text = "SLE: Not Approved"; }
+                    if (lDr["AdminApproverID"].ToString() != "0")
+                    {
+                        lblADMPassword.Text = "ADM: <a href='CreateSalesUser.aspx?id=" + lDr["ForemanApproverID"].ToString() + "'>" + lDr["ForemanApproverID"].ToString() + "</a> " + lDr["ForemanUserName"].ToString();
+                    }
+                    else { lblADMPassword.Text = "ADM: Not Approved"; }
+
+                    //// GridView grdAttachQuotes = (GridView)e.Row.FindControl("grdAttachQuotes");
+
+                    ////if (lblProductType.Text == JGConstant.PRODUCT_CUSTOM)
+                    ////{
+                    ////    lnkmateriallist.Enabled = true;
+                    ////    lnksoldjobid.Enabled = true;
+                    ////}
+                    ////else
+                    ////{
+                    ////    lnkmateriallist.Enabled = false;
+                    ////    lnksoldjobid.Enabled = false;
+                    ////}
+                    ////if (lblStatus.Text.ToLower().Contains("ordered") || lblStatus.Text.ToLower().Contains("received “storage location?") || lblStatus.Text.ToLower().Contains("on standby @ vendor link to vendor profile") || lblStatus.Text.ToLower().Contains("being delivered to job site"))
+                    ////{
+                    ////    ddlstatus.Visible = true;
+                    ////    DataSet ds = new_customerBLL.Instance.FetchAllStatus();
+                    ////    string filter = " StatusId in(18,19,20)";
+                    ////    ds.Tables[0].DefaultView.RowFilter = filter;
+                    ////    ddlstatus.DataSource = ds.Tables[0].DefaultView;
+                    ////    ddlstatus.DataTextField = "StatusName";
+                    ////    ddlstatus.DataValueField = "StatusId";
+                    ////    ddlstatus.DataBind();
+                    ////    ddlstatus.Items.Insert(0, new System.Web.UI.WebControls.ListItem(JGConstant.SELECT, "0"));
+                    ////    if (Convert.ToInt16(hdnStatusId.Value) == JGConstant.STATUS_ID_RECEIVED_STORAGE_LOCATION || Convert.ToInt16(hdnStatusId.Value) == JGConstant.STATUS_ID_ON_STANDBY_VENDOR_LINK_TO_VENDOR_PROFILE || Convert.ToInt16(hdnStatusId.Value) == JGConstant.STATUS_ID_BEING_DELEIVERED_TO_JOBSITE)
+                    ////    {
+                    ////        ddlstatus.SelectedValue = hdnStatusId.Value;
+                    ////    }
+                    ////}
+
+                    //string SoldJobId = lnkcustomerid.Text + "-" + lnksoldjobid.Text;
+                    //strerr.Append(SoldJobId);
+                    //DataSet ds = new DataSet();
+                    //strerr.Append("Before call method");
+                    //ds = AdminBLL.Instance.GetMaterialList(SoldJobId);
+                    //strerr.Append("After call method");
+                    //if (ds.Tables.Count > 0)
                     //{
-                    //    lnkmateriallist.Enabled = true;
-                    //    lnksoldjobid.Enabled = true;
-                    //}
-                    //else
-                    //{
-                    //    lnkmateriallist.Enabled = false;
-                    //    lnksoldjobid.Enabled = false;
-                    //}
-                    //if (lblStatus.Text.ToLower().Contains("ordered") || lblStatus.Text.ToLower().Contains("received “storage location?") || lblStatus.Text.ToLower().Contains("on standby @ vendor link to vendor profile") || lblStatus.Text.ToLower().Contains("being delivered to job site"))
-                    //{
-                    //    ddlstatus.Visible = true;
-                    //    DataSet ds = new_customerBLL.Instance.FetchAllStatus();
-                    //    string filter = " StatusId in(18,19,20)";
-                    //    ds.Tables[0].DefaultView.RowFilter = filter;
-                    //    ddlstatus.DataSource = ds.Tables[0].DefaultView;
-                    //    ddlstatus.DataTextField = "StatusName";
-                    //    ddlstatus.DataValueField = "StatusId";
-                    //    ddlstatus.DataBind();
-                    //    ddlstatus.Items.Insert(0, new System.Web.UI.WebControls.ListItem(JGConstant.SELECT, "0"));
-                    //    if (Convert.ToInt16(hdnStatusId.Value) == JGConstant.STATUS_ID_RECEIVED_STORAGE_LOCATION || Convert.ToInt16(hdnStatusId.Value) == JGConstant.STATUS_ID_ON_STANDBY_VENDOR_LINK_TO_VENDOR_PROFILE || Convert.ToInt16(hdnStatusId.Value) == JGConstant.STATUS_ID_BEING_DELEIVERED_TO_JOBSITE)
+                    //    strerr.Append("Into ds");
+                    //    if (ds.Tables[0].Rows.Count > 0)
                     //    {
-                    //        ddlstatus.SelectedValue = hdnStatusId.Value;
+                    //        if (Convert.ToString(ds.Tables[0].Rows[0][0]) != "")
+                    //        {
+                    //            Foreman = Convert.ToString(ds.Tables[0].Rows[0][0]);
+                    //        }
+                    //        else
+                    //        {
+                    //            Foreman = "N";
+                    //        }
+                    //        if (Convert.ToString(ds.Tables[0].Rows[0][1]) != "")
+                    //        {
+                    //            SLE1 = Convert.ToString(ds.Tables[0].Rows[0][1]);
+                    //        }
+                    //        else
+                    //        {
+                    //            SLE1 = "N";
+                    //        }
+                    //        if (Convert.ToString(ds.Tables[0].Rows[0][2]) != "")
+                    //        {
+                    //            Adm = Convert.ToString(ds.Tables[0].Rows[0][2]);
+                    //        }
+                    //        else
+                    //        {
+                    //            Adm = "N";
+                    //        }
+                    //        if (Convert.ToString(ds.Tables[0].Rows[0][3]) != "")
+                    //        {
+                    //            SLE2 = Convert.ToString(ds.Tables[0].Rows[0][3]);
+                    //        }
+                    //        else
+                    //        {
+                    //            SLE2 = "N";
+                    //        }
+                    //    }
+                    //    else
+                    //    {
+                    //        Foreman = "N";
+                    //        SLE1 = "N";
+                    //        Adm = "N";
+                    //        SLE2 = "N";
                     //    }
                     //}
+                    //if (lblStatus.Text == "Material Confirmation(1)")
+                    //{
 
-                    string SoldJobId = lnkcustomerid.Text + "-" + lnksoldjobid.Text;
-                    strerr.Append(SoldJobId);
-                    DataSet ds = new DataSet();
-                    strerr.Append("Before call method");
-                    ds = AdminBLL.Instance.GetMaterialList(SoldJobId);
-                    strerr.Append("After call method");
-                    if (ds.Tables.Count > 0)
-                    {
-                        strerr.Append("Into ds");
-                        if (ds.Tables[0].Rows.Count > 0)
-                        {
-                            if (Convert.ToString(ds.Tables[0].Rows[0][0]) != "")
-                            {
-                                Foreman = Convert.ToString(ds.Tables[0].Rows[0][0]);
-                            }
-                            else
-                            {
-                                Foreman = "N";
-                            }
-                            if (Convert.ToString(ds.Tables[0].Rows[0][1]) != "")
-                            {
-                                SLE1 = Convert.ToString(ds.Tables[0].Rows[0][1]);
-                            }
-                            else
-                            {
-                                SLE1 = "N";
-                            }
-                            if (Convert.ToString(ds.Tables[0].Rows[0][2]) != "")
-                            {
-                                Adm = Convert.ToString(ds.Tables[0].Rows[0][2]);
-                            }
-                            else
-                            {
-                                Adm = "N";
-                            }
-                            if (Convert.ToString(ds.Tables[0].Rows[0][3]) != "")
-                            {
-                                SLE2 = Convert.ToString(ds.Tables[0].Rows[0][3]);
-                            }
-                            else
-                            {
-                                SLE2 = "N";
-                            }
-                        }
-                        else
-                        {
-                            Foreman = "N";
-                            SLE1 = "N";
-                            Adm = "N";
-                            SLE2 = "N";
-                        }
-                    }
-                    if (lblStatus.Text == "Material Confirmation(1)")
-                    {
-
-                        lblADMPassword.Visible = false;
-                        lblfrmPassword.Visible = true;
-                        lblSalePassword.Visible = true;
-                        if (Foreman == "G")
-                        {
-                            lblfrmPassword.ForeColor = Color.Green;
-                        }
-                        else
-                        {
-                            lblfrmPassword.ForeColor = Color.Black;
-                        }
-                        if (SLE1 == "G")
-                        {
-                            lblSalePassword.ForeColor = Color.Green;
-                        }
-                        else
-                        {
-                            lblSalePassword.ForeColor = Color.Black;
-                        }
-                        if (SLE1 == "G")
-                        {
-                            lblSalePassword.ForeColor = Color.Green;
-                        }
-                        else
-                        {
-                            lblSalePassword.ForeColor = Color.Black;
-                        }
-                        if (Adm == "G")
-                        {
-                            lblADMPassword.ForeColor = Color.Green;
-                        }
-                        else
-                        {
-                            lblADMPassword.ForeColor = Color.Black;
-                        }
-                    }
-                    if (lblStatus.Text == "Procurring Quotes(2)")
-                    {
-                        lblADMPassword.Visible = true;
-                        lblfrmPassword.Visible = false;
-                        lblSalePassword.Visible = true;
-                        if (Foreman == "G")
-                        {
-                            lblfrmPassword.ForeColor = Color.Green;
-                        }
-                        else
-                        {
-                            lblfrmPassword.ForeColor = Color.Black;
-                        }
-                        if (SLE1 == "G")
-                        {
-                            lblSalePassword.ForeColor = Color.Green;
-                        }
-                        else
-                        {
-                            lblSalePassword.ForeColor = Color.Black;
-                        }
-                        if (SLE1 == "G")
-                        {
-                            lblSalePassword.ForeColor = Color.Green;
-                        }
-                        else
-                        {
-                            lblSalePassword.ForeColor = Color.Black;
-                        }
-                        if (Adm == "G")
-                        {
-                            lblADMPassword.ForeColor = Color.Green;
-                        }
-                        else
-                        {
-                            lblADMPassword.ForeColor = Color.Black;
-                        }
-                    }
-                    if (lblStatus.Text == "Ordered(3)")
-                    {
-                        lblADMPassword.Visible = true;
-                        lblfrmPassword.Visible = false;
-                        lblSalePassword.Visible = true;
-                        lblADMPassword.ForeColor = Color.Green;
-                        lblSalePassword.ForeColor = Color.Green;
-                        if (Foreman == "G")
-                        {
-                            lblfrmPassword.ForeColor = Color.Green;
-                        }
-                        else
-                        {
-                            lblfrmPassword.ForeColor = Color.Black;
-                        }
-                        if (SLE1 == "G")
-                        {
-                            lblSalePassword.ForeColor = Color.Green;
-                        }
-                        else
-                        {
-                            lblSalePassword.ForeColor = Color.Black;
-                        }
-                        if (SLE1 == "G")
-                        {
-                            lblSalePassword.ForeColor = Color.Green;
-                        }
-                        else
-                        {
-                            lblSalePassword.ForeColor = Color.Black;
-                        }
-                        if (Adm == "G")
-                        {
-                            lblADMPassword.ForeColor = Color.Green;
-                        }
-                        else
-                        {
-                            lblADMPassword.ForeColor = Color.Black;
-                        }
-                    }
+                    //    lblADMPassword.Visible = false;
+                    //    lblfrmPassword.Visible = true;
+                    //    lblSalePassword.Visible = true;
+                    //    if (Foreman == "G")
+                    //    {
+                    //        lblfrmPassword.ForeColor = Color.Green;
+                    //    }
+                    //    else
+                    //    {
+                    //        lblfrmPassword.ForeColor = Color.Black;
+                    //    }
+                    //    if (SLE1 == "G")
+                    //    {
+                    //        lblSalePassword.ForeColor = Color.Green;
+                    //    }
+                    //    else
+                    //    {
+                    //        lblSalePassword.ForeColor = Color.Black;
+                    //    }
+                    //    if (SLE1 == "G")
+                    //    {
+                    //        lblSalePassword.ForeColor = Color.Green;
+                    //    }
+                    //    else
+                    //    {
+                    //        lblSalePassword.ForeColor = Color.Black;
+                    //    }
+                    //    if (Adm == "G")
+                    //    {
+                    //        lblADMPassword.ForeColor = Color.Green;
+                    //    }
+                    //    else
+                    //    {
+                    //        lblADMPassword.ForeColor = Color.Black;
+                    //    }
+                    //}
+                    //if (lblStatus.Text == "Procurring Quotes(2)")
+                    //{
+                    //    lblADMPassword.Visible = true;
+                    //    lblfrmPassword.Visible = false;
+                    //    lblSalePassword.Visible = true;
+                    //    if (Foreman == "G")
+                    //    {
+                    //        lblfrmPassword.ForeColor = Color.Green;
+                    //    }
+                    //    else
+                    //    {
+                    //        lblfrmPassword.ForeColor = Color.Black;
+                    //    }
+                    //    if (SLE1 == "G")
+                    //    {
+                    //        lblSalePassword.ForeColor = Color.Green;
+                    //    }
+                    //    else
+                    //    {
+                    //        lblSalePassword.ForeColor = Color.Black;
+                    //    }
+                    //    if (SLE1 == "G")
+                    //    {
+                    //        lblSalePassword.ForeColor = Color.Green;
+                    //    }
+                    //    else
+                    //    {
+                    //        lblSalePassword.ForeColor = Color.Black;
+                    //    }
+                    //    if (Adm == "G")
+                    //    {
+                    //        lblADMPassword.ForeColor = Color.Green;
+                    //    }
+                    //    else
+                    //    {
+                    //        lblADMPassword.ForeColor = Color.Black;
+                    //    }
+                    //}
+                    //if (lblStatus.Text == "Ordered(3)")
+                    //{
+                    //    lblADMPassword.Visible = true;
+                    //    lblfrmPassword.Visible = false;
+                    //    lblSalePassword.Visible = true;
+                    //    lblADMPassword.ForeColor = Color.Green;
+                    //    lblSalePassword.ForeColor = Color.Green;
+                    //    if (Foreman == "G")
+                    //    {
+                    //        lblfrmPassword.ForeColor = Color.Green;
+                    //    }
+                    //    else
+                    //    {
+                    //        lblfrmPassword.ForeColor = Color.Black;
+                    //    }
+                    //    if (SLE1 == "G")
+                    //    {
+                    //        lblSalePassword.ForeColor = Color.Green;
+                    //    }
+                    //    else
+                    //    {
+                    //        lblSalePassword.ForeColor = Color.Black;
+                    //    }
+                    //    if (SLE1 == "G")
+                    //    {
+                    //        lblSalePassword.ForeColor = Color.Green;
+                    //    }
+                    //    else
+                    //    {
+                    //        lblSalePassword.ForeColor = Color.Black;
+                    //    }
+                    //    if (Adm == "G")
+                    //    {
+                    //        lblADMPassword.ForeColor = Color.Green;
+                    //    }
+                    //    else
+                    //    {
+                    //        lblADMPassword.ForeColor = Color.Black;
+                    //    }
+                    //}
                     if (lblReason.Text != "")
                     {
                         //e.Row.BackColor = Color.Gray;
@@ -4088,7 +4130,383 @@ namespace JG_Prospect.Sr_App
             SaveAllData();
         }
 
+        #region "Shabbirs Code"
+        int  productType = 0, productId = 0;
+        protected string soldJobID
+        {
+            get { return (ViewState["SoldJobID"] != null ? ViewState["SoldJobID"].ToString() : ""); }
+            set { ViewState["SoldJobID"] = value; }
+        }
+        protected void ddlpaymode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddlpaymode.SelectedIndex == 2)
+            {
+                otheramount.Visible = false;
+                labelAmount.Visible = true;
+                amountvalue.Visible = true;
+                lblPwd.Visible = false;
+                txtPwd.Visible = false;
+                btnsavesold.Visible = false;
+                btnSaveSold2.Visible = true;
+                btnSaveSold2.Style.Add("display", "block");
+                btnsavesold.Style.Add("display", "none");
+                txtPwd.Style.Add("display", "block");
+                PanelHide.Visible = false;
+                lblPro.Visible = false;
+                txtPromotionalcode.Visible = false;
+                txtccamount.Text = Session["CCtxtAmount"].ToString();
+                txtEmailId.Text = ViewState["customeremail"].ToString();
+                rdoChecking.Visible = false;
+                rdoSaving.Visible = false;
 
+                string[] FN = Session["Name"].ToString().Split(' ');
+                txtFirstName.Text = FN[0];
+                txtLastName.Text = FN[1];
+
+
+                Name.Visible = true;
+                Card.Visible = true;
+                Currency.Visible = true;
+                Address.Visible = true;
+                CountryState.Visible = true;
+                CityZip.Visible = true;
+
+            }
+            else if (ddlpaymode.SelectedIndex == 1)
+            {
+                lblPwd.Visible = false;
+                txtPwd.Visible = false;
+                btnsavesold.Visible = true;
+                btnSaveSold2.Visible = false;
+                btnSaveSold2.Style.Add("display", "none");
+                txtPwd.Style.Add("display", "none");
+                btnsavesold.Style.Add("display", "block");
+                txtAmount.Text = Session["CCtxtAmount"].ToString();
+                txtEmailId.Text = ViewState["customeremail"].ToString();
+
+                string[] FN = Session["Name"].ToString().Split(' ');
+                txtFirstName.Text = FN[0];
+                txtLastName.Text = FN[1];
+
+
+                PanelHide.Visible = true;
+                lblPro.Visible = true;
+                txtPromotionalcode.Visible = true;
+                //PanelCC.Visible = false;
+                Name.Visible = false;
+                Card.Visible = false;
+                Currency.Visible = false;
+                Address.Visible = false;
+                CountryState.Visible = false;
+                CityZip.Visible = false;
+                otheramount.Visible = true;
+                labelAmount.Visible = false;
+                amountvalue.Visible = false;
+
+
+            }
+
+            else
+            {
+                lblPwd.Visible = true;
+                txtPwd.Visible = true;
+                btnsavesold.Visible = false;
+                btnSaveSold2.Visible = true;
+                btnSaveSold2.Style.Add("display", "block");
+                btnsavesold.Style.Add("display", "none");
+                txtPwd.Style.Add("display", "block");
+                PanelHide.Visible = false;
+                lblPro.Visible = false;
+                txtPromotionalcode.Visible = false;
+
+                Name.Visible = false;
+                Card.Visible = false;
+                Currency.Visible = false;
+                Address.Visible = false;
+                CountryState.Visible = false;
+                CityZip.Visible = false;
+                otheramount.Visible = true;
+                labelAmount.Visible = false;
+                amountvalue.Visible = false;
+
+            }
+
+        }
+
+        protected void lnkbtnAdd_Click(object sender, EventArgs e)
+        {
+            int rowCount = 0;
+            //initialize a session.
+            rowCount = Convert.ToInt32(Session["clicks"]);
+            rowCount++;
+            //In each button clic save the numbers into the session.
+            Session["clicks"] = rowCount;
+            //Create the textboxes and labels each time the button is clicked.
+            for (int i = 0; i < rowCount; i++)
+            {
+                TextBox TxtBoxE = new TextBox();
+                TxtBoxE.ID = "TextBoxE" + i.ToString();
+                //Add the labels and textboxes to the Panel.
+                pnlControls.Controls.Add(TxtBoxE);
+            }
+            mp_sold.Show();
+        }
+        protected void btnSold_Click(object sender, EventArgs e)
+        {
+
+            if (ddlpaymode.SelectedIndex == 1)
+            {
+
+                txtPwd.Visible = false;
+                decimal amt = Convert.ToDecimal(Session["CCtxtAmount"]);
+                Payline payline = new Payline();
+                payline = payline.ECheckSale(txtFirstName.Text, txtRoutingNo.Text, txtBank.Text, ddlperbus.SelectedValue.ToString().ToLower(), (rdoChecking.Checked ? "checking" : "savings"), "WEB", "check", Convert.ToDecimal(Session["CCtxtAmount"]), ddlCurrency.SelectedValue.Trim());
+                if (payline.IsApproved)
+                {
+                    bool res = ShutterPriceControlBLL.InsertTransaction(ShutterPriceControlBLL.Encode(txtCardNumber.Text.ToString()), ShutterPriceControlBLL.Encode(txtSecurityCode.Text.ToString()), txtFirstName.Text.ToString(), txtLastName.Text.ToString(), ccExpireMonth.Text.ToString() + ccExpireYear.Text.ToString(), Convert.ToDecimal(Session["CCtxtAmount"]), payline.IsApproved, payline.Message, payline.Response, payline.Request, customerId, productType, payline.AuthorizationCode, payline.AuthCaptureId, soldJobID);
+                    lblMsg.Text = "Success";
+                    lblMsg.Visible = false;
+                    //SoldTasks(true);
+                    txtPromotionalcode.Visible = false;
+                    //mp_sold.Show();
+                    ClientScript.RegisterStartupScript(this.GetType(), "onload", "alert('Payment Transaction Successful.');", true);
+                    bindSoldJobs();
+                    return;
+                }
+                else
+                {
+                    bool res = ShutterPriceControlBLL.InsertTransaction(ShutterPriceControlBLL.Encode(txtCardNumber.Text.ToString()), ShutterPriceControlBLL.Encode(txtSecurityCode.Text.ToString()), txtFirstName.Text.ToString(), txtLastName.Text.ToString(), ccExpireMonth.Text.ToString() + ccExpireYear.Text.ToString(), Convert.ToDecimal(Session["CCtxtAmount"]), payline.IsApproved, payline.Message, payline.Response, payline.Request, customerId, productType, payline.AuthorizationCode, payline.AuthCaptureId, soldJobID);
+                    lblMsg.Text = "Error";
+                    lblMsg.Visible = false;
+                    txtPromotionalcode.Visible = false;
+                    ClientScript.RegisterStartupScript(this.GetType(), "On_Error", "alert('Transaction Failed. Possible reason is: " + payline.Message + "');", true);
+                }
+                Response.Redirect("~/Sr_App/Customer_Profile.aspx");
+            }
+            if (chkSendEmailSold.Checked == true)
+            {
+                bool result = CheckCustomerEmail();
+                if (!result)
+                {
+                  //  mpeCustomerEmail.Show();
+                    return;
+                }
+                else
+                {
+                   // SoldTasks(true);
+                }
+            }
+            else
+            {
+               // SoldTasks(false);
+            }
+            Session["Proposal"] = null;
+        }
+        private string GetCustomerEmail()
+        {
+            string finalEmail = string.Empty;
+            DataSet ds = new DataSet();
+            if (Session["CustomerId"].ToString() != null)
+                ds = new_customerBLL.Instance.GetCustomerDetails(Convert.ToInt32(Session["CustomerId"].ToString()));
+
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                string email1 = ds.Tables[0].Rows[0]["Email"].ToString();
+                string email2 = ds.Tables[0].Rows[0]["Email2"].ToString();
+                string email3 = ds.Tables[0].Rows[0]["Email3"].ToString();
+
+                if (email1 != "")
+                {
+                    finalEmail = email1;
+                }
+                else if (email2 != "")
+                {
+                    finalEmail = email2;
+                }
+                else if (email3 != "")
+                {
+                    finalEmail = email3;
+                }
+            }
+            return finalEmail;
+        }
+        protected bool CheckCustomerEmail()
+        {
+            string finalEmail = GetCustomerEmail();
+            if (finalEmail == string.Empty)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        protected void btnSold_Click2(object sender, EventArgs e)
+        {
+            string[] Emails;
+            int count = 0;
+            DataSet ds = shuttersBLL.Instance.GetEmails(Convert.ToInt32(Session["CustomerId"].ToString()));
+
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                if (Convert.ToString(ds.Tables[0].Rows[0][1]) != "")
+                {
+                    txtEmailId.Text = Convert.ToString(ds.Tables[0].Rows[0][1]);
+                }
+                if (Convert.ToString(ds.Tables[0].Rows[0][2]) != "")
+                {
+                    txtDOB.Text = Convert.ToString(ds.Tables[0].Rows[0][2]);
+                }
+                txtAddress.Value = ds.Tables[0].Rows[0]["CustomerAddress"].ToString();
+                txtZip.Text = ds.Tables[0].Rows[0]["ZipCode"].ToString();
+                ddlState.Items.Clear();
+                ddlState.Items.Add(new System.Web.UI.WebControls.ListItem(ds.Tables[0].Rows[0]["State"].ToString(), ds.Tables[0].Rows[0]["State"].ToString()));
+                ddlCity.Items.Clear();
+                ddlCity.Items.Add(new System.Web.UI.WebControls.ListItem(ds.Tables[0].Rows[0]["City"].ToString(), ds.Tables[0].Rows[0]["City"].ToString()));
+
+                if (Convert.ToString(ds.Tables[0].Rows[0][0]) != "")
+                {
+                    Emails = Convert.ToString(ds.Tables[0].Rows[0][0]).Split(',');
+                    count = Emails.Count();
+                    for (int i = 0; i < count; i++)
+                    {
+                        TextBox NewTextBox = new TextBox();
+                        NewTextBox.ID = "TextBoxE" + i.ToString();
+                        NewTextBox.Text = Emails[i];
+                        //form1 is a form in my .aspx file with runat=server attribute
+                        pnlControls.Controls.Add(NewTextBox);
+                    }
+                }
+            }
+            mp_sold.Show();
+        }
+
+        protected void btnSaveSold2_Click(object sender, EventArgs e)
+        {
+
+            if (ddlpaymode.SelectedIndex == 2)
+            {
+
+                txtPwd.Visible = false;
+                decimal amt = Convert.ToDecimal(Session["CCtxtAmount"]);
+                Payline payline = new Payline();
+                payline = payline.Sale(txtFirstName.Text.ToString(), txtLastName.Text.ToString(), txtCardNumber.Text.ToString(), ccExpireMonth.Text.ToString(), ccExpireYear.Text.ToString(), txtSecurityCode.Text.ToString(), Convert.ToDecimal(Session["CCtxtAmount"]), ddlCurrency.SelectedValue.Trim(), txtAddress.InnerText.Trim(), Convert.ToInt32(txtZip.Text.Trim()), ddlCity.SelectedValue.Trim(), ddlState.SelectedValue.Trim(), ddlCountry.SelectedValue.Trim());
+                if (payline.IsApproved)
+                {
+                    //AuthorizationCode, PaylineTransectionId
+
+
+                    lblMsg.Text = "Success";
+                    lblMsg.Visible = false;
+                    //SoldTasks(true);
+                    txtPromotionalcode.Visible = false;
+                    bool res = ShutterPriceControlBLL.InsertTransaction(ShutterPriceControlBLL.Encode(txtCardNumber.Text.ToString()), ShutterPriceControlBLL.Encode(txtSecurityCode.Text.ToString()), txtFirstName.Text.ToString(), txtLastName.Text.ToString(), ccExpireMonth.Text.ToString() + ccExpireYear.Text.ToString(), Convert.ToDecimal(Session["CCtxtAmount"]), payline.IsApproved, payline.Message, payline.Response, payline.Request, customerId, productType, payline.AuthorizationCode, payline.AuthCaptureId, soldJobID);
+                    ClientScript.RegisterStartupScript(this.GetType(), "onload", "alert('Payment Transaction Successful.');", true);
+                    //mp_sold.Show();
+                    bindSoldJobs();
+                    return;
+                }
+                else
+                {
+                    bool res = ShutterPriceControlBLL.InsertTransaction(ShutterPriceControlBLL.Encode(txtCardNumber.Text.ToString()), ShutterPriceControlBLL.Encode(txtSecurityCode.Text.ToString()), txtFirstName.Text.ToString(), txtLastName.Text.ToString(), ccExpireMonth.Text.ToString() + ccExpireYear.Text.ToString(), Convert.ToDecimal(Session["CCtxtAmount"]), payline.IsApproved, payline.Message, payline.Response, payline.Request, customerId, productType, payline.AuthorizationCode, payline.AuthCaptureId, soldJobID);
+                    lblMsg.Text = "Error";
+                    lblMsg.Visible = false;
+                    txtPromotionalcode.Visible = false;
+                    //ClientScript.RegisterStartupScript(this.GetType(), "On_Error", "", true);
+                    ClientScript.RegisterStartupScript(this.GetType(), "On_Error", "alert('Transaction Failed. Possible reason is: " + payline.Message + "');", true);
+                }
+                Response.Redirect("~/Sr_App/Customer_Profile.aspx");
+            }
+            else
+            {
+
+                if (txtPwd.Text != "")
+                {
+                    //Verify Password...
+                    int isvaliduser = 0;
+                    isvaliduser = UserBLL.Instance.chklogin("jgrove@jmgroveconstruction.com", txtPwd.Text);
+                    //isvaliduser = UserBLL.Instance.chklogin("nitintold@custom-soft.com", txtPwd.Text);
+                    if (isvaliduser == 1)
+                    {
+                        Session["Sols"] = "Sold";
+                        Session["SaveEID"] = "SaveEmail";
+                        //NotSoldTasks(true);
+                       // SoldTasks(true);
+                    }
+                    else
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Enter correct password .');", true);
+                    }
+
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please Enter password .');", true);
+                }
+            }
+
+
+        }
+
+        protected void btnCancelsold_Click(object sender, EventArgs e)
+        {
+            if (ddlpaymode.SelectedIndex == 2)
+            {
+                Response.Redirect("~/Sr_App/Shutterproposal.aspx");
+            }
+        }
+
+        protected void lnkCharge_Click(object sender, EventArgs e)
+        {
+            GridViewRow gr = (GridViewRow)((LinkButton)sender).Parent.Parent;
+            LinkButton lnkmateriallist = (LinkButton)gr.FindControl("lnkmateriallist");
+            soldJobID = lnkmateriallist.Text.Trim().Split('M')[0].Trim();
+            string[] Emails;
+            int count = 0;
+            customerId = Convert.ToInt32(((LinkButton)sender).CommandArgument.Split(':')[0].ToString().Replace("C",""));
+            Session["Name"] = Convert.ToString(((LinkButton)sender).CommandArgument.Split(':')[1].ToString());
+            DataSet ds = shuttersBLL.Instance.GetEmails(customerId);
+
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                Session["CCtxtAmount"] = (Convert.ToDecimal(((LinkButton)sender).CommandName) / 3);
+                ViewState["customeremail"] = Convert.ToString(ds.Tables[0].Rows[0][1]);
+                if (Convert.ToString(ds.Tables[0].Rows[0][1]) != "")
+                {
+                    txtEmailId.Text = Convert.ToString(ds.Tables[0].Rows[0][1]);
+                  
+                }
+                if (Convert.ToString(ds.Tables[0].Rows[0][2]) != "")
+                {
+                    txtDOB.Text = Convert.ToString(ds.Tables[0].Rows[0][2]);
+                }
+                txtAddress.Value = ds.Tables[0].Rows[0]["CustomerAddress"].ToString();
+                txtZip.Text = ds.Tables[0].Rows[0]["ZipCode"].ToString();
+                ddlState.Items.Clear();
+                ddlState.Items.Add(new System.Web.UI.WebControls.ListItem(ds.Tables[0].Rows[0]["State"].ToString(), ds.Tables[0].Rows[0]["State"].ToString()));
+                ddlCity.Items.Clear();
+                ddlCity.Items.Add(new System.Web.UI.WebControls.ListItem(ds.Tables[0].Rows[0]["City"].ToString(), ds.Tables[0].Rows[0]["City"].ToString()));
+
+                if (Convert.ToString(ds.Tables[0].Rows[0][0]) != "")
+                {
+                    Emails = Convert.ToString(ds.Tables[0].Rows[0][0]).Split(',');
+                    count = Emails.Count();
+                    for (int i = 0; i < count; i++)
+                    {
+                        TextBox NewTextBox = new TextBox();
+                        NewTextBox.ID = "TextBoxE" + i.ToString();
+                        NewTextBox.Text = Emails[i];
+                        //form1 is a form in my .aspx file with runat=server attribute
+                        pnlControls.Controls.Add(NewTextBox);
+                    }
+                }
+            }
+            mp_sold.Show();
+        }
+        #endregion
+
+      
     }
 
     public class NameValue

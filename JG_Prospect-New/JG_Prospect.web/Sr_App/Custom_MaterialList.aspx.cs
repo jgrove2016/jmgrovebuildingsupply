@@ -3172,6 +3172,7 @@ namespace JG_Prospect.Sr_App
                 cm.IsForemanPermission = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
                 cm.IsSrSalemanPermissionF = JGConstant.PERMISSION_STATUS_NOTGRANTED.ToString();
                 cm.EmailStatus = JGConstant.EMAIL_STATUS_NONE;
+                cm.extend = "0";
                 bool result = CustomBLL.Instance.AddCustomMaterialList(cm, jobId);
                 InitialDataBind();
                 return;

@@ -617,7 +617,7 @@
                                             <asp:HiddenField ID="hdnProductTypeId" runat="server" Value='<%#Eval("ProductTypeId") %>' />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:BoundField HeaderText="Customer's" DataField="LastName" HeaderStyle-Width="10%" />
+                                    <asp:BoundField HeaderText="Customer Name" DataField="LastName" HeaderStyle-Width="10%" />
                                     <asp:TemplateField HeaderText="Sold Jobs #" HeaderStyle-Width="11%">
                                         <ItemTemplate>
                                             <%-- <asp:Label ID="lblsoldjobid" runat="server" Text='<%#Eval("SoldJob#") %>'></asp:Label>--%>
@@ -636,6 +636,7 @@
                                                 OnClick="lnkmateriallist_Click"></asp:LinkButton>
                                         </ItemTemplate>
                                     </asp:TemplateField>
+                                   
                                     <asp:TemplateField HeaderText="Status/Approval" HeaderStyle-Width="16%">
                                         <ItemTemplate>
                                             <asp:HiddenField ID="hdnStatusId" runat="server" Value='<%#Eval("StatusId") %>' />
@@ -645,21 +646,372 @@
                                             </asp:DropDownList>
                                         </ItemTemplate>
                                     </asp:TemplateField>
+                                   
                                     <asp:TemplateField HeaderText="Status/Approval">
                                         <ItemTemplate>
                                             <asp:Label ID="lblReason" runat="server" Text='<%#Eval("Reason") %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
+                                       <asp:TemplateField HeaderText="Paid / Total">
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblTotalPaid" runat="server" Text='<%#Eval("TotalPaid").ToString() +" / " + Eval("TotalPrice").ToString() %>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
                                     <asp:TemplateField HeaderText="PasswordStatus" HeaderStyle-Width="16%">
                                         <ItemTemplate>
+                                            <asp:Label ID="lblfrmPassword" Text="FRM" runat="server"></asp:Label><br /><br />
+                                            <asp:Label ID="lblSalePassword" Text="SLE" runat="server"></asp:Label><br /><br />
                                             <asp:Label ID="lblADMPassword" Text="ADM" runat="server"></asp:Label>
-                                            <asp:Label ID="lblfrmPassword" Text="FRM" runat="server"></asp:Label>
-                                            <asp:Label ID="lblSalePassword" Text="SLE" runat="server"></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                    <asp:TemplateField HeaderText="Charge Order" HeaderStyle-Width="16%">
+                                        <ItemTemplate>
+                                            <asp:LinkButton ID="lnkCharge" runat="server" CommandName='<%#Eval("TotalPrice") %>' CommandArgument='<%#Eval("CustomerID")+":"+Eval("LastName") %>' OnClick="lnkCharge_Click">Charge Order</asp:LinkButton>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                 </Columns>
                             </asp:GridView>
                         </div>
+                    </div>
+                    <div>
+                        <asp:Button ID="Button1" runat="server" Text="" />
+                        <asp:ModalPopupExtender ID="mp_sold" runat="server" TargetControlID="Button1"
+                            PopupControlID="pnlsold" CancelControlID="btnCancelsold">
+                        </asp:ModalPopupExtender>
+                        <asp:Panel ID="pnlsold" runat="server" BackColor="White" Height="" Width="500px"
+                            Style="display: none; ">
+                            <asp:UpdatePanel ID="UpdatePanel4" runat="server">
+                                <ContentTemplate>
+                                    <table style="border: Solid 3px #A33E3F; width: 100%; height: 100%; background: #fff;"
+                                        cellpadding="0" cellspacing="0">
+                                        <tr style="background-color: #A33E3F">
+                                            <td colspan="4" style="height: 10%; color: White; font-weight: bold; font-size: larger"
+                                                align="center">Sold Details
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right" style="width: 31%"></td>
+                                            <td colspan="3">
+                                                <asp:Label ID="lblcheck" runat="server" Text="Please Accept Terms & Conditions" ForeColor="Red"></asp:Label>
+                                                <label>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right" style="width: 31%">Payment Mode:
+                                            </td>
+                                            <td>
+                                                <asp:DropDownList ID="ddlpaymode" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlpaymode_SelectedIndexChanged">
+                                                    <asp:ListItem Text="Select" Value="Select"></asp:ListItem>
+                                                    <asp:ListItem Text="E-Check" Value="E-Check"></asp:ListItem>
+                                                    <asp:ListItem Text="CreditCard" Value="CreditCard"></asp:ListItem>
+                                                    <asp:ListItem Text="Debit/Check" Value="Debit/Credit (3% surcharge)"></asp:ListItem>
+                                                    <asp:ListItem Text="Check/Escrow" Value="Cash/Escrow"></asp:ListItem>
+                                                    <asp:ListItem Text="Financing" Value="Financing"></asp:ListItem>
+                                                    <asp:ListItem Text="Admin" Value="Admin"></asp:ListItem>
+                                                </asp:DropDownList>
+                                            </td>
+                                            <td align="right" style="width: 31%">
+                                                <asp:Label runat="server"  ID="lblMsg" Text="" />
+                                                <asp:Label ID="lblPro" runat="server" Text="Promotional Code:"></asp:Label>
+                                                <asp:Label ID="lblPwd" runat="server" Text="Password" Visible="false"></asp:Label>
+                                            </td>
+                                            <td>
+                                                <asp:TextBox ID="txtPromotionalcode" runat="server"
+                                                    MaxLength="30" ViewStateMode="Disabled"></asp:TextBox>
+                                                <asp:TextBox ID="txtPwd" runat="server" Visible="false" TextMode="Password"></asp:TextBox>
+                                            </td>
+                                        </tr>
+                                        <tr id="otheramount" runat="server">
+                                            <td align="right" style="width: 31%">Amount($)<asp:Label ID="lblReqAmt" runat="server" Text="*" ForeColor="Red"></asp:Label>:
+                                            </td>
+                                            <td>
+                                                <asp:TextBox ID="txtAmount" runat="server" EnableViewState="true" onkeypress="return isNumericKey(event);"
+                                                    MaxLength="20" ReadOnly="true"></asp:TextBox>
+                                                <asp:CheckBox ID="chkedit" runat="server" Text="Edit" />
+                                                <label>
+                                                    <asp:Label ID="lblAmount" runat="server" Text="Please Enter Amount" ForeColor="Red" CssClass="hide"></asp:Label>
+                                                </label>
+                                            </td>
+                                            <td colspan="2">
+                                                <asp:RadioButton ID="rdoChecking" runat="server" Text="Checking" GroupName="checkSave" Checked="true" />
+                                                &nbsp;
+                                        <asp:RadioButton ID="rdoSaving" runat="server" Text="Saving" GroupName="checkSave" />
+                                            </td>
+                                        </tr>
+                                        <!-- Cradit Card -->
+                                       <tr id="Name" runat="server" visible="false">
+                                            <td align="center" style="width: 31%">First Name<asp:Label ID="lblFirstName" runat="server" Text="*" ForeColor="Red"></asp:Label>:
+                                            </td>
+                                            <td>
+                                                <asp:TextBox ID="txtFirstName" MaxLength="40" runat="server" Height="20px"></asp:TextBox>
+                                                <asp:RequiredFieldValidator ID="rfvFirstName" runat="server" ControlToValidate="txtFirstName" ErrorMessage="Enter First Name" ForeColor="Red" Display="Dynamic" ValidationGroup="CCsold"></asp:RequiredFieldValidator>
+                                                  <asp:Label runat="server" Text="As displayed on card" Colon="False" ID="Label8" /></small>
+                                            </td>
+                                            <td align="center" style="width: 31%">Last Name<asp:Label ID="lblLastName" runat="server" Text="*" ForeColor="Red"></asp:Label>:
+                                            </td>
+                                            <td>
+                                                <asp:TextBox ID="txtLastName" Height="20px" runat="server" MaxLength="40"></asp:TextBox>
+                                                <asp:RequiredFieldValidator ID="rfvLastName" runat="server" ControlToValidate="txtLastName" ErrorMessage="Enter Last Name" ForeColor="Red" Display="Dynamic" ValidationGroup="CCsold"></asp:RequiredFieldValidator>
+                                                <small>
+                                                    <asp:Label runat="server" Text="As displayed on card" Colon="False" ID="lblLastNameMsg" /></small>
+                                            </td>
+                                        </tr>
+
+                                        <tr id="Address" runat="server" visible="false">
+                                            <td align="center" style="width: 31%">Address<asp:Label ID="Label9" runat="server" Text="*" ForeColor="Red"></asp:Label>:
+                                            </td>
+                                            <td>
+                                                <textarea name="txtAddress" rows="2" cols="15" id="txtAddress" style="height:33px;width:167px;" runat="server"></textarea>
+                                                
+                                            </td>
+                                            <td align="right" style="width: 31%" id="labelAmount" visible="false" runat="server">Amount($)<asp:Label ID="Label12" runat="server" Text="*" ForeColor="Red"></asp:Label>:
+                                            </td>
+                                            <td id="amountvalue" visible="false" runat="server">
+                                                <asp:TextBox ID="txtccamount" runat="server" EnableViewState="true" onkeypress="return isNumericKey(event);"
+                                                    MaxLength="20" ReadOnly="true"></asp:TextBox>
+                                                <asp:CheckBox ID="CheckBox1" runat="server" Text="Edit" />
+                                                <label>
+                                                    <asp:Label ID="Label14" runat="server" Text="Please Enter Amount" ForeColor="Red" CssClass="hide"></asp:Label>
+                                                </label>
+                                            </td>
+
+                                        </tr>
+
+                                         <tr id="CountryState" runat="server" visible="false">
+                                            <td align="center" style="width: 31%">Country<asp:Label ID="Label11" runat="server" Text="*" ForeColor="Red"></asp:Label>:
+                                            </td>
+                                            <td>
+                                               <asp:DropDownList runat="server" ID="DropDownList1" AutoPostBack="true">
+                                                    <asp:ListItem Text="US" Value="US" ></asp:ListItem>
+                                                </asp:DropDownList>
+                                               
+                                                  
+                                            </td>
+                                            <td align="center" style="width: 31%">State<asp:Label ID="Label13" runat="server" Text="*" ForeColor="Red"></asp:Label>:
+                                            </td>
+                                            <td>
+                                                 <asp:DropDownList runat="server" ID="ddlState" AutoPostBack="true">
+                                                    <asp:ListItem Text="Pennsylvania" Value="Pennsylvania" ></asp:ListItem>
+                                                </asp:DropDownList>
+                                               
+                                               
+                                            </td>
+                                        </tr>
+
+                                        <tr id="CityZip" runat="server" visible="false">
+                                            <td align="center" style="width: 31%">City<asp:Label ID="Label15" runat="server" Text="*" ForeColor="Red"></asp:Label>:
+                                            </td>
+                                            <td>
+                                                <asp:DropDownList runat="server" ID="ddlCity" AutoPostBack="true">
+                                                    <asp:ListItem Text="Malvern" Value="Malvern" ></asp:ListItem>
+                                                </asp:DropDownList>
+                                               
+                                                 
+                                            </td>
+                                            <td align="center" style="width: 31%">Zip<asp:Label ID="Label17" runat="server" Text="*" ForeColor="Red"></asp:Label>:
+                                            </td>
+                                            <td>
+                                                <asp:TextBox ID="txtZip" Height="20px" runat="server"></asp:TextBox>
+                                                <asp:RequiredFieldValidator ID="rfvZip" runat="server" ControlToValidate="txtZip" ErrorMessage="Enter Zip" ForeColor="Red" Display="Dynamic" ValidationGroup="CCsold"></asp:RequiredFieldValidator>
+                                               <asp:Label runat="server" Text="As displayed on card" Colon="False" ID="Label18" />
+                                            </td>
+                                        </tr>
+
+
+                                       <tr id="Currency" runat="server" visible="false">
+                                            <td align="center" style="width: 31%">Currency<asp:Label ID="lblCurrency" runat="server" Text="*" ForeColor="Red"></asp:Label>:
+                                            </td>
+                                            <td>
+                                                <asp:DropDownList runat="server" ID="ddlCurrency" AutoPostBack="true">
+                                                    <asp:ListItem Text="U.S. Dollar" Value="USD" ></asp:ListItem>
+                                                </asp:DropDownList>
+                                            </td>
+
+                                            <td align="center" style="width: 31%">Expiration Date <asp:Label ID="lblExpDate" runat="server" Text="*" ForeColor="Red"></asp:Label>:
+                                            </td>
+                                            <td>
+                                                <asp:DropDownList ID="ccExpireMonth" runat="server">
+                                                </asp:DropDownList>
+                                                
+                                                  <asp:DropDownList ID="ccExpireYear" runat="server">
+                                                </asp:DropDownList>
+                                            </td>
+
+                                        </tr>
+
+                                        <tr id="Card" runat="server" visible="false">
+                                            <td align="center" style="width: 31%">Card Number<asp:Label ID="lblCardNumber" runat="server" Text="*" ForeColor="Red"></asp:Label>:
+                                            </td>
+                                            <td>
+                                                <asp:TextBox ID="txtCardNumber" Height="20px" runat="server" MaxLength="17"></asp:TextBox>
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator14" runat="server"  ControlToValidate="txtCardNumber" ErrorMessage="Enter Card Number" ForeColor="Red" Display="Dynamic" ValidationGroup="CCsold"></asp:RequiredFieldValidator>
+                                            </td>
+
+
+                                            <td align="center" style="width: 31%">Security Code <asp:Label ID="lblSecurityCode" runat="server" Text="*" ForeColor="Red"></asp:Label>:
+                                            </td>
+                                            <td>
+                                                <asp:TextBox ID="txtSecurityCode" TextMode="Password" Height="20px" runat="server" MaxLength="4"></asp:TextBox>
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator13" runat="server" ControlToValidate="txtSecurityCode" ErrorMessage="Enter Security Code" ForeColor="Red" Display="Dynamic" ValidationGroup="CCsold"></asp:RequiredFieldValidator>
+                                            </td>
+                                        </tr>
+
+                                        <!-- Cradit Card -->
+
+                                        <asp:Panel ID="PanelHide" runat="server">
+                                            <tr>
+                                                <td align="right" style="width: 31%">
+                                        Bank<asp:Label ID="Label2" runat="server" Text="*" ForeColor="Red"></asp:Label>:
+                                                </td>
+                                                <td>
+                                                    <asp:TextBox ID="txtBank" runat="server" CssClass="OnFocus_Cls" Height="20px" pleasholder="Name"
+                                                        TabIndex="2" Width="179px"></asp:TextBox>
+
+                                                    <asp:AutoCompleteExtender ID="tdsearchbyname_AutoCompleteExtender" runat="server"
+                                                        ServiceMethod="GetCompletionList" MinimumPrefixLength="1" EnableCaching="true"
+                                                        CompletionSetCount="1" CompletionInterval="1000" TargetControlID="txtBank">
+                                                    </asp:AutoCompleteExtender>
+                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtBank" ErrorMessage="Enter Bank" ForeColor="Red" Display="Dynamic" ValidationGroup="sold"></asp:RequiredFieldValidator>
+                                                </td>
+                                                <td align="right" style="width: 31%">
+                                        Account #<asp:Label ID="Label7" runat="server" Text="*" ForeColor="Red"></asp:Label>:
+                                                </td>
+                                                <td>
+                                                    <asp:TextBox ID="txtMFAATRT" runat="server" Height="20px" onkeypress="return isNumericKey(event);"
+                                                        MaxLength="10" ViewStateMode="Disabled"></asp:TextBox>
+                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator8" runat="server" ControlToValidate="txtMFAATRT" ErrorMessage="Enter Account #" ForeColor="Red" ValidationGroup="sold" Display="Dynamic"></asp:RequiredFieldValidator>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right" style="width: 31%">
+                                        Routing #<asp:Label ID="Label10" runat="server" Text="*" ForeColor="Red"></asp:Label>:
+                                                </td>
+                                                <td>
+                                                    <asp:TextBox ID="txtRoutingNo" MaxLength="10" runat="server" Height="20px" onkeypress="return isNumericKey(event);"></asp:TextBox>
+                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" ControlToValidate="txtRoutingNo" ErrorMessage="Enter Synapse User Name" ForeColor="Red" Display="Dynamic" ValidationGroup="sold"></asp:RequiredFieldValidator>
+                                                </td>
+                                                <td align="right" style="width: 31%">
+                                        Last 4 SSN<asp:Label ID="Label16" runat="server" Text="*" ForeColor="Red"></asp:Label>:
+                                                </td>
+                                                <td>
+                                                    <asp:TextBox ID="txtLASTSSN" TextMode="Password" Height="20px" runat="server" onkeypress="return isNumericKey(event);"
+                                                        MaxLength="4" ViewStateMode="Disabled"></asp:TextBox>
+                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator10" runat="server" ControlToValidate="txtLASTSSN" ErrorMessage="Enter SSN" ForeColor="Red" Display="Dynamic" ValidationGroup="sold"></asp:RequiredFieldValidator>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right" style="width: 31%">
+                                        D.O.B<asp:Label ID="Label19" runat="server" Text="*" ForeColor="Red"></asp:Label>:
+                                                </td>
+                                                <td>
+                                                    <asp:TextBox ID="txtDOB" Height="20px" runat="server"></asp:TextBox>
+                                                    <asp:CalendarExtender ID="calExt" runat="server" TargetControlID="txtDOB"></asp:CalendarExtender>
+                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator11" runat="server" ControlToValidate="txtDOB" ErrorMessage="Enter Date of Birth" ForeColor="Red" Display="Dynamic" ValidationGroup="sold"></asp:RequiredFieldValidator>
+                                                </td>
+                                                <td align="right" style="width: 31%">
+                                        Personal/Bussiness<asp:Label ID="Label20" runat="server" Text="*" ForeColor="Red"></asp:Label>:
+                                                </td>
+                                                <td>
+                                                    <asp:DropDownList ID="ddlperbus" runat="server">
+                                                        <asp:ListItem Selected="True" Text="Select" Value="0"></asp:ListItem>
+                                                        <asp:ListItem Text="Personal" Value="Personal"></asp:ListItem>
+                                                        <asp:ListItem Text="Bussiness" Value="Bussiness"></asp:ListItem>
+                                                    </asp:DropDownList>
+                                                    <br />
+                                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator12" runat="server" ControlToValidate="ddlperbus" ErrorMessage="Select Account Type" ForeColor="Red" InitialValue="0" Display="Dynamic" ValidationGroup="sold"></asp:RequiredFieldValidator>
+                                                </td>
+                                            </tr>
+
+                                        </asp:Panel>
+                                        <tr>
+                                            <td align="right" style="width: 31%">
+                                                <asp:UpdatePanel ID="upnlAdd" runat="server">
+                                                    <ContentTemplate>
+                                                        <asp:LinkButton ID="lnkbtnAdd" OnClick="lnkbtnAdd_Click" runat="server">Add Email</asp:LinkButton>
+                                                    </ContentTemplate>
+                                                </asp:UpdatePanel>
+                                            </td>
+                                            <td colspan="3">
+                                                <asp:UpdatePanel ID="UpdatePanel2" runat="server">
+                                                    <ContentTemplate>
+                                                        <asp:TextBox ID="txtEmailId" runat="server" placeholder="Email Id"
+                                                            ViewStateMode="Disabled"></asp:TextBox>
+                                                        <br />
+                                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator15" runat="server" ControlToValidate="txtEmailId" ErrorMessage="Enter Email Id" ForeColor="Red" Display="Dynamic" ValidationGroup="sold"></asp:RequiredFieldValidator>
+                                                        <asp:Panel ID="pnlControls" runat="server" Style="width: 300px;">
+                                                        </asp:Panel>
+                                                    </ContentTemplate>
+                                                    <Triggers>
+                                                        <asp:AsyncPostBackTrigger ControlID="lnkbtnAdd" EventName="Click" />
+                                                    </Triggers>
+                                                </asp:UpdatePanel>
+                                            </td>
+                                        </tr>
+                                        <tr id="trauthpass" class="hide">
+                                            <td align="right" style="width: 31%">Admin Password:
+                                            </td>
+                                            <td>
+                                                <asp:TextBox ID="txtauthpass" runat="server" TextMode="Password"></asp:TextBox>
+                                                <label>
+                                                    <asp:Label ID="lblPassword" runat="server" Text="Please Enter Password" ForeColor="Red" CssClass="hide"></asp:Label>
+                                                </label>
+                                                <asp:CustomValidator ID="CV" runat="server" ErrorMessage="Invalid Password"></asp:CustomValidator>
+                                            </td>
+                                        </tr>
+                                        <tr id="trcheque" class="hide">
+                                            <td align="right" style="width: 31%">Check #:
+                                            </td>
+                                            <td>
+                                                <asp:TextBox ID="txtchequeno" runat="server" onkeypress="return isNumericKey(event);"
+                                                    MaxLength="50"></asp:TextBox>
+                                                <label>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr id="trcard" class="hide">
+                                            <td align="right" style="width: 31%">Card Holder's Details:
+                                            </td>
+                                            <td>
+                                                <asp:TextBox ID="txtcardholderNm" runat="server" MaxLength="200"></asp:TextBox>
+                                                <label>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right" style="width: 31%">
+                                                <asp:CheckBox ID="chkSendEmailSold" runat="server" Checked="true" />
+                                            </td>
+                                            <td>Send email to customer
+                                            </td>
+                                            <td align="right" colspan="2">
+                                                <asp:CheckBox ID="chksignature" Checked="false" runat="server" />
+                                                I Signed & Agreed on Terms & Conditions
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td align="center" colspan="4">
+                                                <asp:Button ID="btnsavesold" CommandName="Insert" runat="server" Text="Save" ValidationGroup="sold"
+                                                    OnClick="btnSold_Click" Style="margin-left: -150px; margin-top: 25px" />
+                                                <asp:Button ID="btnSaveSold2" runat="server" OnClick="btnSaveSold2_Click" ValidationGroup="CCsold" Text="Save" Visible="false" Style="margin-left: -150px; margin-top: 25px" />
+                                                <asp:Button ID="btnCancelsold" runat="server" Text="Cancel" Width="100" Style="margin-top: -15px" OnClick="btnCancelsold_Click" />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </ContentTemplate>
+                                <Triggers>
+                                    <asp:PostBackTrigger ControlID="btnSaveSold2" />
+                                    <asp:PostBackTrigger ControlID="btnsavesold" />
+                                    
+                                </Triggers>
+                            </asp:UpdatePanel>
+                        </asp:Panel>
                     </div>
                     <div class="btn_sec">
                         <asp:Button ID="btnAddcategory" runat="server" Text="Add Category" Visible="false" OnClick="btnAddcategory_Click" />
@@ -708,29 +1060,6 @@
                         </asp:ModalPopupExtender>
                         <asp:Panel ID="pnlpopup2" runat="server" BackColor="White" Height="269px" Width="550px" CssClass="pnlDeleteVendor"
                             Style="display: none">
-                            <%--<table width="100%" style="border: Solid 3px #A33E3F; width: 100%; height: 100%"
-                                cellpadding="0" cellspacing="0">
-                                <tr style="background-color: #A33E3F">
-                                    <td colspan="2" style="height: 10%; color: White; font-weight: bold; font-size: larger"
-                                        align="center">Delete Vendor Category
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td align="right" style="width: 45%">Select Vendor Category Name
-                                    </td>
-                                    <td>
-                                        <asp:DropDownList ID="ddlvendercategoryname" runat="server">
-                                        </asp:DropDownList>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2" align="center">
-                                        <asp:Button ID="btndeletevender" CommandName="Delete" runat="server" Style="width: 100px;"
-                                            Text="Delete" OnClick="btndelete_Click" />
-                                        <asp:Button ID="btnCancel2" runat="server" Text="Cancel" Style="width: 100px;" />
-                                    </td>
-                                </tr>
-                            </table>--%>
                         </asp:Panel>
                         <button id="btnquotes" style="display: none" runat="server">
                         </button>
@@ -791,7 +1120,6 @@
                                                 <asp:ListItem>Select</asp:ListItem>
                                                 <asp:ListItem Selected="True">Prospect</asp:ListItem>
                                                 <asp:ListItem>Active-Past</asp:ListItem>
-                                                <%--<asp:ListItem>No Transactions</asp:ListItem>--%>
                                                 <asp:ListItem>Deactivate</asp:ListItem>
                                             </asp:DropDownList>
                                         </td>

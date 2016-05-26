@@ -23,11 +23,11 @@ namespace JG_Prospect.BLL
         }
 
         public static bool InsertTransaction(string ccNumber, string ccSecurityCode, string ccFirstName, string ccLastName, string ExpirationDate,
-         decimal ccPriceValue, bool ccStatus, string ccMessage, string ccResponse, string ccRequest, int CustomerId, int ProductId, string AuthorizationCode, string PaylineTransectionId)
+         decimal ccPriceValue, bool ccStatus, string ccMessage, string ccResponse, string ccRequest, int CustomerId, int ProductId, string AuthorizationCode, string PaylineTransectionId, string pSoldJobID)
         {
             try
             {
-                return ShutterPriceControlDAL.InsertTransaction(ccNumber, ccSecurityCode, ccFirstName, ccLastName, ExpirationDate, ccPriceValue, ccStatus, ccMessage, ccResponse, ccRequest, CustomerId, ProductId, AuthorizationCode, PaylineTransectionId);
+                return ShutterPriceControlDAL.InsertTransaction(ccNumber, ccSecurityCode, ccFirstName, ccLastName, ExpirationDate, ccPriceValue, ccStatus, ccMessage, ccResponse, ccRequest, CustomerId, ProductId, AuthorizationCode, PaylineTransectionId, pSoldJobID);
 
             }
             catch (Exception ex)

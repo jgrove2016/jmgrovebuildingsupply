@@ -43,16 +43,8 @@ namespace JG_Prospect.DAL
                 return null;
             }
         }
-
-        //DbCommand command = database.GetStoredProcCommand("UDP_saveshuttertop");
-        //           command.CommandType = CommandType.StoredProcedure;
-        //           database.AddInParameter(command, "@shuttertop_name", DbType.String, shuttertopname);
-        //           database.AddInParameter(command, "@price", DbType.Decimal, price);
-        //           DS = database.ExecuteDataSet(command);
-        //           return true;
-
-        public static bool InsertTransaction(string ccNumber, string ccSecurityCode, string ccFirstName, string ccLastName, string ExpirationDate,
-        decimal ccPriceValue, bool ccStatus, string ccMessage, string ccResponse, string ccRequest, int CustomerId, int ProductId, string AuthorizationCode, string PaylineTransectionId)
+    
+        public static bool InsertTransaction(string ccNumber, string ccSecurityCode, string ccFirstName, string ccLastName, string ExpirationDate, decimal ccPriceValue, bool ccStatus, string ccMessage, string ccResponse, string ccRequest, int CustomerId, int ProductId, string AuthorizationCode, string PaylineTransectionId, string pSoldJobID)
         {
             try
             {
@@ -75,60 +67,16 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(cm, "@ProductId", DbType.Int32, ProductId);
                     database.AddInParameter(cm, "@AuthorizationCode", DbType.String, AuthorizationCode);
                     database.AddInParameter(cm, "@PaylineTransectionId", DbType.String, PaylineTransectionId);
-
-                    //database.ExecuteDataSet(cm);
-
-                    //bool ans = database.ExecuteDataSet(cm);
-
+                    database.AddInParameter(cm, "@SoldJobID", DbType.String, pSoldJobID);
                     DS = database.ExecuteDataSet(cm);
                     return true;
                 }
             }
-            catch (Exception ex)
+            catch 
             {
                 return false;
             }
         }
-
-
-
-
-        //public static bool InsertTransaction(string ccNumber, string ccSecurityCode, string ccFirstName, string ccLastName, string ExpirationDate,
-        // decimal ccPriceValue, bool ccStatus, string ccMessage, string ccResponse, string ccRequest)
-        //{
-
-
-        //    SqlConnection cn = new SqlConnection(Database.PaylineConnection);
-        //    try
-        //    {
-        //        cn.Open();
-        //        using (SqlCommand cm = cn.CreateCommand())
-        //        {
-        //            cm.CommandType = CommandType.StoredProcedure;
-        //            cm.CommandText = "InsertTransaction";
-        //            //cm.Parameters.AddWithValue("@Id", id);
-        //            cm.Parameters.AddWithValue("@ccNumber", ccNumber);
-        //            cm.Parameters.AddWithValue("@ccSecurityCode", ccSecurityCode);
-        //            cm.Parameters.AddWithValue("@ccFirstName", ccFirstName);
-        //            cm.Parameters.AddWithValue("@ccLastName", ccLastName);
-        //            cm.Parameters.AddWithValue("@ExpirationDate", ExpirationDate);
-        //            cm.Parameters.AddWithValue("@ccPriceValue", ccPriceValue);
-        //            cm.Parameters.AddWithValue("@ccStatus", ccStatus);
-        //            cm.Parameters.AddWithValue("@ccMessage", ccMessage);
-        //            cm.Parameters.AddWithValue("@ccResponse", ccResponse);
-        //            cm.Parameters.AddWithValue("@ccRequest", ccRequest);
-        //            cm.ExecuteNonQuery();
-        //            return true;
-
-        //        }//using
-        //        //cn.Close();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return false;
-        //    }
-
-        //}
 
         public DataSet fetchtopshutterdetails()
         {
