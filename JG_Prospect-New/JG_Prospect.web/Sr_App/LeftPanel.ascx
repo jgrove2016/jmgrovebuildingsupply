@@ -1,4 +1,9 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="LeftPanel.ascx.cs" Inherits="JG_Prospect.Sr_App.LeftPanel" %>
+<script runat="server">
+
+  
+</script>
+
 <script type="text/javascript" src="../js/ddaccordion.js"></script>
 <script type="text/javascript">
 

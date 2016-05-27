@@ -9,7 +9,10 @@ using System.Text;
 using System.IO;
 using System.Net;
 using System.Web.UI;
-
+using System.Data;
+using System.Data.SqlClient;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls.WebParts;
 using JG_Prospect.BLL;
 using JG_Prospect.Common.modal;
 using JG_Prospect.Common;
@@ -18,12 +21,15 @@ using System.Web.Script.Serialization;
 
 namespace JG_Prospect.Sr_App
 {
+    
     public partial class new_customer : System.Web.UI.Page
     {
         private static int UserId = 0;
         private static int ColorFlag = 0;
         protected void Page_Load(object sender, EventArgs e)
         {
+            
+            
             if (!IsPostBack)
             {
                 bindProducts();
@@ -46,6 +52,16 @@ namespace JG_Prospect.Sr_App
             }
             ChangeColours();
         }
+
+
+        protected void Button9_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("DefinePeriod.aspx");
+        }
+
+
+
+
         private void bindProducts()
         {
             DataSet ds = UserBLL.Instance.GetAllProducts();

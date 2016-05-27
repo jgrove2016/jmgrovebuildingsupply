@@ -3,6 +3,21 @@
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <%@ Register Src="~/UserControl/UCAddress.ascx" TagPrefix="uc1" TagName="UCAddress" %>
+<script runat="server">
+
+    
+    
+    
+   
+   
+    
+
+    
+   
+
+    
+</script>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <%---------start script for Datetime Picker----------%>
     <link href="../datetime/css/jquery-ui-1.7.1.custom.css" rel="stylesheet" type="text/css" />
@@ -379,15 +394,16 @@
                         alert("Please enter the Phone Number");
                         return;
                     }
-                    else if (dataInput == "EmptyName") {
+                   /* else if (dataInput == "EmptyName") {
                         alert("Please enter the FirstName");
-                        return;
-                    }
+                        return; 
+                    }*/
                     else if (dataInput != "Contact is NOT Exists") {
-                        if (confirm("Contacts are duplicated. Are you sure want to update the existing contact?")) {
+                       if ('') {
                             $("#hdnStatus").attr('value', 1);
                             $("#btnHideSubmit").click();
-                        }
+                            $("#btnHideSubmit").attr('disabled', 'disabled');
+                        }  
                         else {
                             $("#hdnStatus").attr('value', 0);
                             $("#btnHideSubmit").click();
@@ -397,7 +413,7 @@
                         $("#hdnStatus").attr('value', 1);
                         $("#btnHideSubmit").click();
                     }
-                }
+                } 
             });
         }
 
@@ -763,7 +779,7 @@
     <%---------end script for Datetime Picker----------%>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-   <%-- <asp:Panel ID="pan1" runat="server" ScrollBars="Auto">--%>
+    <%-- <span>*</span> Contact Preference</label>--%>
         <div class="right_panel">
             <!-- Tabs starts -->
             <!-- appointment tabs section start -->
@@ -996,9 +1012,11 @@
                         </td>
                         <td>
                             <span id="spanS3">
-                                <%--<label>Status</label></span>--%>
-                                <%--<asp:DropDownList ID="ddlfollowup3" AutoPostBack="false" ClientIDMode="Static" runat="server" TabIndex="4">
-                        </asp:DropDownList>--%>
+                            <%--<asp:Panel ID="pnlAddress" runat="server"></asp:Panel>--%>                                <%--<tr>
+                            <td>
+                                <uc1:UCAddress runat="server" id="UCAddress1" />
+                            </td>
+                        </tr>--%>
                         </td>
                     </tr>
                 </table>
@@ -1008,17 +1026,9 @@
                 <ul>
                     <li style="width: 49%;">
                         <table border="0" cellspacing="0" cellpadding="0">
-                            <%-- <tr>
+                            <%--<tr>
                             <td>
-                                <label>
-                                    Service or EST<span></span></label>
-                                <asp:DropDownList ID="ddlServiceEst" AutoPostBack="true" ClientIDMode="Static" runat="server" TabIndex="4">
-                                    <asp:ListItem Value="0">Select</asp:ListItem>
-                                    <asp:ListItem>Demographics-Age</asp:ListItem>
-                                    <asp:ListItem>Property Value</asp:ListItem>
-                                </asp:DropDownList>
-                                <label>
-                                </label>
+                                
                             </td>
                         </tr>--%>
                             <tr>
@@ -1032,8 +1042,12 @@
                             <tr>
                                 <td>
                                     <label>
-                                        <%-- <span>*</span> Contact Preference</label>--%>
-                                     Contact Preference</label>
+                                    <%--<asp:DropDownList ID="ddlbesttime" runat="server" TabIndex="27">
+                                    <asp:ListItem Value="0">Select</asp:ListItem>
+                                    <asp:ListItem>Morning</asp:ListItem>
+                                    <asp:ListItem>Afternoon</asp:ListItem>
+                                    <asp:ListItem>Evening</asp:ListItem>
+                                </asp:DropDownList>--%>Contact Preference</label>
                                     <asp:CheckBox ID="chbemail" runat="server" Width="14%" Text="Email " TabIndex="17"
                                         onclick="fnCheckOne(this)" />
                                     <asp:CheckBox ID="chbcall" runat="server" Text="Call" Checked="false" Width="14%"
@@ -1049,7 +1063,10 @@
                                     <label>
                                         Estimate Date</label>
                                     <asp:TextBox ID="txtestimate_date" CssClass="date" TabIndex="5" runat="server" onkeypress="return false"></asp:TextBox>
-                                    <%--<input type="text" name="textfield" id="textfield" />--%>
+                                    <%--<asp:TextBox ID="txtBestTimetoContact" runat="server" TabIndex="6" ClientIDMode="Static"
+                                    onkeypress="return false"></asp:TextBox>
+                                <label>
+                                </label>--%>
                                     <label>
                                     </label>
                                 </td>
@@ -1066,17 +1083,10 @@
                                     <asp:AsyncPostBackTrigger ControlID="btnHideSubmit" />
                                 </Triggers>
                             </asp:UpdatePanel>
-                            <%--<tr>
-                            <td>
-                                <uc1:UCAddress runat="server" id="UCAddress1" />
-                            </td>
-                        </tr>--%>
-
-                            <%--<tr>
-                            <td>
-                                
-                            </td>
-                        </tr>--%>
+                            <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" ErrorMessage="Please Select Best Time To Contact."
+                                    ForeColor="Red" ValidationGroup="addcust" InitialValue="0" ControlToValidate="ddlbesttime"></asp:RequiredFieldValidator>--%>
+                            <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Please Select Best Time To Contact."
+                                    ForeColor="Red" ValidationGroup="addcust" InitialValue="0" ControlToValidate="txtBestTimetoContact"></asp:RequiredFieldValidator>--%>
                         </table>
                     </li>
                     <li class="last" style="width: 49%;">
@@ -1105,20 +1115,9 @@
                                             Best Time To Contact</label>
                                     </div>
                                     <div class="size66">
-                                        <%--<asp:DropDownList ID="ddlbesttime" runat="server" TabIndex="27">
-                                    <asp:ListItem Value="0">Select</asp:ListItem>
-                                    <asp:ListItem>Morning</asp:ListItem>
-                                    <asp:ListItem>Afternoon</asp:ListItem>
-                                    <asp:ListItem>Evening</asp:ListItem>
-                                </asp:DropDownList>--%>
-                                        <%--<asp:TextBox ID="txtBestTimetoContact" runat="server" TabIndex="6" ClientIDMode="Static"
-                                    onkeypress="return false"></asp:TextBox>
-                                <label>
-                                </label>--%>
-                                        <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" ErrorMessage="Please Select Best Time To Contact."
-                                    ForeColor="Red" ValidationGroup="addcust" InitialValue="0" ControlToValidate="ddlbesttime"></asp:RequiredFieldValidator>--%>
-                                        <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Please Select Best Time To Contact."
-                                    ForeColor="Red" ValidationGroup="addcust" InitialValue="0" ControlToValidate="txtBestTimetoContact"></asp:RequiredFieldValidator>--%>
+                                        <%--  <label>
+                                    Estimate Time<span>*</span></label>--%>                                        <%--   <label><span>*</span>Billing Address Same</label>--%>                                        <%--  <label>Address Type<span>*</span></label>--%>                                        <%--<input type="button" id="Button6" runat="server" value="Add Address" style="width: 110px;" class="cls_btn_plus" tabindex="31"
+                                    onclick="AddAddress(this)" />--%>
 
                                         <table class="tblBestTimeToContact" id="tblBestTime" runat="server" clientidmode="Static">
                                             <tr>
@@ -1145,8 +1144,13 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <%--  <label>
-                                    Estimate Time<span>*</span></label>--%>
+                                    <%--  <tr>
+                            <td>
+                                <label>
+                                    Project Manager</label>
+                                <asp:TextBox ID="txtProjectManager" Text=""  TabIndex="22" runat="server"></asp:TextBox>
+                            </td>
+                        </tr>--%>
                                     <label>
                                         Estimate Time</label>
                                     <asp:TextBox ID="txtestimate_time" CssClass="time" runat="server" TabIndex="6"
@@ -1160,13 +1164,27 @@
                                     <div>
                                         <input type="checkbox" id="chkbillingaddress" style="width: 5%" tabindex="20" checked="checked" onchange="BillingAddress(this)" />
                                     </div>
-                                    <%--   <label><span>*</span>Billing Address Same</label>--%>
+                                    <%--  <tr>
+                            <td>
+                                <label>
+                                    Jr Project Manager</label>
+                                <asp:TextBox ID="txtJrProjectManager" Text=""  TabIndex="22" runat="server"></asp:TextBox>
+                            </td>
+                        </tr>--%>
                                     <label>Billing Address Same</label>
                                     <textarea cols="" id="txtbill_address" name="BillAddress" style="width: 50%" rows="6" tabindex="21"></textarea>
                                     <label></label>
                                     <span id=""></span>
                                     <br />
-                                    <%--  <label>Address Type<span>*</span></label>--%>
+                                    <%-- <tr>
+                            <td>
+                                <label id="F3Lbl">
+                                    Follow Up</label>
+                                <asp:TextBox ID="txtfollowup3" ClientIDMode="Static" onkeypress="return false;" CssClass="date"
+                                    runat="server" TabIndex="3"></asp:TextBox>
+                                <br />
+                            </td>
+                        </tr>--%>
                                     <label>Address Type</label>
                                     <select id="selAddressType" name="AddressType">
                                         <option value="Select">Select</option>
@@ -1183,8 +1201,15 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <%--<input type="button" id="Button6" runat="server" value="Add Address" style="width: 110px;" class="cls_btn_plus" tabindex="31"
-                                    onclick="AddAddress(this)" />--%>
+                                    <%-- <tr id="SpanReason">
+                            <td>
+                                <label>
+                                    Reason of Closed:</label>
+                                <asp:TextBox ID="TextBoxReason" runat="server" Rows="5" TextMode="MultiLine" TabIndex="28"></asp:TextBox>
+                                <label>
+                                </label>
+                            </td>
+                        </tr>--%>
 
                                     <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                                         <ContentTemplate>
@@ -1194,67 +1219,40 @@
                                     </asp:UpdatePanel>
                                 </td>
                             </tr>
-                            <%--  <tr>
-                            <td>
-                                <label>
-                                    Project Manager</label>
-                                <asp:TextBox ID="txtProjectManager" Text=""  TabIndex="22" runat="server"></asp:TextBox>
-                            </td>
-                        </tr>--%>
-                            <%--  <tr>
-                            <td>
-                                <label>
-                                    Jr Project Manager</label>
-                                <asp:TextBox ID="txtJrProjectManager" Text=""  TabIndex="22" runat="server"></asp:TextBox>
-                            </td>
-                        </tr>--%>
-                            <%-- <tr>
-                            <td>
-                                <label id="F3Lbl">
-                                    Follow Up</label>
-                                <asp:TextBox ID="txtfollowup3" ClientIDMode="Static" onkeypress="return false;" CssClass="date"
-                                    runat="server" TabIndex="3"></asp:TextBox>
-                                <br />
-                            </td>
-                        </tr>--%>
-                            <%-- <tr id="SpanReason">
-                            <td>
-                                <label>
-                                    Reason of Closed:</label>
-                                <asp:TextBox ID="TextBoxReason" runat="server" Rows="5" TextMode="MultiLine" TabIndex="28"></asp:TextBox>
-                                <label>
-                                </label>
-                            </td>
-                        </tr>--%>
+                            <%-- <asp:Button ID="btnSubmit" runat="server" ClientIDMode="Static" Text="Submit" ValidationGroup="addcust"
+                    TabIndex="26" OnClick="btnSubmit_Click" />--%>                            <%-- <input name="input2" type="submit" value="Submit" />
+              <input type="submit" value="Cancel" />--%>                            <%--<tr>
+                                <td colspan="3" style="width: 50%">
+                                    <asp:Label ID="lblDefault" runat="server" Font-Size="15px" Font-Bold="true">:</asp:Label>
+                                </td>
+                            </tr>--%>                            <%-- <asp:DropDownList ID="ddlEndAddress" Width="150px" Height="25px" runat="server" onchange="ChangeAddress()">
+                                        <asp:ListItem Value="-1">Select</asp:ListItem>
+                                    </asp:DropDownList>--%>
                         </table>
                     </li>
                 </ul>
                 <asp:HiddenField ID="hdnBestTimeToContact" runat="server" ClientIDMode="Static" />
                 <div class="btn_sec">
 
-                    <%--<asp:Button ID="btnUpdate" runat="server" Text="Update" ValidationGroup="addcust" TabIndex="31" OnClientClick="CheckForDuplication()" />--%>
+                <!--  <asp:Button ID="btnUpdate" runat="server" Text="Update" ValidationGroup="addcust" TabIndex="31" OnClientClick="CheckForDuplication()" /> -->
                     <input type="button" id="btnSubmit" value="Submit" tabindex="31" onclick="CheckForDuplication()" />
                     <asp:HiddenField runat="server" ID="hdnStatus" ClientIDMode="Static" />
-                    <asp:Button ID="btnHideSubmit" runat="server" ClientIDMode="Static" Text="Submit" ValidationGroup="addcust"
+                   <asp:Button ID="btnHideSubmit" runat="server" ClientIDMode="Static" Text="Submit" ValidationGroup="addcust"
                         TabIndex="26" OnClick="btnSubmit_Click" />
 
 
-                    <%-- <asp:Button ID="btnSubmit" runat="server" ClientIDMode="Static" Text="Submit" ValidationGroup="addcust"
-                    TabIndex="26" OnClick="btnSubmit_Click" />--%>
+                    <%--<asp:TextBox ID="txtAdditionalEndAddress" runat="server" Style="margin-left: 30px; margin-top: 10px; height: 25px" onchange="ChangeTest();"></asp:TextBox>--%>
                     <asp:Button ID="btnCancel" runat="server" Text="Reset" OnClick="btnCancel_Click"
                         TabIndex="27" />
-                    <%-- <input name="input2" type="submit" value="Submit" />
-              <input type="submit" value="Cancel" />--%>
+                    <%--<asp:Button ID="Button9" runat="server" Text="Button"/> --%>
                 </div>
                 <table width="100%" cellpadding="0" cellspacing="0" align="center">
                     <tr>
                         <td style="width: 50%; display: none;" valign="top">
                             <table>
-                                <%--<tr>
-                                <td colspan="3" style="width: 50%">
-                                    <asp:Label ID="lblDefault" runat="server" Font-Size="15px" Font-Bold="true">:</asp:Label>
-                                </td>
-                            </tr>--%>
+                                <%--<td style="width: 42%">
+                                    <asp:LinkButton ID="lnkStreetView" runat="server" Font-Bold="true" Style="margin-right: 10px;" OnClientClick="return BindMap()" Text="StreetView?"></asp:LinkButton>
+                                </td>--%>
                                 <tr>
                                     <td colspan="3" style="width: 50%"></td>
                                 </tr>
@@ -1265,21 +1263,29 @@
                                     </td>
                                     <td style="width: 42%">
                                         <asp:Label ID="lblEndAddress" runat="server" Font-Size="15px" Font-Bold="true">End:</asp:Label>
-                                        <%-- <asp:DropDownList ID="ddlEndAddress" Width="150px" Height="25px" runat="server" onchange="ChangeAddress()">
-                                        <asp:ListItem Value="-1">Select</asp:ListItem>
-                                    </asp:DropDownList>--%>
+                                        <%-- <tr>
+                               
+                                <td style="width: 42%">
+
+                                    <div id="carousel_list"></div>
+                                   
+                                </td>
+                              
+                            </tr>--%>
                                         <asp:TextBox ID="txtEndAddress" runat="server" Width="205px" Height="25px" onblur="return BindMap()"></asp:TextBox>
 
                                         <ajaxToolkit:AutoCompleteExtender ID="ddlCompany1" runat="server" TargetControlID="txtEndAddress" Enabled="True"
                                             MinimumPrefixLength="1" EnableCaching="true" CompletionSetCount="1" CompletionInterval="1000" ServicePath=""
                                             ServiceMethod="LoadAddress" DelimiterCharacters="" OnClientItemSelected="OnSelectAddress">
                                         </ajaxToolkit:AutoCompleteExtender>
-                                        <%--<asp:TextBox ID="txtAdditionalEndAddress" runat="server" Style="margin-left: 30px; margin-top: 10px; height: 25px" onchange="ChangeTest();"></asp:TextBox>--%>
-                                        <%--<asp:Button ID="Button9" runat="server" Text="Button"/> --%>
+                                        <%--<td>
+                                   <asp:Image ID="imgBefore" Width="40%" Height="40px" runat="server" />
+                                </td>--%>                                        <%--
+                                <asp:Panel ID="Panel5" runat="server">
+                                </asp:Panel>
+                                --%>
                                     </td>
-                                    <%--<td style="width: 42%">
-                                    <asp:LinkButton ID="lnkStreetView" runat="server" Font-Bold="true" Style="margin-right: 10px;" OnClientClick="return BindMap()" Text="StreetView?"></asp:LinkButton>
-                                </td>--%>
+                                    <%-- </asp:Panel>--%>
                                 </tr>
                             </table>
                         </td>
@@ -1336,17 +1342,25 @@
                                                 <table>
                                                     <tr>
                                                         <td>Start: </td>
+                                                        <td>&nbsp;</td>
                                                         <td>
                                                             <input id="startvalue" type="text" style="width: 305px" /></td>
                                                     </tr>
                                                     <tr>
                                                         <td>End: </td>
+                                                        <td>&nbsp;</td>
                                                         <td>
                                                             <input id="endvalue" type="text" style="width: 301px" /></td>
                                                     </tr>
                                                     <tr>
                                                         <td align="right">
                                                             <input id="Button5" type="button" value="GetDirections" onclick="return Button1_onclick()" /></td>
+                                                        <td align="right">
+                                                            
+                                                            <asp:LinkButton ID="LinkButton1" runat="server" PostBackUrl="refresh.aspx">Refresh page</asp:LinkButton>
+                                                            
+                                                        </td>
+                                                        </td>
                                                     </tr>
                                                 </table>
                                             </td>
@@ -1395,4 +1409,5 @@
             <!-- Tabs endss -->
         </div>
    <%-- </asp:Panel>--%>
+    
 </asp:Content>
