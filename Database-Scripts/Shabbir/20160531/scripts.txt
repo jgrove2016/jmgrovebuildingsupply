@@ -1,0 +1,103 @@
+/****** Object:  StoredProcedure [dbo].[USP_GetPurchaseOrderEmailContent]    Script Date: 31-05-2016 17:56:05 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_GetPurchaseOrderEmailContent]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_GetPurchaseOrderEmailContent]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_GetPurchaseOrderEmailContent]    Script Date: 31-05-2016 17:56:05 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_GetPurchaseOrderEmailContent]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[USP_GetPurchaseOrderEmailContent] AS' 
+END
+GO
+
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-05-17
+-- Description:	This procedure will return contents of Vendor Emails
+-- Test Run: USP_GetPurchaseOrderEmailContent 'C2630-SJ4', 13, 96
+-- =============================================
+ALTER PROCEDURE [dbo].[USP_GetPurchaseOrderEmailContent]
+(
+	@SoldJobID VARCHAR(50),
+	@ProductCatID INT,
+	@VendorID INT
+)
+AS
+BEGIN
+
+
+	SET NOCOUNT ON;
+	DECLARE @DeliveryType INT = 0;
+	DECLARE @CustomerID INT = 0;
+	SELECT 
+		@DeliveryType = DeliveryType 
+	FROM tblMaterialPaymentDetails
+	WHERE SoldJobID = @SoldJobID AND ProductCategoryID = @ProductCatID AND VendorID = @VendorID
+
+	SELECT @CustomerID = CustomerId FROM tblJobSequence WHERE SoldJobId = @SoldJobID
+
+	IF (@DeliveryType = 1) 
+	BEGIN
+		SELECT 'Jobsite Delivery' AS DeliveryMethod, CustomerAddress AS DeliverySite, b.State, b.City, b.ZipCode 
+		FROM tblJobSequence J
+		INNER JOIN new_customer b ON J.CustomerId = b.id AND J.SoldJobId = @SoldJobID
+
+		SELECT 
+			CustomerName, CellPh, CustomerAddress AS strAddress, ISNULL(strAddressType, 'Select') AS  strAddressType, City AS strCity, State AS strState, ZipCode As strZipCode            
+		FROM new_Customer WHERE id = @CustomerID  AND CustomerAddress IS NOT NULL          
+		UNION ALL          
+		SELECT '' AS CustomerName, '' AS CellPh, strAddress AS strAddress, ISNull(strAddressType, 'Select') AS strAddressType, strCity AS strCity, strState AS strState, strZipCode  AS strZipCode         
+		FROM tblCustomersAddress WHERE intcustomerid=@CustomerID 
+	END
+	ELSE IF (@DeliveryType = 2) 
+	BEGIN
+		SELECT 'Office Delivery' AS DeliveryMethod, strCompanyAddress AS DeliverySite, strState AS State, strCity AS City, strZipCode AS ZipCode  from dbo.tbl_CompanyAddress 
+		
+		SELECT DISTINCT ISNULL(U.FirstName, '')  + ' '+ ISNULL(U.LastName,'') AS CustomerName, U.Phone AS CellPh
+		FROM tblCustom_MaterialList CM
+		INNER JOIN tblUsers U ON U.Id = CM.AdminApproverID
+		WHERE SoldJobId = @SoldJobID
+	END
+	ELSE IF (@DeliveryType = 3) 
+	BEGIN
+		SELECT 'Store Pickup' AS DeliveryMethod, 'We will pickup the package from store' AS DeliverySite, '' AS State, '' AS City, '' AS ZipCode  from dbo.tbl_CompanyAddress 
+		
+		SELECT DISTINCT ISNULL(U.FirstName, '')  + ' '+ ISNULL(U.LastName,'') AS CustomerName, U.Phone AS CellPh
+		FROM tblCustom_MaterialList CM
+		INNER JOIN tblUsers U ON U.Id = CM.AdminApproverID
+		WHERE SoldJobId = @SoldJobID
+
+	END
+	ELSE 
+	BEGIN
+		SELECT 'JG Stock' AS DeliveryMethod, 'Available in stock' AS DeliverySite, '' AS State, '' AS City, '' AS ZipCode  from dbo.tbl_CompanyAddress 
+		
+		SELECT DISTINCT ISNULL(U.FirstName, '')  + ' '+ ISNULL(U.LastName,'') AS CustomerName, U.Phone AS CellPh
+		FROM tblCustom_MaterialList CM
+		INNER JOIN tblUsers U ON U.Id = CM.AdminApproverID
+		WHERE SoldJobId = @SoldJobID
+	END
+
+	SELECT 
+		C.CustSuppliedMaterial, C.MaterialStorage 
+	FROM tblJobSequence J
+	INNER JOIN new_customer b ON J.CustomerId = b.id AND J.SoldJobId = @SoldJobID
+	INNER JOIN tblcustom C ON C.Id = J.EstimateId
+
+
+	SELECT * FROM tblMaterialPaymentDetails WHERE SoldJobID=@SoldJobID AND ProductCategoryID = @ProductCatID AND VendorID = @VendorID
+
+
+END
+
+
+GO
+
+

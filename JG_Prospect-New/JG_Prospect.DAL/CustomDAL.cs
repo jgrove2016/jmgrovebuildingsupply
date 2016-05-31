@@ -258,10 +258,11 @@ namespace JG_Prospect.DAL
 
                     database.AddInParameter(command, "@soldJobId", DbType.String, jobid);
                     database.AddInParameter(command, "@emailStatus", DbType.String, emailStatus);
-                    database.AddInParameter(command, "@ProdCatID", DbType.Int16, pProdCatID);
-                    //database.AddInParameter(command, "@estimateId", DbType.Int16, estimateId);
+                  //  database.AddInParameter(command, "@ProdCatID", DbType.Int16, pProdCatID);
+                   // database.AddOutParameter(command, "@result", DbType.Int16, result);
 
                     result = database.ExecuteNonQuery(command);
+                   // result = Convert.ToInt16(database.GetParameterValue(command, "@result"));
                 }
             }
             catch (Exception ex)

@@ -1993,6 +1993,7 @@ namespace JG_Prospect.Sr_App
                         }
                         else
                         {
+                            lResult = "success";
                             //SetButtonText();
                         }
                     }
@@ -2037,6 +2038,7 @@ namespace JG_Prospect.Sr_App
                         }
                         else
                         {
+                            lResult = "success";
                         }
                     }
                 }
@@ -3752,7 +3754,7 @@ namespace JG_Prospect.Sr_App
                         lTotalComponents += "<tr><td colspan='5'  style='font-size:13px;padding:5px;text-align:right;'>Tax:</td><td>$" + Convert.ToDouble(lDsJobInformation.Tables[3].Rows[0]["Tax"].ToString()).ToString("N2") + "/-</td>";
                         lTotalComponents += "<tr><td colspan='5'  style='font-size:14px;font-weight:bold;padding:5px;text-align:right;'>Total:</td><td>$" + Convert.ToDouble(Convert.ToDouble(lDsJobInformation.Tables[3].Rows[0]["SubTotal"].ToString()) + Convert.ToDouble(lDsJobInformation.Tables[3].Rows[0]["Delivery"].ToString()) + Convert.ToDouble(lDsJobInformation.Tables[3].Rows[0]["MiscFee"].ToString()) + Convert.ToDouble(lDsJobInformation.Tables[3].Rows[0]["Tax"].ToString())).ToString("N2") + "/-</td>";
 
-                        var replacedBody = tbody.Replace("lblMaterialList", pStrMaterialListTable.ToString().Replace("#ProdVendTot#", lTotalComponents));
+                        var replacedBody = tbody.Replace("lblMaterialList", pStrMaterialListTable.ToString().Replace("#ProdVendTot#", lTotalComponents)).Replace("lblAmount", "$"+Convert.ToDouble(Convert.ToDouble(lDsJobInformation.Tables[3].Rows[0]["SubTotal"].ToString()) + Convert.ToDouble(lDsJobInformation.Tables[3].Rows[0]["Delivery"].ToString()) + Convert.ToDouble(lDsJobInformation.Tables[3].Rows[0]["MiscFee"].ToString()) + Convert.ToDouble(lDsJobInformation.Tables[3].Rows[0]["Tax"].ToString())).ToString("N2")+"/-");
 
                         htmlBody += replacedBody.ToString();
 
@@ -4685,7 +4687,7 @@ namespace JG_Prospect.Sr_App
                     
                     lStrbHTMLTable.Append("<table  rules='all' style='width:580px;margin:auto auto;border:solid 1px;border-collapse:collapse;' cellpadding='0' cellspacing='0'>");
                     lStrbHTMLTable.Append("<tr>");
-                    lStrbHTMLTable.Append("<th style='backgroud-color:#ECECEC;padding:5px;font-weight:bold;color:#9C0401;'>#</th>");
+                    lStrbHTMLTable.Append("<th style='padding:5px;font-weight:bold;color:#9C0401;'>#</th>");
                     // lStrbHTMLTable.Append("<th>JG SKU - Vendor Part #</th>");
                     lStrbHTMLTable.Append("<th style='padding:5px;font-weight:bold;'>Material</th>");
                     lStrbHTMLTable.Append("<th style='padding:5px;font-weight:bold;'>Quantity</th>");

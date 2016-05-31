@@ -1012,7 +1012,7 @@
                         <Triggers>
                             <asp:PostBackTrigger ControlID="btnAttachFile" />
                             <asp:PostBackTrigger ControlID="btnSendEmailToVendorsForProd" />
-                            <asp:AsyncPostBackTrigger ControlID="btnSendPurchaseOrder" />
+                            <asp:PostBackTrigger ControlID="btnSendPurchaseOrder" />
                         </Triggers>
                     </asp:UpdatePanel>
                 </ItemTemplate>
@@ -1316,12 +1316,13 @@
                     lIsValidated = false;
                 }
             }
-            if (document.getElementById('spnsalesmanelabel')) {
+            /*if (document.getElementById('spnsalesmanelabel')) {
                 if (document.getElementById('spnsalesmanelabel').style.display == '') {
                     lIsValidated = false;
                 }
-            }
-            /* if (document.getElementById('spnsrsalesmanelabel')) {
+            }*/
+           
+             if (document.getElementById('spnsrsalesmanelabel')) {
                  if (document.getElementById('spnsrsalesmanelabel').style.display == '') {
                      lIsValidated = false;
                  }
@@ -1330,7 +1331,7 @@
                  if (document.getElementById('spnadminlabel').style.display == '') {
                      lIsValidated = false;
                  }
-             }*/
+             }
             if (!lIsValidated) {
                 alert('Please approve the custom material list first.');
             }
