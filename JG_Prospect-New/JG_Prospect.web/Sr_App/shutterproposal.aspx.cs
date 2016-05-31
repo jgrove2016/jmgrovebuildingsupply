@@ -1436,7 +1436,7 @@ namespace JG_Prospect.Sr_App
             {
 
                 txtPwd.Visible = false;
-                decimal amt = Convert.ToDecimal(Session["CCtxtAmount"]);
+                decimal amt = Convert.ToDecimal(Convert.ToDecimal(Session["CCtxtAmount"]).ToString("N2"));
                 Payline payline = new Payline();
                 payline = payline.ECheckSale(txtFirstName.Text, txtRoutingNo.Text, txtBank.Text, ddlperbus.SelectedValue.ToString().ToLower(), (rdoChecking.Checked ? "checking" : "savings"), "WEB", "check", Convert.ToDecimal(Session["CCtxtAmount"]), ddlCurrency.SelectedValue.Trim());
                 if (payline.IsApproved)
@@ -2156,6 +2156,8 @@ namespace JG_Prospect.Sr_App
                     }
                 }
             }
+            ddlpaymode.SelectedValue = "E-Check";
+            ddlpaymode_SelectedIndexChanged(null, null);
             mp_sold.Show();
         }
 
@@ -2195,7 +2197,7 @@ namespace JG_Prospect.Sr_App
                 PanelHide.Visible = false;
                 lblPro.Visible = false;
                 txtPromotionalcode.Visible = false;
-                txtccamount.Text = Session["CCtxtAmount"].ToString();
+                txtccamount.Text = ((Convert.ToDecimal(Session["CCtxtAmount"].ToString()) * 3 / 100) + Convert.ToDecimal(Session["CCtxtAmount"].ToString())).ToString("N2");
                 txtEmailId.Text = ViewState["customeremail"].ToString();
                 rdoChecking.Visible = false;
                 rdoSaving.Visible = false;
@@ -2222,7 +2224,7 @@ namespace JG_Prospect.Sr_App
                 btnSaveSold2.Style.Add("display", "none");
                 txtPwd.Style.Add("display", "none");
                 btnsavesold.Style.Add("display", "block");
-                txtAmount.Text = Session["CCtxtAmount"].ToString();
+                txtAmount.Text = Convert.ToDecimal(Session["CCtxtAmount"]).ToString("N2");
                 txtEmailId.Text = ViewState["customeremail"].ToString();
                 
                 string[] FN = Session["Name"].ToString().Split(' ');
@@ -2286,12 +2288,12 @@ namespace JG_Prospect.Sr_App
 
         protected void btnSaveSold2_Click(object sender, EventArgs e)
         {
-
+            decimal amt = Convert.ToDecimal(Convert.ToDecimal(Session["CCtxtAmount"]).ToString("N2"));
             if (ddlpaymode.SelectedIndex == 2)
             {
 
                 txtPwd.Visible = false;
-                decimal amt = Convert.ToDecimal(Session["CCtxtAmount"]);
+                amt = Convert.ToDecimal(((Convert.ToDecimal(Session["CCtxtAmount"].ToString()) * 3 / 100) + Convert.ToDecimal(Session["CCtxtAmount"].ToString())).ToString("N2"));
                 Payline payline = new Payline();
                 payline = payline.Sale(txtFirstName.Text.ToString(), txtLastName.Text.ToString(), txtCardNumber.Text.ToString(), ccExpireMonth.Text.ToString(), ccExpireYear.Text.ToString(), txtSecurityCode.Text.ToString(), Convert.ToDecimal(Session["CCtxtAmount"]), ddlCurrency.SelectedValue.Trim(), txtAddress.InnerText.Trim(), Convert.ToInt32(txtZip.Text.Trim()), ddlCity.SelectedValue.Trim(), ddlState.SelectedValue.Trim(), ddlCountry.SelectedValue.Trim());
                 if (payline.IsApproved)

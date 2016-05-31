@@ -709,8 +709,7 @@
                                                 <asp:DropDownList ID="ddlpaymode" runat="server" AutoPostBack="true" OnSelectedIndexChanged="ddlpaymode_SelectedIndexChanged">
                                                     <asp:ListItem Text="Select" Value="Select"></asp:ListItem>
                                                     <asp:ListItem Text="E-Check" Value="E-Check"></asp:ListItem>
-                                                    <asp:ListItem Text="CreditCard" Value="CreditCard"></asp:ListItem>
-                                                    <asp:ListItem Text="Debit/Check" Value="Debit/Credit (3% surcharge)"></asp:ListItem>
+                                                    <asp:ListItem Text="Credit/Debit Card (3% fee)" Value="CreditCard"></asp:ListItem>
                                                     <asp:ListItem Text="Check/Escrow" Value="Cash/Escrow"></asp:ListItem>
                                                     <asp:ListItem Text="Financing" Value="Financing"></asp:ListItem>
                                                     <asp:ListItem Text="Admin" Value="Admin"></asp:ListItem>
@@ -1008,7 +1007,7 @@
                                 <Triggers>
                                     <asp:PostBackTrigger ControlID="btnSaveSold2" />
                                     <asp:PostBackTrigger ControlID="btnsavesold" />
-                                    
+                                    <asp:PostBackTrigger ControlID="btnCancelsold" />
                                 </Triggers>
                             </asp:UpdatePanel>
                         </asp:Panel>
