@@ -1081,7 +1081,7 @@ namespace JG_Prospect.DAL
             }
         }
 
-        public DataSet GetCategoryList(string ProductCategory, string VendorCategory,string action)
+        public DataSet GetCategoryList(string ProductCategory, string VendorCategory, string action)
         {
             try
             {
@@ -1121,6 +1121,103 @@ namespace JG_Prospect.DAL
                 return null;
             }
         }
-        
+
+        public bool SaveSku(string skuName)
+        {
+            try
+            {
+                string consString = ConfigurationManager.ConnectionStrings[DBConstants.CONFIG_CONNECTION_STRING_KEY].ConnectionString;
+                using (SqlConnection con = new SqlConnection(consString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_Sku"))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Connection = con;
+                        cmd.Parameters.AddWithValue("@skuName", skuName);
+                        cmd.Parameters.AddWithValue("@action", "1");
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public DataSet GetSku()
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                DS = new DataSet();
+                DbCommand command = database.GetStoredProcCommand("sp_Sku");
+                command.CommandType = CommandType.StoredProcedure;
+                database.AddInParameter(command, "@action", DbType.String, "2");
+                DS = database.ExecuteDataSet(command);
+                return DS;
+
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public bool UpdateSku(int skuId, string skuName)
+        {
+            try
+            {
+                string consString = ConfigurationManager.ConnectionStrings[DBConstants.CONFIG_CONNECTION_STRING_KEY].ConnectionString;
+                using (SqlConnection con = new SqlConnection(consString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_Sku"))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Connection = con;
+                        cmd.Parameters.AddWithValue("@Id", skuId);
+                        cmd.Parameters.AddWithValue("@skuName", skuName);
+                        cmd.Parameters.AddWithValue("@action", "3");
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool DeleteSku(int skuId)
+        {
+            try
+            {
+                string consString = ConfigurationManager.ConnectionStrings[DBConstants.CONFIG_CONNECTION_STRING_KEY].ConnectionString;
+                using (SqlConnection con = new SqlConnection(consString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_Sku"))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Connection = con;
+                        cmd.Parameters.AddWithValue("@Id", skuId);
+                        cmd.Parameters.AddWithValue("@action", "4");
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
     }
 }

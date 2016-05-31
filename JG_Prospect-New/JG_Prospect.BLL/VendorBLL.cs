@@ -244,7 +244,25 @@ namespace JG_Prospect.BLL
             return VendorDAL.Instance.FetchCategories(VendorId);
         }
 
+        public bool SaveSku(string skuName)
+        {
+            return VendorDAL.Instance.SaveSku(skuName);
+        }
+        public bool UpdateSku(int skuId,string skuName)
+        {
+            return VendorDAL.Instance.UpdateSku(skuId,skuName);
+        }
 
+
+        public DataSet GetSku()
+        {
+            return VendorDAL.Instance.GetSku();
+        }
+
+        public bool DeleteSku(int skuId)
+        {
+            return VendorDAL.Instance.DeleteSku(skuId);
+        }
     }
 
 

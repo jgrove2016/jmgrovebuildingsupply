@@ -1356,10 +1356,17 @@ ul.left_nav {
     overflow: auto;
 }
 
-#categoriesList table tr td label {
-    width: 100%;
-    display: inline-block;
-    margin-right: 2%;
-    padding-top: 5px;
-    font-weight: normal;
+    #categoriesList table tr td label {
+        width: 100%;
+        display: inline-block;
+        margin-right: 2%;
+        padding-top: 5px;
+        font-weight: normal;
+    }
+
+.form_panel table tr td input {
+    padding: 5px !important;
+    margin: 0 !important;
+    border-radius: 5px !important;
+    border: #b5b4b4 1px solid !important;
 }

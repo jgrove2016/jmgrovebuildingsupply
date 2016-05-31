@@ -26,6 +26,7 @@ namespace JG_Prospect.Sr_App
                 {
                     string Mtype = GetManufacturerType();
                     GetInventoryCategoryList(Mtype);
+                    BindSku();
                 }
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "BindEvent", "bindClickEvent();", true);
             }
@@ -121,7 +122,7 @@ namespace JG_Prospect.Sr_App
                     foreach (var item in lstVendorProducts)
                     {
                         int isCate = lstVendorCat.Where(a => a.ProductCategoryId == item.ProductId).Count();
-                       
+
                         str.Append("<li>");
                         str.AppendFormat("<a href=\"javascript:;\"><span class=\"text\" onclick=\"productClick(this,'{0}','{1}')\">{1} ({2})</span><span class=\"buttons\"><i class=\"\" onclick=\"AddVenodrCat(this,'{0}','{1}')\">Add</i></span></a>", item.ProductId, item.ProductName, isCate);
 
@@ -138,7 +139,7 @@ namespace JG_Prospect.Sr_App
                                 int isSubCate = lstVendorSubCat.Where(a => a.VendorCategoryId == cat.VendorCategoryId).Count();
                                 str.Append("<li>");
                                 str.AppendFormat("<a href=\"javascript:;\"><span class=\"text\" onclick=\"vendorClick(this,'{0}','{1}','{2}','{3}','{4}','{5}')\">{3} ({6})</span><span class=\"buttons\"><i class=\"\" onclick=\"AddSubCat(this,'{0}','{1}','{2}','{3}','{4}','{5}')\">Add</i><i class=\"\" onclick=\"EditVendorCat(this,'{0}','{1}','{2}','{3}','{4}','{5}')\">Edit</i><i class=\"\" onclick=\"DeleteVendorCat(this,'{0}','{1}','{2}','{3}','{4}','{5}')\">Delete</i></span></a>", cat.ProductCategoryId, item.ProductName, cat.VendorCategoryId, cat.VendorCategoryName, cat.IsRetail_Wholesale, cat.IsManufacturer, isSubCate);
-                                                                
+
                                 if (isSubCate > 0)
                                 {
                                     string catClass = "";
@@ -296,7 +297,7 @@ namespace JG_Prospect.Sr_App
 
 
             ActiveProductID = Convert.ToInt32(hdnProductID.Value.ToString());
-            ActiveCategoryID =0;
+            ActiveCategoryID = 0;
 
             NewVendorCategory objNewVendor = new NewVendorCategory();
 
@@ -322,7 +323,7 @@ namespace JG_Prospect.Sr_App
         protected void btnDeleteVendorCat_Click(object sender, EventArgs e)
         {
             ActiveProductID = Convert.ToInt32(hdnProductID.Value.ToString());
-            ActiveCategoryID =0;
+            ActiveCategoryID = 0;
 
             int vendorcategogyid = Convert.ToInt32(hdnVendorID.Value.ToString());
             bool res = VendorBLL.Instance.deletevendorcategory(vendorcategogyid);
@@ -370,6 +371,66 @@ namespace JG_Prospect.Sr_App
             set
             {
                 ViewState["ActiveCategoryID"] = value;
+            }
+        }
+
+        protected void btnAddsku_Click(object sender, EventArgs e)
+        {
+            if (btnAddsku.Text == "Add")
+            {
+                bool res = VendorBLL.Instance.SaveSku(txtsku.Text);
+                if (res)
+                {
+                    lblres.Text = "Added/ Updated Successfully";
+                    lblres.Visible = true;
+                    BindSku();
+                }
+            }
+            else if (btnAddsku.Text == "Update")
+            {
+                bool res = VendorBLL.Instance.UpdateSku(Convert.ToInt16(lblSkuId.Text), txtsku.Text);
+                if (res)
+                {
+                    lblres.Text = "Added/ Updated Successfully";
+                    lblres.Visible = true;
+                    BindSku();
+                }
+            }
+        }
+
+        public void BindSku()
+        {
+            DataSet ds = VendorBLL.Instance.GetSku();
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                ddlskuName.DataSource = ds.Tables[0];
+                ddlskuName.DataTextField = "skuName";
+                ddlskuName.DataValueField = "Id";
+                ddlskuName.DataBind();
+                ddlskuName.Items.Insert(0, new System.Web.UI.WebControls.ListItem("-- Select --", "0"));
+            }
+            else
+            {
+                ddlskuName.Items.Insert(0, new System.Web.UI.WebControls.ListItem("-- Select --", "0"));
+            }
+        }
+
+        protected void btnEditsku_Click(object sender, EventArgs e)
+        {
+            txtsku.Text = ddlskuName.SelectedItem.Text;
+            lblSkuId.Text = ddlskuName.SelectedValue.ToString();
+            btnAddsku.Text = "Update";
+        }
+
+        protected void btnDeleteSku_Click(object sender, EventArgs e)
+        {
+            int id =Convert.ToInt16(ddlskuName.SelectedValue.ToString());
+            bool res = VendorBLL.Instance.DeleteSku(id);
+            if (res)
+            {
+                lblDelRes.Text = "Deleted Successfully";
+                lblDelRes.Visible = true;
+                BindSku();
             }
         }
 
