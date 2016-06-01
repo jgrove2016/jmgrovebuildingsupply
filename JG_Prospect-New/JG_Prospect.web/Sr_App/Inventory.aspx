@@ -85,7 +85,7 @@
                     }
 
                     .inventroy .left_inventroy .inventory_main li .inventory_cat:before {
-                        content: '>';
+                        /*content: '>';*/
                         position: absolute;
                         right: 6px;
                         top: -29px;
@@ -95,7 +95,7 @@
                     }
 
                     .inventroy .left_inventroy .inventory_main li .inventory_cat.active:before {
-                        content: '>';
+                        /*content: '>';*/
                         transform: rotate(-270deg);
                     }
 
@@ -119,7 +119,7 @@
                             }
 
                             .inventroy .left_inventroy .inventory_main li .inventory_cat li .inventory_subcat:before {
-                                content: '>';
+                                /*content: '>';*/
                                 position: absolute;
                                 right: 6px;
                                 top: -29px;
@@ -129,7 +129,7 @@
                             }
 
                             .inventroy .left_inventroy .inventory_main li .inventory_cat li .inventory_subcat.active:before {
-                                content: '>';
+                                /*content: '>';*/
                                 transform: rotate(-270deg);
                             }
 
@@ -179,7 +179,7 @@
             margin-top: -135px;
         }
 
-        .inventroy .right_inventroy .breadcrumb {
+        .inventroy .right_inventroy .breadcrumb, .inventroy .right_inventroy .breadcrumb_supplier {
             font-size: 13px;
         }
 
@@ -199,6 +199,17 @@
             }
 
             .inventroy .right_inventroy .breadcrumb .text {
+                margin-left: 5px;
+            }
+
+
+            .inventroy .right_inventroy .breadcrumb_supplier .sName {
+                display: none;
+                margin-left: 5px;
+            }
+
+            .inventroy .right_inventroy .breadcrumb_supplier .scName {
+                display: none;
                 margin-left: 5px;
             }
     </style>
@@ -309,6 +320,8 @@
             $("#<%=btnUpdateVendorCat.ClientID%>").show();
             $("#<%=pnlVendorCat.ClientID%>").show();
         }
+
+       
         function DeleteVendorCat(btn, productId, productName, vId, vName, IsRetail_Wholesale, IsManufacturer) {
             ResetAllValue();
             $("#<%=hdnProductID.ClientID%>").val(productId);
@@ -371,6 +384,58 @@
             $("#<%=pnlVendorSubCat.ClientID%>").show();
         }
 
+        function SupplierClick(btn, SuppId, SuppName) {
+            //$(btn).find("ul:first").toggleClass('active');
+            //$(".breadcrumb_supplier .vSName").hide();
+            //$(".breadcrumb .vName").hide();
+            $(".breadcrumb_supplier .sName").show();
+            $(".breadcrumb_supplier .sName .text").html(SuppName);
+        }
+
+
+        function AddSupSubCat(btn, supId, supName) {
+            ResetAllValue();
+            $("#<%=hdnSupplierCatId.ClientID%>").val(supId);
+            $("#<%=txtSupCatName.ClientID%>").val(supName);
+
+            $("#addSupSubCat").show();
+            $("#<%=btnSaveSupplierSubCat.ClientID%>").show();
+            $("#<%=pnlSupSubCat.ClientID%>").show();
+        }
+        function EditSupSubCat(btn, supId, supName, supSubCatId, supSubCatName) {
+            ResetAllValue();
+            $("#<%=hdnSupplierCatId.ClientID%>").val(supId);
+            $("#<%=txtSupCatName.ClientID%>").val(supName);
+
+            $("#<%=hdnSupSubCatId.ClientID%>").val(supSubCatId);
+            $("#<%=txtSupSubCatName.ClientID%>").val(supSubCatName);
+
+            $("#updateSupSubCat").show();
+            $("#<%=btnUpdateSupplierSubCat.ClientID%>").show();
+            $("#<%=pnlSupSubCat.ClientID%>").show();
+         }
+
+        function DeleteSupSubCat(btn, supId, supName, supSubCatId, supSubCatName) {
+            ResetAllValue();
+            //$("#<%=hdnSupplierCatId.ClientID%>").val(supId);
+            $("#<%=txtSupCatName.ClientID%>").val(supName);
+
+            $("#<%=hdnSupSubCatId.ClientID%>").val(supSubCatId);
+            $("#<%=txtSupSubCatName.ClientID%>").val(supSubCatName);
+
+             $("#deleteSupSubCat").show();
+            $("#<%=btnDeleteSupplierSubCat.ClientID%>").show();
+            $("#<%=pnlSupSubCat.ClientID%>").show();
+        }
+
+        function supSubCatClick(btn, supID, supName, supSubCatId, supSubCatName) {
+            //$(btn).find("ul:first").toggleClass('active');
+            $(".breadcrumb_supplier .vSName").hide();
+            $(".breadcrumb_supplier .sName").show();
+            $(".breadcrumb_supplier .scName").show();
+            $(".breadcrumb_supplier .sName .text").html(supName);
+            $(".breadcrumb_supplier .scName .text").html(supSubCatName);
+        }
         function closePupup() {
             $(".vendorFilter").hide();
         }
@@ -584,10 +649,52 @@
                 </div>
             </div>
             <div id="tabs-2">
-                <div class="clearfix inventroy">
-                    <div class="left_inventroy">
-                        <div class="invetory_heading">Shop By Department</div>
-                        <ul class="clearfix inventory_main">
+                <asp:UpdatePanel ID="updtpnlsku" runat="server">
+                    <ContentTemplate>
+                        <asp:Panel ID="pnlSupSubCat" runat="server" CssClass="vendorFilter" BackColor="White" Height="269px" Width="550px" Style="display: none; border: Solid 3px #A33E3F; border-radius: 10px 10px 0 0;">
+                            <table style="border: Solid 3px #A33E3F; width: 100%; height: 100%;" cellpadding="0" cellspacing="0">
+                                <tr style="background-color: #A33E3F">
+                                    <td colspan="2" style="height: 10%; color: White; font-weight: bold; font-size: larger; width: 100%;" align="center">
+                                        <div id="addSupSubCat" style="display: none">Add Supplier Sub Category</div>
+                                        <div id="updateSupSubCat" style="display: none">Update Supplier Sub Category</div>
+                                        <div id="deleteSupSubCat" style="display: none;">Delete Supplier Sub Category</div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="right" style="width: 31%">Supplier Category Name	</td>
+                                    <td>
+                                        <asp:HiddenField ID="hdnSupplierCatId" runat="server" />
+                                        <asp:TextBox ID="txtSupCatName" runat="server" ReadOnly="true"></asp:TextBox>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="right" style="width: 31%">Supplier Sub Category Name </td>
+                                    <td>
+                                        <asp:HiddenField ID="hdnSupSubCatId" runat="server" />
+                                        <asp:TextBox ID="txtSupSubCatName" runat="server" onkeypress="return isAlphaKey(event);"></asp:TextBox>
+                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="txtSupSubCatName"
+                                            ValidationGroup="SupSubCat" ErrorMessage="Enter Supplier Sub Category Name." ForeColor="Red"
+                                            Display="Dynamic"></asp:RequiredFieldValidator>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" align="center">
+                                        <asp:Button ID="btnSaveSupplierSubCat" Style="width: 100px; display: none;" runat="server"
+                                            OnClick="btnSaveSupplierSubCat_Click" Text="Save" ValidationGroup="SupSubCat" />
+                                        <asp:Button ID="btnUpdateSupplierSubCat" Style="width: 100px; display: none;" runat="server"
+                                            OnClick="btnUpdateSupplierSubCat_Click" Text="Save" ValidationGroup="SupSubCat" />
+                                        <asp:Button ID="btnDeleteSupplierSubCat" Style="width: 100px; display: none;" runat="server"
+                                            OnClick="btnDeleteSupplierSubCat_Click" Text="Delete" />
+                                        <input type="button" onclick="closePupup()" style="width: 100px;" value="Cancel" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </asp:Panel>
+                        <div class="clearfix inventroy">
+                            <div class="left_inventroy">
+                                <div class="invetory_heading">Supplier Category</div>
+                                <asp:Literal ID="ltrSupplierCategory" runat="server"></asp:Literal>
+                                <%--<ul class="clearfix inventory_main">
                             <li><a>Appliances</a>
                                 <ul class="clearfix inventory_cat">
                                     <li><a href="javascript:;">Appliance Parts & Accessories</a></li>
@@ -840,47 +947,48 @@
                                 </ul>
                             </li>
 
-                        </ul>
-                    </div>
-                    <div class="right_inventroy">
-                        <asp:UpdatePanel ID="updtpnlsku" runat="server">
-                            <ContentTemplate>
-                        <div class="form_panel">
-                        <table>
-                            <tr>
-                                <td>Sku Name</td>
-                                <td>
-                                    <asp:Label ID="lblSkuId" runat="server" Visible="false"/>
-                                    <asp:TextBox ID="txtsku" runat="server"></asp:TextBox>
-                                     <asp:Button ID="btnAddsku" runat="server" Text="Add" ValidationGroup="sku" OnClick="btnAddsku_Click"/>
-                                    <asp:Label ID="lblres" runat="server" Text="" Visible="false" ForeColor="Red"></asp:Label>
-                                    <br />
-                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtsku" Display="Dynamic"
-                                        ValidationGroup="sku" ErrorMessage="Enter Name" ForeColor="Red"></asp:RequiredFieldValidator>
-                                </td>
-                            </tr>
-                           <%-- <tr>
-                                <td colspan="2" align="center">
-                                  
-                                </td>
-                            </tr>--%>
-                            <td>
-                                <asp:DropDownList ID="ddlskuName" runat="server"></asp:DropDownList>
-                                 <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="ddlskuName" Display="Dynamic"
-                                        ValidationGroup="skuE" ErrorMessage="Please Select" InitialValue="0" ForeColor="Red"></asp:RequiredFieldValidator>
-                            </td>
-                            <td>
-                                 <asp:Button ID="btnEditsku" runat="server" Text="Edit" ValidationGroup="skuE" OnClick="btnEditsku_Click"/> 
-                                <asp:Button ID="btnDeleteSku" runat="server" Text="Delete" ValidationGroup="skuE" OnClick="btnDeleteSku_Click"/>
-                                 <asp:Label ID="lblDelRes" runat="server" Text="" Visible="false" ForeColor="Red"></asp:Label>
-                            </td>
-                            </table>
+                        </ul>--%>
                             </div>
-                                </ContentTemplate>
-                        </asp:UpdatePanel>
-                    </div>
-                </div>
+                            <div class="right_inventroy">
+                                <div class="breadcrumb_supplier">
+                                    <span class="sName">>><span class="text"></span></span><span class="scName">>><span class="text"></span></span>
+                                </div>
+
+                                <div class="form_panel">
+                                    <table>
+                                        <tr>
+                                            <td>Sku Name</td>
+                                            <td>
+                                                <asp:Label ID="lblSkuId" runat="server" Visible="false" />
+                                                <asp:TextBox ID="txtsku" runat="server"></asp:TextBox>
+                                                <asp:Button ID="btnAddsku" runat="server" Text="Add" ValidationGroup="sku" OnClick="btnAddsku_Click" />
+                                                <asp:Label ID="lblres" runat="server" Text="" Visible="false" ForeColor="Red"></asp:Label>
+                                                <br />
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtsku" Display="Dynamic"
+                                                    ValidationGroup="sku" ErrorMessage="Enter Name" ForeColor="Red"></asp:RequiredFieldValidator>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <asp:DropDownList ID="ddlskuName" runat="server"></asp:DropDownList>
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="ddlskuName" Display="Dynamic"
+                                                    ValidationGroup="skuE" ErrorMessage="Please Select" InitialValue="0" ForeColor="Red"></asp:RequiredFieldValidator>
+                                            </td>
+                                            <td>
+                                                <asp:Button ID="btnEditsku" runat="server" Text="Edit" ValidationGroup="skuE" OnClick="btnEditsku_Click" />
+                                                <asp:Button ID="btnDeleteSku" runat="server" Text="Delete" ValidationGroup="skuE" OnClick="btnDeleteSku_Click" />
+                                                <asp:Label ID="lblDelRes" runat="server" Text="" Visible="false" ForeColor="Red"></asp:Label>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </ContentTemplate>
+                </asp:UpdatePanel>
             </div>
+
             <div id="tabs-3">
                 <p>&nbsp</p>
             </div>

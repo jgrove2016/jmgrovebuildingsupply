@@ -26,6 +26,7 @@ namespace JG_Prospect.Sr_App
                 {
                     string Mtype = GetManufacturerType();
                     GetInventoryCategoryList(Mtype);
+                    GetSupplierCategoryList();
                     BindSku();
                 }
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "BindEvent", "bindClickEvent();", true);
@@ -170,6 +171,84 @@ namespace JG_Prospect.Sr_App
             {
             }
             ltrInventoryCategoryList.Text = str.ToString();
+        }
+
+        public void GetSupplierCategoryList()
+        {
+            StringBuilder str = new StringBuilder();
+            try
+            {
+                DataSet ds = VendorBLL.Instance.GetSupplierCatogriesList();
+                List<SupplierCategory> lstSupplierCategory = new List<SupplierCategory>();
+                List<SupplierSubCategory> lstSupplierSubCategory = new List<SupplierSubCategory>();
+                if (ds != null)
+                {
+                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                    {
+                        SupplierCategory obj = new SupplierCategory();
+                        DataRow dr = ds.Tables[0].Rows[i];
+                        int SupplierCatId = Convert.ToInt32(dr["Id"] == DBNull.Value ? "0" : dr["Id"].ToString());
+                        string SupplierCatName = dr["SupplierCategory"].ToString().Trim();
+                        //SupplierCatName = SupplierCatName.Replace(System.Environment.NewLine, string.Empty);
+                        obj.SupplierCategoryId = SupplierCatId;
+                        obj.SupplierCategoryName = SupplierCatName;
+                        lstSupplierCategory.Add(obj);
+                    }
+                    for (int i = 0; i < ds.Tables[1].Rows.Count; i++)
+                    {
+
+                        SupplierSubCategory obj = new SupplierSubCategory();
+                        DataRow dr = ds.Tables[1].Rows[i];
+                        int SupplierSubCatId = Convert.ToInt32(dr["Id"] == DBNull.Value ? "0" : dr["Id"].ToString());
+                        string SupplierSubCatName = dr["SupplierSubCategory"].ToString().Trim();
+                        int SupplierCatId = Convert.ToInt32(dr["SupplierCategoryId"] == DBNull.Value ? "0" : dr["SupplierCategoryId"].ToString());
+                        //SupplierCatName = SupplierCatName.Replace(System.Environment.NewLine, string.Empty);
+
+                        obj.SupplierSubCategoryId = SupplierSubCatId;
+                        obj.SupplierSubCategoryName = SupplierSubCatName;
+                        obj.SupplierCategoryId = SupplierCatId;
+                        lstSupplierSubCategory.Add(obj);
+                    }
+
+                }
+
+                if (lstSupplierCategory.Count > 0)
+                {
+                    str.Append("<ul class=\"clearfix inventory_main\">");
+                    foreach (var item in lstSupplierCategory)
+                    {
+                        int isCate = lstSupplierSubCategory.Where(a => a.SupplierCategoryId == item.SupplierCategoryId).Count();
+
+                        str.Append("<li>");
+                        str.AppendFormat("<a href=\"javascript:;\"><span class=\"text\" onclick=\"SupplierClick(this,'{0}','{1}')\">{1} ({2})</span><span class=\"buttons\"><i class=\"\" onclick=\"AddSupSubCat(this,'{0}','{1}')\">Add</i></span></a>", item.SupplierCategoryId, item.SupplierCategoryName, isCate);
+
+                        if (isCate > 0)
+                        {
+                            string productClass = "";
+                            if (ActiveProductID == item.SupplierCategoryId)
+                            {
+                                productClass = "active";
+                            }
+                            str.AppendFormat("<ul class=\"clearfix inventory_cat {0}\">", productClass);
+                            foreach (var cat in lstSupplierSubCategory.Where(a => a.SupplierCategoryId == item.SupplierCategoryId))
+                            {
+                                // int isSubCate = lstVendorSubCat.Where(a => a.VendorCategoryId == cat.VendorCategoryId).Count();
+                                str.Append("<li>");
+                                str.AppendFormat("<a href=\"javascript:;\"><span class=\"text\" onclick=\"supSubCatClick(this,'{0}','{1}','{2}','{3}')\">{3}</span><span class=\"buttons\"><i class=\"\" onclick=\"EditSupSubCat(this,'{0}','{1}','{2}','{3}')\">Edit</i><i class=\"\" onclick=\"DeleteSupSubCat(this,'{0}','{1}','{2}','{3}')\">Delete</i></span></a>", cat.SupplierCategoryId, item.SupplierCategoryName, cat.SupplierSubCategoryId, cat.SupplierSubCategoryName);
+                                str.Append("</li>");
+                            }
+                            str.Append("</ul>");
+                        }
+                        str.Append("</li>");
+                    }
+                    str.Append("</ul>");
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            ltrSupplierCategory.Text = str.ToString();
+
         }
 
         protected void rdoRetailWholesale_CheckedChanged(object sender, EventArgs e)
@@ -339,6 +418,7 @@ namespace JG_Prospect.Sr_App
             }
         }
 
+     
 
         public int ActiveProductID
         {
@@ -424,13 +504,80 @@ namespace JG_Prospect.Sr_App
 
         protected void btnDeleteSku_Click(object sender, EventArgs e)
         {
-            int id =Convert.ToInt16(ddlskuName.SelectedValue.ToString());
+            int id = Convert.ToInt16(ddlskuName.SelectedValue.ToString());
             bool res = VendorBLL.Instance.DeleteSku(id);
             if (res)
             {
                 lblDelRes.Text = "Deleted Successfully";
                 lblDelRes.Visible = true;
                 BindSku();
+            }
+        }
+        protected void btnSaveSupplierSubCat_Click(object sender, EventArgs e)
+        {
+            string SuppId = hdnSupplierCatId.Value.ToString();
+            string SupSubcatName = txtSupSubCatName.Text;
+
+            clsSupplierCategory objNewSupSubCat = new clsSupplierCategory();
+
+            objNewSupSubCat.SupplierId = SuppId;
+            objNewSupSubCat.SupplierSubCatName = SupSubcatName;
+
+            bool res = VendorBLL.Instance.SaveSupSubCat(objNewSupSubCat);
+            if (res)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Supplier Sub Category Added Successfully');", true);
+                GetSupplierCategoryList();
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Unable to Add Supplier Sub Category');", true);
+            }
+        }
+        protected void btnUpdateSupplierSubCat_Click(object sender, EventArgs e)
+        {
+            string SuppId = hdnSupplierCatId.Value.ToString();
+            string SuppSubCatId = hdnSupSubCatId.Value.ToString();
+            string SupSubcatName = txtSupSubCatName.Text;
+
+            clsSupplierCategory objNewSupSubCat = new clsSupplierCategory();
+
+            objNewSupSubCat.SupplierId = SuppId;
+            objNewSupSubCat.SupplierSubCatId = SuppSubCatId;
+            objNewSupSubCat.SupplierSubCatName = SupSubcatName;
+
+            bool res = VendorBLL.Instance.UpdateSupSubCat(objNewSupSubCat);
+            if (res)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Supplier Sub Category Updated Successfully');", true);
+                GetSupplierCategoryList();
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Unable to Update Supplier Sub Category');", true);
+            }
+        }
+        protected void btnDeleteSupplierSubCat_Click(object sender, EventArgs e)
+        {
+           
+            string SuppSubCatId = hdnSupSubCatId.Value.ToString();
+           
+
+            clsSupplierCategory objNewSupSubCat = new clsSupplierCategory();
+
+           
+            objNewSupSubCat.SupplierSubCatId = SuppSubCatId;
+        
+
+            bool res = VendorBLL.Instance.DeleteSupSubCat(objNewSupSubCat);
+            if (res)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Supplier Sub Category Deleted Successfully');", true);
+                GetSupplierCategoryList();
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Unable to Delete Supplier Sub Category');", true);
             }
         }
 
@@ -463,5 +610,17 @@ namespace JG_Prospect.Sr_App
         public string VendorSubCategoryName { get; set; }
         public bool IsRetail_Wholesale { get; set; }
         public bool IsManufacturer { get; set; }
+    }
+
+    public class SupplierCategory
+    {
+        public int SupplierCategoryId { get; set; }
+        public string SupplierCategoryName { get; set; }
+    }
+    public class SupplierSubCategory
+    {
+        public int SupplierSubCategoryId { get; set; }
+        public string SupplierSubCategoryName { get; set; }
+        public int SupplierCategoryId { get; set; }
     }
 }

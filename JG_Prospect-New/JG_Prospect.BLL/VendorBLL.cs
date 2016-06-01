@@ -263,6 +263,25 @@ namespace JG_Prospect.BLL
         {
             return VendorDAL.Instance.DeleteSku(skuId);
         }
+
+        public DataSet GetSupplierCatogriesList()
+        {
+            return VendorDAL.Instance.GetSupplierCatogriesList();
+        }
+
+        public bool SaveSupSubCat(clsSupplierCategory obj)
+        {
+            return VendorDAL.Instance.SaveSupSubCat(obj);
+        }
+        public bool UpdateSupSubCat(clsSupplierCategory obj)
+        {
+            return VendorDAL.Instance.UpdateSupSubCat(obj);
+        }
+
+        public bool DeleteSupSubCat(clsSupplierCategory objNewSupSubCat)
+        {
+            return VendorDAL.Instance.DeleteSupSubCat(objNewSupSubCat);
+        }
     }
 
 

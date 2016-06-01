@@ -1219,5 +1219,105 @@ namespace JG_Prospect.DAL
             }
         }
 
+
+        public DataSet GetSupplierCatogriesList()
+        {
+            try
+            {
+                {
+                    SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                    DS = new DataSet();
+                    DbCommand command = database.GetStoredProcCommand("GetSupplierCategoriesList");
+                    command.CommandType = CommandType.StoredProcedure;
+                    DS = database.ExecuteDataSet(command);
+                    return DS;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public bool SaveSupSubCat(clsSupplierCategory obj)
+        {
+            try
+            {
+                string consString = ConfigurationManager.ConnectionStrings[DBConstants.CONFIG_CONNECTION_STRING_KEY].ConnectionString;
+                using (SqlConnection con = new SqlConnection(consString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_Supplier"))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Connection = con;
+                        cmd.Parameters.AddWithValue("@SupplierId", obj.SupplierId);
+                        cmd.Parameters.AddWithValue("@SupplierSubCatName", obj.SupplierSubCatName);
+                        cmd.Parameters.AddWithValue("@action", "1");
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool UpdateSupSubCat(clsSupplierCategory obj)
+        {
+            try
+            {
+                string consString = ConfigurationManager.ConnectionStrings[DBConstants.CONFIG_CONNECTION_STRING_KEY].ConnectionString;
+                using (SqlConnection con = new SqlConnection(consString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_Supplier"))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Connection = con;
+                        cmd.Parameters.AddWithValue("@SupplierId", obj.SupplierId);
+                        cmd.Parameters.AddWithValue("@SupplierSubCatId", obj.SupplierSubCatId);
+                        cmd.Parameters.AddWithValue("@SupplierSubCatName", obj.SupplierSubCatName);
+                        cmd.Parameters.AddWithValue("@action", "2");
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool DeleteSupSubCat(clsSupplierCategory objNewSupSubCat)
+        {
+            try
+            {
+                string consString = ConfigurationManager.ConnectionStrings[DBConstants.CONFIG_CONNECTION_STRING_KEY].ConnectionString;
+                using (SqlConnection con = new SqlConnection(consString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_Supplier"))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Connection = con;
+                        cmd.Parameters.AddWithValue("@SupplierSubCatId", objNewSupSubCat.SupplierSubCatId);
+                        cmd.Parameters.AddWithValue("@action", "3");
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
     }
 }
