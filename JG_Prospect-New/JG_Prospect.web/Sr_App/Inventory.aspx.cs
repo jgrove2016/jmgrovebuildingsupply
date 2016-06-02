@@ -466,6 +466,7 @@ namespace JG_Prospect.Sr_App
             txtModel.Text = null;
             skuImg.ImageUrl = null;
             skuImg.Visible = false;
+            btnAddsku.Text = "Add";
         }
 
         public void BindSku()
