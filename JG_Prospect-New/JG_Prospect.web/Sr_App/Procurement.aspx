@@ -119,6 +119,7 @@
             }
     </style>
     <script type="text/javascript">
+
         function ClosePopup() {
             document.getElementById('light').style.display = 'none';
             document.getElementById('fade').style.display = 'none';
@@ -2086,6 +2087,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <asp:Button ID="btnPageLoad" runat="server" CssClass="cssbtnPageLoad" />
                                         <asp:ModalPopupExtender ID="ModalPopupExtender1" runat="server" TargetControlID="btnOpenCategoryPopup"
                                             PopupControlID="pnlcategorypopup" CancelControlID="btnCancelCategory" BackgroundCssClass="uiblack">
                                         </asp:ModalPopupExtender>
@@ -2483,7 +2485,7 @@
         $('.clsmaskphone').mask("(999) 999-9999");
         $('.clsmaskphoneexten').mask("999999");
 
-
+        $(".cssbtnPageLoad").click();
         setTimeout(function () {
             initialize();
         }, 500);

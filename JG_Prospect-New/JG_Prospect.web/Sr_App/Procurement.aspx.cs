@@ -201,7 +201,7 @@ namespace JG_Prospect.Sr_App
                 {
                     IsPageRefresh = true;
                 }
-                 ScriptManager.RegisterStartupScript(this, GetType(), "initialize", "initialize();", true);
+                ScriptManager.RegisterStartupScript(this, GetType(), "initialize", "initialize();", true);
             }
         }
 
@@ -623,7 +623,15 @@ namespace JG_Prospect.Sr_App
             }
             else
             {
-                FilterVendorByProductCategory();
+                if (ddlVendorStatusfltr.SelectedValue.ToString() == "All")
+                {
+                    FilterVendors("", "ProductCategoryAll", ManufacturerType, "", GetVendorStatus());
+                }
+                else
+                {
+                    FilterVendorByProductCategory();
+
+                }
             }
         }
 
