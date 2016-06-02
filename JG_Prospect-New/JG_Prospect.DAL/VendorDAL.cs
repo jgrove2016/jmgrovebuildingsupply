@@ -1333,5 +1333,89 @@ namespace JG_Prospect.DAL
                 return false;
             }
         }
+
+        public DataSet CheckDuplicateSource(string Source)
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DataSet ds = new DataSet();
+                    DbCommand command = database.GetStoredProcCommand("UDP_CheckDuplicateSourceProc");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@Source", DbType.String, Source);
+                    ds = database.ExecuteDataSet(command);
+                    return ds;
+                }
+            }
+
+            catch (Exception ex)
+            {
+                return null;
+
+            }
+        }
+
+        public DataSet getSource()
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DataSet ds = new DataSet();
+                    DbCommand command = database.GetStoredProcCommand("UDP_GetSourceProc");
+                    command.CommandType = CommandType.StoredProcedure;
+                    ds = database.ExecuteDataSet(command);
+                    return ds;
+                }
+            }
+
+            catch (Exception ex)
+            {
+                return null;
+
+            }
+        }
+        public DataSet AddSource(string Source)
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DataSet ds = new DataSet();
+                    DbCommand command = database.GetStoredProcCommand("UDP_AddSourceProc");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@Source", DbType.String, Source);
+                    ds = database.ExecuteDataSet(command);
+                    return ds;
+                }
+            }
+
+            catch (Exception ex)
+            {
+                return null;
+
+            }
+        }
+
+        public void DeleteSource(string Source)
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("UDP_DeleteSourceProc");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@Source", DbType.String, Source);
+                    database.ExecuteScalar(command);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+        }
+
     }
 }

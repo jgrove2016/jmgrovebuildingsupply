@@ -282,6 +282,26 @@ namespace JG_Prospect.BLL
         {
             return VendorDAL.Instance.DeleteSupSubCat(objNewSupSubCat);
         }
+
+        public DataSet CheckSource(string Source)
+        {
+            return VendorDAL.Instance.CheckDuplicateSource(Source);
+        }
+
+        public DataSet AddSource(string Source)
+        {
+            return VendorDAL.Instance.AddSource(Source);
+        }
+
+        public DataSet GetSource()
+        {
+            return VendorDAL.Instance.getSource();
+        }
+
+        public void DeleteSource(string Source)
+        {
+            VendorDAL.Instance.DeleteSource(Source);
+        }
     }
 
 
