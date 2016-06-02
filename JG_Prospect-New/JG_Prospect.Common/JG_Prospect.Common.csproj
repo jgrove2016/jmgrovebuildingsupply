@@ -99,6 +99,7 @@
     <Compile Include="Logger\LogManager.cs" />
     <Compile Include="modal\AttachedQuotes.cs" />
     <Compile Include="modal\Availability.cs" />
+    <Compile Include="modal\clsSku.cs" />
     <Compile Include="modal\Customer.cs" />
     <Compile Include="modal\CustomerDocument.cs" />
     <Compile Include="modal\CustomerLocationPics.cs" />

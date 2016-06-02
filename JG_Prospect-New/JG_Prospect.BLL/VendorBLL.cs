@@ -244,13 +244,13 @@ namespace JG_Prospect.BLL
             return VendorDAL.Instance.FetchCategories(VendorId);
         }
 
-        public bool SaveSku(string skuName)
+        public bool SaveSku(clsSku objsku)
         {
-            return VendorDAL.Instance.SaveSku(skuName);
+            return VendorDAL.Instance.SaveSku(objsku);
         }
-        public bool UpdateSku(int skuId,string skuName)
+        public bool UpdateSku(clsSku objsku)
         {
-            return VendorDAL.Instance.UpdateSku(skuId,skuName);
+            return VendorDAL.Instance.UpdateSku(objsku);
         }
 
 

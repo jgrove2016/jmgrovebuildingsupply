@@ -8,6 +8,7 @@ using System.Text;
 using System.Data;
 using JG_Prospect.BLL;
 using JG_Prospect.Common.modal;
+using System.IO;
 
 namespace JG_Prospect.Sr_App
 {
@@ -418,7 +419,7 @@ namespace JG_Prospect.Sr_App
             }
         }
 
-     
+
 
         public int ActiveProductID
         {
@@ -454,28 +455,17 @@ namespace JG_Prospect.Sr_App
             }
         }
 
-        protected void btnAddsku_Click(object sender, EventArgs e)
+        public void ResetSku()
         {
-            if (btnAddsku.Text == "Add")
-            {
-                bool res = VendorBLL.Instance.SaveSku(txtsku.Text);
-                if (res)
-                {
-                    lblres.Text = "Added/ Updated Successfully";
-                    lblres.Visible = true;
-                    BindSku();
-                }
-            }
-            else if (btnAddsku.Text == "Update")
-            {
-                bool res = VendorBLL.Instance.UpdateSku(Convert.ToInt16(lblSkuId.Text), txtsku.Text);
-                if (res)
-                {
-                    lblres.Text = "Added/ Updated Successfully";
-                    lblres.Visible = true;
-                    BindSku();
-                }
-            }
+            txtJGSku.Text = "";
+            txtTotalCost.Text = "";
+            txtUOM.Text = null;
+            txtUnit.Text = null;
+            txtCostDesc.Text = null;
+            txtVendorPart.Text = null;
+            txtModel.Text = null;
+            skuImg.ImageUrl = null;
+            skuImg.Visible = false;
         }
 
         public void BindSku()
@@ -483,35 +473,139 @@ namespace JG_Prospect.Sr_App
             DataSet ds = VendorBLL.Instance.GetSku();
             if (ds.Tables[0].Rows.Count > 0)
             {
-                ddlskuName.DataSource = ds.Tables[0];
-                ddlskuName.DataTextField = "skuName";
-                ddlskuName.DataValueField = "Id";
-                ddlskuName.DataBind();
-                ddlskuName.Items.Insert(0, new System.Web.UI.WebControls.ListItem("-- Select --", "0"));
+                grdSku.DataSource = ds.Tables[0];
+                grdSku.DataBind();
+                grdSkuInfo.DataSource = ds.Tables[0];
+                grdSkuInfo.DataBind();
+                
             }
             else
             {
-                ddlskuName.Items.Insert(0, new System.Web.UI.WebControls.ListItem("-- Select --", "0"));
+                grdSku.DataSource = null;
+                grdSku.DataBind();
+                grdSkuInfo.DataSource = null;
+                grdSkuInfo.DataBind();
+            }
+        }
+        protected void btnAddsku_Click(object sender, EventArgs e)
+        {
+            clsSku objsku = new clsSku();
+
+            objsku.SkuName = txtJGSku.Text;
+            objsku.TotalCost = Convert.ToSingle(txtTotalCost.Text == "" ? "0" : txtTotalCost.Text);
+            objsku.UOM = txtUOM.Text;
+            objsku.Unit = Convert.ToSingle(txtUnit.Text == "" ? "0" : txtUnit.Text);
+            objsku.CostDescription = txtCostDesc.Text;
+            objsku.VendorPart = txtVendorPart.Text;
+            objsku.Model = txtModel.Text;
+            string filename = "";
+
+            if (fupSkuImage.HasFile)
+            {
+                filename = Path.GetFileName(fupSkuImage.FileName);
+                fupSkuImage.SaveAs(Server.MapPath("~/Sr_App/skuImages/") + filename);
+            }
+            else
+            {
+                if (hdnImageUrl.Value.ToString() != "")
+                {
+                    string url = hdnImageUrl.Value.ToString();
+                    int idx = url.LastIndexOf('/');
+                    //Console.WriteLine(s.Substring(0, idx)); // "My. name. is Bond"
+                    //Console.WriteLine(s.Substring(idx + 1)); // "_James Bond!"
+                    url = url.Substring(idx + 1);
+                    filename = url;
+                }
+
+            }
+            objsku.Image = filename;
+
+            if (btnAddsku.Text == "Add")
+            {
+                bool res = VendorBLL.Instance.SaveSku(objsku);
+                if (res)
+                {
+                    lblres.Text = "Added/ Updated Successfully";
+                    lblres.Visible = true;
+                    ResetSku();
+                    BindSku();
+                }
+            }
+            else if (btnAddsku.Text == "Update")
+            {
+                objsku.Id = Convert.ToInt16(lblSkuId.Text);
+                bool res = VendorBLL.Instance.UpdateSku(objsku);
+                if (res)
+                {
+                    lblres.Text = "Added/ Updated Successfully";
+                    lblres.Visible = true;
+                    ResetSku();
+                    BindSku();
+                }
+            }
+        }
+        protected void grdSku_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            Control ctrl = e.CommandSource as Control;
+            if (e.CommandName == "EditSku")
+            {
+                GridViewRow row = ctrl.Parent.NamingContainer as GridViewRow;
+                int id = Convert.ToInt16(e.CommandArgument);
+                lblSkuId.Text = id.ToString();
+                Label lblskuName = (Label)row.FindControl("lblskuName");
+                Label lblTotalCost = (Label)row.FindControl("lblTotalCost");
+                Label lblUOM = (Label)row.FindControl("lblUOM");
+                Label lblUnit = (Label)row.FindControl("lblUnit");
+                Label lblCostDescr = (Label)row.FindControl("lblCostDesc");
+                Label lblVendorParts = (Label)row.FindControl("lblVendorPart");
+                Label lblModel = (Label)row.FindControl("lblModel");
+                Image skuimage = (Image)row.FindControl("skuImg");
+                hdnImageUrl.Value = skuimage.ImageUrl;
+                if (hdnImageUrl.Value.ToString() != "")
+                {
+                    skuImg.Visible = true;
+                    skuImg.ImageUrl = hdnImageUrl.Value.ToString();
+                }
+                txtJGSku.Text = lblskuName.Text;
+                txtTotalCost.Text = lblTotalCost.Text;
+                txtUOM.Text = lblUOM.Text;
+                txtUnit.Text = lblUnit.Text;
+                txtCostDesc.Text = lblCostDescr.Text;
+                txtVendorPart.Text = lblVendorParts.Text;
+                txtModel.Text = lblModel.Text;
+                btnAddsku.Text = "Update";
+            }
+            else if (e.CommandName == "DeleteSku")
+            {
+                int id = Convert.ToInt16(e.CommandArgument);
+                bool res = VendorBLL.Instance.DeleteSku(id);
+                if (res)
+                {
+                    lblDelRes.Text = "Deleted Successfully";
+                    lblDelRes.Visible = true;
+                    BindSku();
+                }
             }
         }
 
+
         protected void btnEditsku_Click(object sender, EventArgs e)
         {
-            txtsku.Text = ddlskuName.SelectedItem.Text;
-            lblSkuId.Text = ddlskuName.SelectedValue.ToString();
-            btnAddsku.Text = "Update";
+            //txtsku.Text = ddlskuName.SelectedItem.Text;
+            //lblSkuId.Text = ddlskuName.SelectedValue.ToString();
+            //btnAddsku.Text = "Update";
         }
 
         protected void btnDeleteSku_Click(object sender, EventArgs e)
         {
-            int id = Convert.ToInt16(ddlskuName.SelectedValue.ToString());
-            bool res = VendorBLL.Instance.DeleteSku(id);
-            if (res)
-            {
-                lblDelRes.Text = "Deleted Successfully";
-                lblDelRes.Visible = true;
-                BindSku();
-            }
+            //int id = Convert.ToInt16(ddlskuName.SelectedValue.ToString());
+            //bool res = VendorBLL.Instance.DeleteSku(id);
+            //if (res)
+            //{
+            //    lblDelRes.Text = "Deleted Successfully";
+            //    lblDelRes.Visible = true;
+            //    BindSku();
+            //}
         }
         protected void btnSaveSupplierSubCat_Click(object sender, EventArgs e)
         {
@@ -559,15 +653,15 @@ namespace JG_Prospect.Sr_App
         }
         protected void btnDeleteSupplierSubCat_Click(object sender, EventArgs e)
         {
-           
+
             string SuppSubCatId = hdnSupSubCatId.Value.ToString();
-           
+
 
             clsSupplierCategory objNewSupSubCat = new clsSupplierCategory();
 
-           
+
             objNewSupSubCat.SupplierSubCatId = SuppSubCatId;
-        
+
 
             bool res = VendorBLL.Instance.DeleteSupSubCat(objNewSupSubCat);
             if (res)
@@ -580,6 +674,8 @@ namespace JG_Prospect.Sr_App
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Unable to Delete Supplier Sub Category');", true);
             }
         }
+
+
 
     }
 

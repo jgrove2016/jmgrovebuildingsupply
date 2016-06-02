@@ -1122,7 +1122,7 @@ namespace JG_Prospect.DAL
             }
         }
 
-        public bool SaveSku(string skuName)
+        public bool SaveSku(clsSku objsku)
         {
             try
             {
@@ -1133,7 +1133,14 @@ namespace JG_Prospect.DAL
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Connection = con;
-                        cmd.Parameters.AddWithValue("@skuName", skuName);
+                        cmd.Parameters.AddWithValue("@skuName", objsku.SkuName);
+                        cmd.Parameters.AddWithValue("@TotalCost", objsku.TotalCost);
+                        cmd.Parameters.AddWithValue("@UOM", objsku.UOM);
+                        cmd.Parameters.AddWithValue("@Unit", objsku.Unit);
+                        cmd.Parameters.AddWithValue("@CostDescription", objsku.CostDescription);
+                        cmd.Parameters.AddWithValue("@VendorPart", objsku.VendorPart);
+                        cmd.Parameters.AddWithValue("@Model", objsku.Model);
+                        cmd.Parameters.AddWithValue("@Image", objsku.Image);
                         cmd.Parameters.AddWithValue("@action", "1");
                         con.Open();
                         cmd.ExecuteNonQuery();
@@ -1166,7 +1173,7 @@ namespace JG_Prospect.DAL
             }
         }
 
-        public bool UpdateSku(int skuId, string skuName)
+        public bool UpdateSku(clsSku objsku)
         {
             try
             {
@@ -1177,8 +1184,15 @@ namespace JG_Prospect.DAL
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Connection = con;
-                        cmd.Parameters.AddWithValue("@Id", skuId);
-                        cmd.Parameters.AddWithValue("@skuName", skuName);
+                        cmd.Parameters.AddWithValue("@Id", objsku.Id);
+                        cmd.Parameters.AddWithValue("@skuName", objsku.SkuName);
+                        cmd.Parameters.AddWithValue("@TotalCost", objsku.TotalCost);
+                        cmd.Parameters.AddWithValue("@UOM", objsku.UOM);
+                        cmd.Parameters.AddWithValue("@Unit", objsku.Unit);
+                        cmd.Parameters.AddWithValue("@CostDescription", objsku.CostDescription);
+                        cmd.Parameters.AddWithValue("@VendorPart", objsku.VendorPart);
+                        cmd.Parameters.AddWithValue("@Model", objsku.Model);
+                        cmd.Parameters.AddWithValue("@Image", objsku.Image);
                         cmd.Parameters.AddWithValue("@action", "3");
                         con.Open();
                         cmd.ExecuteNonQuery();

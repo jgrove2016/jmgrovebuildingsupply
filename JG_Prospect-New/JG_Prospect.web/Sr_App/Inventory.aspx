@@ -321,7 +321,7 @@
             $("#<%=pnlVendorCat.ClientID%>").show();
         }
 
-       
+
         function DeleteVendorCat(btn, productId, productName, vId, vName, IsRetail_Wholesale, IsManufacturer) {
             ResetAllValue();
             $("#<%=hdnProductID.ClientID%>").val(productId);
@@ -413,7 +413,7 @@
             $("#updateSupSubCat").show();
             $("#<%=btnUpdateSupplierSubCat.ClientID%>").show();
             $("#<%=pnlSupSubCat.ClientID%>").show();
-         }
+        }
 
         function DeleteSupSubCat(btn, supId, supName, supSubCatId, supSubCatName) {
             ResetAllValue();
@@ -423,7 +423,7 @@
             $("#<%=hdnSupSubCatId.ClientID%>").val(supSubCatId);
             $("#<%=txtSupSubCatName.ClientID%>").val(supSubCatName);
 
-             $("#deleteSupSubCat").show();
+            $("#deleteSupSubCat").show();
             $("#<%=btnDeleteSupplierSubCat.ClientID%>").show();
             $("#<%=pnlSupSubCat.ClientID%>").show();
         }
@@ -617,28 +617,52 @@
                                         <span class="pName">>><span class="text"></span></span><span class="vName">>><span class="text"></span></span><span class="vSName">>><span class="text"></span></span>
                                     </div>
                                     <div>
-                                        <table border="1">
-                                            <tr>
-                                                <th>JG sku</th>
-                                                <th>Total Cost:$</th>
-                                                <th>UOM</th>
-                                                <th>$Unit</th>
-                                                <th>Cost Description</th>
-                                                <th>Vendor Part</th>
-                                                <th>Model#</th>
-                                                <th>Image</th>
-                                            </tr>
-                                            <tr>
-                                                <td>Test</td>
-                                                <td>Test</td>
-                                                <td>Test</td>
-                                                <td>Test</td>
-                                                <td>Test</td>
-                                                <td>Test</td>
-                                                <td>Test</td>
-                                                <td>Test</td>
-                                            </tr>
-                                        </table>
+                                        <asp:GridView ID="grdSkuInfo" runat="server" AutoGenerateColumns="false" CssClass="tableClass" Width="100%" OnRowCommand="grdSku_RowCommand">
+                                            <Columns>
+                                                <asp:TemplateField HeaderText="JG Sku">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblskuName" runat="server" Text='<%#Eval("SkuName") %>'></asp:Label>
+                                                        <asp:HiddenField ID="hdnskuid" runat="server" Value='<%#Eval("Id") %>' />
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Total Cost">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblTotalCost" runat="server" Text='<%#Eval("TotalCost") %>'></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="UOM">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblUOM" runat="server" Text='<%#Eval("UOM") %>'></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Unit">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblUnit" runat="server" Text='<%#Eval("Unit") %>'></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Cost Description" HeaderStyle-Width="10%">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblCostDesc" runat="server" Text='<%#Eval("CostDescription") %>'></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Vendor Part">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblVendorPart" runat="server" Text='<%#Eval("VendorPart") %>'></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Model">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblModel" runat="server" Text='<%#Eval("Model") %>'></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Image">
+                                                    <ItemTemplate>
+                                                        <asp:Image ID="skuImg" runat="server" Height="100px" Width="100px" ImageUrl='<%#String.Format("~/Sr_App/skuImages/{0}",Eval("Image")) %>' />
+                                                        <%-- <asp:Label ID="lblimage" runat="server" Text='<%#Eval("Image") %>'></asp:Label>--%>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                            </Columns>
+                                        </asp:GridView>
                                     </div>
                                 </div>
                             </div>
@@ -957,17 +981,134 @@
                                 <div class="form_panel">
                                     <table>
                                         <tr>
-                                            <td>Sku Name</td>
+                                            <td>JG Sku</td>
                                             <td>
                                                 <asp:Label ID="lblSkuId" runat="server" Visible="false" />
-                                                <asp:TextBox ID="txtsku" runat="server"></asp:TextBox>
-                                                <asp:Button ID="btnAddsku" runat="server" Text="Add" ValidationGroup="sku" OnClick="btnAddsku_Click" />
-                                                <asp:Label ID="lblres" runat="server" Text="" Visible="false" ForeColor="Red"></asp:Label>
+                                                <asp:TextBox ID="txtJGSku" runat="server"></asp:TextBox>
                                                 <br />
-                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtsku" Display="Dynamic"
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="txtJGSku" Display="Dynamic"
                                                     ValidationGroup="sku" ErrorMessage="Enter Name" ForeColor="Red"></asp:RequiredFieldValidator>
                                             </td>
                                         </tr>
+                                        <tr>
+                                            <td>Total Cost
+                                            </td>
+                                            <td>
+                                                <asp:TextBox ID="txtTotalCost" runat="server" onkeypress="return isNumericKey(event);"></asp:TextBox>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>UOM
+                                            </td>
+                                            <td>
+                                                <asp:TextBox ID="txtUOM" runat="server"></asp:TextBox>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Unit
+                                            </td>
+                                            <td>
+                                                <asp:TextBox ID="txtUnit" runat="server" onkeypress="return isNumericKey(event);"></asp:TextBox>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Cost Description
+                                            </td>
+                                            <td>
+                                                <asp:TextBox ID="txtCostDesc" TextMode="MultiLine" runat="server"></asp:TextBox>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Vendor Part  
+                                            </td>
+                                            <td>
+                                                <asp:TextBox ID="txtVendorPart" runat="server"></asp:TextBox>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Model#  
+                                            </td>
+                                            <td>
+                                                <asp:TextBox ID="txtModel" runat="server"></asp:TextBox>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Image
+                                            </td>
+                                            <td>
+                                                <asp:FileUpload ID="fupSkuImage" runat="server" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <asp:HiddenField ID="hdnImageUrl" runat="server" />
+                                                <asp:Image ID="skuImg" runat="server" Height="100px" Width="100px" Visible="false"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <asp:Button ID="btnAddsku" runat="server" Text="Add" ValidationGroup="sku" OnClick="btnAddsku_Click" />
+                                                <asp:Label ID="lblres" runat="server" Text="" Visible="false" ForeColor="Red"></asp:Label>
+                                            </td>
+                                        </tr>
+                                    </table>
+
+                                    <div>
+                                        <asp:Label ID="lblDelRes" runat="server" Text="" Visible="false" ForeColor="Red"></asp:Label>
+                                        <asp:GridView ID="grdSku" runat="server" AutoGenerateColumns="false" CssClass="tableClass" Width="100%" OnRowCommand="grdSku_RowCommand">
+                                            <Columns>
+                                                <asp:TemplateField HeaderText="JG Sku">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblskuName" runat="server" Text='<%#Eval("SkuName") %>'></asp:Label>
+                                                        <asp:HiddenField ID="hdnskuid" runat="server" Value='<%#Eval("Id") %>' />
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Total Cost">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblTotalCost" runat="server" Text='<%#Eval("TotalCost") %>'></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="UOM">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblUOM" runat="server" Text='<%#Eval("UOM") %>'></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Unit">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblUnit" runat="server" Text='<%#Eval("Unit") %>'></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Cost Description" HeaderStyle-Width="10%">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblCostDesc" runat="server" Text='<%#Eval("CostDescription") %>'></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Vendor Part">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblVendorPart" runat="server" Text='<%#Eval("VendorPart") %>'></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Model">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblModel" runat="server" Text='<%#Eval("Model") %>'></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Image">
+                                                    <ItemTemplate>
+                                                        <asp:Image ID="skuImg" runat="server" Height="100px" Width="100px" ImageUrl='<%#String.Format("~/Sr_App/skuImages/{0}",Eval("Image")) %>' />
+                                                        <%-- <asp:Label ID="lblimage" runat="server" Text='<%#Eval("Image") %>'></asp:Label>--%>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Action">
+                                                    <ItemTemplate>
+                                                        <asp:LinkButton ID="lnkEditSku" runat="server" Text="" CommandArgument='<%#Eval("Id") %>' CommandName="EditSku">Edit</asp:LinkButton>
+                                                        <asp:LinkButton ID="lnkDeleteSku" runat="server" Text="" CommandArgument='<%#Eval("Id") %>' CommandName="DeleteSku">Delete</asp:LinkButton>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                            </Columns>
+                                        </asp:GridView>
+                                    </div>
+                                    <%-- <table>
                                         <tr>
                                             <td>
                                                 <asp:DropDownList ID="ddlskuName" runat="server"></asp:DropDownList>
@@ -980,12 +1121,15 @@
                                                 <asp:Label ID="lblDelRes" runat="server" Text="" Visible="false" ForeColor="Red"></asp:Label>
                                             </td>
                                         </tr>
-                                    </table>
+                                    </table>--%>
                                 </div>
 
                             </div>
                         </div>
                     </ContentTemplate>
+                    <Triggers>
+                        <asp:PostBackTrigger ControlID="btnAddsku" />
+                    </Triggers>
                 </asp:UpdatePanel>
             </div>
 
