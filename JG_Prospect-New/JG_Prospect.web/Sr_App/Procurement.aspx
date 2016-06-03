@@ -163,8 +163,8 @@
                                             "<option value='Others'>Others</option>" +
                                             "</select></td>" +
                                             "<td><div class='newcontactdiv'>" +
-                                            "<input TabIndex='1' type='text' id='txt" + EmailType + "Contact" + subCount + "' name='nametxt" + EmailType + "Contact" + subCount + "' style='width:50%' class='clsmaskphone' maxlength='10' placeholder='___-___-____' clientidmode='Static' />" +
-                                            "&nbsp;<input TabIndex='1' type='text' id='txt" + EmailType + "ContactExten" + subCount + "' name='nametxt" + EmailType + "ContactExten" + subCount + "' style='width:35%' maxlength='6' class='clsmaskphoneexten' placeholder='Extension' clientidmode='Static' />" +
+                                            "<input TabIndex='1' type='text' id='txt" + EmailType + "Contact" + subCount + "' name='nametxt" + EmailType + "Contact" + subCount + "' style='width:50%' onkeypress='return isNumericKey(event);' class='clsmaskphone' maxlength='10' placeholder='___-___-____' clientidmode='Static' />" +
+                                            "&nbsp;<input TabIndex='1' type='text' id='txt" + EmailType + "ContactExten" + subCount + "' name='nametxt" + EmailType + "ContactExten" + subCount + "' style='width:35%' onkeypress='return isNumericKey(event);' maxlength='6' class='clsmaskphoneexten' placeholder='Extension' clientidmode='Static' />" +
                                             "&nbsp;<label> Phone Type</label>" +
                                             "<select id='ddl" + EmailType + "PhoneType" + subCount + "' name='nameddl" + EmailType + "PhoneType" + subCount + "' class='clsphonetype' cliendidmode='static'>" +
                                                 "<option value=''>Select</option>" +
@@ -174,7 +174,7 @@
                                                 "<option value='Alt'>Alt. Phone #</option>" +
                                             "</select>" +
                                             "<a TabIndex='1' onclick='AddContact(this)' style='cursor:pointer' data-type='" + subCount + "' data-EmailType='" + EmailType + "' clientidmode='Static'>Add Contact</a><br/></div></td>" +
-                                            " <td><label>Fax</label><br /><input type='text' id='txt" + EmailType + "Fax" + subCount + "' name='nametxt" + EmailType + "Fax" + subCount + "' maxlength='15' clientidmode='Static'><br /></td>" +
+                                            " <td><label>Fax</label><br /><input type='text' id='txt" + EmailType + "Fax" + subCount + "' name='nametxt" + EmailType + "Fax" + subCount + "' maxlength='15' onkeypress='return isNumericKey(event);' clientidmode='Static'><br /></td>" +
                                             "</tr>");
             $('.clsmaskphone').mask("(999) 999-9999");
             $('.clsmaskphoneexten').mask("999999");
@@ -195,8 +195,8 @@
             var subCount = $(e).closest('td').find('.clsmaskphone').length - 1;
             $(e).closest('td').append(
                                             "<br/><div class='newcontactdiv'>" +
-                                            "<input TabIndex='1' type='text' id='txt" + EmailType + "Contact" + dataTypeValue + subCount + "' name='nametxt" + EmailType + "Contact" + dataTypeValue + subCount + "' style='width:50%;' maxlength='10' class='clsmaskphone' maxlength='10' placeholder='___-___-____' clientidmode='Static' />" +
-                                            "&nbsp;<input TabIndex='1' type='text' id='txt" + EmailType + "ContactExten" + dataTypeValue + subCount + "' name='nametxt" + EmailType + "ContactExten" + dataTypeValue + subCount + "' style='width:35%;' maxlength='6' class='clsmaskphoneexten' placeholder='Extension' clientidmode='Static' />" +
+                                            "<input TabIndex='1' type='text' id='txt" + EmailType + "Contact" + dataTypeValue + subCount + "' name='nametxt" + EmailType + "Contact" + dataTypeValue + subCount + "' style='width:50%;' onkeypress='return isNumericKey(event);' maxlength='10' class='clsmaskphone' maxlength='10' placeholder='___-___-____' clientidmode='Static' />" +
+                                            "&nbsp;<input TabIndex='1' type='text' id='txt" + EmailType + "ContactExten" + dataTypeValue + subCount + "' name='nametxt" + EmailType + "ContactExten" + dataTypeValue + subCount + "' style='width:35%;' onkeypress='return isNumericKey(event);' maxlength='6' class='clsmaskphoneexten' placeholder='Extension' clientidmode='Static' />" +
                                             "&nbsp;<label> Phone Type</label>" +
                                             "<select id='ddl" + EmailType + "PhoneType" + dataTypeValue + subCount + "' name='nameddl" + EmailType + "PhoneType" + dataTypeValue + subCount + "' class='clsphonetype' cliendidmode='static'>" +
                                                 "<option value=''>Select</option>" +
@@ -1903,8 +1903,8 @@
                                                                         </label>
                                                                         <br />
                                                                         <div class='newcontactdiv' style="width: 605px;">
-                                                                            <asp:TextBox ID="txtPrimaryContact0" TabIndex="1" runat="server" placeholder='___-___-____' MaxLength="10" CssClass="clsmaskphone" Width="50%"></asp:TextBox>
-                                                                            <asp:TextBox ID="txtPrimaryContactExten0" TabIndex="1" runat="server" placeholder="Extension" class="clsmaskphoneexten" MaxLength="6" Width="34%"></asp:TextBox>
+                                                                            <asp:TextBox ID="txtPrimaryContact0" TabIndex="1" runat="server" placeholder='___-___-____' MaxLength="10" onkeypress="return isNumericKey(event);" CssClass="clsmaskphone" Width="50%"></asp:TextBox>
+                                                                            <asp:TextBox ID="txtPrimaryContactExten0" TabIndex="1" runat="server" placeholder="Extension" class="clsmaskphoneexten" onkeypress="return isNumericKey(event);" MaxLength="6" Width="34%"></asp:TextBox>
                                                                             <label>Phone Type</label>
                                                                             <select id="ddlPrimaryPhoneType0" name="nameddlPrimaryPhoneType0" cliendidmode="static" class="clsphonetype">
                                                                                 <option value="">Select</option>
@@ -1921,7 +1921,7 @@
                                                                     <td>
                                                                         <label>
                                                                             Fax</label><br />
-                                                                        <input type='text' id="txtPrimaryFax0" tabindex="1" name="nametxtPrimaryFax0" maxlength="15" clientidmode='Static' />
+                                                                        <input type='text' id="txtPrimaryFax0" tabindex="1" name="nametxtPrimaryFax0" maxlength="15" onkeypress="return isNumericKey(event);" clientidmode='Static' />
 
                                                                         <br />
                                                                     </td>
@@ -1974,8 +1974,8 @@
                                                                         </label>
                                                                         <br />
                                                                         <div class='newcontactdiv' style="width: 605px;">
-                                                                            <asp:TextBox ID="txtSecContact0" TabIndex="1" runat="server" MaxLength="10" placeholder='___-___-____' CssClass="clsmaskphone" Width="50%"></asp:TextBox>
-                                                                            <asp:TextBox ID="txtSecContactExten0" TabIndex="1" runat="server" MaxLength="6" class="clsmaskphoneexten" placeholder="Extension" Width="35%"></asp:TextBox>
+                                                                            <asp:TextBox ID="txtSecContact0" TabIndex="1" runat="server" MaxLength="10" onkeypress="return isNumericKey(event);" placeholder='___-___-____' CssClass="clsmaskphone" Width="50%"></asp:TextBox>
+                                                                            <asp:TextBox ID="txtSecContactExten0" TabIndex="1" runat="server" MaxLength="6" class="clsmaskphoneexten" onkeypress="return isNumericKey(event);" placeholder="Extension" Width="35%"></asp:TextBox>
                                                                             <label>Phone Type</label>
                                                                             <select id="ddlSecPhoneType0" name="nameddlSecPhoneType0" cliendidmode="static" class="clsphonetype">
                                                                                 <option value="">Select</option>
@@ -1993,7 +1993,7 @@
                                                                     <td>
                                                                         <label>
                                                                             Fax</label><br />
-                                                                        <input type='text' id="txtSecFax0" tabindex="1" name="nametxtSecFax0" maxlength="15" clientidmode='Static' />
+                                                                        <input type='text' id="txtSecFax0" tabindex="1" name="nametxtSecFax0" onkeypress="return isNumericKey(event);" maxlength="15" clientidmode='Static' />
                                                                         <br />
                                                                     </td>
                                                                 </tr>
@@ -2047,8 +2047,8 @@
                                                                         </label>
                                                                         <br />
                                                                         <div class='newcontactdiv' style="width: 605px;">
-                                                                            <asp:TextBox ID="txtAltContact0" TabIndex="1" runat="server" MaxLength="10" CssClass="clsmaskphone" placeholder='___-___-____' Width="50%"></asp:TextBox>
-                                                                            <asp:TextBox ID="txtAltContactExten0" TabIndex="1" runat="server" MaxLength="6" class="clsmaskphoneexten" placeholder="Extension" Width="32%"></asp:TextBox>
+                                                                            <asp:TextBox ID="txtAltContact0" TabIndex="1" runat="server" MaxLength="10" CssClass="clsmaskphone" onkeypress="return isNumericKey(event);" placeholder='___-___-____' Width="50%"></asp:TextBox>
+                                                                            <asp:TextBox ID="txtAltContactExten0" TabIndex="1" runat="server" MaxLength="6" class="clsmaskphoneexten" onkeypress="return isNumericKey(event);" placeholder="Extension" Width="32%"></asp:TextBox>
                                                                             <label>Phone Type</label>
                                                                             <select id="ddlAltPhoneType0" name="nameddlAltPhoneType0" cliendidmode="static" class="clsphonetype">
                                                                                 <option value="">Select</option>
@@ -2065,7 +2065,7 @@
                                                                     <td>
                                                                         <label>
                                                                             Fax</label><br />
-                                                                        <input type='text' id="txtAltFax0" tabindex="1" name="nametxtAltFax0" maxlength="15" clientidmode='Static' />
+                                                                        <input type='text' id="txtAltFax0" tabindex="1" name="nametxtAltFax0" onkeypress="return isNumericKey(event);" maxlength="15" clientidmode='Static' />
                                                                         <br />
                                                                     </td>
                                                                 </tr>

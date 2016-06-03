@@ -973,8 +973,6 @@ namespace JG_Prospect.Sr_App
 
             objvendor.vendor_name = txtVendorNm.Text;
 
-            objvendor.vendor_category_id = Convert.ToInt32(ddlVndrCategory.SelectedValue);
-
             string primaryEmail = "", fName = "", lName = "", contactNo = "", contactExten = "", BillingAddress = "";
             DataTable dtEmails = (DataTable)HttpContext.Current.Session["dtVendorEmail"];
             if (dtEmails != null && dtEmails.Rows.Count > 0)
@@ -1064,17 +1062,30 @@ namespace JG_Prospect.Sr_App
             objvendor.NotesTempID = NotesTempID;
 
             string strVendorCategory = "";// = new StringBuilder();
+            int defaultVendorCatId = 0;
+            int k = 0;
             foreach (System.Web.UI.WebControls.ListItem li in chkVendorCategoryList.Items)
             {
                 if (li.Selected == true)
                 {
+                    if (k == 0)
+                    {
+                        defaultVendorCatId = Convert.ToInt32(li.Value);
+                    }
                     strVendorCategory = strVendorCategory + li.Value + ",";
+                    k++;
                 }
             }
             string trimmedVendorcategory = strVendorCategory.TrimEnd(',');
 
             objvendor.VendorCategories = trimmedVendorcategory;
 
+            objvendor.vendor_category_id = Convert.ToInt32(ddlVndrCategory.SelectedValue == "Select" ? "0" : ddlVndrCategory.SelectedValue);
+
+            if (objvendor.vendor_category_id == 0)
+            {
+                objvendor.vendor_category_id = defaultVendorCatId;
+            }
             string strVendorSubCategory = "";// = new StringBuilder();
             foreach (System.Web.UI.WebControls.ListItem li in chkVendorSubcategoryList.Items)
             {
