@@ -501,8 +501,6 @@
                                                     <asp:ListItem Text="Admin" Value="Admin"></asp:ListItem>
                                                 </asp:DropDownList>
 
-                                                <label>
-                                                </label>
                                             </td>
 
                                             
@@ -537,7 +535,7 @@
                                             <td>
                                                 <asp:TextBox ID="txtAmount" runat="server" EnableViewState="true" onkeypress="return isNumericKey(event);"
                                                     MaxLength="20" ReadOnly="true"></asp:TextBox>
-                                                <asp:CheckBox ID="chkedit" runat="server" Text="Edit" />
+                                                <asp:CheckBox ID="chkedit" runat="server" Text="Edit"  onclick="if(this.checked) {ShowPopup();}" />
                                                 <label>
                                                     <asp:Label ID="lblAmount" runat="server" Text="Please Enter Amount" ForeColor="Red" CssClass="hide"></asp:Label>
                                                 </label>
@@ -583,7 +581,7 @@
                                             <td id="amountvalue" visible="false" runat="server">
                                                 <asp:TextBox ID="txtccamount" runat="server" EnableViewState="true" onkeypress="return isNumericKey(event);"
                                                     MaxLength="20" ReadOnly="true"></asp:TextBox>
-                                                <asp:CheckBox ID="CheckBox1" runat="server" Text="Edit" />
+                                                <asp:CheckBox ID="CheckBox1" runat="server" Text="Edit" onclick="if(this.checked) {ShowPopup();}" />
                                                 <label>
                                                     <asp:Label ID="Label14" runat="server" Text="Please Enter Amount" ForeColor="Red" CssClass="hide"></asp:Label>
                                                 </label>
@@ -922,10 +920,10 @@
 
 
 
-    <ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender1" runat="server" TargetControlID="Button1"
-        PopupControlID="Panel1" CancelControlID="btnCancelsold">
+    <ajaxToolkit:ModalPopupExtender ID="mpChangeAmount" runat="server" TargetControlID="Button1"
+        PopupControlID="pnlChangeAmt" CancelControlID="btnCancelsold">
     </ajaxToolkit:ModalPopupExtender>
-    <asp:Panel ID="Panel1" runat="server" BackColor="White" Height="" Width="500px"
+    <asp:Panel ID="pnlChangeAmt" runat="server" BackColor="White" Height="" Width="500px"
         Style="display: none; position: fixed;">
         <table style="border: Solid 3px #A33E3F; width: 100%; height: 100%; background: #fff;"
             cellpadding="0" cellspacing="0">
@@ -954,5 +952,161 @@
                 </td>
             </tr>
         </table>
+        <input type="hidden" id="hdnAmount" runat="server" />
     </asp:Panel>
+    <style type="text/css">
+        .style2
+        {
+            width: 100%;
+        }
+        #mask
+        {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            z-index: 4;
+            opacity: 0.4;
+            -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)"; /* first!*/
+            filter: alpha(opacity=40); /* second!*/
+            background-color: gray;
+            display: none;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <script type="text/javascript">
+        function ShowPopup() {
+
+            if (document.getElementById('<%=txtccamount.ClientID%>')) {
+                $('#<%=txtccamount.ClientID%>').attr('readonly', 'readonly');
+                $('#<%=txtChangeAmount.ClientID%>').focus();
+                if (document.getElementById('<%=txtccamount.ClientID %>').value != '') {
+                    document.getElementById('<%=txtChangeAmount.ClientID %>').value = document.getElementById('<%=txtccamount.ClientID %>').value;
+                }
+            }
+            if (document.getElementById('<%=txtAmount.ClientID%>')) {
+                $('#<%=txtAmount.ClientID%>').attr('readonly', 'readonly');
+                $('#<%=txtChangeAmount.ClientID%>').focus();
+                if (document.getElementById('<%=txtAmount.ClientID %>').value != '') {
+                    document.getElementById('<%=txtChangeAmount.ClientID %>').value = document.getElementById('<%=txtAmount.ClientID %>').value;
+                }
+            }
+            $('#mask').show();
+            $('#<%=pnlpopup.ClientID %>').show();
+        }
+        function HidePopup() {
+
+            $('#<%=txtChangeAmount.ClientID%>, #<%=txtadminCode.ClientID%>').val('');
+            $('#<%=lblError.ClientID%>').text('');
+            if (document.getElementById('<%=CheckBox1.ClientID %>')) { document.getElementById('<%=CheckBox1.ClientID %>').checked = false; }
+            if (document.getElementById('<%=chkedit.ClientID %>')) { document.getElementById('<%=chkedit.ClientID %>').checked = false; }
+            $('#mask').hide();
+            $('#<%=pnlpopup.ClientID %>').hide();
+        }
+        function IsExists(pagePath, dataString, textboxid, errorlableid) {
+            $.ajax({
+                type: "POST",
+                url: pagePath,
+                data: dataString,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                error:
+          function (XMLHttpRequest, textStatus, errorThrown) {
+              $(errorlableid).show();
+              $(errorlableid).html("Error");
+          },
+                success:
+          function (result) {
+              if (result != null) {
+                  var flg = (result.d);
+
+                  if (flg == "True") {
+                      $(errorlableid).show();
+                      $(errorlableid).html('Verified');
+                      if (document.getElementById('<%=txtccamount.ClientID %>')) { document.getElementById('<%=txtccamount.ClientID %>').value = document.getElementById('<%=txtChangeAmount.ClientID %>').value; }
+                      if (document.getElementById('<%=txtAmount.ClientID %>')) { document.getElementById('<%=txtAmount.ClientID %>').value = document.getElementById('<%=txtChangeAmount.ClientID %>').value; }
+                      document.getElementById('<%=hdnAmount.ClientID %>').value = document.getElementById('<%=txtChangeAmount.ClientID %>').value;
+                      
+                      $('#mask').hide();
+                      $('#<%=pnlpopup.ClientID %>').hide();
+                      if (document.getElementById('<%=CheckBox1.ClientID %>')) { document.getElementById('<%=CheckBox1.ClientID %>').checked = false; }
+                      if (document.getElementById('<%=chkedit.ClientID %>')) { document.getElementById('<%=chkedit.ClientID %>').checked = false; }
+                  }
+                  else {
+                      $(errorlableid).show();
+                      $(errorlableid).html('failure');
+                  }
+              }
+          }
+            });
+  }
+
+  function focuslost() {
+      if (document.getElementById('<%= txtChangeAmount.ClientID%>').value == '') {
+                alert('Please enter proposal cost!');
+                return false;
+            }
+            else if (document.getElementById('<%= txtadminCode.ClientID%>').value == '') {
+                alert('Please enter admin code!');
+                return false;
+            }
+            else {
+                var pagePath = "Custom.aspx/Exists";
+                var dataString = "{ 'value':'" + document.getElementById('<%= txtadminCode.ClientID%>').value + "' }";
+                var textboxid = "#<%= txtadminCode.ClientID%>";
+                var errorlableid = "#<%= lblError.ClientID%>";
+
+                IsExists(pagePath, dataString, textboxid, errorlableid);
+                return true;
+            }
+    }
+    </script>
+    <div id="mask">
+    </div>
+    <asp:Panel ID="pnlpopup" runat="server" BackColor="White" Height="175px" Width="300px"
+        Style="z-index: 999999; background-color: White; position: absolute; left: 35%;
+        top: 6%; border: outset 2px gray; padding: 5px; display: none">
+        <table width="100%" style="width: 100%; height: 100%;" cellpadding="0" cellspacing="5">
+            <tr style="background-color: #b5494c">
+                <td colspan="2" style="color: White; font-weight: bold; font-size: 1.2em; padding: 3px"
+                    align="center">
+                    Admin Verification <a id="closebtn" style="color: white; float: right; text-decoration: none"
+                        class="btnClose" href="#">X</a>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" style="width: 45%; text-align: center;">
+                    <asp:Label ID="LabelValidate" runat="server" />
+                </td>
+            </tr>
+            <tr>
+                <td align="right" style="width: 45%">
+                    Amount:
+                </td>
+                <td>
+                    <asp:TextBox ID="txtChangeAmount" runat="server" onkeypress="return isNumericKey(event);"
+                        MaxLength="20" Text=""></asp:TextBox>
+                </td>
+            </tr>
+            <tr>
+                <td align="right">
+                    Admin Password:
+                </td>
+                <td>
+                    <asp:TextBox ID="txtadminCode" runat="server" TextMode="Password" Text=""></asp:TextBox>
+                    <asp:Label ID="lblError" runat="server" Text=""></asp:Label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                    <input type="button" class="btnVerify" value="Verify" onclick="javascript: return focuslost();" />
+                    &nbsp;&nbsp;
+                    <input type="button" class="btnClose" value="Cancel" onclick="javascript:HidePopup();" />
+                </td>
+            </tr>
+        </table>
+    </asp:Panel>
+
 </asp:Content>

@@ -4155,6 +4155,7 @@ namespace JG_Prospect.Sr_App
                 lblPro.Visible = false;
                 txtPromotionalcode.Visible = false;
                 txtccamount.Text = ((Convert.ToDecimal(Session["CCtxtAmount"].ToString()) * 3 / 100) + Convert.ToDecimal(Session["CCtxtAmount"].ToString())).ToString("N2");
+                hdnAmount.Value = txtccamount.Text;
                 txtEmailId.Text = ViewState["customeremail"].ToString();
                 rdoChecking.Visible = false;
                 rdoSaving.Visible = false;
@@ -4183,7 +4184,7 @@ namespace JG_Prospect.Sr_App
                 btnsavesold.Style.Add("display", "block");
                 txtAmount.Text = Convert.ToDecimal(Session["CCtxtAmount"].ToString()).ToString("N2");
                 txtEmailId.Text = ViewState["customeremail"].ToString();
-
+                hdnAmount.Value = txtAmount.Text;
                 string[] FN = Session["Name"].ToString().Split(' ');
                 txtFirstName.Text = FN[0];
                 txtLastName.Text = FN[1];
@@ -4258,12 +4259,12 @@ namespace JG_Prospect.Sr_App
             {
 
                 txtPwd.Visible = false;
-                decimal amt = Convert.ToDecimal(Convert.ToDecimal(Session["CCtxtAmount"]).ToString("N2"));
+                decimal amt = Convert.ToDecimal(Convert.ToDecimal(hdnAmount.Value).ToString("N2"));
                 Payline payline = new Payline();
-                payline = payline.ECheckSale(txtFirstName.Text, txtRoutingNo.Text, txtBank.Text, ddlperbus.SelectedValue.ToString().ToLower(), (rdoChecking.Checked ? "checking" : "savings"), "WEB", "check", Convert.ToDecimal(Session["CCtxtAmount"]), ddlCurrency.SelectedValue.Trim());
+                payline = payline.ECheckSale(txtFirstName.Text, txtRoutingNo.Text, txtBank.Text, ddlperbus.SelectedValue.ToString().ToLower(), (rdoChecking.Checked ? "checking" : "savings"), "WEB", "check", amt, ddlCurrency.SelectedValue.Trim());
                 if (payline.IsApproved)
                 {
-                    bool res = ShutterPriceControlBLL.InsertTransaction(ShutterPriceControlBLL.Encode(txtCardNumber.Text.ToString()), ShutterPriceControlBLL.Encode(txtSecurityCode.Text.ToString()), txtFirstName.Text.ToString(), txtLastName.Text.ToString(), ccExpireMonth.Text.ToString() + ccExpireYear.Text.ToString(), Convert.ToDecimal(Session["CCtxtAmount"]), payline.IsApproved, payline.Message, payline.Response, payline.Request, customerId, productType, payline.AuthorizationCode, payline.AuthCaptureId, soldJobID);
+                    bool res = ShutterPriceControlBLL.InsertTransaction(ShutterPriceControlBLL.Encode(txtCardNumber.Text.ToString()), ShutterPriceControlBLL.Encode(txtSecurityCode.Text.ToString()), txtFirstName.Text.ToString(), txtLastName.Text.ToString(), ccExpireMonth.Text.ToString() + ccExpireYear.Text.ToString(), amt, payline.IsApproved, payline.Message, payline.Response, payline.Request, customerId, productType, payline.AuthorizationCode, payline.AuthCaptureId, soldJobID);
                     lblMsg.Text = "Success";
                     lblMsg.Visible = false;
                     //SoldTasks(true);
@@ -4275,7 +4276,7 @@ namespace JG_Prospect.Sr_App
                 }
                 else
                 {
-                    bool res = ShutterPriceControlBLL.InsertTransaction(ShutterPriceControlBLL.Encode(txtCardNumber.Text.ToString()), ShutterPriceControlBLL.Encode(txtSecurityCode.Text.ToString()), txtFirstName.Text.ToString(), txtLastName.Text.ToString(), ccExpireMonth.Text.ToString() + ccExpireYear.Text.ToString(), Convert.ToDecimal(Session["CCtxtAmount"]), payline.IsApproved, payline.Message, payline.Response, payline.Request, customerId, productType, payline.AuthorizationCode, payline.AuthCaptureId, soldJobID);
+                    bool res = ShutterPriceControlBLL.InsertTransaction(ShutterPriceControlBLL.Encode(txtCardNumber.Text.ToString()), ShutterPriceControlBLL.Encode(txtSecurityCode.Text.ToString()), txtFirstName.Text.ToString(), txtLastName.Text.ToString(), ccExpireMonth.Text.ToString() + ccExpireYear.Text.ToString(), amt, payline.IsApproved, payline.Message, payline.Response, payline.Request, customerId, productType, payline.AuthorizationCode, payline.AuthCaptureId, soldJobID);
                     lblMsg.Text = "Error";
                     lblMsg.Visible = false;
                     txtPromotionalcode.Visible = false;
@@ -4384,15 +4385,15 @@ namespace JG_Prospect.Sr_App
 
         protected void btnSaveSold2_Click(object sender, EventArgs e)
         {
-            decimal amt = Convert.ToDecimal(Convert.ToDecimal(Session["CCtxtAmount"]).ToString("N2"));
+            decimal amt = Convert.ToDecimal(Convert.ToDecimal(hdnAmount.Value).ToString("N2"));
             if (ddlpaymode.SelectedIndex == 2)
             {
 
                 txtPwd.Visible = false;
-                
-                amt = Convert.ToDecimal(((Convert.ToDecimal(Session["CCtxtAmount"].ToString()) * 3 / 100) + Convert.ToDecimal(Session["CCtxtAmount"].ToString())).ToString("N2"));
+
+                //amt = Convert.ToDecimal(Convert.ToDecimal(Session["CCtxtAmount"]).ToString("N2")); //Convert.ToDecimal(((Convert.ToDecimal(Session["CCtxtAmount"].ToString()) * 3 / 100) + Convert.ToDecimal(Session["CCtxtAmount"].ToString())).ToString("N2"));
                 Payline payline = new Payline();
-                payline = payline.Sale(txtFirstName.Text.ToString(), txtLastName.Text.ToString(), txtCardNumber.Text.ToString(), ccExpireMonth.Text.ToString(), ccExpireYear.Text.ToString(), txtSecurityCode.Text.ToString(), Convert.ToDecimal(Session["CCtxtAmount"]), ddlCurrency.SelectedValue.Trim(), txtAddress.InnerText.Trim(), Convert.ToInt32(txtZip.Text.Trim()), ddlCity.SelectedValue.Trim(), ddlState.SelectedValue.Trim(), ddlCountry.SelectedValue.Trim());
+                payline = payline.Sale(txtFirstName.Text.ToString(), txtLastName.Text.ToString(), txtCardNumber.Text.ToString(), ccExpireMonth.Text.ToString(), ccExpireYear.Text.ToString(), txtSecurityCode.Text.ToString(), amt, ddlCurrency.SelectedValue.Trim(), txtAddress.InnerText.Trim(), Convert.ToInt32(txtZip.Text.Trim()), ddlCity.SelectedValue.Trim(), ddlState.SelectedValue.Trim(), ddlCountry.SelectedValue.Trim());
                 if (payline.IsApproved)
                 {
                     //AuthorizationCode, PaylineTransectionId
@@ -4402,7 +4403,7 @@ namespace JG_Prospect.Sr_App
                     lblMsg.Visible = false;
                     //SoldTasks(true);
                     txtPromotionalcode.Visible = false;
-                    bool res = ShutterPriceControlBLL.InsertTransaction(ShutterPriceControlBLL.Encode(txtCardNumber.Text.ToString()), ShutterPriceControlBLL.Encode(txtSecurityCode.Text.ToString()), txtFirstName.Text.ToString(), txtLastName.Text.ToString(), ccExpireMonth.Text.ToString() + ccExpireYear.Text.ToString(), Convert.ToDecimal(Session["CCtxtAmount"]), payline.IsApproved, payline.Message, payline.Response, payline.Request, customerId, productType, payline.AuthorizationCode, payline.AuthCaptureId, soldJobID);
+                    bool res = ShutterPriceControlBLL.InsertTransaction(ShutterPriceControlBLL.Encode(txtCardNumber.Text.ToString()), ShutterPriceControlBLL.Encode(txtSecurityCode.Text.ToString()), txtFirstName.Text.ToString(), txtLastName.Text.ToString(), ccExpireMonth.Text.ToString() + ccExpireYear.Text.ToString(), amt, payline.IsApproved, payline.Message, payline.Response, payline.Request, customerId, productType, payline.AuthorizationCode, payline.AuthCaptureId, soldJobID);
                     ClientScript.RegisterStartupScript(this.GetType(), "onload", "alert('Payment Transaction Successful.');", true);
                     //mp_sold.Show();
                     bindSoldJobs();
@@ -4410,7 +4411,7 @@ namespace JG_Prospect.Sr_App
                 }
                 else
                 {
-                    bool res = ShutterPriceControlBLL.InsertTransaction(ShutterPriceControlBLL.Encode(txtCardNumber.Text.ToString()), ShutterPriceControlBLL.Encode(txtSecurityCode.Text.ToString()), txtFirstName.Text.ToString(), txtLastName.Text.ToString(), ccExpireMonth.Text.ToString() + ccExpireYear.Text.ToString(), Convert.ToDecimal(Session["CCtxtAmount"]), payline.IsApproved, payline.Message, payline.Response, payline.Request, customerId, productType, payline.AuthorizationCode, payline.AuthCaptureId, soldJobID);
+                    bool res = ShutterPriceControlBLL.InsertTransaction(ShutterPriceControlBLL.Encode(txtCardNumber.Text.ToString()), ShutterPriceControlBLL.Encode(txtSecurityCode.Text.ToString()), txtFirstName.Text.ToString(), txtLastName.Text.ToString(), ccExpireMonth.Text.ToString() + ccExpireYear.Text.ToString(), amt, payline.IsApproved, payline.Message, payline.Response, payline.Request, customerId, productType, payline.AuthorizationCode, payline.AuthCaptureId, soldJobID);
                     lblMsg.Text = "Error";
                     lblMsg.Visible = false;
                     txtPromotionalcode.Visible = false;
