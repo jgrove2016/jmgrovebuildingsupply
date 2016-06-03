@@ -1122,7 +1122,7 @@ namespace JG_Prospect.DAL
             }
         }
 
-        public bool SaveSku(string skuName)
+        public bool SaveSku(clsSku objsku)
         {
             try
             {
@@ -1133,7 +1133,14 @@ namespace JG_Prospect.DAL
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Connection = con;
-                        cmd.Parameters.AddWithValue("@skuName", skuName);
+                        cmd.Parameters.AddWithValue("@skuName", objsku.SkuName);
+                        cmd.Parameters.AddWithValue("@TotalCost", objsku.TotalCost);
+                        cmd.Parameters.AddWithValue("@UOM", objsku.UOM);
+                        cmd.Parameters.AddWithValue("@Unit", objsku.Unit);
+                        cmd.Parameters.AddWithValue("@CostDescription", objsku.CostDescription);
+                        cmd.Parameters.AddWithValue("@VendorPart", objsku.VendorPart);
+                        cmd.Parameters.AddWithValue("@Model", objsku.Model);
+                        cmd.Parameters.AddWithValue("@Image", objsku.Image);
                         cmd.Parameters.AddWithValue("@action", "1");
                         con.Open();
                         cmd.ExecuteNonQuery();
@@ -1166,7 +1173,7 @@ namespace JG_Prospect.DAL
             }
         }
 
-        public bool UpdateSku(int skuId, string skuName)
+        public bool UpdateSku(clsSku objsku)
         {
             try
             {
@@ -1177,8 +1184,15 @@ namespace JG_Prospect.DAL
                     {
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.Connection = con;
-                        cmd.Parameters.AddWithValue("@Id", skuId);
-                        cmd.Parameters.AddWithValue("@skuName", skuName);
+                        cmd.Parameters.AddWithValue("@Id", objsku.Id);
+                        cmd.Parameters.AddWithValue("@skuName", objsku.SkuName);
+                        cmd.Parameters.AddWithValue("@TotalCost", objsku.TotalCost);
+                        cmd.Parameters.AddWithValue("@UOM", objsku.UOM);
+                        cmd.Parameters.AddWithValue("@Unit", objsku.Unit);
+                        cmd.Parameters.AddWithValue("@CostDescription", objsku.CostDescription);
+                        cmd.Parameters.AddWithValue("@VendorPart", objsku.VendorPart);
+                        cmd.Parameters.AddWithValue("@Model", objsku.Model);
+                        cmd.Parameters.AddWithValue("@Image", objsku.Image);
                         cmd.Parameters.AddWithValue("@action", "3");
                         con.Open();
                         cmd.ExecuteNonQuery();
@@ -1217,6 +1231,190 @@ namespace JG_Prospect.DAL
             {
                 return false;
             }
+        }
+
+
+        public DataSet GetSupplierCatogriesList()
+        {
+            try
+            {
+                {
+                    SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                    DS = new DataSet();
+                    DbCommand command = database.GetStoredProcCommand("GetSupplierCategoriesList");
+                    command.CommandType = CommandType.StoredProcedure;
+                    DS = database.ExecuteDataSet(command);
+                    return DS;
+                }
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public bool SaveSupSubCat(clsSupplierCategory obj)
+        {
+            try
+            {
+                string consString = ConfigurationManager.ConnectionStrings[DBConstants.CONFIG_CONNECTION_STRING_KEY].ConnectionString;
+                using (SqlConnection con = new SqlConnection(consString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_Supplier"))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Connection = con;
+                        cmd.Parameters.AddWithValue("@SupplierId", obj.SupplierId);
+                        cmd.Parameters.AddWithValue("@SupplierSubCatName", obj.SupplierSubCatName);
+                        cmd.Parameters.AddWithValue("@action", "1");
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool UpdateSupSubCat(clsSupplierCategory obj)
+        {
+            try
+            {
+                string consString = ConfigurationManager.ConnectionStrings[DBConstants.CONFIG_CONNECTION_STRING_KEY].ConnectionString;
+                using (SqlConnection con = new SqlConnection(consString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_Supplier"))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Connection = con;
+                        cmd.Parameters.AddWithValue("@SupplierId", obj.SupplierId);
+                        cmd.Parameters.AddWithValue("@SupplierSubCatId", obj.SupplierSubCatId);
+                        cmd.Parameters.AddWithValue("@SupplierSubCatName", obj.SupplierSubCatName);
+                        cmd.Parameters.AddWithValue("@action", "2");
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool DeleteSupSubCat(clsSupplierCategory objNewSupSubCat)
+        {
+            try
+            {
+                string consString = ConfigurationManager.ConnectionStrings[DBConstants.CONFIG_CONNECTION_STRING_KEY].ConnectionString;
+                using (SqlConnection con = new SqlConnection(consString))
+                {
+                    using (SqlCommand cmd = new SqlCommand("sp_Supplier"))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Connection = con;
+                        cmd.Parameters.AddWithValue("@SupplierSubCatId", objNewSupSubCat.SupplierSubCatId);
+                        cmd.Parameters.AddWithValue("@action", "3");
+                        con.Open();
+                        cmd.ExecuteNonQuery();
+                        con.Close();
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public DataSet CheckDuplicateSource(string Source)
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DataSet ds = new DataSet();
+                    DbCommand command = database.GetStoredProcCommand("UDP_CheckDuplicateSourceProc");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@Source", DbType.String, Source);
+                    ds = database.ExecuteDataSet(command);
+                    return ds;
+                }
+            }
+
+            catch (Exception ex)
+            {
+                return null;
+
+            }
+        }
+
+        public DataSet getSource()
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DataSet ds = new DataSet();
+                    DbCommand command = database.GetStoredProcCommand("UDP_GetSourceProc");
+                    command.CommandType = CommandType.StoredProcedure;
+                    ds = database.ExecuteDataSet(command);
+                    return ds;
+                }
+            }
+
+            catch (Exception ex)
+            {
+                return null;
+
+            }
+        }
+        public DataSet AddSource(string Source)
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DataSet ds = new DataSet();
+                    DbCommand command = database.GetStoredProcCommand("UDP_AddSourceProc");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@Source", DbType.String, Source);
+                    ds = database.ExecuteDataSet(command);
+                    return ds;
+                }
+            }
+
+            catch (Exception ex)
+            {
+                return null;
+
+            }
+        }
+
+        public void DeleteSource(string Source)
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("UDP_DeleteSourceProc");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@Source", DbType.String, Source);
+                    database.ExecuteScalar(command);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
         }
 
     }

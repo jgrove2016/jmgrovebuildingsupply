@@ -244,13 +244,13 @@ namespace JG_Prospect.BLL
             return VendorDAL.Instance.FetchCategories(VendorId);
         }
 
-        public bool SaveSku(string skuName)
+        public bool SaveSku(clsSku objsku)
         {
-            return VendorDAL.Instance.SaveSku(skuName);
+            return VendorDAL.Instance.SaveSku(objsku);
         }
-        public bool UpdateSku(int skuId,string skuName)
+        public bool UpdateSku(clsSku objsku)
         {
-            return VendorDAL.Instance.UpdateSku(skuId,skuName);
+            return VendorDAL.Instance.UpdateSku(objsku);
         }
 
 
@@ -262,6 +262,45 @@ namespace JG_Prospect.BLL
         public bool DeleteSku(int skuId)
         {
             return VendorDAL.Instance.DeleteSku(skuId);
+        }
+
+        public DataSet GetSupplierCatogriesList()
+        {
+            return VendorDAL.Instance.GetSupplierCatogriesList();
+        }
+
+        public bool SaveSupSubCat(clsSupplierCategory obj)
+        {
+            return VendorDAL.Instance.SaveSupSubCat(obj);
+        }
+        public bool UpdateSupSubCat(clsSupplierCategory obj)
+        {
+            return VendorDAL.Instance.UpdateSupSubCat(obj);
+        }
+
+        public bool DeleteSupSubCat(clsSupplierCategory objNewSupSubCat)
+        {
+            return VendorDAL.Instance.DeleteSupSubCat(objNewSupSubCat);
+        }
+
+        public DataSet CheckSource(string Source)
+        {
+            return VendorDAL.Instance.CheckDuplicateSource(Source);
+        }
+
+        public DataSet AddSource(string Source)
+        {
+            return VendorDAL.Instance.AddSource(Source);
+        }
+
+        public DataSet GetSource()
+        {
+            return VendorDAL.Instance.getSource();
+        }
+
+        public void DeleteSource(string Source)
+        {
+            VendorDAL.Instance.DeleteSource(Source);
         }
     }
 

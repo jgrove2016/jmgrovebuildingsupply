@@ -99,6 +99,7 @@
     <Compile Include="Logger\LogManager.cs" />
     <Compile Include="modal\AttachedQuotes.cs" />
     <Compile Include="modal\Availability.cs" />
+    <Compile Include="modal\clsSku.cs" />
     <Compile Include="modal\Customer.cs" />
     <Compile Include="modal\CustomerDocument.cs" />
     <Compile Include="modal\CustomerLocationPics.cs" />
@@ -111,6 +112,7 @@
     <Compile Include="modal\shutters.cs" />
     <Compile Include="modal\Shutter_accessories.cs" />
     <Compile Include="modal\SrSalesReport.cs" />
+    <Compile Include="modal\clsSupplierCategory.cs" />
     <Compile Include="modal\TimeAndMaterial.cs" />
     <Compile Include="modal\user.cs" />
     <Compile Include="modal\Vendor.cs" />

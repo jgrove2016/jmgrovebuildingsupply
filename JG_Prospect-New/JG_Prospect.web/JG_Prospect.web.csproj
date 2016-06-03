@@ -555,6 +555,7 @@
     <Content Include="Sr_App\s.aspx" />
     <Content Include="Sr_App\ShowResources.aspx" />
     <Content Include="Sr_App\shutter-work-order.html" />
+    <Content Include="Sr_App\skuImages\ic-nav.png" />
     <Content Include="Sr_App\Soffit.aspx" />
     <Content Include="Sr_App\Sold_popup.aspx" />
     <Content Include="Sr_App\SrAnnualCalendar.aspx" />
@@ -1615,7 +1616,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>False</AutoAssignPort>
           <DevelopmentServerPort>61396</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

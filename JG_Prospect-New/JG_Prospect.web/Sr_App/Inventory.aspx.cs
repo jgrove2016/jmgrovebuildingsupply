@@ -8,6 +8,7 @@ using System.Text;
 using System.Data;
 using JG_Prospect.BLL;
 using JG_Prospect.Common.modal;
+using System.IO;
 
 namespace JG_Prospect.Sr_App
 {
@@ -26,6 +27,7 @@ namespace JG_Prospect.Sr_App
                 {
                     string Mtype = GetManufacturerType();
                     GetInventoryCategoryList(Mtype);
+                    GetSupplierCategoryList();
                     BindSku();
                 }
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "BindEvent", "bindClickEvent();", true);
@@ -170,6 +172,84 @@ namespace JG_Prospect.Sr_App
             {
             }
             ltrInventoryCategoryList.Text = str.ToString();
+        }
+
+        public void GetSupplierCategoryList()
+        {
+            StringBuilder str = new StringBuilder();
+            try
+            {
+                DataSet ds = VendorBLL.Instance.GetSupplierCatogriesList();
+                List<SupplierCategory> lstSupplierCategory = new List<SupplierCategory>();
+                List<SupplierSubCategory> lstSupplierSubCategory = new List<SupplierSubCategory>();
+                if (ds != null)
+                {
+                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                    {
+                        SupplierCategory obj = new SupplierCategory();
+                        DataRow dr = ds.Tables[0].Rows[i];
+                        int SupplierCatId = Convert.ToInt32(dr["Id"] == DBNull.Value ? "0" : dr["Id"].ToString());
+                        string SupplierCatName = dr["SupplierCategory"].ToString().Trim();
+                        //SupplierCatName = SupplierCatName.Replace(System.Environment.NewLine, string.Empty);
+                        obj.SupplierCategoryId = SupplierCatId;
+                        obj.SupplierCategoryName = SupplierCatName;
+                        lstSupplierCategory.Add(obj);
+                    }
+                    for (int i = 0; i < ds.Tables[1].Rows.Count; i++)
+                    {
+
+                        SupplierSubCategory obj = new SupplierSubCategory();
+                        DataRow dr = ds.Tables[1].Rows[i];
+                        int SupplierSubCatId = Convert.ToInt32(dr["Id"] == DBNull.Value ? "0" : dr["Id"].ToString());
+                        string SupplierSubCatName = dr["SupplierSubCategory"].ToString().Trim();
+                        int SupplierCatId = Convert.ToInt32(dr["SupplierCategoryId"] == DBNull.Value ? "0" : dr["SupplierCategoryId"].ToString());
+                        //SupplierCatName = SupplierCatName.Replace(System.Environment.NewLine, string.Empty);
+
+                        obj.SupplierSubCategoryId = SupplierSubCatId;
+                        obj.SupplierSubCategoryName = SupplierSubCatName;
+                        obj.SupplierCategoryId = SupplierCatId;
+                        lstSupplierSubCategory.Add(obj);
+                    }
+
+                }
+
+                if (lstSupplierCategory.Count > 0)
+                {
+                    str.Append("<ul class=\"clearfix inventory_main\">");
+                    foreach (var item in lstSupplierCategory)
+                    {
+                        int isCate = lstSupplierSubCategory.Where(a => a.SupplierCategoryId == item.SupplierCategoryId).Count();
+
+                        str.Append("<li>");
+                        str.AppendFormat("<a href=\"javascript:;\"><span class=\"text\" onclick=\"SupplierClick(this,'{0}','{1}')\">{1} ({2})</span><span class=\"buttons\"><i class=\"\" onclick=\"AddSupSubCat(this,'{0}','{1}')\">Add</i></span></a>", item.SupplierCategoryId, item.SupplierCategoryName, isCate);
+
+                        if (isCate > 0)
+                        {
+                            string productClass = "";
+                            if (ActiveProductID == item.SupplierCategoryId)
+                            {
+                                productClass = "active";
+                            }
+                            str.AppendFormat("<ul class=\"clearfix inventory_cat {0}\">", productClass);
+                            foreach (var cat in lstSupplierSubCategory.Where(a => a.SupplierCategoryId == item.SupplierCategoryId))
+                            {
+                                // int isSubCate = lstVendorSubCat.Where(a => a.VendorCategoryId == cat.VendorCategoryId).Count();
+                                str.Append("<li>");
+                                str.AppendFormat("<a href=\"javascript:;\"><span class=\"text\" onclick=\"supSubCatClick(this,'{0}','{1}','{2}','{3}')\">{3}</span><span class=\"buttons\"><i class=\"\" onclick=\"EditSupSubCat(this,'{0}','{1}','{2}','{3}')\">Edit</i><i class=\"\" onclick=\"DeleteSupSubCat(this,'{0}','{1}','{2}','{3}')\">Delete</i></span></a>", cat.SupplierCategoryId, item.SupplierCategoryName, cat.SupplierSubCategoryId, cat.SupplierSubCategoryName);
+                                str.Append("</li>");
+                            }
+                            str.Append("</ul>");
+                        }
+                        str.Append("</li>");
+                    }
+                    str.Append("</ul>");
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            ltrSupplierCategory.Text = str.ToString();
+
         }
 
         protected void rdoRetailWholesale_CheckedChanged(object sender, EventArgs e)
@@ -340,6 +420,7 @@ namespace JG_Prospect.Sr_App
         }
 
 
+
         public int ActiveProductID
         {
             get
@@ -374,28 +455,18 @@ namespace JG_Prospect.Sr_App
             }
         }
 
-        protected void btnAddsku_Click(object sender, EventArgs e)
+        public void ResetSku()
         {
-            if (btnAddsku.Text == "Add")
-            {
-                bool res = VendorBLL.Instance.SaveSku(txtsku.Text);
-                if (res)
-                {
-                    lblres.Text = "Added/ Updated Successfully";
-                    lblres.Visible = true;
-                    BindSku();
-                }
-            }
-            else if (btnAddsku.Text == "Update")
-            {
-                bool res = VendorBLL.Instance.UpdateSku(Convert.ToInt16(lblSkuId.Text), txtsku.Text);
-                if (res)
-                {
-                    lblres.Text = "Added/ Updated Successfully";
-                    lblres.Visible = true;
-                    BindSku();
-                }
-            }
+            txtJGSku.Text = "";
+            txtTotalCost.Text = "";
+            txtUOM.Text = null;
+            txtUnit.Text = null;
+            txtCostDesc.Text = null;
+            txtVendorPart.Text = null;
+            txtModel.Text = null;
+            skuImg.ImageUrl = null;
+            skuImg.Visible = false;
+            btnAddsku.Text = "Add";
         }
 
         public void BindSku()
@@ -403,36 +474,209 @@ namespace JG_Prospect.Sr_App
             DataSet ds = VendorBLL.Instance.GetSku();
             if (ds.Tables[0].Rows.Count > 0)
             {
-                ddlskuName.DataSource = ds.Tables[0];
-                ddlskuName.DataTextField = "skuName";
-                ddlskuName.DataValueField = "Id";
-                ddlskuName.DataBind();
-                ddlskuName.Items.Insert(0, new System.Web.UI.WebControls.ListItem("-- Select --", "0"));
+                grdSku.DataSource = ds.Tables[0];
+                grdSku.DataBind();
+                grdSkuInfo.DataSource = ds.Tables[0];
+                grdSkuInfo.DataBind();
+                
             }
             else
             {
-                ddlskuName.Items.Insert(0, new System.Web.UI.WebControls.ListItem("-- Select --", "0"));
+                grdSku.DataSource = null;
+                grdSku.DataBind();
+                grdSkuInfo.DataSource = null;
+                grdSkuInfo.DataBind();
+            }
+        }
+        protected void btnAddsku_Click(object sender, EventArgs e)
+        {
+            clsSku objsku = new clsSku();
+
+            objsku.SkuName = txtJGSku.Text;
+            objsku.TotalCost = Convert.ToSingle(txtTotalCost.Text == "" ? "0" : txtTotalCost.Text);
+            objsku.UOM = txtUOM.Text;
+            objsku.Unit = Convert.ToSingle(txtUnit.Text == "" ? "0" : txtUnit.Text);
+            objsku.CostDescription = txtCostDesc.Text;
+            objsku.VendorPart = txtVendorPart.Text;
+            objsku.Model = txtModel.Text;
+            string filename = "";
+
+            if (fupSkuImage.HasFile)
+            {
+                filename = Path.GetFileName(fupSkuImage.FileName);
+                fupSkuImage.SaveAs(Server.MapPath("~/Sr_App/skuImages/") + filename);
+            }
+            else
+            {
+                if (hdnImageUrl.Value.ToString() != "")
+                {
+                    string url = hdnImageUrl.Value.ToString();
+                    int idx = url.LastIndexOf('/');
+                    //Console.WriteLine(s.Substring(0, idx)); // "My. name. is Bond"
+                    //Console.WriteLine(s.Substring(idx + 1)); // "_James Bond!"
+                    url = url.Substring(idx + 1);
+                    filename = url;
+                }
+
+            }
+            objsku.Image = filename;
+
+            if (btnAddsku.Text == "Add")
+            {
+                bool res = VendorBLL.Instance.SaveSku(objsku);
+                if (res)
+                {
+                    lblres.Text = "Added/ Updated Successfully";
+                    lblres.Visible = true;
+                    ResetSku();
+                    BindSku();
+                }
+            }
+            else if (btnAddsku.Text == "Update")
+            {
+                objsku.Id = Convert.ToInt16(lblSkuId.Text);
+                bool res = VendorBLL.Instance.UpdateSku(objsku);
+                if (res)
+                {
+                    lblres.Text = "Added/ Updated Successfully";
+                    lblres.Visible = true;
+                    ResetSku();
+                    BindSku();
+                }
+            }
+        }
+        protected void grdSku_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            Control ctrl = e.CommandSource as Control;
+            if (e.CommandName == "EditSku")
+            {
+                GridViewRow row = ctrl.Parent.NamingContainer as GridViewRow;
+                int id = Convert.ToInt16(e.CommandArgument);
+                lblSkuId.Text = id.ToString();
+                Label lblskuName = (Label)row.FindControl("lblskuName");
+                Label lblTotalCost = (Label)row.FindControl("lblTotalCost");
+                Label lblUOM = (Label)row.FindControl("lblUOM");
+                Label lblUnit = (Label)row.FindControl("lblUnit");
+                Label lblCostDescr = (Label)row.FindControl("lblCostDesc");
+                Label lblVendorParts = (Label)row.FindControl("lblVendorPart");
+                Label lblModel = (Label)row.FindControl("lblModel");
+                Image skuimage = (Image)row.FindControl("skuImg");
+                hdnImageUrl.Value = skuimage.ImageUrl;
+                if (hdnImageUrl.Value.ToString() != "")
+                {
+                    skuImg.Visible = true;
+                    skuImg.ImageUrl = hdnImageUrl.Value.ToString();
+                }
+                txtJGSku.Text = lblskuName.Text;
+                txtTotalCost.Text = lblTotalCost.Text;
+                txtUOM.Text = lblUOM.Text;
+                txtUnit.Text = lblUnit.Text;
+                txtCostDesc.Text = lblCostDescr.Text;
+                txtVendorPart.Text = lblVendorParts.Text;
+                txtModel.Text = lblModel.Text;
+                btnAddsku.Text = "Update";
+            }
+            else if (e.CommandName == "DeleteSku")
+            {
+                int id = Convert.ToInt16(e.CommandArgument);
+                bool res = VendorBLL.Instance.DeleteSku(id);
+                if (res)
+                {
+                    lblDelRes.Text = "Deleted Successfully";
+                    lblDelRes.Visible = true;
+                    BindSku();
+                }
             }
         }
 
+
         protected void btnEditsku_Click(object sender, EventArgs e)
         {
-            txtsku.Text = ddlskuName.SelectedItem.Text;
-            lblSkuId.Text = ddlskuName.SelectedValue.ToString();
-            btnAddsku.Text = "Update";
+            //txtsku.Text = ddlskuName.SelectedItem.Text;
+            //lblSkuId.Text = ddlskuName.SelectedValue.ToString();
+            //btnAddsku.Text = "Update";
         }
 
         protected void btnDeleteSku_Click(object sender, EventArgs e)
         {
-            int id =Convert.ToInt16(ddlskuName.SelectedValue.ToString());
-            bool res = VendorBLL.Instance.DeleteSku(id);
+            //int id = Convert.ToInt16(ddlskuName.SelectedValue.ToString());
+            //bool res = VendorBLL.Instance.DeleteSku(id);
+            //if (res)
+            //{
+            //    lblDelRes.Text = "Deleted Successfully";
+            //    lblDelRes.Visible = true;
+            //    BindSku();
+            //}
+        }
+        protected void btnSaveSupplierSubCat_Click(object sender, EventArgs e)
+        {
+            string SuppId = hdnSupplierCatId.Value.ToString();
+            string SupSubcatName = txtSupSubCatName.Text;
+
+            clsSupplierCategory objNewSupSubCat = new clsSupplierCategory();
+
+            objNewSupSubCat.SupplierId = SuppId;
+            objNewSupSubCat.SupplierSubCatName = SupSubcatName;
+
+            bool res = VendorBLL.Instance.SaveSupSubCat(objNewSupSubCat);
             if (res)
             {
-                lblDelRes.Text = "Deleted Successfully";
-                lblDelRes.Visible = true;
-                BindSku();
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Supplier Sub Category Added Successfully');", true);
+                GetSupplierCategoryList();
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Unable to Add Supplier Sub Category');", true);
             }
         }
+        protected void btnUpdateSupplierSubCat_Click(object sender, EventArgs e)
+        {
+            string SuppId = hdnSupplierCatId.Value.ToString();
+            string SuppSubCatId = hdnSupSubCatId.Value.ToString();
+            string SupSubcatName = txtSupSubCatName.Text;
+
+            clsSupplierCategory objNewSupSubCat = new clsSupplierCategory();
+
+            objNewSupSubCat.SupplierId = SuppId;
+            objNewSupSubCat.SupplierSubCatId = SuppSubCatId;
+            objNewSupSubCat.SupplierSubCatName = SupSubcatName;
+
+            bool res = VendorBLL.Instance.UpdateSupSubCat(objNewSupSubCat);
+            if (res)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Supplier Sub Category Updated Successfully');", true);
+                GetSupplierCategoryList();
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Unable to Update Supplier Sub Category');", true);
+            }
+        }
+        protected void btnDeleteSupplierSubCat_Click(object sender, EventArgs e)
+        {
+
+            string SuppSubCatId = hdnSupSubCatId.Value.ToString();
+
+
+            clsSupplierCategory objNewSupSubCat = new clsSupplierCategory();
+
+
+            objNewSupSubCat.SupplierSubCatId = SuppSubCatId;
+
+
+            bool res = VendorBLL.Instance.DeleteSupSubCat(objNewSupSubCat);
+            if (res)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Supplier Sub Category Deleted Successfully');", true);
+                GetSupplierCategoryList();
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Unable to Delete Supplier Sub Category');", true);
+            }
+        }
+
+
 
     }
 
@@ -463,5 +707,17 @@ namespace JG_Prospect.Sr_App
         public string VendorSubCategoryName { get; set; }
         public bool IsRetail_Wholesale { get; set; }
         public bool IsManufacturer { get; set; }
+    }
+
+    public class SupplierCategory
+    {
+        public int SupplierCategoryId { get; set; }
+        public string SupplierCategoryName { get; set; }
+    }
+    public class SupplierSubCategory
+    {
+        public int SupplierSubCategoryId { get; set; }
+        public string SupplierSubCategoryName { get; set; }
+        public int SupplierCategoryId { get; set; }
     }
 }

@@ -95,8 +95,31 @@
             filter: alpha(opacity=80);
             overflow-y: hidden;
         }
+
+        .btnnotes {
+            background-size: cover !important;
+            width: 250px;
+        }
+
+        .popup_heading {
+            border-radius: 0px 0px;
+            background: #A33E3F;
+            margin-bottom: 10px;
+        }
+
+        .categorylist_Heading {
+            width: 32.33%;
+            float: left;
+            margin-left: 1%;
+        }
+
+            .categorylist_Heading h4 {
+                background: #ddd;
+                color: #000;
+            }
     </style>
     <script type="text/javascript">
+
         function ClosePopup() {
             document.getElementById('light').style.display = 'none';
             document.getElementById('fade').style.display = 'none';
@@ -140,8 +163,8 @@
                                             "<option value='Others'>Others</option>" +
                                             "</select></td>" +
                                             "<td><div class='newcontactdiv'>" +
-                                            "<input TabIndex='1' type='text' id='txt" + EmailType + "Contact" + subCount + "' name='nametxt" + EmailType + "Contact" + subCount + "' style='width:50%' class='clsmaskphone' maxlength='10' placeholder='___-___-____' clientidmode='Static' />" +
-                                            "&nbsp;<input TabIndex='1' type='text' id='txt" + EmailType + "ContactExten" + subCount + "' name='nametxt" + EmailType + "ContactExten" + subCount + "' style='width:35%' maxlength='6' class='clsmaskphoneexten' placeholder='Extension' clientidmode='Static' />" +
+                                            "<input TabIndex='1' type='text' id='txt" + EmailType + "Contact" + subCount + "' name='nametxt" + EmailType + "Contact" + subCount + "' style='width:50%' onkeypress='return isNumericKey(event);' class='clsmaskphone' maxlength='10' placeholder='___-___-____' clientidmode='Static' />" +
+                                            "&nbsp;<input TabIndex='1' type='text' id='txt" + EmailType + "ContactExten" + subCount + "' name='nametxt" + EmailType + "ContactExten" + subCount + "' style='width:35%' onkeypress='return isNumericKey(event);' maxlength='6' class='clsmaskphoneexten' placeholder='Extension' clientidmode='Static' />" +
                                             "&nbsp;<label> Phone Type</label>" +
                                             "<select id='ddl" + EmailType + "PhoneType" + subCount + "' name='nameddl" + EmailType + "PhoneType" + subCount + "' class='clsphonetype' cliendidmode='static'>" +
                                                 "<option value=''>Select</option>" +
@@ -151,7 +174,7 @@
                                                 "<option value='Alt'>Alt. Phone #</option>" +
                                             "</select>" +
                                             "<a TabIndex='1' onclick='AddContact(this)' style='cursor:pointer' data-type='" + subCount + "' data-EmailType='" + EmailType + "' clientidmode='Static'>Add Contact</a><br/></div></td>" +
-                                            " <td><label>Fax</label><br /><input type='text' id='txt" + EmailType + "Fax" + subCount + "' name='nametxt" + EmailType + "Fax" + subCount + "' maxlength='15' clientidmode='Static'><br /></td>" +
+                                            " <td><label>Fax</label><br /><input type='text' id='txt" + EmailType + "Fax" + subCount + "' name='nametxt" + EmailType + "Fax" + subCount + "' maxlength='15' onkeypress='return isNumericKey(event);' clientidmode='Static'><br /></td>" +
                                             "</tr>");
             $('.clsmaskphone').mask("(999) 999-9999");
             $('.clsmaskphoneexten').mask("999999");
@@ -172,8 +195,8 @@
             var subCount = $(e).closest('td').find('.clsmaskphone').length - 1;
             $(e).closest('td').append(
                                             "<br/><div class='newcontactdiv'>" +
-                                            "<input TabIndex='1' type='text' id='txt" + EmailType + "Contact" + dataTypeValue + subCount + "' name='nametxt" + EmailType + "Contact" + dataTypeValue + subCount + "' style='width:50%;' maxlength='10' class='clsmaskphone' maxlength='10' placeholder='___-___-____' clientidmode='Static' />" +
-                                            "&nbsp;<input TabIndex='1' type='text' id='txt" + EmailType + "ContactExten" + dataTypeValue + subCount + "' name='nametxt" + EmailType + "ContactExten" + dataTypeValue + subCount + "' style='width:35%;' maxlength='6' class='clsmaskphoneexten' placeholder='Extension' clientidmode='Static' />" +
+                                            "<input TabIndex='1' type='text' id='txt" + EmailType + "Contact" + dataTypeValue + subCount + "' name='nametxt" + EmailType + "Contact" + dataTypeValue + subCount + "' style='width:50%;' onkeypress='return isNumericKey(event);' maxlength='10' class='clsmaskphone' maxlength='10' placeholder='___-___-____' clientidmode='Static' />" +
+                                            "&nbsp;<input TabIndex='1' type='text' id='txt" + EmailType + "ContactExten" + dataTypeValue + subCount + "' name='nametxt" + EmailType + "ContactExten" + dataTypeValue + subCount + "' style='width:35%;' onkeypress='return isNumericKey(event);' maxlength='6' class='clsmaskphoneexten' placeholder='Extension' clientidmode='Static' />" +
                                             "&nbsp;<label> Phone Type</label>" +
                                             "<select id='ddl" + EmailType + "PhoneType" + dataTypeValue + subCount + "' name='nameddl" + EmailType + "PhoneType" + dataTypeValue + subCount + "' class='clsphonetype' cliendidmode='static'>" +
                                                 "<option value=''>Select</option>" +
@@ -636,7 +659,7 @@
                                                 OnClick="lnkmateriallist_Click"></asp:LinkButton>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                   
+
                                     <asp:TemplateField HeaderText="Status/Approval" HeaderStyle-Width="16%">
                                         <ItemTemplate>
                                             <asp:HiddenField ID="hdnStatusId" runat="server" Value='<%#Eval("StatusId") %>' />
@@ -646,21 +669,23 @@
                                             </asp:DropDownList>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                   
+
                                     <asp:TemplateField HeaderText="Status/Approval">
                                         <ItemTemplate>
                                             <asp:Label ID="lblReason" runat="server" Text='<%#Eval("Reason") %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                       <asp:TemplateField HeaderText="Paid / Total">
+                                    <asp:TemplateField HeaderText="Paid / Total">
                                         <ItemTemplate>
                                             <asp:Label ID="lblTotalPaid" runat="server" Text='<%#Eval("TotalPaid").ToString() +" / " + Eval("TotalPrice").ToString() %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                     <asp:TemplateField HeaderText="PasswordStatus" HeaderStyle-Width="16%">
                                         <ItemTemplate>
-                                            <asp:Label ID="lblfrmPassword" Text="FRM" runat="server"></asp:Label><br /><br />
-                                            <asp:Label ID="lblSalePassword" Text="SLE" runat="server"></asp:Label><br /><br />
+                                            <asp:Label ID="lblfrmPassword" Text="FRM" runat="server"></asp:Label><br />
+                                            <br />
+                                            <asp:Label ID="lblSalePassword" Text="SLE" runat="server"></asp:Label><br />
+                                            <br />
                                             <asp:Label ID="lblADMPassword" Text="ADM" runat="server"></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
@@ -679,7 +704,7 @@
                             PopupControlID="pnlsold" CancelControlID="btnCancelsold">
                         </asp:ModalPopupExtender>
                         <asp:Panel ID="pnlsold" runat="server" BackColor="White" Height="" Width="500px"
-                            Style="display: none; ">
+                            Style="display: none;">
                             <asp:UpdatePanel ID="UpdatePanel4" runat="server">
                                 <ContentTemplate>
                                     <table style="border: Solid 3px #A33E3F; width: 100%; height: 100%; background: #fff;"
@@ -698,9 +723,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>
-                                                
-                                            </td>
+                                            <td></td>
                                         </tr>
                                         <tr>
                                             <td align="right" style="width: 31%">Payment Mode:
@@ -716,7 +739,7 @@
                                                 </asp:DropDownList>
                                             </td>
                                             <td align="right" style="width: 31%">
-                                                <asp:Label runat="server"  ID="lblMsg" Text="" />
+                                                <asp:Label runat="server" ID="lblMsg" Text="" />
                                                 <asp:Label ID="lblPro" runat="server" Text="Promotional Code:"></asp:Label>
                                                 <asp:Label ID="lblPwd" runat="server" Text="Password" Visible="false"></asp:Label>
                                             </td>
@@ -744,13 +767,13 @@
                                             </td>
                                         </tr>
                                         <!-- Cradit Card -->
-                                       <tr id="Name" runat="server" visible="false">
+                                        <tr id="Name" runat="server" visible="false">
                                             <td align="center" style="width: 31%">First Name<asp:Label ID="lblFirstName" runat="server" Text="*" ForeColor="Red"></asp:Label>:
                                             </td>
                                             <td>
                                                 <asp:TextBox ID="txtFirstName" MaxLength="40" runat="server" Height="20px"></asp:TextBox>
                                                 <asp:RequiredFieldValidator ID="rfvFirstName" runat="server" ControlToValidate="txtFirstName" ErrorMessage="Enter First Name" ForeColor="Red" Display="Dynamic" ValidationGroup="CCsold"></asp:RequiredFieldValidator>
-                                                  <asp:Label runat="server" Text="As displayed on card" Colon="False" ID="Label8" /></small>
+                                                <asp:Label runat="server" Text="As displayed on card" Colon="False" ID="Label8" /></small>
                                             </td>
                                             <td align="center" style="width: 31%">Last Name<asp:Label ID="lblLastName" runat="server" Text="*" ForeColor="Red"></asp:Label>:
                                             </td>
@@ -766,8 +789,8 @@
                                             <td align="center" style="width: 31%">Address<asp:Label ID="Label9" runat="server" Text="*" ForeColor="Red"></asp:Label>:
                                             </td>
                                             <td>
-                                                <textarea name="txtAddress" rows="2" cols="15" id="txtAddress" style="height:33px;width:167px;" runat="server"></textarea>
-                                                
+                                                <textarea name="txtAddress" rows="2" cols="15" id="txtAddress" style="height: 33px; width: 167px;" runat="server"></textarea>
+
                                             </td>
                                             <td align="right" style="width: 31%" id="labelAmount" visible="false" runat="server">Amount($)<asp:Label ID="Label12" runat="server" Text="*" ForeColor="Red"></asp:Label>:
                                             </td>
@@ -782,24 +805,24 @@
 
                                         </tr>
 
-                                         <tr id="CountryState" runat="server" visible="false">
+                                        <tr id="CountryState" runat="server" visible="false">
                                             <td align="center" style="width: 31%">Country<asp:Label ID="Label11" runat="server" Text="*" ForeColor="Red"></asp:Label>:
                                             </td>
                                             <td>
-                                               <asp:DropDownList runat="server" ID="DropDownList1" AutoPostBack="true">
-                                                    <asp:ListItem Text="US" Value="US" ></asp:ListItem>
+                                                <asp:DropDownList runat="server" ID="DropDownList1" AutoPostBack="true">
+                                                    <asp:ListItem Text="US" Value="US"></asp:ListItem>
                                                 </asp:DropDownList>
-                                               
-                                                  
+
+
                                             </td>
                                             <td align="center" style="width: 31%">State<asp:Label ID="Label13" runat="server" Text="*" ForeColor="Red"></asp:Label>:
                                             </td>
                                             <td>
-                                                 <asp:DropDownList runat="server" ID="ddlState" AutoPostBack="true">
-                                                    <asp:ListItem Text="Pennsylvania" Value="Pennsylvania" ></asp:ListItem>
+                                                <asp:DropDownList runat="server" ID="ddlState" AutoPostBack="true">
+                                                    <asp:ListItem Text="Pennsylvania" Value="Pennsylvania"></asp:ListItem>
                                                 </asp:DropDownList>
-                                               
-                                               
+
+
                                             </td>
                                         </tr>
 
@@ -808,37 +831,38 @@
                                             </td>
                                             <td>
                                                 <asp:DropDownList runat="server" ID="ddlCity" AutoPostBack="true">
-                                                    <asp:ListItem Text="Malvern" Value="Malvern" ></asp:ListItem>
+                                                    <asp:ListItem Text="Malvern" Value="Malvern"></asp:ListItem>
                                                 </asp:DropDownList>
-                                               
-                                                 
+
+
                                             </td>
                                             <td align="center" style="width: 31%">Zip<asp:Label ID="Label17" runat="server" Text="*" ForeColor="Red"></asp:Label>:
                                             </td>
                                             <td>
                                                 <asp:TextBox ID="txtZip" Height="20px" runat="server"></asp:TextBox>
                                                 <asp:RequiredFieldValidator ID="rfvZip" runat="server" ControlToValidate="txtZip" ErrorMessage="Enter Zip" ForeColor="Red" Display="Dynamic" ValidationGroup="CCsold"></asp:RequiredFieldValidator>
-                                               <asp:Label runat="server" Text="As displayed on card" Colon="False" ID="Label18" />
+                                                <asp:Label runat="server" Text="As displayed on card" Colon="False" ID="Label18" />
                                             </td>
                                         </tr>
 
 
-                                       <tr id="Currency" runat="server" visible="false">
+                                        <tr id="Currency" runat="server" visible="false">
                                             <td align="center" style="width: 31%">Currency<asp:Label ID="lblCurrency" runat="server" Text="*" ForeColor="Red"></asp:Label>:
                                             </td>
                                             <td>
                                                 <asp:DropDownList runat="server" ID="ddlCurrency" AutoPostBack="true">
-                                                    <asp:ListItem Text="U.S. Dollar" Value="USD" ></asp:ListItem>
+                                                    <asp:ListItem Text="U.S. Dollar" Value="USD"></asp:ListItem>
                                                 </asp:DropDownList>
                                             </td>
 
-                                            <td align="center" style="width: 31%">Expiration Date <asp:Label ID="lblExpDate" runat="server" Text="*" ForeColor="Red"></asp:Label>:
+                                            <td align="center" style="width: 31%">Expiration Date
+                                                <asp:Label ID="lblExpDate" runat="server" Text="*" ForeColor="Red"></asp:Label>:
                                             </td>
                                             <td>
                                                 <asp:DropDownList ID="ccExpireMonth" runat="server">
                                                 </asp:DropDownList>
-                                                
-                                                  <asp:DropDownList ID="ccExpireYear" runat="server">
+
+                                                <asp:DropDownList ID="ccExpireYear" runat="server">
                                                 </asp:DropDownList>
                                             </td>
 
@@ -849,11 +873,12 @@
                                             </td>
                                             <td>
                                                 <asp:TextBox ID="txtCardNumber" Height="20px" runat="server" MaxLength="17"></asp:TextBox>
-                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator14" runat="server"  ControlToValidate="txtCardNumber" ErrorMessage="Enter Card Number" ForeColor="Red" Display="Dynamic" ValidationGroup="CCsold"></asp:RequiredFieldValidator>
+                                                <asp:RequiredFieldValidator ID="RequiredFieldValidator14" runat="server" ControlToValidate="txtCardNumber" ErrorMessage="Enter Card Number" ForeColor="Red" Display="Dynamic" ValidationGroup="CCsold"></asp:RequiredFieldValidator>
                                             </td>
 
 
-                                            <td align="center" style="width: 31%">Security Code <asp:Label ID="lblSecurityCode" runat="server" Text="*" ForeColor="Red"></asp:Label>:
+                                            <td align="center" style="width: 31%">Security Code
+                                                <asp:Label ID="lblSecurityCode" runat="server" Text="*" ForeColor="Red"></asp:Label>:
                                             </td>
                                             <td>
                                                 <asp:TextBox ID="txtSecurityCode" TextMode="Password" Height="20px" runat="server" MaxLength="4"></asp:TextBox>
@@ -865,8 +890,7 @@
 
                                         <asp:Panel ID="PanelHide" runat="server">
                                             <tr>
-                                                <td align="right" style="width: 31%">
-                                        Bank<asp:Label ID="Label2" runat="server" Text="*" ForeColor="Red"></asp:Label>:
+                                                <td align="right" style="width: 31%">Bank<asp:Label ID="Label2" runat="server" Text="*" ForeColor="Red"></asp:Label>:
                                                 </td>
                                                 <td>
                                                     <asp:TextBox ID="txtBank" runat="server" CssClass="OnFocus_Cls" Height="20px" pleasholder="Name"
@@ -878,8 +902,7 @@
                                                     </asp:AutoCompleteExtender>
                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="txtBank" ErrorMessage="Enter Bank" ForeColor="Red" Display="Dynamic" ValidationGroup="sold"></asp:RequiredFieldValidator>
                                                 </td>
-                                                <td align="right" style="width: 31%">
-                                        Account #<asp:Label ID="Label7" runat="server" Text="*" ForeColor="Red"></asp:Label>:
+                                                <td align="right" style="width: 31%">Account #<asp:Label ID="Label7" runat="server" Text="*" ForeColor="Red"></asp:Label>:
                                                 </td>
                                                 <td>
                                                     <asp:TextBox ID="txtMFAATRT" runat="server" Height="20px" onkeypress="return isNumericKey(event);"
@@ -888,15 +911,13 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td align="right" style="width: 31%">
-                                        Routing #<asp:Label ID="Label10" runat="server" Text="*" ForeColor="Red"></asp:Label>:
+                                                <td align="right" style="width: 31%">Routing #<asp:Label ID="Label10" runat="server" Text="*" ForeColor="Red"></asp:Label>:
                                                 </td>
                                                 <td>
                                                     <asp:TextBox ID="txtRoutingNo" MaxLength="10" runat="server" Height="20px" onkeypress="return isNumericKey(event);"></asp:TextBox>
                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" ControlToValidate="txtRoutingNo" ErrorMessage="Enter Synapse User Name" ForeColor="Red" Display="Dynamic" ValidationGroup="sold"></asp:RequiredFieldValidator>
                                                 </td>
-                                                <td align="right" style="width: 31%">
-                                        Last 4 SSN<asp:Label ID="Label16" runat="server" Text="*" ForeColor="Red"></asp:Label>:
+                                                <td align="right" style="width: 31%">Last 4 SSN<asp:Label ID="Label16" runat="server" Text="*" ForeColor="Red"></asp:Label>:
                                                 </td>
                                                 <td>
                                                     <asp:TextBox ID="txtLASTSSN" TextMode="Password" Height="20px" runat="server" onkeypress="return isNumericKey(event);"
@@ -905,16 +926,14 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td align="right" style="width: 31%">
-                                        D.O.B<asp:Label ID="Label19" runat="server" Text="*" ForeColor="Red"></asp:Label>:
+                                                <td align="right" style="width: 31%">D.O.B<asp:Label ID="Label19" runat="server" Text="*" ForeColor="Red"></asp:Label>:
                                                 </td>
                                                 <td>
                                                     <asp:TextBox ID="txtDOB" Height="20px" runat="server"></asp:TextBox>
                                                     <asp:CalendarExtender ID="calExt" runat="server" TargetControlID="txtDOB"></asp:CalendarExtender>
                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator11" runat="server" ControlToValidate="txtDOB" ErrorMessage="Enter Date of Birth" ForeColor="Red" Display="Dynamic" ValidationGroup="sold"></asp:RequiredFieldValidator>
                                                 </td>
-                                                <td align="right" style="width: 31%">
-                                        Personal/Bussiness<asp:Label ID="Label20" runat="server" Text="*" ForeColor="Red"></asp:Label>:
+                                                <td align="right" style="width: 31%">Personal/Bussiness<asp:Label ID="Label20" runat="server" Text="*" ForeColor="Red"></asp:Label>:
                                                 </td>
                                                 <td>
                                                     <asp:DropDownList ID="ddlperbus" runat="server">
@@ -1117,7 +1136,8 @@
                                         <td>
                                             <asp:DropDownList ID="ddlVendorStatusfltr" runat="server" TabIndex="1" Style="width: 120px;" AutoPostBack="true" OnSelectedIndexChanged="ddlVendorStatusfltr_SelectedIndexChanged">
                                                 <asp:ListItem>Select</asp:ListItem>
-                                                <asp:ListItem Selected="True">Prospect</asp:ListItem>
+                                                <asp:ListItem Selected="True">All</asp:ListItem>
+                                                <asp:ListItem>Prospect</asp:ListItem>
                                                 <asp:ListItem>Active-Past</asp:ListItem>
                                                 <asp:ListItem>Deactivate</asp:ListItem>
                                             </asp:DropDownList>
@@ -1411,18 +1431,6 @@
                                                             <asp:RequiredFieldValidator ID="Requiredvendorname" runat="server" ControlToValidate="txtVendorNm" Display="Dynamic"
                                                                 ValidationGroup="addvendor" ErrorMessage="Please Enter Vendor Name." ForeColor="Red"></asp:RequiredFieldValidator>
                                                         </td>
-
-
-                                                        <td>
-                                                            <label>Vendor Status:</label><br />
-                                                            <asp:DropDownList ID="ddlVendorStatus" runat="server" TabIndex="1" Style="width: 180px;">
-                                                                <asp:ListItem>Select</asp:ListItem>
-                                                                <asp:ListItem>Prospect</asp:ListItem>
-                                                                <asp:ListItem>Active-Past</asp:ListItem>
-                                                                <%--<asp:ListItem>No Transactions</asp:ListItem>--%>
-                                                                <asp:ListItem>Deactivate</asp:ListItem>
-                                                            </asp:DropDownList>
-                                                        </td>
                                                         <td class="style1">
                                                             <label>
                                                                 Vendor Source<asp:Label ID="lblSourceReq" runat="server" Text="*" ForeColor="Green"></asp:Label></label>
@@ -1431,11 +1439,22 @@
                                                             <asp:TextBox ID="txtSource" runat="server" TabIndex="1" Width="125px"></asp:TextBox>
                                                             <asp:Button runat="server" ID="btnAddSource" TabIndex="1" Text="Add" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff; cursor: pointer;" OnClick="btnAddSource_Click" Height="30px" />&nbsp;
                                
-                                <asp:Button runat="server" ID="btnDeleteSource" TabIndex="1" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff; cursor: pointer;" Text="Delete" OnClick="btnDeleteSource_Click" Height="30px" />
+                                                            <asp:Button runat="server" ID="btnDeleteSource" TabIndex="1" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff; cursor: pointer;" Text="Delete" OnClick="btnDeleteSource_Click" Height="30px" />
                                                             <%--<br />
-                                &nbsp;&nbsp;&nbsp;&nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="ddlSource"
-                                    ForeColor="Green" Display="Dynamic" ValidationGroup="submit" ErrorMessage="Please select the source." InitialValue="Select Source"></asp:RequiredFieldValidator>--%>
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="ddlSource"
+                                                                ForeColor="Green" Display="Dynamic" ValidationGroup="submit" ErrorMessage="Please select the source." InitialValue="Select Source"></asp:RequiredFieldValidator>--%>
                                                         </td>
+
+                                                        <td>
+                                                            <%--<label>Vendor Status:</label><br />
+                                                            <asp:DropDownList ID="ddlVendorStatus" runat="server" TabIndex="1" Style="width: 180px;">
+                                                                <asp:ListItem>Select</asp:ListItem>
+                                                                <asp:ListItem>Prospect</asp:ListItem>
+                                                                <asp:ListItem>Active-Past</asp:ListItem>
+                                                                <asp:ListItem>Deactivate</asp:ListItem>
+                                                            </asp:DropDownList>--%>
+                                                        </td>
+
 
                                                     </tr>
                                                     <tr>
@@ -1526,7 +1545,7 @@
                                                                 <tr>
                                                                     <td>
                                                                         <div class="btn_sec">
-                                                                            <asp:Button ID="btnAddNotes" runat="server" Text="Add Notes" OnClick="btnAddNotes_Click" />
+                                                                            <asp:Button ID="btnAddNotes" runat="server" Text="Add Notes" CssClass="btnnotes" OnClick="btnAddNotes_Click" />
                                                                         </div>
                                                                     </td>
                                                                     <td>
@@ -1884,8 +1903,8 @@
                                                                         </label>
                                                                         <br />
                                                                         <div class='newcontactdiv' style="width: 605px;">
-                                                                            <asp:TextBox ID="txtPrimaryContact0" TabIndex="1" runat="server" placeholder='___-___-____' MaxLength="10" CssClass="clsmaskphone" Width="50%"></asp:TextBox>
-                                                                            <asp:TextBox ID="txtPrimaryContactExten0" TabIndex="1" runat="server" placeholder="Extension" class="clsmaskphoneexten" MaxLength="6" Width="34%"></asp:TextBox>
+                                                                            <asp:TextBox ID="txtPrimaryContact0" TabIndex="1" runat="server" placeholder='___-___-____' MaxLength="10" onkeypress="return isNumericKey(event);" CssClass="clsmaskphone" Width="50%"></asp:TextBox>
+                                                                            <asp:TextBox ID="txtPrimaryContactExten0" TabIndex="1" runat="server" placeholder="Extension" class="clsmaskphoneexten" onkeypress="return isNumericKey(event);" MaxLength="6" Width="34%"></asp:TextBox>
                                                                             <label>Phone Type</label>
                                                                             <select id="ddlPrimaryPhoneType0" name="nameddlPrimaryPhoneType0" cliendidmode="static" class="clsphonetype">
                                                                                 <option value="">Select</option>
@@ -1902,7 +1921,7 @@
                                                                     <td>
                                                                         <label>
                                                                             Fax</label><br />
-                                                                        <input type='text' id="txtPrimaryFax0" tabindex="1" name="nametxtPrimaryFax0" maxlength="15" clientidmode='Static' />
+                                                                        <input type='text' id="txtPrimaryFax0" tabindex="1" name="nametxtPrimaryFax0" maxlength="15" onkeypress="return isNumericKey(event);" clientidmode='Static' />
 
                                                                         <br />
                                                                     </td>
@@ -1955,8 +1974,8 @@
                                                                         </label>
                                                                         <br />
                                                                         <div class='newcontactdiv' style="width: 605px;">
-                                                                            <asp:TextBox ID="txtSecContact0" TabIndex="1" runat="server" MaxLength="10" placeholder='___-___-____' CssClass="clsmaskphone" Width="50%"></asp:TextBox>
-                                                                            <asp:TextBox ID="txtSecContactExten0" TabIndex="1" runat="server" MaxLength="6" class="clsmaskphoneexten" placeholder="Extension" Width="35%"></asp:TextBox>
+                                                                            <asp:TextBox ID="txtSecContact0" TabIndex="1" runat="server" MaxLength="10" onkeypress="return isNumericKey(event);" placeholder='___-___-____' CssClass="clsmaskphone" Width="50%"></asp:TextBox>
+                                                                            <asp:TextBox ID="txtSecContactExten0" TabIndex="1" runat="server" MaxLength="6" class="clsmaskphoneexten" onkeypress="return isNumericKey(event);" placeholder="Extension" Width="35%"></asp:TextBox>
                                                                             <label>Phone Type</label>
                                                                             <select id="ddlSecPhoneType0" name="nameddlSecPhoneType0" cliendidmode="static" class="clsphonetype">
                                                                                 <option value="">Select</option>
@@ -1974,7 +1993,7 @@
                                                                     <td>
                                                                         <label>
                                                                             Fax</label><br />
-                                                                        <input type='text' id="txtSecFax0" tabindex="1" name="nametxtSecFax0" maxlength="15" clientidmode='Static' />
+                                                                        <input type='text' id="txtSecFax0" tabindex="1" name="nametxtSecFax0" onkeypress="return isNumericKey(event);" maxlength="15" clientidmode='Static' />
                                                                         <br />
                                                                     </td>
                                                                 </tr>
@@ -2028,8 +2047,8 @@
                                                                         </label>
                                                                         <br />
                                                                         <div class='newcontactdiv' style="width: 605px;">
-                                                                            <asp:TextBox ID="txtAltContact0" TabIndex="1" runat="server" MaxLength="10" CssClass="clsmaskphone" placeholder='___-___-____' Width="50%"></asp:TextBox>
-                                                                            <asp:TextBox ID="txtAltContactExten0" TabIndex="1" runat="server" MaxLength="6" class="clsmaskphoneexten" placeholder="Extension" Width="32%"></asp:TextBox>
+                                                                            <asp:TextBox ID="txtAltContact0" TabIndex="1" runat="server" MaxLength="10" CssClass="clsmaskphone" onkeypress="return isNumericKey(event);" placeholder='___-___-____' Width="50%"></asp:TextBox>
+                                                                            <asp:TextBox ID="txtAltContactExten0" TabIndex="1" runat="server" MaxLength="6" class="clsmaskphoneexten" onkeypress="return isNumericKey(event);" placeholder="Extension" Width="32%"></asp:TextBox>
                                                                             <label>Phone Type</label>
                                                                             <select id="ddlAltPhoneType0" name="nameddlAltPhoneType0" cliendidmode="static" class="clsphonetype">
                                                                                 <option value="">Select</option>
@@ -2046,7 +2065,7 @@
                                                                     <td>
                                                                         <label>
                                                                             Fax</label><br />
-                                                                        <input type='text' id="txtAltFax0" tabindex="1" name="nametxtAltFax0" maxlength="15" clientidmode='Static' />
+                                                                        <input type='text' id="txtAltFax0" tabindex="1" name="nametxtAltFax0" onkeypress="return isNumericKey(event);" maxlength="15" clientidmode='Static' />
                                                                         <br />
                                                                     </td>
                                                                 </tr>
@@ -2068,21 +2087,29 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <asp:Button ID="btnPageLoad" runat="server" CssClass="cssbtnPageLoad" />
                                         <asp:ModalPopupExtender ID="ModalPopupExtender1" runat="server" TargetControlID="btnOpenCategoryPopup"
                                             PopupControlID="pnlcategorypopup" CancelControlID="btnCancelCategory" BackgroundCssClass="uiblack">
                                         </asp:ModalPopupExtender>
 
-                                        <asp:Panel ID="pnlcategorypopup" runat="server" Style="display: none; background: white; border: 5px solid #ccc">
+                                        <asp:Panel ID="pnlcategorypopup" runat="server" Style="display: none; background: white; border: 5px solid rgb(179, 71, 74)">
+
+                                            <div class="popup_heading">
+                                                <h1>Select Category</h1>
+                                            </div>
                                             <div id="categoriesList">
-                                                <div id="productCategory" style="width: 250px; float: left">
+                                                <div id="productCategory" class="categorylist_Heading" style="width: 250px; float: left">
+                                                    <h4>Product Category</h4>
                                                     <asp:CheckBoxList ID="chkProductCategoryList" runat="server" AutoPostBack="true" OnSelectedIndexChanged="chkProductCategoryList_SelectedIndexChanged">
                                                     </asp:CheckBoxList>
                                                 </div>
-                                                <div id="vendorcategory" style="width: 250px; float: left">
+                                                <div id="vendorcategory" class="categorylist_Heading"  style="width: 250px; float: left">
+                                                    <h4>Vendor Category</h4>
                                                     <asp:CheckBoxList ID="chkVendorCategoryList" runat="server" AutoPostBack="true" OnSelectedIndexChanged="chkVendorCategoryList_SelectedIndexChanged">
                                                     </asp:CheckBoxList>
                                                 </div>
-                                                <div id="vendorsubcategory" style="width: 250px; float: left">
+                                                <div id="vendorsubcategory" class="categorylist_Heading"  style="width: 250px; float: left">
+                                                    <h4>Vendor Sub Category</h4>
                                                     <asp:CheckBoxList ID="chkVendorSubcategoryList" runat="server" OnSelectedIndexChanged="chkVendorSubcategoryList_SelectedIndexChanged">
                                                     </asp:CheckBoxList>
                                                 </div>
@@ -2448,7 +2475,7 @@
     <link href="../css/jquery-ui.css" rel="stylesheet" />
     <script src="../js/jquery-ui.js"></script>
     <script src="../Scripts/jquery.maskedinput.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyD0X4v7eqMFcWCR-VZAJwEMfb47id9IZao"></script>
+    <%--<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyD0X4v7eqMFcWCR-VZAJwEMfb47id9IZao"></script>--%>
 
 
     <script type="text/javascript">
@@ -2458,7 +2485,7 @@
         $('.clsmaskphone').mask("(999) 999-9999");
         $('.clsmaskphoneexten').mask("999999");
 
-
+        $(".cssbtnPageLoad").click();
         setTimeout(function () {
             initialize();
         }, 500);
