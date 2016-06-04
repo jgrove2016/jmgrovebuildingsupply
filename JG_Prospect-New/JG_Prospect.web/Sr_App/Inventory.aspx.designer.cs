@@ -355,6 +355,42 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.Literal ltrSupplierCategory;
         
         /// <summary>
+        /// btnOpenSkuPopup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnOpenSkuPopup;
+        
+        /// <summary>
+        /// ModelPopUpExtenderSku control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.ModalPopupExtender ModelPopUpExtenderSku;
+        
+        /// <summary>
+        /// lblres control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblres;
+        
+        /// <summary>
+        /// pnlsku control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlsku;
+        
+        /// <summary>
         /// lblSkuId control.
         /// </summary>
         /// <remarks>
@@ -472,13 +508,13 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.Button btnAddsku;
         
         /// <summary>
-        /// lblres control.
+        /// btnCancelSku control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblres;
+        protected global::System.Web.UI.WebControls.Button btnCancelSku;
         
         /// <summary>
         /// lblDelRes control.

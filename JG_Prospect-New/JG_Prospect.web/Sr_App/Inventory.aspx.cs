@@ -482,9 +482,9 @@ namespace JG_Prospect.Sr_App
             }
             else
             {
-                grdSku.DataSource = null;
+                grdSku.DataSource = new List<string>();
                 grdSku.DataBind();
-                grdSkuInfo.DataSource = null;
+                grdSkuInfo.DataSource = new List<string>();
                 grdSkuInfo.DataBind();
             }
         }
@@ -550,6 +550,7 @@ namespace JG_Prospect.Sr_App
             Control ctrl = e.CommandSource as Control;
             if (e.CommandName == "EditSku")
             {
+                ModelPopUpExtenderSku.Show();
                 GridViewRow row = ctrl.Parent.NamingContainer as GridViewRow;
                 int id = Convert.ToInt16(e.CommandArgument);
                 lblSkuId.Text = id.ToString();
