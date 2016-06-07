@@ -1579,7 +1579,7 @@ namespace JG_Prospect.Sr_App
                                 }
                             }
 
-                            // GenerateWorkOrder(soldJobID);
+                             GenerateWorkOrder(soldJobID);
 
                             if (IsEmail)
                             {
@@ -1626,8 +1626,7 @@ namespace JG_Prospect.Sr_App
         {
             try
             {
-                // string path = Server.MapPath("~/CustomerDocs/Pdfs/");
-                string path = "C:\\inetpub\\wwwroot\\TestPublishNew\\CustomerDocs\\Pdfs\\wkhtmltopdf.exe";
+                string path = Server.MapPath("~/CustomerDocs/Pdfs/");
                 string tempWorkOrderFilename = string.Empty;
                 string originalWorkOrderFilename = "WorkOrder" + ".pdf";
 
