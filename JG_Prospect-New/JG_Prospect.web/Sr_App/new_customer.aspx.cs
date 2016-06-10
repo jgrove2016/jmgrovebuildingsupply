@@ -17,6 +17,7 @@ using JG_Prospect.BLL;
 using JG_Prospect.Common.modal;
 using JG_Prospect.Common;
 using System.Web.Script.Serialization;
+using System.Net.Mail;
 
 
 namespace JG_Prospect.Sr_App
@@ -111,6 +112,110 @@ namespace JG_Prospect.Sr_App
                 }
             }
         }
+        protected void SendEmailToCustomer()
+        {
+            DataSet ds = GetCustomerEmail();
+            string finalEmail = "";
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                string email1 = ds.Tables[0].Rows[0]["Email"].ToString();
+                string email2 = ds.Tables[0].Rows[0]["Email2"].ToString();
+                string email3 = ds.Tables[0].Rows[0]["Email3"].ToString();
+
+                if (email1 != "")
+                {
+                    finalEmail = email1;
+                }
+                else if (email2 != "")
+                {
+                    finalEmail = email2;
+                }
+                else if (email3 != "")
+                {
+                    finalEmail = email3;
+                }
+            }
+            if (finalEmail != string.Empty)
+            {
+                StringBuilder lHTMLBody = new StringBuilder();
+                try
+                {
+
+                    string mailId = finalEmail;
+                    // string vendorName = dr["VendorName"].ToString();
+
+                    MailMessage m = new MailMessage();
+                    SmtpClient sc = new SmtpClient(ConfigurationManager.AppSettings["smtpHost"].ToString(), Convert.ToInt32(ConfigurationManager.AppSettings["smtpPort"].ToString()));
+
+                    string userName = ConfigurationManager.AppSettings["CustomerEmailUsername"].ToString();
+                    string password = ConfigurationManager.AppSettings["CustomerEmailPassword"].ToString();
+
+                    m.From = new MailAddress(userName, "JMGROVECONSTRUCTION");
+                    m.To.Add(new MailAddress(mailId, ds.Tables[0].Rows[0]["CustomerName"].ToString()));
+                    m.Bcc.Add(new MailAddress("shabbir.kanchwala@straitapps.com", "Shabbir Kanchwala"));
+                    m.CC.Add(new MailAddress("jgrove.georgegrove@gmail.com", "Justin Grove"));
+
+                    DataSet dsEmailTemplate = AdminBLL.Instance.GetEmailTemplate("Set Appointment"); //#- triggerOrigin is the sub email template name.
+
+                    //m.Subject = "JMGrove proposal " + "C" + customerId.ToString() + "-" + QuoteNumber;
+                    m.IsBodyHtml = true;
+
+                    if (dsEmailTemplate.Tables[0].Rows.Count > 0)
+                    {
+                        m.Subject = dsEmailTemplate.Tables[0].Rows[0]["HTMLSubject"].ToString().Replace("#customername#", ds.Tables[0].Rows[0]["CustomerName"].ToString()).Replace("#appointmentdatetime#", txtestimate_date.Text + " " + txtestimate_time.Text);//.Replace("#trackingid#", "C" + customerId.ToString() + "-" + QuoteNumber);
+                        lHTMLBody.Append(dsEmailTemplate.Tables[0].Rows[0]["HTMLHeader"].ToString() + "<br/><br/>");
+                        lHTMLBody.Append(dsEmailTemplate.Tables[0].Rows[0]["HTMLBody"].ToString() + "<br/><br/>");
+                        lHTMLBody.Append(dsEmailTemplate.Tables[0].Rows[0]["HTMLFooter"].ToString() + "<br/><br/>");
+                    }
+
+                    m.Body = lHTMLBody.ToString().Replace("#customername#", ds.Tables[0].Rows[0]["CustomerName"].ToString()).Replace("#appointmentdatetime#", txtestimate_date.Text + " " + txtestimate_time.Text);
+
+                    string sourceDirContract = Server.MapPath("~/CustomerDocs/Pdfs/");
+                    try
+                    {
+                        string sourceDirDocs = Server.MapPath("~/CustomerDocs/CustomerEmailDocument/");
+
+                        if (dsEmailTemplate.Tables[1].Rows.Count > 0)
+                        {
+                            for (int i = 0; i < dsEmailTemplate.Tables[1].Rows.Count; i++)
+                            {
+                                string filename = dsEmailTemplate.Tables[1].Rows[i]["DocumentName"].ToString();
+                                Attachment attachment1 = new Attachment(sourceDirDocs + "\\" + filename);
+                                attachment1.Name = filename;
+                                m.Attachments.Add(attachment1);
+                            }
+                        }
+                    }
+                    catch
+                    {
+
+                    }
+
+                    NetworkCredential ntw = new System.Net.NetworkCredential(userName, password);
+                    sc.UseDefaultCredentials = false;
+                    sc.Credentials = ntw;
+
+                    sc.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    sc.EnableSsl = Convert.ToBoolean(ConfigurationManager.AppSettings["enableSSL"].ToString()); // runtime encrypt the SMTP communications using SSL
+                    sc.Send(m);
+                   
+                }
+                catch (Exception ex)
+                {
+                    // ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('" + ex.Message + "');", true);
+                }
+            }
+        }
+        private DataSet GetCustomerEmail()
+        {
+            string finalEmail = string.Empty;
+            DataSet ds = new DataSet();
+            if (Session["CustomerId"].ToString() != null)
+                ds = new_customerBLL.Instance.GetCustomerDetails(Convert.ToInt32(Session["CustomerId"].ToString()));
+
+           
+            return ds;
+        }
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
             Customer c = new Customer();
@@ -175,152 +280,44 @@ namespace JG_Prospect.Sr_App
             DataTable dtblePrimary = Session["dtDetails"] as DataTable;
             DataTable dtbleProduct = Session["dtPrimarySecondary"] as DataTable;
 
-            //if (chbemail.Checked && (txtEMail.Text == "" && txtEMail2.Value == "" && txtEMail3.Text == ""))
-            //{
-            //    ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please Enter at least one Email');", true);
-            //    return;
-            //}
-
-            //if (txtzip.Text == "")
-            //{
-            //    ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please Enter zip code');", true);
-            //    return;
-            //}
-
-            //if (txtcell_ph.Text == "" || txtcell_ph.Text == null)
-            //{
-            //    c.missingcontacts++;
-            //}
-            //if (txtalt_phone.Text == "" || txtalt_phone.Text == null)
-            //{
-            //    c.missingcontacts++;
-            //}
-            //if (txthome_phone.Text == "" || txthome_phone.Text == null)
-            //{
-            //    c.missingcontacts++;
-            //}
-            //if (c.missingcontacts > 2)
-            //{
-            //    ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please Fill atleast one contact(Cell Phone, Home or Alt. Phone');", true);
-            //    return;
-            //}
-
-            //if (ddlprimarycontact.SelectedValue == "Cell Phone")
-            //{
-            //    if (txtcell_ph.Text == "")
-            //    {
-            //        ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please Enter Cell Phone, as it is primary contact');", true);
-            //        return;
-            //    }
-            //    primarycontact = txtcell_ph.Text;
-            //}
-            //else if (ddlprimarycontact.SelectedValue == "House Phone")
-            //{
-            //    if (txthome_phone.Text == "")
-            //    {
-            //        ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please Enter House Phone, as it is primary contact');", true);
-            //        return;
-            //    }
-            //    primarycontact = txthome_phone.Text;
-            //}
-            //else if (ddlprimarycontact.SelectedValue == "Alt Phone")
-            //{
-            //    if (txtalt_phone.Text == "")
-            //    {
-            //        ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please Enter Alternate Phone, as it is primary contact');", true);
-            //        return;
-            //    }
-            //    primarycontact = txtalt_phone.Text;
-            //}
-
-            //try
-            //{
-            //    //  int emailid = new_customerBLL.Instance.SearchEmailId(txtEmail.Text.Trim(), Session["loginid"].ToString());
-            //  int primarycont = new_customerBLL.Instance.Searchprimarycontact(txthome_phone.Text, txtcell_ph.Text, txtalt_phone.Text, 0);
-            //    if (primarycont == 1)
-            //    {
-            //        c.Isrepeated = false;
-
-            //        c.ContactPreference = string.Empty;
-            //        if (chbemail.Checked == true)
-            //        {
-            //            c.ContactPreference = chbemail.Text;
-            //        }
-            //        if (chbmail.Checked == true)
-            //        {
-            //            c.ContactPreference = chbmail.Text;
-            //        }
-
-            //        c.firstName = txtfirstname.Text.Trim();
-            //        c.lastName = txtlast_name.Text.Trim();
-            //        c.customerNm = txtfirstname.Text.Trim() + ' ' + txtlast_name.Text.Trim();
-            //        c.CustomerAddress = txtaddress.Text;
-            //        c.state = txtstate.Text;
-            //        c.City = txtcity.Text;
-            //        c.Zipcode = txtzip.Text;
-            //        c.BillingAddress = txtbill_address.Text;
-            //        c.EstDate = txtestimate_date.Text;
-
-            //        DateTime EstDate = new DateTime();
-            //        EstDate = string.IsNullOrEmpty(c.EstDate) ? Convert.ToDateTime("1/1/1753", JGConstant.CULTURE) : Convert.ToDateTime(c.EstDate, JGConstant.CULTURE);
-
-            //        c.EstTime = txtestimate_time.Text;
-            //        c.followupdate = "1/1/1753";
-            //        // c.followupdate = "";
-            //        c.CellPh = txtcell_ph.Text;
-            //        c.HousePh = txthome_phone.Text;
-            //        c.AltPh = txtalt_phone.Text;
-            //        c.Email = txtEmail.Text;
-            //        c.Email2 = txtEmail2.Text;
-            //        c.Email3 = txtEmail3.Text;
-            //        if (txtcall_taken.Text != "")
-            //        {
-            //            c.CallTakenby = txtcall_taken.Text; // change to id
-            //        }
-            //        else
-            //        {
-            //            c.CallTakenby = Session["loginid"].ToString();
-            //        }
-            //        c.Addedby = txtcall_taken.Text;
-            //        //c.Notes = txtService.Text;
-            //        c.BestTimetocontact = ddlbesttime.SelectedValue;
-            //        if (drpProductOfInterest1.SelectedIndex != 0)
-            //        {
-            //            c.Productofinterest = Convert.ToInt16(drpProductOfInterest1.SelectedItem.Value); //txtproductofinterest.Text;
-            //        }
-            //        else
-            //        {
-            //            c.Productofinterest = 0;
-            //        }
-            //        c.PrimaryContact = ddlprimarycontact.SelectedValue;
-            //        c.ProjectManager = txtProjectManager.Text;
-            //        if (drpProductOfInterest2.SelectedIndex != 0)
-            //        {
-            //            c.SecondaryProductofinterest = Convert.ToInt16(drpProductOfInterest2.SelectedItem.Value);
-            //        }
-            //        else
-            //        {
-            //            c.SecondaryProductofinterest = 0;
-            //        }
-
-            //        if (ddlleadtype.SelectedValue.ToString() == "Other")
-            //        {
-            //            c.Leadtype = txtleadtype.Text;
-            //        }
-            //        else
-            //        {
-            //            c.Leadtype = ddlleadtype.SelectedValue.ToString();
-            //        }
-            //        c.Map1 = c.customerNm + "-" + Guid.NewGuid().ToString().Substring(0, 5) + ".Jpeg";
-            //        c.Map2 = c.customerNm + "-" + "Direction" + Guid.NewGuid().ToString().Substring(0, 5) + ".Jpeg";
-
-            //        c.status = "Set";
-
-
+          
             int res = new_customerBLL.Instance.AddSrCustomer(c, dtbleAddress, dtbleBillingAddress, dtblePrimary, dtbleProduct, bitYesNo);
             if (res > 0)
             {
-                //Response.Redirect("/Sr_App/home.aspx");
+                DateTime datetime;
+                string t = string.Empty;
+                TimeSpan time;
+                Session["CustomerId"] = res;
+
+                datetime = string.IsNullOrEmpty(txtestimate_date.Text) ? Convert.ToDateTime("1/1/1753") : Convert.ToDateTime(txtestimate_date.Text, JGConstant.CULTURE);
+
+                if (txtestimate_time.Text != "")
+                {
+                    t = txtestimate_time.Text;
+                    time = Convert.ToDateTime(t).TimeOfDay;
+                    datetime += time;
+                }
+                string gtitle = t + " -" +  c.Addedby;
+                //string gcontent = "Name: " + objcust.customerNm + " , Cell Phone: " + txtcell_ph.Text + ", Alt. phone: " + txtalt_phone.Text + ", Email: " + txtEmail.Text + ",Service: " + txtService.Text + ",Status: " + newstatus;
+                string gcontent = "Name: " + c.customerNm;//TCT
+                //string gaddress = txtaddress.Text + " " + txtcity.Text + "," + txtstate.Text + " -" + txtzip.Text;
+                string gaddress = ""; //TCT
+
+                if (txtestimate_date.Text != "" && txtestimate_time.Text != "")
+                {
+                    new_customerBLL.Instance.AddCustomerFollowUp(Convert.ToInt32(Session["CustomerId"].ToString()), datetime, "", UserId, true, 0, "", 0, Convert.ToInt32(drpProductOfInterest1.SelectedValue));
+                }
+                if (chkAutoEmailer.Checked)
+                {
+                    if (txtestimate_date.Text != "" && txtestimate_time.Text != "")
+                    {
+                        SendEmailToCustomer();
+                    }
+                    else
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please select Estimated Date and Estimated Time in order to send appointment email to customer.');", true);
+                    }
+                }
                 Response.Redirect("home.aspx");
             }
             else

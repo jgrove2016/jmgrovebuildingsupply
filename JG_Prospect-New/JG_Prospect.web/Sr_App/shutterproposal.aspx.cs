@@ -31,7 +31,7 @@ namespace JG_Prospect.Sr_App
         static string[] arr;
         private Boolean IsPageRefresh = false;
         ErrorLog logManager = new ErrorLog();
-        int customerId = 0, productType = 0, productId = 0;
+        int productType = 0, productId = 0;
         static int ProductTypeID;
         List<Tuple<int, string, int>> proposalOptionList = null;
         static int[] productIdList = new int[50];
@@ -42,6 +42,11 @@ namespace JG_Prospect.Sr_App
         {
             get { return (ViewState["SoldJobID"] != null ? ViewState["SoldJobID"].ToString() : ""); }
             set { ViewState["SoldJobID"] = value; }
+        }
+        protected int customerId
+        {
+            get { return ViewState["CustomerIDVS"] != null ? Convert.ToInt32(ViewState["CustomerIDVS"].ToString()) : 0; }
+            set { ViewState["CustomerIDVS"] = value; }
         }
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -1772,7 +1777,7 @@ namespace JG_Prospect.Sr_App
             string mailid = ViewState["customeremail"].ToString();
             string path = Server.MapPath("/CustomerDocs/Pdfs/");
             string g = Guid.NewGuid().ToString().Substring(0, 5);
-            string tempInvoiceFileName = "Invoice" + DateTime.Now.Ticks + ".pdf";
+            string tempInvoiceFileName = "Proposal" + DateTime.Now.Ticks + ".pdf";
 
             GeneratePDF(path, tempInvoiceFileName, false, createEstimate("InvoiceNumber-" + Session["CustomerId"].ToString(), Convert.ToInt32(Session["CustomerId"].ToString())), true);
 
