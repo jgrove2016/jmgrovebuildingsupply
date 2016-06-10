@@ -136,6 +136,22 @@
                 <br />
                 <asp:Label ID="Label1" runat="server" />
             </div>
+            <div id="divTest">
+                <asp:Label ID="lblUserStatus" Text="User Status" runat="server" /><span style="color: red">*</span>
+                <asp:DropDownList ID="ddlUserStatus" runat="server" Width="140px" AutoPostBack="true" OnSelectedIndexChanged="ddlUserStatus_SelectedIndexChanged">
+                    <asp:ListItem Text="--Select--" Value="--Select--"></asp:ListItem>
+                    <asp:ListItem Text="Applicant" Value="Applicant"></asp:ListItem>
+                    <asp:ListItem Text="Phone/Video Screened" Value="PhoneScreened"></asp:ListItem>
+                    <asp:ListItem Text="Rejected" Value="Rejected"></asp:ListItem>
+                    <asp:ListItem Text="Interview Date" Value="InterviewDate"></asp:ListItem>
+                    <asp:ListItem Text="Offer Made" Value="OfferMade"></asp:ListItem>
+                    <asp:ListItem Text="Active" Value="Active"></asp:ListItem>
+                    <asp:ListItem Text="Deactive" Value="Deactive"></asp:ListItem>
+                    <asp:ListItem Text="Install Prospect" Value="Install Prospect"></asp:ListItem>
+                </asp:DropDownList>&nbsp;
+                <asp:Label ID="lblDesignation" Text="Designation" runat="server" />
+                <asp:DropDownList ID="ddlDesignation" runat="server" Width="140px" OnSelectedIndexChanged="ddlUserStatus_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+            </div>
             <asp:LinkButton ID="lnkDownload" Text="Download Sample Format For Bulk Upload" CommandArgument='../UserFile/SalesSample.xlsx' runat="server" OnClick="DownloadFile"></asp:LinkButton>
             <div class="grid">
                 <%-- <asp:UpdatePanel ID="updatepanel" runat="server">
@@ -155,7 +171,7 @@
                             </ItemTemplate>
                         </asp:TemplateField>
                         <asp:TemplateField ShowHeader="True" HeaderText="Id" ControlStyle-ForeColor="Black"
-                            ItemStyle-HorizontalAlign="Center" Visible="false">
+                            ItemStyle-HorizontalAlign="Center" Visible="true">
                             <EditItemTemplate>
                                 <asp:TextBox ID="txtid" runat="server" MaxLength="30" Text='<%#Eval("Id")%>'></asp:TextBox>
                             </EditItemTemplate>
@@ -166,7 +182,7 @@
                             <ControlStyle ForeColor="Black" />
                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                         </asp:TemplateField>
-                        <asp:TemplateField ShowHeader="True" HeaderText="Id" SortExpression="Id" ControlStyle-ForeColor="Black"
+                        <asp:TemplateField ShowHeader="True" HeaderText="Install Id" SortExpression="Id" ControlStyle-ForeColor="Black"
                             ItemStyle-HorizontalAlign="Center">
                             <EditItemTemplate>
                                 <asp:TextBox ID="txtInstallid" runat="server" MaxLength="30" Text='<%#Eval("InstallId")%>'></asp:TextBox>
@@ -243,7 +259,9 @@
                                     <asp:ListItem Text="Active" Value="Active"></asp:ListItem>
                                     <asp:ListItem Text="Deactive" Value="Deactive"></asp:ListItem>
                                     <asp:ListItem Text="Install Prospect" Value="Install Prospect"></asp:ListItem>
-                                </asp:DropDownList>
+                                </asp:DropDownList><br />
+                                <asp:Label ID="lblRejectDetail" runat="server" Text='<%#Eval("RejectDetail") %>'></asp:Label>
+                                <asp:Label ID="lblInterviewDetail" runat="server" Text='<%#Eval("InterviewDetail") %>'></asp:Label>
                             </ItemTemplate>
                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                         </asp:TemplateField>

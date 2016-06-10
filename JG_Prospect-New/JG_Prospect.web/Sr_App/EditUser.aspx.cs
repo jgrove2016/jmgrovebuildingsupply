@@ -61,6 +61,12 @@ namespace JG_Prospect
             Session["UserGridData"] = DS.Tables[0];
             GridViewUser.DataSource = DS.Tables[0];
             GridViewUser.DataBind();
+
+            ddlDesignation.DataSource = (from ptrade in DS.Tables[0].AsEnumerable()
+                                         where !string.IsNullOrEmpty(ptrade.Field<string>("Designation"))
+                                         select Convert.ToString(ptrade["Designation"])).Distinct().ToList();
+            ddlDesignation.DataBind();
+            ddlDesignation.Items.Insert(0, "--Select--");
         }
 
 
@@ -1194,7 +1200,31 @@ namespace JG_Prospect
         }
 
 
-
+        protected void ddlUserStatus_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BindGrid();
+        }
+        private void BindGrid()
+        {
+            DataTable dt = (DataTable)(Session["UserGridData"]);
+            EnumerableRowCollection<DataRow> query = null;
+            if (ddlUserStatus.SelectedIndex != 0 || ddlDesignation.SelectedIndex != 0)
+            {
+                string Status = ddlUserStatus.SelectedItem.Value;                    
+                query = from userdata in dt.AsEnumerable()
+                        where (userdata.Field<string>("Status") == Status  || ddlUserStatus.SelectedIndex == 0)
+                        && (userdata.Field<string>("Designation") == ddlDesignation.SelectedItem.Text || ddlDesignation.SelectedIndex == 0)
+                        select userdata;
+                if (query.Count() > 0)
+                {
+                    dt = query.CopyToDataTable();
+                }
+                else
+                    dt = null;
+            }
+            GridViewUser.DataSource = dt;
+            GridViewUser.DataBind();
+        }
 
     }
 }

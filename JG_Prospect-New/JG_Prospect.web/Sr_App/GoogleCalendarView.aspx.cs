@@ -497,5 +497,16 @@ namespace JG_Prospect.Sr_App
 
             Response.Redirect("InstallCreateUser.aspx?ID=" + ViewState["ApplicantId"]);
         }
+
+        protected void ddlStatus_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void rsAppointments_FormCreated(object sender, SchedulerFormCreatedEventArgs e)
+        {
+            string status = e.Appointment.Attributes["Status"];
+        }
+
     }
 }

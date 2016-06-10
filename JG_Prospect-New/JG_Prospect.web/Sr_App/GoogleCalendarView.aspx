@@ -47,7 +47,7 @@
             /*height: 66px !important;
             width: 160px !important;*/
             width: 100% !important; /*108*/
-            height: 44px !important; /*44*/
+            height: 60px !important; /*44*/
         }
 
         .RadScheduler .rsDayView .rsApt {
@@ -67,7 +67,7 @@
             box-sizing: initial !important;
         }
 
-        .RadScheduler .rsOvertimeArrow {
+            .RadScheduler .rsOvertimeArrow {
                 display: none !important;
             }
     </style>
@@ -144,15 +144,25 @@
                 <telerik:RadScheduler ID="rsAppointments" runat="server" DataKeyField="id" DayStartTime="7:00:00" DayEndTime="20:59:59"
                     AllowEdit="false" DataStartField="EventDate" DataEndField="EventDate" DataSubjectField="EventName"
                     ShowHeader="true" Width="100%" Height="100%" TimelineView-NumberOfSlots="0" TimelineView-ShowDateHeaders="false"
-                    EnableExactTimeRendering="true" EnableDatePicker="true" SelectedView="WeekView" CustomAttributeNames="EventName,id,LastName"
+                    EnableExactTimeRendering="true" EnableDatePicker="true" SelectedView="WeekView" CustomAttributeNames="EventName,id,LastName,ApplicantId,Designation,Status"
                     AppointmentContexcalendarBodyDivtMenuSettings-EnableDefault="true" TimelineView-GroupingDirection="Vertical"
                     TimelineView-ReadOnly="true" DisplayDeleteConfirmation="false" >
                     <%-- OnClientAppointmentClick="OnClientAppointmentClick" OnClientTimeSlotClick="OnClientTimeSlotClick"      OnAppointmentClick="rsAppointments_AppointmentClick"--%>
                     <AdvancedForm Modal="True" />
                     <AppointmentTemplate>
-                         <%#Eval("EventName") %> 
-                        <asp:LinkButton ID="lbtCustID" runat="server" OnClick="lbtCustID_Click" Text='<%#Eval("LastName") %>' ForeColor="Black"></asp:LinkButton>
-                      
+                        <%#Eval("EventName") %>
+                        <asp:LinkButton ID="lbtCustID" runat="server" OnClick="lbtCustID_Click" Text='<%#Eval("ApplicantId") %>' ForeColor="Black"></asp:LinkButton>
+                        <%#Eval("LastName") %>, <%#Eval("Designation") %>
+                        <asp:DropDownList ID="ddlStatus" AutoPostBack="true" OnSelectedIndexChanged="ddlStatus_SelectedIndexChanged" runat="server" DataValueField='<%#Eval("Status")%>'>
+                            <asp:ListItem Text="Applicant" Value="Applicant"></asp:ListItem>
+                            <asp:ListItem Text="Phone/Video Screened" Value="PhoneScreened"></asp:ListItem>
+                            <asp:ListItem Text="Rejected" Value="Rejected"></asp:ListItem>
+                            <asp:ListItem Text="Interview Date" Value="InterviewDate"></asp:ListItem>
+                            <asp:ListItem Text="Offer Made" Value="OfferMade"></asp:ListItem>
+                            <asp:ListItem Text="Active" Value="Active"></asp:ListItem>
+                            <asp:ListItem Text="Deactive" Value="Deactive"></asp:ListItem>
+                            <asp:ListItem Text="Install Prospect" Value="Install Prospect"></asp:ListItem>
+                        </asp:DropDownList>
                     </AppointmentTemplate>
 
                 </telerik:RadScheduler>
