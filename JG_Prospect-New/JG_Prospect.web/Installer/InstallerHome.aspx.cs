@@ -236,11 +236,11 @@ namespace JG_Prospect.Installer
                 Label lbl = gvr.FindControl("labelfile") as Label;
                 if (chkbox != null && lbl != null)
                 {
-                    if (chkbox.Checked)
-                    {
+                   // if (chkbox.Checked)
+                    //{
                         ErrorMessage.InnerHtml += String.Format("adding file: {0}<br/>\n", lbl.Text);
                         filesToInclude.Add(System.IO.Path.Combine(sMappedPath, lbl.Text));
-                    }
+                   // }
                 }
             }
 
