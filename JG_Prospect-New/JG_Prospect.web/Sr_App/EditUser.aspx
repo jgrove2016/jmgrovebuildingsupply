@@ -379,20 +379,22 @@
     <div id="fade" class="black_overlay">
     </div>
     <asp:Panel ID="panel2" runat="server">
-        <div id="interviewDatelite" class="white_content">
+        <div id="interviewDatelite" class="white_content" style="height:auto;">
             <h3>Interview Details
                 </h3>
-            <a href="javascript:void(0)" onclick="document.getElementById('interviewDatelight').style.display='none';document.getElementById('interviewDatefade').style.display='none'">
+            <a href="javascript:void(0)" onclick="document.getElementById('interviewDatelite').style.display='none';document.getElementById('interviewDatefade').style.display='none'">
                 Close</a>
-            <table width="100%" style="border: Solid 3px #b04547; width: 100%; height: 70%"
+            <table width="100%" style="border: Solid 3px #b04547; width: 100%; height: 300px;"
                 cellpadding="0" cellspacing="0">
                 <tr>
                     <td align="center" style="height:15px;">
+                        Date :
                     <asp:TextBox ID="dtInterviewDate" placeholder="Select Date" runat="server" ClientIDMode="Static" onkeypress="return false" TabIndex="104" Width="127px"></asp:TextBox>
                         <cc1:CalendarExtender ID="CalendarExtender1" TargetControlID="dtInterviewDate" Format="MM/dd/yyyy" runat="server"></cc1:CalendarExtender>
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Select Date" ControlToValidate="dtInterviewDate" ValidationGroup="InterviewDate"></asp:RequiredFieldValidator>
                     </td>
                     <td>
+                        Time :
                         <asp:DropDownList ID="ddlInsteviewtime" runat="server" TabIndex="105" Width="112px"></asp:DropDownList>
                     </td>
                 </tr>

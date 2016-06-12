@@ -39,6 +39,7 @@ namespace JG_Prospect
             }
             if (!IsPostBack)
             {
+                CalendarExtender1.StartDate = DateTime.Now;
                 Session["DeactivationStatus"] = "";
                 Session["FirstNameNewSC"] = "";
                 Session["LastNameNewSC"] = "";
@@ -1158,7 +1159,17 @@ namespace JG_Prospect
             string HireDate = "";
             string EmpType = "";
             string PayRates = "";
-            ds = InstallUserBLL.Instance.ChangeStatus(Convert.ToString(Session["EditStatus"]), Convert.ToInt32(Session["EditId"]), DateTime.Today.ToString("yyyy-MM-dd"), DateTime.Now.ToShortTimeString(), Convert.ToInt32(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]), txtReason.Text);
+
+            
+            //string InterviewDate = dtInterviewDate.Text;
+            DateTime interviewDate;
+            DateTime.TryParse(dtInterviewDate.Text, out interviewDate);
+            if(interviewDate==null)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Overlay", "alert('Invalid Interview Date, Please verify');", true);
+                return;
+            }
+            ds = InstallUserBLL.Instance.ChangeStatus(Convert.ToString(Session["EditStatus"]), Convert.ToInt32(Session["EditId"]), interviewDate.ToString("yyyy-MM-dd"), ddlInsteviewtime.SelectedItem.Text, Convert.ToInt32(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]), txtReason.Text);
             if (ds.Tables.Count > 0)
             {
                 if (ds.Tables[0].Rows.Count > 0)

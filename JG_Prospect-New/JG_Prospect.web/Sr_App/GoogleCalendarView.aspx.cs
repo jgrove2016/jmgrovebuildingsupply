@@ -503,10 +503,15 @@ namespace JG_Prospect.Sr_App
 
         }
 
-        protected void rsAppointments_FormCreated(object sender, SchedulerFormCreatedEventArgs e)
+        protected void rsAppointments_AppointmentCreated(object sender, AppointmentCreatedEventArgs e)
         {
             string status = e.Appointment.Attributes["Status"];
-        }
 
+            DropDownList ddlStatus = (DropDownList)e.Container.FindControl("ddlStatus");
+            if (ddlStatus != null)
+            {
+                ddlStatus.SelectedIndex = ddlStatus.Items.IndexOf(ddlStatus.Items.FindByValue(status.ToString()));
+            }
+        }
     }
 }
