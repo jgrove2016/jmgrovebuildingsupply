@@ -53,6 +53,8 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@IsCustSupMatApplicable", DbType.Boolean, custom.IsCustSupMatApplicable);
                     database.AddInParameter(command, "@MaterialStorage", DbType.String, custom.MaterialStorage);
                     database.AddInParameter(command, "@IsMatStorageApplicable", DbType.Boolean, custom.IsMatStorageApplicable);
+                    database.AddInParameter(command, "@DumpStorage", DbType.String, custom.DumpStorage);
+                    database.AddInParameter(command, "@IsDumpStorageApplicable", DbType.Boolean, custom.IsDumpStorageApplicable);
                     database.AddInParameter(command, "@IsPermitRequired", DbType.Boolean, custom.IsPermitRequired);
                     database.AddInParameter(command, "@IsHabitat", DbType.Boolean, custom.IsHabitat);
                     database.AddInParameter(command, "@Others", DbType.String, custom.Others);
@@ -893,6 +895,8 @@ namespace JG_Prospect.DAL
                                         MaterialStorage = row["MaterialStorage"].ToString(),
                                         IsMatStorageApplicable =  row["IsMatStorageApplicable"].ToString() == "" ? false : Convert.ToBoolean( row["IsMatStorageApplicable"].ToString()),
                                         IsPermitRequired = row["IsPermitRequired"].ToString() == "" ? false : Convert.ToBoolean(row["IsPermitRequired"].ToString()),
+                                        DumpStorage = row["DumpStorage"].ToString(),
+                                        IsDumpStorageApplicable = row["IsDumpStorageApplicable"].ToString() == "" ? false : Convert.ToBoolean(row["IsDumpStorageApplicable"].ToString()),
                                         IsHabitat = row["IsHabitat"].ToString() == "" ? false : Convert.ToBoolean(row["IsHabitat"].ToString()),
                                         CustomerLocationPics = returndata.Tables[1].AsEnumerable().
                                         Select(aa => new CustomerLocationPic

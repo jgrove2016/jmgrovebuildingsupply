@@ -757,6 +757,7 @@
                     var licount;
                     var childCount = "";
                     var chdCount = 0;
+                    
                     $.each(result, function (key, value) {
                         debugger;
                         //Top Grid
@@ -813,7 +814,9 @@
                             childCount = "";
                             chdCount = 0;
                         }
-                        $('.clsMaskPhone').mask("999-999-9999");
+                        try {
+                            $('.clsMaskPhone').mask("999-999-9999");
+                        }catch(e1){}
                     });
                     //Primary Product
                     $.each(PrimaryProduct, function (key, value) {
@@ -1676,7 +1679,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <label>
+                                <label style="line-height:21px;">
                                     Contact Preference</label>
                                 <asp:CheckBox ID="chbemail" runat="server" Width="14%" Text="Email " TabIndex="17"
                                     onclick="fnCheckOne(this)" />
@@ -1693,8 +1696,8 @@
                                 <label>
                                     Estimate Date</label>
                                 <asp:TextBox ID="txtestimate_date" CssClass="date" TabIndex="5" runat="server" ></asp:TextBox>
-                                <label>
-                                </label>
+                                <asp:CheckBox ID="chkAutoEmailer" Text="Send Auto Email" Checked="true" runat="server" />
+                               
                             </td>
                         </tr>
                         <uc1:UCAddress runat="server" ID="UCAddress" />
@@ -1724,7 +1727,7 @@
                         <tr>
                             <td>
                                 <label>
-                                    Secondary Product of Interest (6 months - 1 year)</label>
+                                    Secondary Product of Interest (6 months)</label>
                                 <asp:DropDownList ID="drpProductOfInterest2" runat="server" onchange="SecondaryProduct(this)" TabIndex="30">
                                 </asp:DropDownList>
                             </td>
@@ -1733,6 +1736,16 @@
                             <td>
                                 <label>Competitor Bids<span></span></label>
                                 <asp:TextBox ID="txtCompetitorBids" runat="server" TabIndex="6"></asp:TextBox>
+                                <label>
+                                </label>
+                            </td>
+                        </tr>
+                         <tr>
+                            <td>
+                                <label>
+                                    Estimate Time</label>
+                                <asp:TextBox ID="txtestimate_time" CssClass="time" runat="server" TabIndex="6"
+                                    onkeypress="return false"></asp:TextBox>
                                 <label>
                                 </label>
                             </td>
@@ -1781,16 +1794,7 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr>
-                            <td>
-                                <label>
-                                    Estimate Time</label>
-                                <asp:TextBox ID="txtestimate_time" CssClass="time" runat="server" TabIndex="6"
-                                    onkeypress="return false"></asp:TextBox>
-                                <label>
-                                </label>
-                            </td>
-                        </tr>
+                       
                         <tr>
                             <td>
                                 <div>
@@ -2023,7 +2027,9 @@
         </div>
         <!-- Tabs endss -->
     </div>
-    <link href="../datetime/jq/ui-lightness/jquery-ui-1.10.0.custom.min.css" rel="stylesheet" />    <link href="../datetime/jq/jquery.ui.timepicker.css" rel="stylesheet" />
+
+    <link href="../datetime/jq/ui-lightness/jquery-ui-1.10.0.custom.min.css" rel="stylesheet" />
+    <link href="../datetime/jq/jquery.ui.timepicker.css" rel="stylesheet" />
 
     <script src="../datetime/jq/jquery-1.9.0.min.js"></script>
     <script src="../datetime/jq/jquery.ui.core.min.js"></script>

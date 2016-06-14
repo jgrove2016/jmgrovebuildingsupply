@@ -277,10 +277,7 @@
 
                             </div>
                             <div class="clr"></div>
-                            <div class="btn_sec" style="float: right; padding-right: 10px; padding-top: 35px;">
-                                <asp:Button ID="btnGo" Text="Zip & Download" OnClick="btnGo_Click" runat="server" />
-                            </div>
-                            <span id="ErrorMessage" style="color: Red" runat="server"></span>
+
                             <div class="clr"></div>
                             <div id="dvRequestedMaterial">
                                 <fieldset>
@@ -496,6 +493,10 @@
 
                             </div>
                             <br />
+                            <div class="btn_sec" style="float: right; padding-right: 10px; padding-top: 35px;">
+                                <asp:Button ID="btnGo" Text="Zip & Download" OnClick="btnGo_Click" runat="server" />
+                            </div>
+                            <span id="ErrorMessage" style="color: Red" runat="server"></span>
                             <div id="divmain" class="target">
                                 <asp:GridView ID="Gridviewdocs" runat="server" AutoGenerateColumns="false" CssClass="grid"
                                     Width="100%" HeaderStyle-HorizontalAlign="Center" RowStyle-HorizontalAlign="Center"

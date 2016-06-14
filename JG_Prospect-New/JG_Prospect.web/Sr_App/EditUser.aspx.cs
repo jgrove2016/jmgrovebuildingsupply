@@ -39,6 +39,7 @@ namespace JG_Prospect
             }
             if (!IsPostBack)
             {
+                CalendarExtender1.StartDate = DateTime.Now;
                 Session["DeactivationStatus"] = "";
                 Session["FirstNameNewSC"] = "";
                 Session["LastNameNewSC"] = "";
@@ -61,6 +62,12 @@ namespace JG_Prospect
             Session["UserGridData"] = DS.Tables[0];
             GridViewUser.DataSource = DS.Tables[0];
             GridViewUser.DataBind();
+
+            ddlDesignation.DataSource = (from ptrade in DS.Tables[0].AsEnumerable()
+                                         where !string.IsNullOrEmpty(ptrade.Field<string>("Designation"))
+                                         select Convert.ToString(ptrade["Designation"])).Distinct().ToList();
+            ddlDesignation.DataBind();
+            ddlDesignation.Items.Insert(0, "--Select--");
         }
 
 
@@ -1152,7 +1159,17 @@ namespace JG_Prospect
             string HireDate = "";
             string EmpType = "";
             string PayRates = "";
-            ds = InstallUserBLL.Instance.ChangeStatus(Convert.ToString(Session["EditStatus"]), Convert.ToInt32(Session["EditId"]), DateTime.Today.ToString("yyyy-MM-dd"), DateTime.Now.ToShortTimeString(), Convert.ToInt32(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]), txtReason.Text);
+
+            
+            //string InterviewDate = dtInterviewDate.Text;
+            DateTime interviewDate;
+            DateTime.TryParse(dtInterviewDate.Text, out interviewDate);
+            if(interviewDate==null)
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "Overlay", "alert('Invalid Interview Date, Please verify');", true);
+                return;
+            }
+            ds = InstallUserBLL.Instance.ChangeStatus(Convert.ToString(Session["EditStatus"]), Convert.ToInt32(Session["EditId"]), interviewDate.ToString("yyyy-MM-dd"), ddlInsteviewtime.SelectedItem.Text, Convert.ToInt32(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]), txtReason.Text);
             if (ds.Tables.Count > 0)
             {
                 if (ds.Tables[0].Rows.Count > 0)
@@ -1194,7 +1211,31 @@ namespace JG_Prospect
         }
 
 
-
+        protected void ddlUserStatus_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BindGrid();
+        }
+        private void BindGrid()
+        {
+            DataTable dt = (DataTable)(Session["UserGridData"]);
+            EnumerableRowCollection<DataRow> query = null;
+            if (ddlUserStatus.SelectedIndex != 0 || ddlDesignation.SelectedIndex != 0)
+            {
+                string Status = ddlUserStatus.SelectedItem.Value;                    
+                query = from userdata in dt.AsEnumerable()
+                        where (userdata.Field<string>("Status") == Status  || ddlUserStatus.SelectedIndex == 0)
+                        && (userdata.Field<string>("Designation") == ddlDesignation.SelectedItem.Text || ddlDesignation.SelectedIndex == 0)
+                        select userdata;
+                if (query.Count() > 0)
+                {
+                    dt = query.CopyToDataTable();
+                }
+                else
+                    dt = null;
+            }
+            GridViewUser.DataSource = dt;
+            GridViewUser.DataBind();
+        }
 
     }
 }

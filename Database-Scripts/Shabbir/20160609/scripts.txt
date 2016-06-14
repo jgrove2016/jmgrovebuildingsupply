@@ -1,0 +1,262 @@
+
+
+/****** Object:  StoredProcedure [dbo].[UDP_CallSheetforSr]    Script Date: 09-06-2016 23:09:02 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UDP_CallSheetforSr]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[UDP_CallSheetforSr]
+GO
+
+/****** Object:  StoredProcedure [dbo].[UDP_CallSheetforSr]    Script Date: 09-06-2016 23:09:02 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UDP_CallSheetforSr]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[UDP_CallSheetforSr] AS' 
+END
+GO
+
+ALTER Proc [dbo].[UDP_CallSheetforSr]
+@status varchar(100),
+@user varchar(50),
+@usertype varchar(20)
+AS BEGIN
+
+if(@usertype = 'Admin' or @usertype = 'SM')
+begin 
+	SELECT * from
+	(
+		select a.id,a.CustomerName,
+		case when (a.PrimaryContact='Cell Phone') then a.CellPh when (a.PrimaryContact='Alt. Phone') then a.AlternatePh 
+		when (a.PrimaryContact='House Phone') then a.HousePh  end as 'PrimaryContact'
+		,a.CustomerAddress + ',' + a.City + ',' + a.[State] + '-' + a.ZipCode as 'CustomerAddress'
+		,a.BestTimetocontact
+		, case when (a.Followup_date = '1/1/1753') then  ''--CONVERT(varchar(10),a.EstDateSchdule,101)
+		 when (a.Followup_date = '1753-01-01') then  ''
+		else CONVERT(varchar(10),CAST(a.Followup_date as DATE)) end  as 'MeetingDate'
+		, a.[Status] as 'MeetingStatus'
+		,b.Username,0 as 'sno'
+		--,[dbo].[UDF_FindColorOfCustomer](a.id) as CustomerColor
+		,'red' as CustomerColor
+		from new_customer a
+		inner join tblUsers b on a.AssignedToId = b.Id
+		where  --a.[Status] like '%' + 'est' + '%'  and  
+		a.[Status] in (select StatusName from tblStatusMaster where StatusId in(17))  and  
+		(@user= '' or b.Email = @user)  
+  
+		UNION ALL
+		
+		select a.id,a.CustomerName,
+		case when (a.PrimaryContact='Cell Phone') then a.CellPh when (a.PrimaryContact='Alt. Phone') then a.AlternatePh 
+		when (a.PrimaryContact='House Phone') then a.HousePh  end as 'PrimaryContact'
+		,a.CustomerAddress + ',' + a.City + ',' + a.[State] + '-' + a.ZipCode as 'CustomerAddress'
+		,a.BestTimetocontact
+		, case when (a.Followup_date = '1/1/1753') then  ''--CONVERT(varchar(10),a.EstDateSchdule,101)
+		 when (a.Followup_date = '1753-01-01') then  ''
+		else CONVERT(varchar(10),CAST(a.Followup_date as DATE)) end  as 'MeetingDate'
+		, a.[Status] as 'MeetingStatus'
+		,b.Username,1 as 'sno'
+		--,[dbo].[UDF_FindColorOfCustomer](a.id) as CustomerColor
+		,'black' as CustomerColor
+		from new_customer a
+		inner join tblUsers b on a.AssignedToId = b.Id
+		where  --a.[Status] like '%' + 'est' + '%'  and  
+		a.[Status] in (select StatusName from tblStatusMaster where StatusId in(6,7))  and  
+		(@user= '' or b.Email = @user)  
+		
+		UNION ALL
+
+		select a.id,a.CustomerName,
+		case when (a.PrimaryContact='Cell Phone') then a.CellPh when (a.PrimaryContact='Alt. Phone') then a.AlternatePh 
+		when (a.PrimaryContact='House Phone') then a.HousePh  end as 'PrimaryContact'
+		,a.CustomerAddress + ',' + a.City + ',' + a.[State] + '-' + a.ZipCode as 'CustomerAddress'
+		,a.BestTimetocontact
+		, case when (a.Followup_date = '1/1/1753') then  ''--CONVERT(varchar(10),a.EstDateSchdule,101)
+		 when (a.Followup_date = '1753-01-01') then  ''
+		else CONVERT(varchar(10),CAST(a.Followup_date as DATE)) end  as 'MeetingDate'
+		, a.[Status] as 'MeetingStatus'
+		,b.Username, 2 as 'sno'
+		--,[dbo].[UDF_FindColorOfCustomer](a.id) as CustomerColor
+		,'red' as CustomerColor
+		from new_customer a
+		inner join tblUsers b on a.AssignedToId = b.Id
+		where  --a.[Status] like '%' + 'est' + '%'  and 
+		a.[Status] in (select StatusName from tblStatusMaster where StatusId in(17))  and   
+		(@user= '' or b.Email != @user)  
+		
+		
+		UNION ALL
+		
+		select a.id,a.CustomerName,
+		case when (a.PrimaryContact='Cell Phone') then a.CellPh when (a.PrimaryContact='Alt. Phone') then a.AlternatePh 
+		when (a.PrimaryContact='House Phone') then a.HousePh  end as 'PrimaryContact'
+		,a.CustomerAddress + ',' + a.City + ',' + a.[State] + '-' + a.ZipCode as 'CustomerAddress'
+		,a.BestTimetocontact
+		, case when (a.Followup_date = '1/1/1753') then  ''--CONVERT(varchar(10),a.EstDateSchdule,101)
+		 when (a.Followup_date = '1753-01-01') then  ''
+		else CONVERT(varchar(10),CAST(a.Followup_date as DATE)) end  as 'MeetingDate'
+		, a.[Status] as 'MeetingStatus'
+		,b.Username, 3 as 'sno'
+		--,[dbo].[UDF_FindColorOfCustomer](a.id) as CustomerColor
+		,'black' as CustomerColor
+		from new_customer a
+		inner join tblUsers b on a.AssignedToId = b.Id
+		where  --a.[Status] like '%' + 'est' + '%'  and 
+		a.[Status] in (select StatusName from tblStatusMaster where StatusId in(6,7))  and   
+		(@user= '' or b.Email != @user)  
+		)bb
+		order by bb.sno desc, bb.MeetingDate desc
+end
+
+Else
+begin
+SELECT * from
+	(
+		select a.id,a.CustomerName,
+		case when (a.PrimaryContact='Cell Phone') then a.CellPh when (a.PrimaryContact='Alt. Phone') then a.AlternatePh 
+		when (a.PrimaryContact='House Phone') then a.HousePh  end as 'PrimaryContact'
+		,a.CustomerAddress + ',' + a.City + ',' + a.[State] + '-' + a.ZipCode as 'CustomerAddress'
+		,a.BestTimetocontact
+		, case when (a.Followup_date = '1/1/1753') then  ''--CONVERT(varchar(10),a.EstDateSchdule,101)
+		 when (a.Followup_date = '1753-01-01') then  ''
+		else CONVERT(varchar(10),CAST(a.Followup_date as DATE)) end  as 'MeetingDate'
+		, a.[Status] as 'MeetingStatus'
+		,b.Username, 0 as 'sno'
+		
+		--,[dbo].[UDF_FindColorOfCustomer](a.id) as CustomerColor
+		,'red' as CustomerColor
+		from new_customer a
+		inner join tblUsers b on a.AssignedToId = b.Id
+		where  (@user= '' or b.Email = @user) and  a.[Status] in (select StatusName from tblStatusMaster where StatusId in(17))
+		--a.[Status] like '%' + 'est' + '%'
+		
+		
+		UNION ALL
+		
+		select a.id,a.CustomerName,
+		case when (a.PrimaryContact='Cell Phone') then a.CellPh when (a.PrimaryContact='Alt. Phone') then a.AlternatePh 
+		when (a.PrimaryContact='House Phone') then a.HousePh  end as 'PrimaryContact'
+		,a.CustomerAddress + ',' + a.City + ',' + a.[State] + '-' + a.ZipCode as 'CustomerAddress'
+		,a.BestTimetocontact
+		, case when (a.Followup_date = '1/1/1753') then  ''--CONVERT(varchar(10),a.EstDateSchdule,101)
+		 when (a.Followup_date = '1753-01-01') then  ''
+		else CONVERT(varchar(10),CAST(a.Followup_date as DATE)) end  as 'MeetingDate'
+		, a.[Status] as 'MeetingStatus'
+		,b.Username, 1 as 'sno'
+		--,[dbo].[UDF_FindColorOfCustomer](a.id) as CustomerColor
+		,'black' as CustomerColor
+		from new_customer a
+		inner join tblUsers b on a.AssignedToId = b.Id
+		where  (@user= '' or b.Email = @user) and  a.[Status] in (select StatusName from tblStatusMaster where StatusId in(6,7))
+		--a.[Status] like '%' + 'est' + '%'
+		
+		)bb
+		order by bb.sno desc, bb.MeetingDate desc
+end
+
+END
+
+
+--exec [dbo].[UDP_CallSheetforSr] 'onload','karishma@gmail.com','SM'
+
+GO
+
+
+SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLBody2,HTMLBodyA,HTMLBodyB ,HTMLSubject
+
+		from tblHTMLTemplates  
+
+		WHERE Html_Name = 'Contract_Template'  
+
+
+GO 
+
+Update tblHTMLTemplates
+SET HTMLBody=' <table width="100%" cellspacing="0" cellpadding="0" border="0">        <tbody>  <tr>    <td colspan="5">lblProposalTerms</td></tr> </tbody> </table>  </td></tr>  <tr>      <td>  <table width="100%" cellspacing="0" cellpadding="0" border="0">  <tbody>  <tr>  <td colspan="2"><img src="http://50.191.13.206/JGP/img/ma.png" style="width: 243px; height: 46px;" /></td>  <td colspan="3"> <b>Lifetime manufacturer’s warranty</b><br />  <br />  <b> Two year labor warranty</b><br />  </td></tr> </tbody> </table>    </td></tr>  <tr>      <td>  <table width="100%" cellspacing="0" cellpadding="0" border="0">  <tbody>  <tr>  <td valign="top">&nbsp;</td>  <td align="right">   <b> $  lblProposalAmtA</b><br />  <br />  <b> Per month:  6%</b><br />  </td>  <td valign="top">&nbsp;</td>  <td valign="top">&nbsp;</td>  <td valign="top">&nbsp;</td></tr> </tbody> </table>    </td></tr>  <tr>      <td>  <table width="100%" cellspacing="0" cellpadding="0" border="0">  <tbody>  <tr>  <td colspan="5"><b><u>Proposal B:</u></b> To supply and install ( lblQuantity ) pair(s) of generic plastic (lblStyle) (lblColor)shutters. Remove and haul away old shutters and debris. Job location:(lblJobLocation)</td></tr> </tbody> </table>  </td></tr>  <tr>      <td>  <table width="100%" cellspacing="0" cellpadding="0" border="0">  <tbody>  <tr>  <td valign="top">&nbsp;</td>  <td align="right">   <b> $  lblProposalAmtB</b><br />  <br />  <b> Per month:  6%</b><br />  </td>  <td valign="top">&nbsp;</td>  <td valign="top">&nbsp;</td>  <td valign="top">&nbsp;</td></tr> </tbody> </table>   </td></tr>  <tr>      <td>  <table width="100%" cellspacing="0" cellpadding="0" border="0">  <tbody>  <tr>  <td valign="top"><span style="font-weight: bold;">&nbsp;Special Instructions:</span> lblSpecialInstructions</td>  <td valign="top"> , </td>  <td valign="top"><span style="font-weight: bold;">&nbsp;Work Area:</span> &nbsp;lblWorkArea </td>  <td valign="top">,</td>  <td valign="top">&nbsp;<span style="font-weight: bold;">Shutter Tops:</span> lblShutterTops</td></tr> </tbody> </table>  '
+WHERE Html_Name = 'Contract_Template'  
+GO 
+
+	SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLBody2,HTMLBodyA,HTMLSubject from tblHTMLTemplates  
+		WHERE Html_Name =   'Custom_Template' --'temp'-- 
+GO
+
+
+Update tblHTMLTemplates
+SET HTMLBody='<table width="100%" cellspacing="0" cellpadding="0" border="0" style="font-family: verdana, geneva, sans-serif;      font-size: 8pt;">                      
+<tbody>      
+<tr>                              
+<td colspan="5">&nbsp;</td></tr>                    
+<tr>                              
+<td colspan="5">             
+     lblProposalTerms
+</td>                       
+</tr>
+    
+ <tr>
+   <td colspan="5"> 
+       <br />  replacement wood included
+    </td>
+ </tr>  
+    
+ <tr>
+        <td >  
+          <br />  <b>Work Location:( lblJobLocation)</b>
+        </td>
+     <td >                                
+        <br /><b>Special Instructions/ Exclusions:</b><br />
+                                  <br />                                
+        </td> 
+    </tr> 
+       
+                
+</tbody>               
+
+</table>                                                                                  
+<table width="100%" cellspacing="0" cellpadding="0" border="0">                      
+<tbody>                          
+  
+<tr>
+    <td>
+        <b>Material/dumpster storage:</b>
+    </td>
+
+    <td colspan="3">
+       <b>&nbsp;&nbsp;&nbsp; *Customer supplied material list:</b>(All supplied by JMG unless specified)
+    </td>
+</tr>                 
+    <tr>
+        <td>             
+            <br /> <img src="http://50.191.13.206/JGP/img/pdfimage.png" style="margin: 0 0 0 14em;" height="100%" width="100%" title="JM Grove construction Logo"/>          
+            <br /><br />
+
+        </td>
+    </tr>
+</tbody>                </table> 
+<table align="center" width="100%" bordercolor="#666666" bgcolor="#FFFFFF" border="0" class="no_line" cellspacing="0" cellpadding="0" style="font-family: verdana, geneva, sans-serif;      font-size: 8pt;">      
+<tbody>  
+<tr>   
+<td width="50%" valign="top" style="text-align: justify;padding-right:10px">                        *Standard JM Grove projects start approximately: 2-8 weeks (depending on job type,                         size) from finalized material list and/or deposits. And are normally substantially                         completed by: (undeterminable) Act of god, Weather, labor shortages, supplies availability,                         Custom orders, un-forseen labor/material and but not limited to change orders can                         all cause delays and cause undeterminable extended turn-around time. All following                         material &amp; labor is furnished &amp; installed by J.M. Grove Construction unless otherwise                         specified. J.M. Grove strongly recommends supplying and installing ALL material                         to prevent costly delays, “owner” is responsible forall delays caused by supplying                         incorrect material at Time &amp; Material basis. The above prices, specifications and                         conditions are satisfactory and are hereby accepted. You are authorized to do the                         work as specified. Any equipment, material, or labor designated as “OWNERS” responsibility                         must be on the job site, uncrated and inspected and approved on the day the project                         begins. Client supplied material used will not be warrantied by J.M. Grove Construction.                         Payment will be made as outlined below. Please sign and return white copy if proposal                         is accepted. Review reverse side for terms and conditions                     </td>                      
+<td width="50%" valign="top" ;="" padding-right:10px="" style="text-align: justify">                        Any removal or correction of any concealed wall, ceiling or floor obstruction ,decay,                         pipe, ducting, additional wood or metal, additional un-forseen materials &amp;labor                         needed to complete a job, Any required state or local permit ordinances, Testing                         or Analysis or Remediation Removal or Repair of – Radon – Lead – Asbestos – Mold                         or any other like substances etc. revealed during construction, is not included                         in this contract. If this type of situation occurs, it will be reviewed with the                         client, and a separate price will be quoted on that part of the project or billed                         at a Time &amp; Material rate of: (Mechanic Rate=$90/hr and/or Helper/Painter Rate =$70/hr).                         Payment for the extra work will be paid in full prior to the start of work or the                         original specifications will be performed. All changes will generally increase the                         time it takes to complete the project. Change Order Forms must be signed by both                         J.M. Grove Construction and client.                           
+<p align="justify">&nbsp;                             </p>                          
+<p align="right" style="font-weight: bold">                            Customer X:_____________________________</p>                    </td>                </tr>            </tbody></table>                                                               
+<table width="100%" border="0" cellspacing="10" cellpadding="10" align="left" style="font-family: verdana, geneva, sans-serif;      font-size: 8pt;">                  
+<tbody>  
+<tr>                      
+    <td valign="top">                          
+    <p>                            <strong>Acceptance of Proposal:</strong></p>                          
+    <p>                            Registration #:PA092750 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Attorney                             General 717-787-3391<br />
+                                  We propose hereby to furnish material and labor – complete in accordance with above specifications,                             for the sum of:$ lblTotalAmount</p>                          
+    <p>                            <strong>Payment to be made as follows:</strong></p>                          
+    <p>                           <b> 1/3 Down Payment:$ lblamountpart1 ,1/3 Due upon scheduling:$&nbsp;lblamountpart2                             ,1/3 Due upon majority completion:$&nbsp;lblamountpart3</p></b>                          
+    <p>                              Authorized                             Signature:__________________________&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date:&nbsp;lblFooterDate</p>                          
+    <p>                            Customer Name (Printed):&nbsp; lblCustomerName &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                             Customer Signature:__________________________</p>                   
+
+    </td>             
+</tr> 
+            
+</tbody>
+</table>'
+WHERE Html_Name =   'Custom_Template'
+GO 

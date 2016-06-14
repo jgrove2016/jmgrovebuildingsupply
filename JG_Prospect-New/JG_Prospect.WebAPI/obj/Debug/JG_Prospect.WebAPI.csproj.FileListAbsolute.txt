@@ -122,3 +122,9 @@ D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.WebAPI\bin\zh-Hant\Syst
 D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.WebAPI\obj\Debug\JG_Prospect.WebAPI.csprojResolveAssemblyReference.cache
 D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.WebAPI\obj\Debug\JG_Prospect.WebAPI.dll
 D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.WebAPI\obj\Debug\JG_Prospect.WebAPI.pdb
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.WebAPI\bin\JG_Prospect.WebAPI.dll.config
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.WebAPI\bin\JG_Prospect.WebAPI.dll
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.WebAPI\bin\JG_Prospect.WebAPI.pdb
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.WebAPI\obj\Debug\JG_Prospect.WebAPI.csprojResolveAssemblyReference.cache
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.WebAPI\obj\Debug\JG_Prospect.WebAPI.dll
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.WebAPI\obj\Debug\JG_Prospect.WebAPI.pdb
