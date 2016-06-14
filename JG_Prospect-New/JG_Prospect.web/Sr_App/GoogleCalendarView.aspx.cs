@@ -497,5 +497,21 @@ namespace JG_Prospect.Sr_App
 
             Response.Redirect("InstallCreateUser.aspx?ID=" + ViewState["ApplicantId"]);
         }
+
+        protected void ddlStatus_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void rsAppointments_AppointmentCreated(object sender, AppointmentCreatedEventArgs e)
+        {
+            string status = e.Appointment.Attributes["Status"];
+
+            DropDownList ddlStatus = (DropDownList)e.Container.FindControl("ddlStatus");
+            if (ddlStatus != null)
+            {
+                ddlStatus.SelectedIndex = ddlStatus.Items.IndexOf(ddlStatus.Items.FindByValue(status.ToString()));
+            }
+        }
     }
 }

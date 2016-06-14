@@ -189,7 +189,7 @@
                             </ItemTemplate>
                         </asp:TemplateField>
                         <asp:TemplateField ShowHeader="True" HeaderText="Id" ControlStyle-ForeColor="Black"
-                            ItemStyle-HorizontalAlign="Center" Visible="false">
+                            ItemStyle-HorizontalAlign="Center" Visible="true">
                             <EditItemTemplate>
                                 <asp:TextBox ID="txtid" runat="server" MaxLength="30" Text='<%#Eval("Id")%>'></asp:TextBox>
                             </EditItemTemplate>
@@ -276,7 +276,9 @@
                                     <asp:ListItem Text="Active" Value="Active"></asp:ListItem>
                                     <asp:ListItem Text="Deactive" Value="Deactive"></asp:ListItem>
                                     <asp:ListItem Text="Install Prospect" Value="Install Prospect"></asp:ListItem>
-                                </asp:DropDownList>
+                                </asp:DropDownList> <br />
+                                <asp:Label ID="lblRejectDetail" runat="server" Text='<%#Eval("RejectDetail") %>'></asp:Label>
+                                <asp:Label ID="lblInterviewDetail" runat="server" Text='<%#Eval("InterviewDetail") %>'></asp:Label>
                             </ItemTemplate>
                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                         </asp:TemplateField>
@@ -393,20 +395,22 @@
     <div id="fade" class="black_overlay">
     </div>
     <asp:Panel ID="panel2" runat="server">
-        <div id="interviewDatelite" class="white_content">
+        <div id="interviewDatelite" class="white_content" style="height:auto;">
             <h3>Interview Details
                 </h3>
-            <a href="javascript:void(0)" onclick="document.getElementById('interviewDatelight').style.display='none';document.getElementById('interviewDatefade').style.display='none'">
+            <a href="javascript:void(0)" onclick="document.getElementById('interviewDatelite').style.display='none';document.getElementById('interviewDatefade').style.display='none'">
                 Close</a>
-            <table width="100%" style="border: Solid 3px #b04547; width: 100%; height: 100%"
+            <table width="100%" style="border: Solid 3px #b04547; width: 100%; height: 200px;"
                 cellpadding="0" cellspacing="0">
                 <tr>
                     <td align="center" style="height:15px;">
+                        Date :
                     <asp:TextBox ID="dtInterviewDate" placeholder="Select Date" runat="server" ClientIDMode="Static" onkeypress="return false" TabIndex="104" Width="127px"></asp:TextBox>
                         <cc1:CalendarExtender ID="CalendarExtender1" Format="MM/dd/yyyy"  TargetControlID="dtInterviewDate" runat="server"></cc1:CalendarExtender>
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Select Date" ControlToValidate="dtInterviewDate" ValidationGroup="InterviewDate"></asp:RequiredFieldValidator>
                     </td>
                     <td>
+                        Time :
                         <asp:DropDownList ID="ddlInsteviewtime" runat="server" TabIndex="105" Width="112px"></asp:DropDownList>
                     </td>
                 </tr>
