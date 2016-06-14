@@ -416,7 +416,7 @@
                                     <td align="right" style="width: 31%">
                                         <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                                             <ContentTemplate>
-                                                <asp:LinkButton ID="lnkAddNotSoldEmail" OnClick="lnkAddNotSoldEmail_Click" runat="server">Add Email</asp:LinkButton>
+                                                <asp:LinkButton ID="lnkAddNotSoldEmail" OnClick="lnkAddNotSoldEmail_Click" customerid='<%=customerid %>' OnClientClick="window.open('customer_profile.aspx?Customerid='+this.getAttribute('customerid'));return false;" runat="server">Add Email</asp:LinkButton>
                                             </ContentTemplate>
                                         </asp:UpdatePanel>
                                     </td>
@@ -801,7 +801,7 @@
                                             <td align="right" style="width: 31%">
                                                 <asp:UpdatePanel ID="upnlAdd" runat="server">
                                                     <ContentTemplate>
-                                                        <asp:LinkButton ID="lnkbtnAdd" OnClick="lnkbtnAdd_Click" runat="server">Add Email</asp:LinkButton>
+                                                        <asp:LinkButton ID="lnkbtnAdd" OnClick="lnkbtnAdd_Click" OnClientClick="window.open('customer_profile.aspx?Customerid=<%=customerid %>');return false;" runat="server">Add Email</asp:LinkButton>
                                                     </ContentTemplate>
                                                 </asp:UpdatePanel>
                                             </td>

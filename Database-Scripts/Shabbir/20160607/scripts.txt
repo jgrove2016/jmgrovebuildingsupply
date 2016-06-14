@@ -1,0 +1,182 @@
+/****** Object:  StoredProcedure [dbo].[UDP_getCustomerJobPackets]    Script Date: 07-06-2016 11:32:40 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UDP_getCustomerJobPackets]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[UDP_getCustomerJobPackets]
+GO
+
+/****** Object:  StoredProcedure [dbo].[UDP_getCustomerJobPackets]    Script Date: 07-06-2016 11:32:40 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UDP_getCustomerJobPackets]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[UDP_getCustomerJobPackets] AS' 
+END
+GO
+
+
+ALTER Proc [dbo].[UDP_getCustomerJobPackets]
+@SoldJobId varchar(100)
+--@customerId int,
+--@productId int,
+--@productTypeId int
+AS 
+BEGIN
+
+	IF OBJECT_ID('tempdb..#temptbl2') IS NOT NULL
+	BEGIN
+		drop table #temptbl2
+	end
+	
+	IF OBJECT_ID('tempdb..#temp') IS NOT NULL
+	BEGIN
+		drop table #temp
+	end
+
+
+	CREATE table #temptbl2
+	(
+		srno int identity(1,1),
+		DocumentName varchar(200),
+		DocDescription varchar(50)
+	)
+	declare @counter int=1,@customerId int,@productId int,@productTypeId int
+	
+	CREATE table #temp(id int identity(1,1),customerId int,productId int,productTypeId int)
+	
+	insert into #temp(customerId,productId,productTypeId)
+		select CustomerId,EstimateId,ProductId from tblJobSequence where SoldJobId=@SoldJobId
+		
+	while(@counter<=(select MAX(id) from #temp))
+	begin
+		select @customerId=customerId,@productId=productId,@productTypeId=productTypeId from #temp where id=@counter
+		
+		insert into #temptbl2 (DocumentName,DocDescription)
+			select 'CustomerDocs/Pdfs/' + TempName,'Work Order' from tblCustomersDocument WHERE CustomerId = @CustomerId and ProductId = @ProductId and ProductTypeId = @ProductTypeId and DocType like '%WorkOrder%'
+
+		insert into #temptbl2 (DocumentName,DocDescription)
+			select '' + PictureName, 'Pictures' from tblCustomerLocationPics where CustomerId = @CustomerId and ProductId = @ProductId and ProductTypeId = @ProductTypeId  
+
+		insert into #temptbl2 (DocumentName,DocDescription)
+			select 'VendorQuotes/' + TempName, 'Final Quote' from tblVendorQuotes 
+				where SoldJobId=@SoldJobId
+		
+		set @counter+=1
+	end
+	Select * from  #temptbl2
+
+END
+
+--exec [UDP_getCustomerJobPackets] 209,151,4
+
+
+GO
+
+
+
+
+
+/****** Object:  StoredProcedure [dbo].[UDP_FetchWorkOrderDetails]    Script Date: 07-06-2016 11:41:36 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UDP_FetchWorkOrderDetails]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[UDP_FetchWorkOrderDetails]
+GO
+
+/****** Object:  StoredProcedure [dbo].[UDP_FetchWorkOrderDetails]    Script Date: 07-06-2016 11:41:36 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UDP_FetchWorkOrderDetails]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[UDP_FetchWorkOrderDetails] AS' 
+END
+GO
+
+-- [UDP_FetchWorkOrderDetails] 2646, 108, 1
+ALTER PROC [dbo].[UDP_FetchWorkOrderDetails]  
+(    
+ @customerid int,    
+ @estimateid int  ,  
+ @prodcuttypeid int    
+)   
+AS     
+BEGIN    
+  IF(@prodcuttypeid = 1)  
+  BEGIN  
+	select b.id,
+			a.Id,
+			c.Username, 
+			c.Email, 
+			c.Phone   
+			,a.Modifieddate, 
+			b.CustomerName + ' ' + b.LastName as CustomerName, 
+			b.JobLocation,    
+			b.CellPh + ',' + b.HousePh + ',' + b.AlternatePh as phones, 
+			a.SpecialInstruction, 
+			a.WorkArea    
+			,d.ShutterName + '-' + d.ShutterType as Productname , 
+			e.ShutterTop, 
+			f1.ColorName, 
+			g.Width,
+			a.Style, 
+			a.ShutterLength, 
+			a.Quantity,
+			a.ShutterId    
+	from tblShuttersEstimate a    
+		inner join new_customer b on a.CustomerId=b.id    
+		left outer join tblUsers c on c.Id = b.AssignedToId    --#Shabbir: Previously it was inner join, changed this after discussion with Justin 
+		inner join tblShutters d on a.ShutterId = d.Id    
+		inner join tblShutterTop e on a.ShutterTopId = e.Id    
+		inner join tblShutterColor f on a.ShutterColorId = f.Id    
+		inner join tblColor f1 on f.ColorCode = f1.ColorCode    
+		inner join tblShutterWidth g on a.ShutterWidthId= g.Id    
+	where a.CustomerId = @customerid  and a.Id=@estimateid    
+  END  
+  ELSE  --if (@prodcuttypeid =4)
+  begin
+  
+	select c.Id
+			,nc.CustomerName  + ' ' + nc.LastName as CustomerName 
+			,nc.JobLocation 
+			,nc.CellPh + ',' + nc.HousePh + ',' + nc.AlternatePh as phones
+			,u.Username 
+			,u.Email 
+			,u.Phone
+			,c.SpecialInstruction 
+			,c.WorkArea 
+			,c.Id as ProductId
+			,c.IsPermitRequired
+			,c.IsHabitat
+			,c.ProposalTerms
+	from tblCustom c
+		inner join new_customer nc on nc.id =c.CustomerId 
+		left outer join tblUsers u on u.Id =nc.AssignedToId --#Shabbir: Previously it was inner join, changed this after discussion with Justin
+	where c.CustomerId = @customerid and c.Id=@estimateid 
+  end
+  --commented because now all products redirected to customs page
+ -- else
+ -- BEGIN     
+ --  SELECT  tblUsers.Id AS UserId, 
+	--		tblUsers.Username, 
+	--		tblUsers.Email, 
+	--		new_customer.CustomerName+ ' ' + new_customer.LastName as CustomerName ,   
+	--		new_customer.JobLocation,   
+ --           new_customer.CellPh+','+ new_customer.HousePh+','+ new_customer.AlternatePh as phones,   
+ --           tblCustom.WorkArea, tblCustom.ProposalTerms, tblCustom.SpecialInstruction,  
+ --           tblCustom.Id AS ProductId  
+ --           ,tblCustom.ProposalTerms
+	--FROM  tblUsers INNER JOIN  
+ --           new_customer ON tblUsers.Id = new_customer.AssignedToId INNER JOIN  
+ --           tblCustom ON new_customer.id = tblCustom.CustomerId  
+	--where tblCustom.CustomerId = @customerid  and tblCustom .Id=@estimateid   
+   
+  --END  
+END
+
+GO
+
+

@@ -260,11 +260,37 @@
                         <tr>
                             <td>
                                 <label>
-                                    Material / Dumpster Storage:</label>
-                                <asp:TextBox ID="txtStorage" runat="server" Enabled="false"></asp:TextBox>
+                                    Material Storage:</label>
+                                <asp:DropDownList ID="ddlMaterialStorage" runat="server" Enabled="false">
+                                    <asp:ListItem>Driveway</asp:ListItem>
+                                    <asp:ListItem>Garage</asp:ListItem>
+                                    <asp:ListItem>Front Yard</asp:ListItem>
+                                    <asp:ListItem>Back Yard</asp:ListItem>
+                                    <asp:ListItem>Lside</asp:ListItem>
+                                    <asp:ListItem>Rside</asp:ListItem>
+                                    <asp:ListItem>Other</asp:ListItem>
+                                </asp:DropDownList>
                                 <label>
-                                    <asp:CheckBox ID="chkStorage" runat="server" Text="N/A" TextAlign="Right" AutoPostBack="true"
-                                        Checked="true" OnCheckedChanged="chkStorage_CheckedChanged" />
+                                    <asp:CheckBox ID="chkMaterialStorage" runat="server" Text="N/A" TextAlign="Right" AutoPostBack="true"
+                                        Checked="true" OnCheckedChanged="chkMaterialStorage_CheckedChanged" />
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>
+                                    Waste/Dump Storage Location:</label>
+                                <asp:DropDownList ID="ddlDumpStorageLocation" runat="server" Enabled="false">
+                                    <asp:ListItem>Driveway</asp:ListItem>
+                                    <asp:ListItem>Garage</asp:ListItem>
+                                    <asp:ListItem>Front Yard</asp:ListItem>
+                                    <asp:ListItem>Back Yard</asp:ListItem>
+                                    <asp:ListItem>Lside</asp:ListItem>
+                                    <asp:ListItem>Rside</asp:ListItem>
+                                </asp:DropDownList>
+                                <label>
+                                    <asp:CheckBox ID="chkDumpStorageLocation" runat="server" Text="N/A" TextAlign="Right" AutoPostBack="true"
+                                        Checked="true" OnCheckedChanged="chkDumpStorageLocation_CheckedChanged" />
                                 </label>
                             </td>
                         </tr>
@@ -275,8 +301,7 @@
                         <tr>
                             <td>
                                 <label>
-                                    Work Area: <span>*</span></label>
-                                <asp:TextBox ID="txtworkarea" runat="server" MaxLength="35" TabIndex="2"></asp:TextBox>
+                                    Work Area:                       <asp:TextBox ID="txtworkarea" runat="server" MaxLength="35" TabIndex="2"></asp:TextBox>
                                 <label>
                                 </label>
                                 <asp:RequiredFieldValidator ID="rfvworkarea" runat="server" ForeColor="Red" ValidationGroup="save"
