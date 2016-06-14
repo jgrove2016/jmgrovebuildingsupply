@@ -94,5 +94,3 @@ D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GD
 D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\itextsharp.dll
 D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Caching.Database.dll
 D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Caching.dll
-G:\MyData\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.csprojResolveAssemblyReference.cache
-G:\MyData\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.dll
