@@ -201,7 +201,7 @@ namespace JG_Prospect.Sr_App
                 {
                     IsPageRefresh = true;
                 }
-                ScriptManager.RegisterStartupScript(this, GetType(), "initialize", "initialize();", true);
+                //ScriptManager.RegisterStartupScript(this, GetType(), "initialize", "initialize();", true);
             }
         }
 
@@ -3861,7 +3861,7 @@ namespace JG_Prospect.Sr_App
             DataSet dsemail = VendorBLL.Instance.GetVendorEmailByAddress(objVendor);
             HttpContext.Current.Session["dtVendorEmail"] = dsemail.Tables[0];
             string EmailJSON = JsonConvert.SerializeObject(dsemail.Tables[0]);
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "vendor Email", "AddVenderEmails(" + EmailJSON + ")", true);
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "vendor Email", "AddVenderEmails(" + EmailJSON + ");", true);
 
         }
 
@@ -4476,7 +4476,7 @@ namespace JG_Prospect.Sr_App
         {
             if (ddlpaymode.SelectedIndex == 2)
             {
-                Response.Redirect("~/Sr_App/Procurement.aspx");
+              //  Response.Redirect("~/Sr_App/Procurement.aspx");
             }
         }
 

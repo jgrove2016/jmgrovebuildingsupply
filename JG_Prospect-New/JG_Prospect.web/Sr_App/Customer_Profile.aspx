@@ -375,6 +375,93 @@
             });
         }
 
+        function CheckDuplicatePhoneEmail() {
+            debugger;
+            //Get the Value an assign hidden field
+            var tbl = document.getElementById("tblBestTime");
+            var row = tbl.getElementsByTagName("tr");
+            var value = "";
+            var BestTime = new Array();
+            if (row.length > 1) {
+                for (i = 1; i < row.length; i++) {
+                    if (BestTime == "") {
+                        value = row[i].cells[0].innerText.split('X');
+                        BestTime = value[0].trim();;
+                    }
+                    else {
+                        value = row[i].cells[0].innerText.split('X');
+                        BestTime += ',' + value[0].trim();
+                    }
+                }
+                $('#hdnBestTimeToContact').val(BestTime);
+            }
+            var formData = [];
+            var formPushData = [];
+            $("#form1").find("input[name]:text,select[name],input:hidden[name][id^='hdn'],input[name]:radio,textarea[name],input[name]:checkbox").each(function (index, node) {
+
+                //formData[node.name] = node.value;
+                if (node.type == "checkbox") {
+                    node.value = $('#' + node.id).is(':checked');
+                }
+                if (node.type == "radio") {
+
+                    if ($('#' + node.id).is(':checked') == true) {
+                        formPushData.push({
+                            key: node.name,
+                            value: node.value
+                        });
+                    }
+
+                    //   node.value = $('#' + node.id).is(':checked');
+                    // node.value = $('input[type="radio"]:checked').val();
+                    //  node.value = $('#' + node.id).hasClass(':checked');
+                }
+
+                else {
+                    formPushData.push({
+                        key: node.name,
+                        value: node.value
+                    });
+                }
+
+            });
+            $.ajax({
+                type: "POST",
+                url: "Customer_Profile.aspx/CheckForDuplication",
+                contentType: "application/json; charset=utf-8",
+                dataType: "JSON",
+                //data: "{ 'formData' : '" + formData + "'}",
+                data: JSON.stringify({ formVars: formPushData }),
+                success: function (data) {
+                    debugger;
+                    var dataInput = (data.d);
+                    
+                    if (dataInput == "") {
+                        alert("Some error occured in checking customer duplication. Please Try again.")
+                        return;
+                    }
+                        //else if (dataInput == "EmptyMail") {
+                        //    alert("Please enter the mail id");
+                        //    return;
+                        //}
+                        // else if (dataInput == "PhoneNumberEmpty") {
+                        //alert("Please enter the Phone Number");
+                        // return;
+                        // }
+                    else if (dataInput == "EmptyName") {
+                        alert("Please enter the FirstName");
+                        return;
+                    }
+                    else if (dataInput == 'Contact is NOT Exists') { return; }
+                    else {
+                        //$("#hdnStatus").attr('value', 1);
+                        //$("#btnHideUpdate").click();
+                        alert(dataInput);
+                    }
+                }
+            });
+        }
+
         function CheckForDuplication() {
             debugger;
             //Get the Value an assign hidden field
@@ -771,7 +858,7 @@
 
                             if (value.PhoneType != "" || value.PhoneNumber != "") {
                                 $("#tblPhone" + childCount + " tr:last").before("<tr><td class='paddingtd'></td>" +
-                                  "<td><input type='text' clientidmode='Static' id='txtPhone" + licount + chdCount + "' name='nametxtPhone" + licount + chdCount + "' data-type='" + licount + "' tabindex='7' class='clsMaskPhone'  placeholder='___-___-____' /></td>" +
+                                  "<td><input type='text' clientidmode='Static' onblur='CheckDuplicatePhoneEmail();' id='txtPhone" + licount + chdCount + "' name='nametxtPhone" + licount + chdCount + "' data-type='" + licount + "' tabindex='7' class='clsMaskPhone'  placeholder='___-___-____' /></td>" +
                                   "<td><label class='clsFullWidth'>Phone Type</label></td><td>" +
                                   "<select class='clsFullWidth' id='selPhoneType" + licount + chdCount + "' name='nameselPhoneType" + licount + chdCount + "' data-type='" + licount + "' clientidmode='Static' tabindex='4'>" +
                                   "<option value='0'>Select</option><option value='CellPhone'>Cell Phone #</option><option value='HousePhone'>House Phone #</option><option value='WorkPhone'>Work Phone #</option><option value='AltPhone'>Alt. Phone #</option>" +
@@ -782,7 +869,7 @@
                             }
                             if (value.EMail != "") {
                                 $("#tblEmail" + childCount + " tr:last").before("<tr><td class='paddingtd'></td>" +
-                                    "<td><input type='text' clientidmode='Static' id='txtEMail" + licount + chdCount + "' name='nametxtEMail" + licount + chdCount + "' data-type='" + licount + "' tabindex='7'  placeholder='EMail' /></td></tr>");
+                                    "<td><input type='text' clientidmode='Static' onblur='CheckDuplicatePhoneEmail()' id='txtEMail" + licount + chdCount + "' name='nametxtEMail" + licount + chdCount + "' data-type='" + licount + "' tabindex='7'  placeholder='EMail' /></td></tr>");
                                 $("#txtEMail" + licount + chdCount).val(value.EMail);
                             }
                         }
@@ -797,12 +884,12 @@
                             "<input type='text' tabindex='7' id='txtLName" + licount + "' name='nametxtLName" + licount + "'  placeholder='Last Name' data-type='" + licount + "' /></td></tr><tr><td class='paddingtd'>" +
                             "<input type='button' id='btnParent" + licount + "' value='Add' data-type='" + licount + "' class='clsFullWidth cls_btn_plus' tabindex='31' onclick='AddTemplate(this)' /></td>" +
                             "</tr></table></div><div style='width: 40%; float: left;'><table id='tblPhone" + licount + "'><tr><td class='paddingtd'></td><td>" +
-                            "<input type='text' clientidmode='Static' id='txtPhone" + licount + "' name='nametxtPhone" + licount + "' data-type='" + licount + "' tabindex='7' class='clsMaskPhone'  placeholder='___-___-____' /></td>" +
+                            "<input type='text' clientidmode='Static' onblur='CheckDuplicatePhoneEmail();' id='txtPhone" + licount + "' name='nametxtPhone" + licount + "' data-type='" + licount + "' tabindex='7' class='clsMaskPhone'  placeholder='___-___-____' /></td>" +
                             "<td><label class='clsFullWidth'>Phone Type</label></td><td><select class='clsFullWidth' id='selPhoneType" + licount + "' name='nameselPhoneType" + licount + "' data-type='" + licount + "' clientidmode='Static' tabindex='4'>" +
                             "<option value='0'>Select</option><option value='CellPhone'>Cell Phone #</option><option value='HousePhone'>House Phone #</option><option value='WorkPhone'>Work Phone #</option><option value='AltPhone'>Alt. Phone #</option>" +
                             "</select></td></tr><tr><td class='paddingtd'><input type='button' value='Add' data-type='" + licount + "' class='clsFullWidth cls_btn_plus' tabindex='31' onclick='Phone(this)' /></td>" +
                             "</tr></table></div><div style='width: 20%; float: left;'><table id='tblEmail" + licount + "'><tr><td class='paddingtd'></td>" +
-                            "<td><input type='text' clientidmode='Static' id='txtEMail" + licount + "' name='nametxtEMail" + licount + "' data-type='" + licount + "' tabindex='7'  placeholder='EMail' /></td></tr><tr><td class='paddingtd'>" +
+                            "<td><input type='text' clientidmode='Static' id='txtEMail" + licount + "' onblur='CheckDuplicatePhoneEmail()' name='nametxtEMail" + licount + "' data-type='" + licount + "' tabindex='7'  placeholder='EMail' /></td></tr><tr><td class='paddingtd'>" +
                             "<input type='button' value='Add' data-type='" + licount + "' class='clsFullWidth cls_btn_plus' tabindex='31' onclick='Email(this)' /></td></tr></table></div></div></li>");
 
                             $("#selContactType" + licount).val(value.strContactType);
