@@ -662,8 +662,8 @@ namespace JG_Prospect.Sr_App
                 if (drow["FirstName"] == "")
                 {
 
-                    strResult = "EmptyName";
-                    return strResult;
+                    //strResult = "Please fill First Name";
+                    //return strResult;
                 }
             }
 
@@ -836,6 +836,8 @@ namespace JG_Prospect.Sr_App
                 }
             }
         }
+
+     
 
         [System.Web.Services.WebMethod]
         public static string GetCityState(string strZip)

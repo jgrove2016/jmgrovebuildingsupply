@@ -16,10 +16,10 @@
         }
         function uploadComplete2() {
 
-            
-                var btnImageUploadClick = document.getElementById("ctl00_ContentPlaceHolder1_btnImageUploadClick");
-                btnImageUploadClick.click();
-            
+
+            var btnImageUploadClick = document.getElementById("ctl00_ContentPlaceHolder1_btnImageUploadClick");
+            btnImageUploadClick.click();
+
         }
         function Checkfiles() {
 
@@ -100,53 +100,53 @@
               }
           }
             });
-        }
+  }
 
-        function focuslost() {
-            if (document.getElementById('<%= txtAmount.ClientID%>').value == '') {
-                alert('Please enter proposal cost!');
-                return false;
-            }
-            else if (document.getElementById('<%= txtauthpass.ClientID%>').value == '') {
-                alert('Please enter admin code!');
-                return false;
-            }
-            else {
-                var pagePath = "Custom.aspx/Exists";
-                var dataString = "{ 'value':'" + document.getElementById('<%= txtauthpass.ClientID%>').value + "' }";
-                var textboxid = "#<%= txtauthpass.ClientID%>";
-                var errorlableid = "#<%= lblError.ClientID%>";
+  function focuslost() {
+      if (document.getElementById('<%= txtAmount.ClientID%>').value == '') {
+          alert('Please enter proposal cost!');
+          return false;
+      }
+      else if (document.getElementById('<%= txtauthpass.ClientID%>').value == '') {
+          alert('Please enter admin code!');
+          return false;
+      }
+      else {
+          var pagePath = "Custom.aspx/Exists";
+          var dataString = "{ 'value':'" + document.getElementById('<%= txtauthpass.ClientID%>').value + "' }";
+          var textboxid = "#<%= txtauthpass.ClientID%>";
+          var errorlableid = "#<%= lblError.ClientID%>";
 
-                IsExists(pagePath, dataString, textboxid, errorlableid);
-                return true;
-            }
-        }
-        function ShowPopup() {
-
-
-            $('#ContentPlaceHolder1_txtProposalCost').attr('readonly', 'readonly');
-            $('#ContentPlaceHolder1_txtAmount').focus();
-            if (document.getElementById('<%=txtProposalCost.ClientID %>').value != '') {
-                document.getElementById('<%=txtAmount.ClientID %>').value = document.getElementById('<%=txtProposalCost.ClientID %>').value;
-            }
-            $('#mask').show();
-            $('#<%=pnlpopup.ClientID %>').show();
-        }
-        function HidePopup() {
-
-            $('#ContentPlaceHolder1_txtAmount, #ContentPlaceHolder1_txtauthpass').val('');
-            $('#ContentPlaceHolder1_lblError').text('');
-
-            $('#mask').hide();
-            $('#<%=pnlpopup.ClientID %>').hide();
-        }
-        $(".btnClose").live('click', function () {
+          IsExists(pagePath, dataString, textboxid, errorlableid);
+          return true;
+      }
+}
+function ShowPopup() {
 
 
-            $('#<%=txtAmount.ClientID %>, #<%=txtauthpass.ClientID %>, #<%=lblError.ClientID %>').val('');
+    $('#ContentPlaceHolder1_txtProposalCost').attr('readonly', 'readonly');
+    $('#ContentPlaceHolder1_txtAmount').focus();
+    if (document.getElementById('<%=txtProposalCost.ClientID %>').value != '') {
+        document.getElementById('<%=txtAmount.ClientID %>').value = document.getElementById('<%=txtProposalCost.ClientID %>').value;
+    }
+    $('#mask').show();
+    $('#<%=pnlpopup.ClientID %>').show();
+}
+function HidePopup() {
 
-            HidePopup();
-        });
+    $('#ContentPlaceHolder1_txtAmount, #ContentPlaceHolder1_txtauthpass').val('');
+    $('#ContentPlaceHolder1_lblError').text('');
+
+    $('#mask').hide();
+    $('#<%=pnlpopup.ClientID %>').hide();
+}
+$(".btnClose").live('click', function () {
+
+
+    $('#<%=txtAmount.ClientID %>, #<%=txtauthpass.ClientID %>, #<%=lblError.ClientID %>').val('');
+
+    HidePopup();
+});
 
     </script>
     <style type="text/css">
@@ -154,7 +154,7 @@
         {
             width: 100%;
         }
-        #mask
+         #mask
         {
             position: fixed;
             left: 0px;
@@ -169,6 +169,37 @@
             height: 100%;
         }
     </style>
+
+    <%--Style for adding multiple product categories - controls are in AddProductLinesControl.ascx--%>
+    <style>
+        .product-categories { margin: 10px 20px; border: 1px solid #ccc; padding: 10px; }
+            .product-categories .head .expand { float: right; padding: 10px; cursor: pointer; }
+
+            .product-categories .body { width: 100% !important; }
+            .product-categories table { width: 100%; }
+                .product-categories table tr td { vertical-align: top; padding: 5px; background:url('../img/line.png') repeat-x 50% bottom; }
+
+            .product-categories .head table tr td { width: 15%; }
+                .product-categories .head table tr td:nth-child(even) { width: 85%; }
+
+            .product-categories .body table tr td { width: 15%; }
+                .product-categories .body table tr td:nth-child(even) { width: 35%; }
+
+                .product-categories .body table tr td strong { float: right; margin-top: 8px; }
+
+            .product-categories label { margin: 10px 0; display: inline-block; font-weight: normal; }
+            .product-categories input,
+            .product-categories textarea,
+            .product-categories select { padding: 5px; margin: 0; border-radius: 5px; border: #b5b4b4 1px solid; line-height: 14px; width: 300px; }
+    </style>
+    <script>
+        function uploadError_multiple() {
+            // alert("Error");
+        }
+        function uploadStarted_multiple() {
+            // alert("uploadStarted");
+        }
+    </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="right_panel">
@@ -232,17 +263,17 @@
                             <td>
                                 <label>
                                     Customer Attachment:</label>
-                                     <ajaxToolkit:AsyncFileUpload ID="AsyncFileUploadCustomerAttachment" runat="server" ClientIDMode="AutoID" ThrobberID="abc"
-                                                OnUploadedComplete="AsyncFileUploadCustomerAttachment_UploadedComplete" CompleteBackColor="White"
-                                                Style="width: 22% !important;" OnClientUploadComplete="uploadComplete2"/> 
-                                    
-                                   
-                               <%-- <asp:FileUpload ID="fileAttachment" runat="server" class="multi" TabIndex="6" />--%>
-                              
+                                <ajaxToolkit:AsyncFileUpload ID="AsyncFileUploadCustomerAttachment" runat="server" ClientIDMode="AutoID" ThrobberID="abc"
+                                    OnUploadedComplete="AsyncFileUploadCustomerAttachment_UploadedComplete" CompleteBackColor="White"
+                                    Style="width: 22% !important;" OnClientUploadComplete="uploadComplete2"/>
+
+
+                                <%-- <asp:FileUpload ID="fileAttachment" runat="server" class="multi" TabIndex="6" />--%>
+
                                 <label>
-                             
-                                   <asp:LinkButton ID="lnkDownload" runat="server" Text="" Visible="true" OnClick="lnkDownload_Click"></asp:LinkButton>
-                                    
+
+                                    <asp:LinkButton ID="lnkDownload" runat="server" Text="" Visible="true" OnClick="lnkDownload_Click"></asp:LinkButton>
+
                                 </label>
                             </td>
                         </tr>
@@ -260,11 +291,37 @@
                         <tr>
                             <td>
                                 <label>
-                                    Material / Dumpster Storage:</label>
-                                <asp:TextBox ID="txtStorage" runat="server" Enabled="false"></asp:TextBox>
+                                    Material Storage:</label>
+                                <asp:DropDownList ID="ddlMaterialStorage" runat="server" Enabled="false">
+                                    <asp:ListItem>Driveway</asp:ListItem>
+                                    <asp:ListItem>Garage</asp:ListItem>
+                                    <asp:ListItem>Front Yard</asp:ListItem>
+                                    <asp:ListItem>Back Yard</asp:ListItem>
+                                    <asp:ListItem>Lside</asp:ListItem>
+                                    <asp:ListItem>Rside</asp:ListItem>
+                                    <asp:ListItem>Other</asp:ListItem>
+                                </asp:DropDownList>
                                 <label>
-                                    <asp:CheckBox ID="chkStorage" runat="server" Text="N/A" TextAlign="Right" AutoPostBack="true"
-                                        Checked="true" OnCheckedChanged="chkStorage_CheckedChanged" />
+                                    <asp:CheckBox ID="chkMaterialStorage" runat="server" Text="N/A" TextAlign="Right" AutoPostBack="true"
+                                        Checked="true" OnCheckedChanged="chkMaterialStorage_CheckedChanged" />
+                                </label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>
+                                    Waste/Dump Storage Location:</label>
+                                <asp:DropDownList ID="ddlDumpStorageLocation" runat="server" Enabled="false">
+                                    <asp:ListItem>Driveway</asp:ListItem>
+                                    <asp:ListItem>Garage</asp:ListItem>
+                                    <asp:ListItem>Front Yard</asp:ListItem>
+                                    <asp:ListItem>Back Yard</asp:ListItem>
+                                    <asp:ListItem>Lside</asp:ListItem>
+                                    <asp:ListItem>Rside</asp:ListItem>
+                                </asp:DropDownList>
+                                <label>
+                                    <asp:CheckBox ID="chkDumpStorageLocation" runat="server" Text="N/A" TextAlign="Right" AutoPostBack="true"
+                                        Checked="true" OnCheckedChanged="chkDumpStorageLocation_CheckedChanged" />
                                 </label>
                             </td>
                         </tr>
@@ -275,12 +332,11 @@
                         <tr>
                             <td>
                                 <label>
-                                    Work Area: <span>*</span></label>
-                                <asp:TextBox ID="txtworkarea" runat="server" MaxLength="35" TabIndex="2"></asp:TextBox>
-                                <label>
-                                </label>
-                                <asp:RequiredFieldValidator ID="rfvworkarea" runat="server" ForeColor="Red" ValidationGroup="save"
-                                    ControlToValidate="txtworkarea" ErrorMessage="Enter Work Area"></asp:RequiredFieldValidator>
+                                   Work Area:                       <asp:TextBox ID="txtworkarea" runat="server" MaxLength="35" TabIndex="2"></asp:TextBox>
+                                    <label>
+                                    </label>
+                                    <asp:RequiredFieldValidator ID="rfvworkarea" runat="server" ForeColor="Red" ValidationGroup="save"
+                                        ControlToValidate="txtworkarea" ErrorMessage="Enter Work Area"></asp:RequiredFieldValidator>
                             </td>
                         </tr>
                         <tr align="left">
@@ -291,14 +347,14 @@
                                             Location Image
                                         </td>
                                         <td style="width: 60%;">
-                                        
+
                                             <ajaxToolkit:AsyncFileUpload ID="ajaxFileUpload" runat="server" ClientIDMode="AutoID"
                                                 OnUploadedComplete="ajaxFileUpload_UploadedComplete" ThrobberID="imgLoad" CompleteBackColor="White"
                                                 OnClientUploadComplete="uploadComplete" Style="width: 92% !important; margin-right: 6px" />
-                                           
-                                                    <asp:Button ID="btnImageUploadClick" ClientIDMode="AutoID" runat="server" CausesValidation="false"
-                                                        Text="hidden" Style="display: none" OnClick="btnImageUploadClick_Click" />
-                                              
+
+                                            <asp:Button ID="btnImageUploadClick" ClientIDMode="AutoID" runat="server" CausesValidation="false"
+                                                Text="hidden" Style="display: none" OnClick="btnImageUploadClick_Click" />
+
                                             <%--<asp:FileUpload ID="FileUpload1" runat="server" onchange="readURL(this);" TabIndex="4"/>--%>
                                             <%--<asp:RequiredFieldValidator ID="reqUpload" runat="server" ControlToValidate="FileUpload1" 
                                                 ErrorMessage="Upload atleast two image." Display="Dynamic" ForeColor="Red" SetFocusOnError="true" ValidationGroup="save">
@@ -343,7 +399,7 @@
                                                     </asp:GridView>
                                                     <asp:HiddenField ID="hidCount" runat="server" />
                                                 </ContentTemplate>
-                                              
+
                                             </asp:UpdatePanel>
                                         </td>
                                     </tr>
@@ -381,6 +437,14 @@
                 <asp:HiddenField ID="hidProdId" runat="server" />
                 <asp:HiddenField ID="hidProdType" runat="server" />
             </div>
+
+            <div>
+                <asp:PlaceHolder ID="placeHolderProductLines" runat="server"></asp:PlaceHolder>
+                <div class="btn_sec">
+                    <asp:Button ID="btnAddProductLine" type="submit" runat="server" Text="Add Product Category" OnClick="btnAddProductLine_Click" />
+                </div>
+            </div>
+
             <div id="mask">
             </div>
             <asp:Panel ID="pnlpopup" runat="server" BackColor="White" Height="175px" Width="300px"

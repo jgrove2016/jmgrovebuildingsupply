@@ -130,22 +130,40 @@ namespace JG_Prospect.Sr_App.Product_Line {
         protected global::System.Web.UI.WebControls.CheckBox chkCustSupMaterial;
         
         /// <summary>
-        /// txtStorage control.
+        /// ddlMaterialStorage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtStorage;
+        protected global::System.Web.UI.WebControls.DropDownList ddlMaterialStorage;
         
         /// <summary>
-        /// chkStorage control.
+        /// chkMaterialStorage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkStorage;
+        protected global::System.Web.UI.WebControls.CheckBox chkMaterialStorage;
+        
+        /// <summary>
+        /// ddlDumpStorageLocation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlDumpStorageLocation;
+        
+        /// <summary>
+        /// chkDumpStorageLocation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkDumpStorageLocation;
         
         /// <summary>
         /// txtworkarea control.
@@ -272,6 +290,24 @@ namespace JG_Prospect.Sr_App.Product_Line {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HiddenField hidProdType;
+        
+        /// <summary>
+        /// placeHolderProductLines control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder placeHolderProductLines;
+        
+        /// <summary>
+        /// btnAddProductLine control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnAddProductLine;
         
         /// <summary>
         /// pnlpopup control.
