@@ -58,17 +58,41 @@
     <Reference Include="itextsharp">
       <HintPath>..\JG_Prospect.web\bin\itextsharp.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Caching">
-      <HintPath>..\JG_Prospect.web\bin\Microsoft.Practices.EnterpriseLibrary.Caching.dll</HintPath>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Caching, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DLL\Microsoft.Practices.EnterpriseLibrary.Caching.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Caching.Database">
-      <HintPath>..\JG_Prospect.web\bin\Microsoft.Practices.EnterpriseLibrary.Caching.Database.dll</HintPath>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Caching.Database, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DLL\Microsoft.Practices.EnterpriseLibrary.Caching.Database.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common">
-      <HintPath>..\JG_Prospect.DAL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DLL\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Logging">
-      <HintPath>..\JG_Prospect.DAL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll</HintPath>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DLL\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data.SqlCe, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DLL\Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DLL\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DLL\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Logging, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DLL\Microsoft.Practices.EnterpriseLibrary.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Logging.Database, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DLL\Microsoft.Practices.EnterpriseLibrary.Logging.Database.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation">
       <HintPath>F:\SandeepJGPBackUp\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.DAL\bin\Debug\Microsoft.Practices.ServiceLocation.dll</HintPath>
@@ -76,6 +100,7 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -87,7 +112,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdminBLL.cs" />
+    <Compile Include="BLLAttendence.cs" />
     <Compile Include="CalendarEvent.cs" />
+    <Compile Include="clsProcurementData.cs" />
     <Compile Include="CustomBLL.cs" />
     <Compile Include="EventDAO.cs" />
     <Compile Include="existing_customerBLL.cs" />
@@ -96,6 +123,7 @@
     <Compile Include="ImproperCalendarEvent.cs" />
     <Compile Include="InstallUserBLL.cs" />
     <Compile Include="new_customerBLL.cs" />
+    <Compile Include="Payline.cs" />
     <Compile Include="pdf_BLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShutterPriceControlBLL.cs" />

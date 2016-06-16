@@ -13,13 +13,13 @@ namespace JG_Prospect.Sr_App {
     public partial class WebForm2 {
         
         /// <summary>
-        /// ScriptManagerProxy1 control.
+        /// ValidationSummary1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.ScriptManagerProxy ScriptManagerProxy1;
+        protected global::System.Web.UI.WebControls.ValidationSummary ValidationSummary1;
         
         /// <summary>
         /// Panel2 control.
@@ -29,15 +29,6 @@ namespace JG_Prospect.Sr_App {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel Panel2;
-        
-        /// <summary>
-        /// UpdatePanel21 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel21;
         
         /// <summary>
         /// btnPlusNew control.
@@ -56,15 +47,6 @@ namespace JG_Prospect.Sr_App {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnMinusNew;
-        
-        /// <summary>
-        /// UpdatePanel22 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel22;
         
         /// <summary>
         /// Panel3 control.
@@ -209,15 +191,6 @@ namespace JG_Prospect.Sr_App {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtPrinciple;
-        
-        /// <summary>
-        /// UpdatePanel26 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel26;
         
         /// <summary>
         /// Panel4 control.
@@ -382,15 +355,6 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.Panel Panel5;
         
         /// <summary>
-        /// UpdatePanel23 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel23;
-        
-        /// <summary>
         /// GridView2 control.
         /// </summary>
         /// <remarks>
@@ -398,15 +362,6 @@ namespace JG_Prospect.Sr_App {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView GridView2;
-        
-        /// <summary>
-        /// upnlNew control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel upnlNew;
         
         /// <summary>
         /// pnlNew control.
@@ -506,15 +461,6 @@ namespace JG_Prospect.Sr_App {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtPartnetsName;
-        
-        /// <summary>
-        /// UpGrdNew control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpGrdNew;
         
         /// <summary>
         /// grdNew control.
@@ -643,15 +589,6 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator3;
         
         /// <summary>
-        /// UpdatePanel3 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel3;
-        
-        /// <summary>
         /// lblReqPtrade control.
         /// </summary>
         /// <remarks>
@@ -686,15 +623,6 @@ namespace JG_Prospect.Sr_App {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rqPrimaryTrade;
-        
-        /// <summary>
-        /// UpdatePanel5 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel5;
         
         /// <summary>
         /// lblReqSTrate control.
@@ -767,15 +695,6 @@ namespace JG_Prospect.Sr_App {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rqFirstName;
-        
-        /// <summary>
-        /// UpdatePanel4 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel4;
         
         /// <summary>
         /// lblReqEmail control.
@@ -904,13 +823,31 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rqCity;
         
         /// <summary>
-        /// UpdatePanel6 control.
+        /// lblPassReq control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel6;
+        protected global::System.Web.UI.WebControls.Label lblPassReq;
+        
+        /// <summary>
+        /// txtpassword control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtpassword;
+        
+        /// <summary>
+        /// rqPass control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rqPass;
         
         /// <summary>
         /// lblConfirmPass control.
@@ -949,15 +886,6 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rqConPass;
         
         /// <summary>
-        /// txtBusinessName control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtBusinessName;
-        
-        /// <summary>
         /// lblSignature control.
         /// </summary>
         /// <remarks>
@@ -983,15 +911,6 @@ namespace JG_Prospect.Sr_App {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtSignature;
-        
-        /// <summary>
-        /// UpdatepnlPic control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatepnlPic;
         
         /// <summary>
         /// lblReqPicture control.
@@ -1021,15 +940,6 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.Button btn_UploadPicture;
         
         /// <summary>
-        /// UpdatePanel2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel2;
-        
-        /// <summary>
         /// Label2 control.
         /// </summary>
         /// <remarks>
@@ -1055,15 +965,6 @@ namespace JG_Prospect.Sr_App {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnGeneralLiability;
-        
-        /// <summary>
-        /// UpdatePanel1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel1;
         
         /// <summary>
         /// lblReqDL control.
@@ -1156,15 +1057,6 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.GridView gvUploadedFiles;
         
         /// <summary>
-        /// upnl1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel upnl1;
-        
-        /// <summary>
         /// lblTest control.
         /// </summary>
         /// <remarks>
@@ -1190,15 +1082,6 @@ namespace JG_Prospect.Sr_App {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtReson;
-        
-        /// <summary>
-        /// RequiredFieldValidator7 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator7;
         
         /// <summary>
         /// dtInterviewDate control.
@@ -1453,49 +1336,13 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rqPhone;
         
         /// <summary>
-        /// UpdatePanel7 control.
+        /// txtBusinessName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel7;
-        
-        /// <summary>
-        /// lblPassReq control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblPassReq;
-        
-        /// <summary>
-        /// txtpassword control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtpassword;
-        
-        /// <summary>
-        /// rqPass control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rqPass;
-        
-        /// <summary>
-        /// upnl654 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel upnl654;
+        protected global::System.Web.UI.WebControls.TextBox txtBusinessName;
         
         /// <summary>
         /// lblReqSSN control.
@@ -1559,15 +1406,6 @@ namespace JG_Prospect.Sr_App {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rqSSN3;
-        
-        /// <summary>
-        /// upnl798 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel upnl798;
         
         /// <summary>
         /// lblReqEIN control.
@@ -1768,15 +1606,6 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.Label lblMessage;
         
         /// <summary>
-        /// upnl3 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel upnl3;
-        
-        /// <summary>
         /// pnlcolaps control.
         /// </summary>
         /// <remarks>
@@ -1793,15 +1622,6 @@ namespace JG_Prospect.Sr_App {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnl3;
-        
-        /// <summary>
-        /// UpdatePanel10 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel10;
         
         /// <summary>
         /// btnPluse control.

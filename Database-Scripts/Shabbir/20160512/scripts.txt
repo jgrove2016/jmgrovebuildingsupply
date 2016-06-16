@@ -1,0 +1,442 @@
+ALTER TABLE dbo.tblCustom_MaterialList ADD CONSTRAINT
+	DF_tblCustom_MaterialList_extend DEFAULT 0 FOR extend
+GO
+
+
+
+
+/****** Object:  StoredProcedure [dbo].[USP_GetCustomMaterialList]    Script Date: 13-05-2016 11:28:58 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_GetCustomMaterialList]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_GetCustomMaterialList]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_GetCustomMaterialList]    Script Date: 13-05-2016 11:28:58 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_GetCustomMaterialList]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[USP_GetCustomMaterialList] AS' 
+END
+GO
+
+
+
+
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-03-08
+-- Description:	This procedure will return custom material list
+-- Test Run:    USP_GetCustomMaterialList 'C3690-SJ1', 3690
+-- =============================================
+ALTER PROCEDURE [dbo].[USP_GetCustomMaterialList]
+(
+	@soldJobId varchar(50),
+	@customerID int
+)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+SELECT 
+	DISTINCT c.ProductCatID, '' AS EmailStatus,
+	PM.ProductName, 
+	'' AS RequestStatus --#Shabbir: Placeholder for business logic
+FROM tblCustom_MaterialList c 
+INNER JOIN tblProductMaster PM ON PM.productid = c.ProductCatID
+WHERE c.SoldJobID = @SoldJobID
+
+SELECT cm.MaterialList
+	,cm.VendorCategoryId 
+	,vc.VendorCategoryNm
+	,v.VendorName  
+	,cm.Amount 
+	,cm.VendorId 
+	,cm.Line 
+	,cm.JGSkuPartNo
+	,cm.Quantity
+	,cm.UOM
+	,cm.MaterialCost
+	,cm.extend
+	,cm.VendorIds
+	,cm.Total
+	,cd.DocName
+	,cd.TempName
+	,cm.Id
+	,cm.ProductCatID
+	,cm.InstallerID
+	,cm.RequestStatus
+	,cm.EmailStatus
+	,ISNULL(cm.DefaultVendorForCategory,0) AS DefaultVendorForCategory
+	,PM.ProductName
+	,ISNULL(cm.IsForemanPermission,'') as IsForemanPermission
+	,ISNULL(cm.IsSrSalemanPermissionF,'') as IsSrSalemanPermissionF
+	,ISNULL(cm.IsAdminPermission,'') as IsAdminPermission
+	,ISNULL(cm.IsSrSalemanPermissionA,'') as IsSrSalemanPermissionA
+	,ISNULL(cm.EmailStatus,'') as EmailStatus
+	,ISNULL(up.Id, 0) AS lastUpdatedByID	,ISNULL(up.firstname, '') as lastUpdatedByFirstName, ISNULL(up.LastName, '') as lastUpdatedByLastName, ISNULL(up.Username, '') as lastUpdatedByUserName
+	,ISNULL(FM.Id, 0) AS foremanID	,ISNULL(FM.firstname, '') as foremanFirstName, ISNULL(FM.LastName, '') as foremanLastName, ISNULL(FM.Username, '') as foremanUserName
+	,ISNULL(SLF.Id, 0) AS SLFID	,ISNULL(SLF.firstname, '') as SLFFirstName, ISNULL(SLF.LastName, '') as SLFLastName, ISNULL(SLF.Username, '') as SLFUserName
+	,ISNULL(SLA.Id, 0) AS SLAID	,ISNULL(SLA.firstname, '') as SLAFirstName, ISNULL(SLA.LastName, '') as SLALastName, ISNULL(SLA.Username, '') as SLAUserName
+	,ISNULL(AD.Id, 0) AS ADID	,ISNULL(AD.firstname, '') as ADFirstName, ISNULL(AD.LastName, '') as ADLastName, ISNULL(AD.Username, '') as ADUserName
+	FROM tblCustom_MaterialList cm 
+	LEFT OUTER JOIN tblVendorCategory vc on vc.VendorCategpryId =cm.VendorCategoryId
+	LEFT OUTER JOIN tblProductMaster PM ON PM.productid = cm.ProductCatID
+	LEFT OUTER JOIN tblVendors v on v.VendorId =cm.VendorId 
+	--inner join tblJobSequence js on js.SoldJobId=cm.SoldJobId--js.Id=cm.JobSequenceId 
+	LEFT JOIN tblVendorQuotes cd on cd.SoldJobId=cm.SoldJobId and cd.VendorId=cm.VendorId
+	-- tblCustomersDocument cd on cd.CustomerId =js.CustomerId and cd.ProductId=js.EstimateId and cd.ProductTypeId=js.ProductId and cd.VendorId=cm.VendorId and cd.DocType= 'VendorQuotes' 
+	LEFT OUTER JOIN tblUsers FM on FM.id = cm.ForemanApproverID
+	LEFT OUTER JOIN tblUsers SLF on SLF.id = cm.SrSalesFApproverID
+	LEFT OUTER JOIN tblUsers SLA on SLA.id = cm.SrSalesAApproverID
+	LEFT OUTER JOIN tblUsers AD on AD.id = cm.AdminApproverID
+	LEFT OUTER JOIN tblUsers up on up.id = cm.updatedby
+	WHERE cm.SoldJobId=@soldJobId
+	ORDER BY cm.Id
+	
+	EXEC UDP_GetSoldJobsForProcurementBySoldJobID @soldJobId   
+    
+    SELECT IU.Id,IU.FristName +' '+ IU.LastName  as QualifiedName from tblInstallUsers IU Where IU.Status IN ('Active', 'Offer Made') 
+	AND NOT EXISTS (Select 1 from tblCustomMaterialInstaller CSI WHERE CSI.SoldJobID = @soldJobId AND IU.Id = CSI.InstallerID)
+
+	SELECT 
+		CSI.ID,
+		CSI.InstallerID,
+		IU.FristName + ' ' + IU.LastName AS QualifiedName,
+		CSI.AddedDateTime,
+		CSI.UpdatedDateTime 
+	FROM tblCustomMaterialInstaller CSI 
+	INNER JOIN tblInstallUsers IU ON IU.Id = CSI.InstallerID
+	WHERE CSI.SoldJobID = @soldJobId
+	
+	SELECT 
+		pv.ProductCategoryId,
+		pv.VendorCategoryId,
+		tc.VendorCategoryNm AS VendorCategoryName
+	FROM [dbo].[tblProductVendorCat] pv
+	INNER JOIN [tblVendorCategory] tc ON pv.VendorCategoryId=tc.[VendorCategpryId]
+
+	SELECT 
+		DISTINCT VendorCategpryId,
+		VendorCategoryNm, PC.ProductCategoryId 
+	FROM tblVendorCategory vc 
+	INNER JOIN tblVendors v ON vc.VendorCategpryId =v.VendorCategoryId 
+	INNER JOIN tblProductVendorCat PC ON PC.VendorCategoryId = VC.VendorCategpryId
+	WHERE vc.VendorCategpryId = v.VendorCategoryId 
+	ORDER BY vc.VendorCategoryNm	
+
+	SELECT DISTINCT
+		v.VendorId, V.VendorName, V.Email, VC.VendorCategpryId, PC.ProductCategoryId, VC.IsRetail_Wholesale, VC.IsManufacturer
+	FROM tblvendors V
+	INNER JOIN tbl_Vendor_VendorCat VVC ON VVC.VendorID = V.VendorId 
+	INNER JOIN tblVendorCategory VC ON VC.VendorCategpryID = VVC.VendorCatID
+	INNER JOIN tblProductVendorCat PC ON PC.VendorCategoryId = VC.VendorCategpryId
+
+	SELECT * FROM tblMaterialListAttachment WHERE SoldJobID = @soldJobId
+
+	SELECT DISTINCT V.VendorID, V.VendorName, C.ProductCatId, MP.SubTotal, MP.DeliveryType, MP.Delivery, MP.MiscFee, MP.Tax,  SUM(Extend) AS SubTotal
+	FROM tblVendors V 
+	INNER JOIN tblCustom_MaterialList C ON C.VendorId = V.VendorId
+	INNER JOIN tblMaterialPaymentDetails MP ON MP.SoldJobID = @soldJobId AND MP.VendorID = V.VendorId AND MP.ProductCategoryID = C.ProductCatId
+	WHERE C.SoldJobId = @soldJobId
+	GROUP BY V.VendorID, V.VendorName, C.ProductCatId, MP.SubTotal, MP.DeliveryType, MP.Delivery, MP.MiscFee, MP.Tax
+END
+
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_SaveProductLineVendors]    Script Date: 13-05-2016 11:41:53 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_SaveProductLineVendors]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_SaveProductLineVendors]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_SaveProductLineVendors]    Script Date: 13-05-2016 11:41:53 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_SaveProductLineVendors]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[USP_SaveProductLineVendors] AS' 
+END
+GO
+
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-04-27
+-- Description:	This procedure will save vendor id 
+-- =============================================
+ALTER PROCEDURE [dbo].[USP_SaveProductLineVendors]
+	@ProductCatID INT,
+	@ProdLineID INT,
+	@VendorIDs VARCHAR(1000),
+	@SoldJobID VARCHAR(1000)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    --# Lets find if it is the first product line
+	IF NOT EXISTS (Select * from tblCustom_MaterialList WHERE SoldJobId = @SoldJobID AND ProductCatId = @ProductCatID AND Id < @ProdLineID)
+	BEGIN 
+		--# This is the first row 
+		UPDATE tblCustom_MaterialList SET VendorIds = @VendorIDs WHERE Id = @ProdLineID
+		UPDATE tblCustom_MaterialList SET VendorIds = @VendorIDs WHERE SoldJobId = @SoldJobID AND ProductCatId = @ProductCatID AND DefaultVendorForCategory=1
+	END
+	ELSE
+	BEGIN 
+		--#Random Category 
+		UPDATE tblCustom_MaterialList SET VendorIds = @VendorIDs WHERE Id = @ProdLineID
+	END
+	DECLARE @VendorID INT = 0;
+	DECLARE @SubTotal FLOAT;
+	Select @VendorID = VendorID from tblCustom_MaterialList WHERE Id=@ProdLineID
+	SELECT @SubTotal=SUM(Extend) FROM tblCustom_MaterialList WHERE SoldJobId=@SoldJobID AND ProductCatId=@ProductCatID AND VendorId = @VendorID
+	IF(CHARINDEX( ','+Convert(varchar, @Vendorid)+',',','+@VendorIDs+',')<=0)
+	BEGIN
+		UPDATE tblCustom_MaterialList SET VendorId = 0 WHERE ID =@ProdLineID
+		IF NOT EXISTS(Select 1 from tblCustom_MaterialList WHERE VendorID = @VendorID AND ProductCatID = @ProductCatID AND SoldJobID = @SoldJobID )
+			DELETE FROM tblMaterialPaymentDetails WHERE VendorID = @VendorID AND ProductCategoryID = @ProductCatID AND SoldJobID = @SoldJobID
+		ELSE 
+			UPDATE tblMaterialPaymentDetails SET SubTotal=@SubTotal WHERE VendorID = @VendorID AND ProductCategoryID = @ProductCatID AND SoldJobID = @SoldJobID
+	END
+END
+
+GO
+
+
+
+
+/****** Object:  StoredProcedure [dbo].[USP_UpdatePOVendor]    Script Date: 13-05-2016 10:49:41 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_UpdatePOVendor]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_UpdatePOVendor]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_UpdatePOVendor]    Script Date: 13-05-2016 10:49:41 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_UpdatePOVendor]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[USP_UpdatePOVendor] AS' 
+END
+GO
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-05-05
+-- Description:	This procedure will update vendor in material list
+-- =============================================
+ALTER PROCEDURE [dbo].[USP_UpdatePOVendor]
+	@ProductLineID INT,
+	@ProductCatID INT,
+	@SoldJobID VARCHAR(200),
+	@VendorID INT
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+	DECLARE @OldVendorID INT = 0;
+	DECLARE @OldVendorIDCnt INT = 0;
+	DECLARE @SubTotal FLOAT = 0;
+	SELECT @OldVendorID = VendorID FROM tblCustom_MaterialList WHERE Id = @ProductLineID
+	SELECT @OldVendorIDCnt = Count(VendorID) FROM tblCustom_MaterialList WHERE VendorId = @OldVendorID AND SoldJobId = @SoldJobID
+
+	UPDATE tblCustom_MaterialList SET VendorId = @VendorID WHERE Id = @ProductLineID
+	SELECT @SubTotal=SUM(Extend) FROM tblCustom_MaterialList WHERE SoldJobId=@SoldJobID AND ProductCatId=@ProductCatID AND VendorId = @VendorID
+	IF (@OldVendorIDCnt = 1)
+	BEGIN 
+		PRINT 'IN'
+		IF NOT EXISTS (Select 1 from tblMaterialPaymentDetails WHERE SoldJOBID =@SoldJobID AND ProductCategoryID =@ProductCatID AND VendorID = @VendorID)
+		BEGIN
+			INSERT INTO tblMaterialPaymentDetails(SoldJobID, ProductCategoryID, VendorID, SubTotal, DeliveryType, Delivery, MiscFee, Tax)
+			VALUES(@SoldJobID, @ProductCatID, @VendorID, @SubTotal,3,0,0,0)
+		END
+		ELSE 
+			UPDATE tblMaterialPaymentDetails SET VendorID = @VendorID, SubTotal=@SubTotal WHERE SoldJOBID =@SoldJobID AND ProductCategoryID =@ProductCatID AND VendorID = @OldVendorID
+	END 
+	ELSE IF (@OldVendorIDCnt > 1 OR @OldVendorIDCnt = 0)
+	BEGIN
+		PRINT 'ELSE'
+		INSERT INTO tblMaterialPaymentDetails(SoldJobID, ProductCategoryID, VendorID, SubTotal, DeliveryType, Delivery, MiscFee, Tax)
+		VALUES(@SoldJobID, @ProductCatID, @VendorID, @SubTotal,3,0,0,0)
+		
+		SELECT @SubTotal=SUM(Extend) FROM tblCustom_MaterialList WHERE SoldJobId=@SoldJobID AND ProductCatId=@ProductCatID AND VendorId = @OldVendorID	
+		UPDATE tblMaterialPaymentDetails SET  SubTotal=@SubTotal WHERE SoldJOBID =@SoldJobID AND ProductCategoryID =@ProductCatID AND VendorID = @OldVendorID
+	END
+END
+
+GO
+
+USE [jgrove_JGP]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_UpdateSpecificProductLine]    Script Date: 13-05-2016 11:31:04 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_UpdateSpecificProductLine]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_UpdateSpecificProductLine]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_UpdateSpecificProductLine]    Script Date: 13-05-2016 11:31:04 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_UpdateSpecificProductLine]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[USP_UpdateSpecificProductLine] AS' 
+END
+GO
+
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-04-19
+-- Description:	This procedure will update product line of Custom Material List
+-- =============================================
+ALTER PROCEDURE [dbo].[USP_UpdateSpecificProductLine]
+	@FieldName NVARCHAR(400),
+	@Value NVARCHAR(4000),
+	@SoldJobID VARCHAR(400),
+	@ID INT
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+
+	IF(@FieldName = 'JGSkuPartNo')
+		UPDATE [tblCustom_MaterialList]
+		SET JGSkuPartNo = @Value
+		WHERE Id = @ID
+	ELSE IF(@FieldName = 'MaterialList')
+		UPDATE [tblCustom_MaterialList]
+		SET MaterialList = @Value
+		WHERE Id = @ID
+	ELSE IF(@FieldName = 'Quantity')
+		UPDATE [tblCustom_MaterialList]
+		SET Quantity = @Value
+		WHERE Id = @ID
+	ELSE IF(@FieldName = 'UOM')
+		UPDATE [tblCustom_MaterialList]
+		SET UOM = @Value
+		WHERE Id = @ID
+	ELSE IF(@FieldName = 'MaterialCost')
+		UPDATE [tblCustom_MaterialList]
+		SET MaterialCost = @Value
+		WHERE Id = @ID
+	ELSE IF(@FieldName = 'extend')
+		UPDATE [tblCustom_MaterialList]
+		SET extend = @Value
+		WHERE Id = @ID
+
+
+DECLARE @ProdCatID INT=0;
+DECLARE @VendorID INT=0;
+DECLARE @SUBTotal float=0;
+SELECT @ProdCatID = ProductCatId, @VendorID=VendorId
+FROM tblCustom_MaterialList WHERE ID=@ID
+
+SELECT @SUBTotal = SUM(extend)
+FROM tblCustom_MaterialList WHERE SoldJobId=@SoldJobID AND ProductCatId=@ProdCatID AND VendorId = @VendorID
+
+UPDATE tblMaterialPaymentDetails SET SubTotal = @SUBTotal 
+WHERE  ProductCategoryId=@ProdCatID AND VendorId = @VendorID AND SoldJobID = @SoldJobID
+
+
+
+
+
+
+END
+
+
+
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[USP_UpdatePOVendor]    Script Date: 13-05-2016 20:05:24 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_UpdatePOVendor]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_UpdatePOVendor]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_UpdatePOVendor]    Script Date: 13-05-2016 20:05:24 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_UpdatePOVendor]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[USP_UpdatePOVendor] AS' 
+END
+GO
+
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-05-05
+-- Description:	This procedure will update vendor in material list
+-- =============================================
+ALTER PROCEDURE [dbo].[USP_UpdatePOVendor]
+	@ProductLineID INT,
+	@ProductCatID INT,
+	@SoldJobID VARCHAR(200),
+	@VendorID INT
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+	DECLARE @OldVendorID INT = 0;
+	DECLARE @OldVendorIDCnt INT = 0;
+	DECLARE @SubTotal FLOAT = 0;
+	SELECT @OldVendorID = VendorID FROM tblCustom_MaterialList WHERE Id = @ProductLineID
+	SELECT @OldVendorIDCnt = Count(VendorID) FROM tblCustom_MaterialList WHERE VendorId = @OldVendorID AND SoldJobId = @SoldJobID
+
+	UPDATE tblCustom_MaterialList SET VendorId = @VendorID WHERE Id = @ProductLineID
+	SELECT @SubTotal=SUM(Extend) FROM tblCustom_MaterialList WHERE SoldJobId=@SoldJobID AND ProductCatId=@ProductCatID AND VendorId = @VendorID
+	IF (@OldVendorIDCnt = 1)
+	BEGIN 
+		PRINT 'IN'
+		IF NOT EXISTS (Select 1 from tblMaterialPaymentDetails WHERE SoldJOBID =@SoldJobID AND ProductCategoryID =@ProductCatID AND VendorID = @VendorID)
+		BEGIN
+			INSERT INTO tblMaterialPaymentDetails(SoldJobID, ProductCategoryID, VendorID, SubTotal, DeliveryType, Delivery, MiscFee, Tax)
+			VALUES(@SoldJobID, @ProductCatID, @VendorID, @SubTotal,3,0,0,0)
+		END
+		ELSE 
+			UPDATE tblMaterialPaymentDetails SET VendorID = @VendorID, SubTotal=@SubTotal WHERE SoldJOBID =@SoldJobID AND ProductCategoryID =@ProductCatID AND VendorID = @OldVendorID
+	END 
+	ELSE IF (@OldVendorIDCnt > 1 OR @OldVendorIDCnt = 0)
+	BEGIN
+		PRINT 'ELSE'
+		INSERT INTO tblMaterialPaymentDetails(SoldJobID, ProductCategoryID, VendorID, SubTotal, DeliveryType, Delivery, MiscFee, Tax)
+		VALUES(@SoldJobID, @ProductCatID, @VendorID, @SubTotal,3,0,0,0)
+		
+		SELECT @SubTotal=SUM(Extend) FROM tblCustom_MaterialList WHERE SoldJobId=@SoldJobID AND ProductCatId=@ProductCatID AND VendorId = @OldVendorID	
+		UPDATE tblMaterialPaymentDetails SET  SubTotal=@SubTotal WHERE SoldJOBID =@SoldJobID AND ProductCategoryID =@ProductCatID AND VendorID = @OldVendorID
+	END
+END
+
+
+GO
+
+
+

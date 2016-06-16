@@ -625,7 +625,7 @@ namespace JG_Prospect
                                 {
                                     Response.Redirect("~/Sr_App/home.aspx", false);
                                 }
-                                else if (Convert.ToString(Session["DesigNew"]) == "Installer")
+                                else if (Convert.ToString(Session["DesigNew"]).StartsWith("Installer"))
                                 {
                                     Response.Redirect("~/Installer/InstallerHome.aspx", false);
                                 }
@@ -643,7 +643,7 @@ namespace JG_Prospect
                                 }
                                 else
                                 {
-                                    // Response.Redirect("~/Installer/InstallerHome.aspx");//
+                                     Response.Redirect("~/Installer/InstallerHome.aspx");//
                                 }
                             }
                             else if (Convert.ToString(Session["DesigNew"]) == "Installer")

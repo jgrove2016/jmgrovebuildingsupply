@@ -60,14 +60,16 @@ D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospe
 D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.BLL.pdb
 D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.Common.dll
 D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.DAL.dll
-D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
-D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll
-D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
 D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.Common.pdb
 D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.DAL.pdb
 D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.csprojResolveAssemblyReference.cache
 D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.dll
 D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.pdb
+D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.AccessControl.dll
+D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.Calendar.dll
+D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.Client.dll
+D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.Extensions.dll
+D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\itextsharp.dll
 D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\Git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.BLL.dll
 D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\Git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.BLL.pdb
 D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\Git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.AccessControl.dll
@@ -77,20 +79,120 @@ D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\Git\jmgroveb
 D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\Git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\itextsharp.dll
 D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\Git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.Common.dll
 D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\Git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.DAL.dll
-D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\Git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Caching.Database.dll
-D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\Git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Caching.dll
-D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\Git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
-D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\Git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll
-D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\Git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
 D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\Git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.Common.pdb
 D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\Git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.DAL.pdb
 D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\Git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.csprojResolveAssemblyReference.cache
 D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\Git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.dll
 D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\Git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.pdb
-D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.AccessControl.dll
-D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.Calendar.dll
-D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.Client.dll
-D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.Extensions.dll
-D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\itextsharp.dll
-D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Caching.Database.dll
-D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Caching.dll
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.BLL.dll
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.BLL.pdb
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.AccessControl.dll
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.Calendar.dll
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.Client.dll
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.Extensions.dll
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\itextsharp.dll
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.Common.dll
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.DAL.dll
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Caching.Database.dll
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Caching.dll
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.Common.pdb
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.DAL.pdb
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.csprojResolveAssemblyReference.cache
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.dll
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.pdb
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.dll
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging.dll
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.Database.dll
+D:\Personal\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.BLL.dll
+D:\Personal\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.BLL.pdb
+D:\Personal\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.AccessControl.dll
+D:\Personal\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.Calendar.dll
+D:\Personal\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.Client.dll
+D:\Personal\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.Extensions.dll
+D:\Personal\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\itextsharp.dll
+D:\Personal\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.Common.dll
+D:\Personal\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.DAL.dll
+D:\Personal\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.Unity.dll
+D:\Personal\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.Unity.Interception.dll
+D:\Personal\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.Common.pdb
+D:\Personal\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.DAL.pdb
+D:\Personal\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.dll
+D:\Personal\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.pdb
+D:\Personal\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.csprojResolveAssemblyReference.cache
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.BLL.dll
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.BLL.pdb
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.AccessControl.dll
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.Calendar.dll
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.Client.dll
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.Extensions.dll
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\itextsharp.dll
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.Common.dll
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.DAL.dll
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Caching.Database.dll
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Caching.dll
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.dll
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging.dll
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.Database.dll
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.Common.pdb
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.DAL.pdb
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.csprojResolveAssemblyReference.cache
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.dll
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.pdb
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.BLL.dll
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.BLL.pdb
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.AccessControl.dll
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.Calendar.dll
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.Client.dll
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.Extensions.dll
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\itextsharp.dll
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.Common.dll
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.DAL.dll
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Caching.Database.dll
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Caching.dll
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.dll
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging.dll
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.Database.dll
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.Common.pdb
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.DAL.pdb
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.csprojResolveAssemblyReference.cache
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.dll
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.pdb
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.BLL.dll
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.BLL.pdb
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.AccessControl.dll
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.Calendar.dll
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.Client.dll
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.Extensions.dll
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\itextsharp.dll
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.Common.dll
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.DAL.dll
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.Unity.dll
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.Unity.Interception.dll
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.AnalysisServices.AdomdClient.dll
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.Common.pdb
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.DAL.pdb
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.Unity.pdb
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.Unity.Interception.pdb
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.csprojResolveAssemblyReference.cache
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.dll
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.pdb
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.pdb
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.xml
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.pdb
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.xml
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging.pdb
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging.xml
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.Database.pdb
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.Database.xml

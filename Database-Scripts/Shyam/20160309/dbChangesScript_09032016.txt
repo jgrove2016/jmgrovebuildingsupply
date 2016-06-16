@@ -1,5 +1,19 @@
+
+
+Alter table tblVendorSubCategory drop column VendorCategoryId
+
 Go
 
+Alter table tblVendorSubCategory Add IsRetail_Wholesale bit,IsManufacturer bit
+
+Go
+
+Alter table tblVendorCategory Add IsRetail_Wholesale bit,IsManufacturer bit
+
+GO
+
+Alter table tblProductVendorCat drop column ProductCategoryName,VendorcategoryName
+go
 /****** Object:  Table [dbo].[tbl_Vendor_VendorSubCat]    Script Date: 03/09/2016 16:47:41 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tbl_Vendor_VendorSubCat]') AND type in (N'U'))
 DROP TABLE [dbo].[tbl_Vendor_VendorSubCat]
@@ -253,19 +267,4 @@ as
 select VendorCategpryId,VendorCategoryNm from tblVendorCategory where IsRetail_wholesale =@IsRetail_Wholesale or IsManufacturer=@IsManufacturer order by VendorCategoryNm
 select * from tblVendorCategory
 GO
-
-
-Alter table tblVendorSubCategory drop column VendorCategoryId
-
-Go
-
-Alter table tblVendorSubCategory Add IsRetail_Wholesale bit,IsManufacturer bit
-
-Go
-
-Alter table tblVendorCategory Add IsRetail_Wholesale bit,IsManufacturer bit
-
-GO
-
-Alter table tblProductVendorCat drop column ProductCategoryName,VendorcategoryName
 

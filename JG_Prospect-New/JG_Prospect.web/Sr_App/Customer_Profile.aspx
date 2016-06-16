@@ -3,26 +3,12 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <%@ Register Src="~/UserControl/UCAddress.ascx" TagPrefix="uc1" TagName="UCAddress" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <%---------start script for Datetime Picker----------%>
     <link href="../datetime/css/jquery-ui-1.7.1.custom.css" rel="stylesheet" type="text/css" />
     <link href="../datetime/css/stylesheet.css" rel="stylesheet" type="text/css" />
     <link href="../css/pgwslideshow.min.css" rel="stylesheet" type="text/css" />
-    <%-- <link href="../css/dropDownListDiv.css" rel="stylesheet" type="text/css" />--%>
     <link href="../Scripts/jquery.webui-popover.min.css" rel="stylesheet" type="text/css" />
-
+    <link href="../datetime/js/jquery.ptTimeSelect.css" rel="stylesheet" type="text/css" />
     <style type="text/css">
-        /*#ddlPrimaryPhoneType{
-            width: 70%;
-        }
-
-        #txtPrimaryPhoneNumber{
-            width: 60%;
-        }
-
-        .lblPhonePrimaryContact{
-            width: 20%;
-        }*/
-
         #container {
             width: 95%;
             height: 600px;
@@ -355,13 +341,19 @@
     <%--<script src="../Scripts/dropDownlistDiv.js" type="text/javascript"></script>--%>
     <script src="../Scripts/jquery.webui-popover.min.js" type="text/javascript"></script>
     <script src="../Scripts/pgwslideshow.min.js" type="text/javascript"></script>
-    <script language="JavaScript" type="text/javascript">
-
+    
+    
+    <script type="text/javascript">
         var PrimaryRadio = 0;
         var SecondaryRadio = 0;
         var map;
         var directionsDisplay;
         var directionsService;
+        try {
+
+        }
+        catch(e){}
+        
 
         // directionsService = new google.maps.DirectionsService();
 
@@ -379,6 +371,93 @@
                     var dataInput = (data.d).split("@^");
                     $(e).closest('tr').next().find('input').val(dataInput[0]);
                     $(e).closest('tr').next().next().find('input').val(dataInput[1]);
+                }
+            });
+        }
+
+        function CheckDuplicatePhoneEmail() {
+            debugger;
+            //Get the Value an assign hidden field
+            var tbl = document.getElementById("tblBestTime");
+            var row = tbl.getElementsByTagName("tr");
+            var value = "";
+            var BestTime = new Array();
+            if (row.length > 1) {
+                for (i = 1; i < row.length; i++) {
+                    if (BestTime == "") {
+                        value = row[i].cells[0].innerText.split('X');
+                        BestTime = value[0].trim();;
+                    }
+                    else {
+                        value = row[i].cells[0].innerText.split('X');
+                        BestTime += ',' + value[0].trim();
+                    }
+                }
+                $('#hdnBestTimeToContact').val(BestTime);
+            }
+            var formData = [];
+            var formPushData = [];
+            $("#form1").find("input[name]:text,select[name],input:hidden[name][id^='hdn'],input[name]:radio,textarea[name],input[name]:checkbox").each(function (index, node) {
+
+                //formData[node.name] = node.value;
+                if (node.type == "checkbox") {
+                    node.value = $('#' + node.id).is(':checked');
+                }
+                if (node.type == "radio") {
+
+                    if ($('#' + node.id).is(':checked') == true) {
+                        formPushData.push({
+                            key: node.name,
+                            value: node.value
+                        });
+                    }
+
+                    //   node.value = $('#' + node.id).is(':checked');
+                    // node.value = $('input[type="radio"]:checked').val();
+                    //  node.value = $('#' + node.id).hasClass(':checked');
+                }
+
+                else {
+                    formPushData.push({
+                        key: node.name,
+                        value: node.value
+                    });
+                }
+
+            });
+            $.ajax({
+                type: "POST",
+                url: "Customer_Profile.aspx/CheckForDuplication",
+                contentType: "application/json; charset=utf-8",
+                dataType: "JSON",
+                //data: "{ 'formData' : '" + formData + "'}",
+                data: JSON.stringify({ formVars: formPushData }),
+                success: function (data) {
+                    debugger;
+                    var dataInput = (data.d);
+                    
+                    if (dataInput == "") {
+                        alert("Some error occured in checking customer duplication. Please Try again.")
+                        return;
+                    }
+                        //else if (dataInput == "EmptyMail") {
+                        //    alert("Please enter the mail id");
+                        //    return;
+                        //}
+                        // else if (dataInput == "PhoneNumberEmpty") {
+                        //alert("Please enter the Phone Number");
+                        // return;
+                        // }
+                    else if (dataInput == "EmptyName") {
+                        alert("Please enter the FirstName");
+                        return;
+                    }
+                    else if (dataInput == 'Contact is NOT Exists') { return; }
+                    else {
+                        //$("#hdnStatus").attr('value', 1);
+                        //$("#btnHideUpdate").click();
+                        alert(dataInput);
+                    }
                 }
             });
         }
@@ -765,6 +844,7 @@
                     var licount;
                     var childCount = "";
                     var chdCount = 0;
+                    
                     $.each(result, function (key, value) {
                         debugger;
                         //Top Grid
@@ -778,7 +858,7 @@
 
                             if (value.PhoneType != "" || value.PhoneNumber != "") {
                                 $("#tblPhone" + childCount + " tr:last").before("<tr><td class='paddingtd'></td>" +
-                                  "<td><input type='text' clientidmode='Static' id='txtPhone" + licount + chdCount + "' name='nametxtPhone" + licount + chdCount + "' data-type='" + licount + "' tabindex='7' class='clsMaskPhone'  placeholder='___-___-____' /></td>" +
+                                  "<td><input type='text' clientidmode='Static' onblur='CheckDuplicatePhoneEmail();' id='txtPhone" + licount + chdCount + "' name='nametxtPhone" + licount + chdCount + "' data-type='" + licount + "' tabindex='7' class='clsMaskPhone'  placeholder='___-___-____' /></td>" +
                                   "<td><label class='clsFullWidth'>Phone Type</label></td><td>" +
                                   "<select class='clsFullWidth' id='selPhoneType" + licount + chdCount + "' name='nameselPhoneType" + licount + chdCount + "' data-type='" + licount + "' clientidmode='Static' tabindex='4'>" +
                                   "<option value='0'>Select</option><option value='CellPhone'>Cell Phone #</option><option value='HousePhone'>House Phone #</option><option value='WorkPhone'>Work Phone #</option><option value='AltPhone'>Alt. Phone #</option>" +
@@ -789,7 +869,7 @@
                             }
                             if (value.EMail != "") {
                                 $("#tblEmail" + childCount + " tr:last").before("<tr><td class='paddingtd'></td>" +
-                                    "<td><input type='text' clientidmode='Static' id='txtEMail" + licount + chdCount + "' name='nametxtEMail" + licount + chdCount + "' data-type='" + licount + "' tabindex='7'  placeholder='EMail' /></td></tr>");
+                                    "<td><input type='text' clientidmode='Static' onblur='CheckDuplicatePhoneEmail()' id='txtEMail" + licount + chdCount + "' name='nametxtEMail" + licount + chdCount + "' data-type='" + licount + "' tabindex='7'  placeholder='EMail' /></td></tr>");
                                 $("#txtEMail" + licount + chdCount).val(value.EMail);
                             }
                         }
@@ -804,12 +884,12 @@
                             "<input type='text' tabindex='7' id='txtLName" + licount + "' name='nametxtLName" + licount + "'  placeholder='Last Name' data-type='" + licount + "' /></td></tr><tr><td class='paddingtd'>" +
                             "<input type='button' id='btnParent" + licount + "' value='Add' data-type='" + licount + "' class='clsFullWidth cls_btn_plus' tabindex='31' onclick='AddTemplate(this)' /></td>" +
                             "</tr></table></div><div style='width: 40%; float: left;'><table id='tblPhone" + licount + "'><tr><td class='paddingtd'></td><td>" +
-                            "<input type='text' clientidmode='Static' id='txtPhone" + licount + "' name='nametxtPhone" + licount + "' data-type='" + licount + "' tabindex='7' class='clsMaskPhone'  placeholder='___-___-____' /></td>" +
+                            "<input type='text' clientidmode='Static' onblur='CheckDuplicatePhoneEmail();' id='txtPhone" + licount + "' name='nametxtPhone" + licount + "' data-type='" + licount + "' tabindex='7' class='clsMaskPhone'  placeholder='___-___-____' /></td>" +
                             "<td><label class='clsFullWidth'>Phone Type</label></td><td><select class='clsFullWidth' id='selPhoneType" + licount + "' name='nameselPhoneType" + licount + "' data-type='" + licount + "' clientidmode='Static' tabindex='4'>" +
                             "<option value='0'>Select</option><option value='CellPhone'>Cell Phone #</option><option value='HousePhone'>House Phone #</option><option value='WorkPhone'>Work Phone #</option><option value='AltPhone'>Alt. Phone #</option>" +
                             "</select></td></tr><tr><td class='paddingtd'><input type='button' value='Add' data-type='" + licount + "' class='clsFullWidth cls_btn_plus' tabindex='31' onclick='Phone(this)' /></td>" +
                             "</tr></table></div><div style='width: 20%; float: left;'><table id='tblEmail" + licount + "'><tr><td class='paddingtd'></td>" +
-                            "<td><input type='text' clientidmode='Static' id='txtEMail" + licount + "' name='nametxtEMail" + licount + "' data-type='" + licount + "' tabindex='7'  placeholder='EMail' /></td></tr><tr><td class='paddingtd'>" +
+                            "<td><input type='text' clientidmode='Static' id='txtEMail" + licount + "' onblur='CheckDuplicatePhoneEmail()' name='nametxtEMail" + licount + "' data-type='" + licount + "' tabindex='7'  placeholder='EMail' /></td></tr><tr><td class='paddingtd'>" +
                             "<input type='button' value='Add' data-type='" + licount + "' class='clsFullWidth cls_btn_plus' tabindex='31' onclick='Email(this)' /></td></tr></table></div></div></li>");
 
                             $("#selContactType" + licount).val(value.strContactType);
@@ -821,7 +901,9 @@
                             childCount = "";
                             chdCount = 0;
                         }
-                        $('.clsMaskPhone').mask("999-999-9999");
+                        try {
+                            $('.clsMaskPhone').mask("999-999-9999");
+                        }catch(e1){}
                     });
                     //Primary Product
                     $.each(PrimaryProduct, function (key, value) {
@@ -1215,10 +1297,11 @@
         window.onload = function () {
             //$(document).ready(function () {
             //  debugger;
-
+            
             BindPrimaryContact();
-            $(".date").datepicker();
-            $('.time').ptTimeSelect();
+
+            
+            
             $('code').each(
 					function () {
 					    eval($(this).html());
@@ -1492,7 +1575,9 @@
                                         <Columns>
                                             <asp:TemplateField HeaderText="Quote or Sold Job#" HeaderStyle-Width="15%" ItemStyle-Width="50px">
                                                 <ItemTemplate>
-                                                    <asp:LinkButton ID="lnkSoldJobDetails" OnClick="lnkSoldJobDetails_Click" runat="server" Text='<%# Eval("SoldJobId").ToString().Substring( Eval("SoldJobId").ToString().IndexOf("-")+1)  %>'></asp:LinkButton>
+                                                    <asp:HiddenField ID="hdnproductid" runat="server" Value='<%#Eval("JobSeqID") %>' />
+                                                    <asp:HiddenField ID="hdnProductTypeId" runat="server" Value='<%#Eval("ProductTypeId") %>' />
+                                                    <asp:LinkButton CommandArgument='<%#Eval("CustomerID") %>' ID="lnkSoldJobDetails" OnClick="lnkSoldJobDetails_Click"  runat="server"  Text='<%# Eval("SoldJobId").ToString().Substring( Eval("SoldJobId").ToString().IndexOf("-")+1)  %>' ></asp:LinkButton>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <%--<asp:BoundField ItemStyle-Width="50px" HeaderText="Quote or Sold Job#" DataField="SoldJobId" />--%>
@@ -1681,7 +1766,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <label>
+                                <label style="line-height:21px;">
                                     Contact Preference</label>
                                 <asp:CheckBox ID="chbemail" runat="server" Width="14%" Text="Email " TabIndex="17"
                                     onclick="fnCheckOne(this)" />
@@ -1697,10 +1782,9 @@
                             <td>
                                 <label>
                                     Estimate Date</label>
-                                <asp:TextBox ID="txtestimate_date" CssClass="date" TabIndex="5" runat="server" onkeypress="return false"></asp:TextBox>
-                                <%--<input type="text" name="textfield" id="textfield" />--%>
-                                <label>
-                                </label>
+                                <asp:TextBox ID="txtestimate_date" CssClass="date" TabIndex="5" runat="server" ></asp:TextBox>
+                                <asp:CheckBox ID="chkAutoEmailer" Text="Send Auto Email" Checked="true" runat="server" />
+                               
                             </td>
                         </tr>
                         <uc1:UCAddress runat="server" ID="UCAddress" />
@@ -1730,7 +1814,7 @@
                         <tr>
                             <td>
                                 <label>
-                                    Secondary Product of Interest (6 months - 1 year)</label>
+                                    Secondary Product of Interest (6 months)</label>
                                 <asp:DropDownList ID="drpProductOfInterest2" runat="server" onchange="SecondaryProduct(this)" TabIndex="30">
                                 </asp:DropDownList>
                             </td>
@@ -1739,6 +1823,16 @@
                             <td>
                                 <label>Competitor Bids<span></span></label>
                                 <asp:TextBox ID="txtCompetitorBids" runat="server" TabIndex="6"></asp:TextBox>
+                                <label>
+                                </label>
+                            </td>
+                        </tr>
+                         <tr>
+                            <td>
+                                <label>
+                                    Estimate Time</label>
+                                <asp:TextBox ID="txtestimate_time" CssClass="time" runat="server" TabIndex="6"
+                                    onkeypress="return false"></asp:TextBox>
                                 <label>
                                 </label>
                             </td>
@@ -1787,16 +1881,7 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr>
-                            <td>
-                                <label>
-                                    Estimate Time</label>
-                                <asp:TextBox ID="txtestimate_time" CssClass="time" runat="server" TabIndex="6"
-                                    onkeypress="return false"></asp:TextBox>
-                                <label>
-                                </label>
-                            </td>
-                        </tr>
+                       
                         <tr>
                             <td>
                                 <div>
@@ -2029,27 +2114,18 @@
         </div>
         <!-- Tabs endss -->
     </div>
-    <%--  <asp:Panel ID="ModalPanel" runat="server" Width="500px">
-        Customer Records are duplicated. Are you sure want to update the existing record?
-        <asp:Button ID="OKButton" runat="server" Text="Close" />
-</asp:Panel>
 
-    <asp:Button ID="hdnDuplicationStatus" runat="server" Text="" Visible="false"/>
+    <link href="../datetime/jq/ui-lightness/jquery-ui-1.10.0.custom.min.css" rel="stylesheet" />
+    <link href="../datetime/jq/jquery.ui.timepicker.css" rel="stylesheet" />
 
-
-
-    <ajaxToolkit:ModalPopupExtender ID="mpe" runat="server"  
-    TargetControlID="hdnDuplicationStatus"  
-    PopupControlID="ModalPanel"  
-    BackgroundCssClass="modalBackground"   
-    DropShadow="true"   
-    OkControlID="OkButton"   
-    OnOkScript="onOk()"  
-    CancelControlID="CancelButton"   
-    PopupDragHandleControlID="Panel3" />  --%>
-
-
-
+    <script src="../datetime/jq/jquery-1.9.0.min.js"></script>
+    <script src="../datetime/jq/jquery.ui.core.min.js"></script>
+    <script src="../datetime/jq/jquery.ui.position.min.js"></script>
+    <script src="../datetime/jq/jquery.ui.tabs.min.js"></script>
+    <script src="../datetime/jq/jquery.ui.widget.min.js"></script>
+    
+    <script src="../datetime/jq/jquery.ui.timepicker.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <asp:HiddenField runat="server" ID="hfWasConfirmed" />
     <asp:Panel ID="Panel1" runat="server">
         <script>
@@ -2074,51 +2150,57 @@
             });
         </script>
 
-
+      
         <script language="javascript" type="text/javascript">
             var directionsDisplay;
-            var directionsService = new google.maps.DirectionsService();
+            var directionsService ;
+            try {
+                directionsService = new google.maps.DirectionsService();
+            }catch(e){}
 
             function InitializeMap() {
-                directionsDisplay = new google.maps.DirectionsRenderer();
-                var latlng = new google.maps.LatLng(40.748492, -73.985496);
-                var myOptions =
-                {
-                    zoom: 10,
-                    center: latlng,
-                    mapTypeId: google.maps.MapTypeId.ROADMAP
-                };
-                var map = new google.maps.Map(document.getElementById("map"), myOptions);
+                try {
+                    directionsDisplay = new google.maps.DirectionsRenderer();
+                    var latlng = new google.maps.LatLng(40.748492, -73.985496);
+                    var myOptions =
+                    {
+                        zoom: 10,
+                        center: latlng,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    };
+                    var map = new google.maps.Map(document.getElementById("map"), myOptions);
 
-                directionsDisplay.setMap(map);
-                directionsDisplay.setPanel(document.getElementById('directionpanel'));
+                    directionsDisplay.setMap(map);
+                    directionsDisplay.setPanel(document.getElementById('directionpanel'));
 
-                var control = document.getElementById('control');
-                //control.style.display = 'block';
+                    var control = document.getElementById('control');
+                    //control.style.display = 'block';
+                }catch(e){}
             }
             function calcRoute() {
-
-                var start = document.getElementById('startvalue').value;
-                var end = document.getElementById('endvalue').value;
-                var request = {
-                    origin: start,
-                    destination: end,
-                    travelMode: google.maps.DirectionsTravelMode.DRIVING
-                };
-                directionsService.route(request, function (response, status) {
-                    if (status == google.maps.DirectionsStatus.OK) {
-                        directionsDisplay.setDirections(response);
-                    }
-                });
+                try {
+                    var start = document.getElementById('startvalue').value;
+                    var end = document.getElementById('endvalue').value;
+                    var request = {
+                        origin: start,
+                        destination: end,
+                        travelMode: google.maps.DirectionsTravelMode.DRIVING
+                    };
+                    directionsService.route(request, function (response, status) {
+                        if (status == google.maps.DirectionsStatus.OK) {
+                            directionsDisplay.setDirections(response);
+                        }
+                    });
+                }catch(e){}
 
             }
             function Button1_onclick() {
                 calcRoute();
             }
 
-            $(document).ready(function () {
+           /* $(document).ready(function () {
                 InitializeMap();
-            });
+            });*/
             function jsFunctions() {
                 $('.popover').webuiPopover({
                     constrains: 'horizontal',
@@ -2129,6 +2211,9 @@
                 });
             }
             Sys.WebForms.PageRequestManager.getInstance().add_endRequest(jsFunctions);
+            //$('.time').ptTimeSelect();
+            $('.time').timepicker();
+            $(".date").datepicker();
 </script>
 
     </asp:Panel>

@@ -6,7 +6,9 @@
 <script type="text/javascript">
     $(function () {
         // Tabs
-        $('#tabs').tabs();
+        if ($('#tabs').length) {
+            $('#tabs').tabs();
+        }
     });
 		</script>
 <style type="text/css">

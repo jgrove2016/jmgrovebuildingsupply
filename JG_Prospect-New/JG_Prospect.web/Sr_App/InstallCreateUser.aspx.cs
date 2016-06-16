@@ -3139,7 +3139,7 @@ namespace JG_Prospect.Sr_App
         }
 
 
-        private string GetId(string UserType, string UserStatus)
+        private string GetId_old(string UserType, string UserStatus)
         {
             DataTable dtId;
             string LastInt = string.Empty;
@@ -3196,6 +3196,46 @@ namespace JG_Prospect.Sr_App
             {
                 installId = installId + "-X";
             }
+
+            if (UserType.Contains("Installer"))
+            {
+                if (UserStatus == "Deactive")
+                {
+                    installId = installId + "-X";
+                }
+                else
+                {
+                    if (installId != "")
+                    {
+                        LastInt = (Convert.ToInt32(installId.Replace("INS", "")) + 1).ToString(); //This will remove leading zeros
+                        installId = "INS" + (LastInt.Length == 1 ? "00" : (LastInt.Length == 2 ? "0" : (LastInt.Length == 3 ? "0" : ""))) + LastInt;
+                    }
+                    else
+                    {
+                        installId = "INS001";
+                    }
+                }
+            }
+            else
+            {
+                if (UserStatus == "Deactive")
+                {
+                    installId = installId + "-X";
+                }
+                else
+                {
+                    if (installId != "")
+                    {
+                        LastInt = (Convert.ToInt32(installId.Replace("SUB", "")) + 1).ToString(); //This will remove leading zeros
+                        installId = "SUB" + (LastInt.Length == 1 ? "00" : (LastInt.Length == 2 ? "0" : (LastInt.Length == 3 ? "0" : ""))) + LastInt;
+                    }
+                    else
+                    {
+                        installId = "SUB001";
+                    }
+                }
+            }
+
             if (UserType == "Installer" && UserStatus != "Deactive")
             {
                 if (installId != "")
@@ -3455,7 +3495,60 @@ namespace JG_Prospect.Sr_App
             Session["IdGenerated"] = installId;
             return installId;
         }
+        private string GetId(string UserType, string UserStatus)
+        {
+            DataTable dtId;
+            string LastInt = string.Empty;
+            string installId = string.Empty;
 
+            dtId = InstallUserBLL.Instance.getMaxId(UserType, UserStatus);
+            if (dtId.Rows.Count > 0)
+            {
+                installId = Convert.ToString(dtId.Rows[0][0]);
+            }
+            if (UserType.Contains("Installer"))
+            {
+                if (UserStatus == "Deactive")
+                {
+                    installId = installId + "-X";
+                }
+                else
+                {
+                    if (installId != "")
+                    {
+                        LastInt = (Convert.ToInt32(installId.Replace("INS", "")) + 1).ToString(); //This will remove leading zeros
+                        installId = "INS" + (LastInt.Length == 1 ? "00" : (LastInt.Length == 2 ? "0" : (LastInt.Length == 3 ? "0" : ""))) + LastInt;
+                    }
+                    else
+                    {
+                        installId = "INS001";
+                    }
+                }
+            }
+            else
+            {
+                if (UserStatus == "Deactive")
+                {
+                    installId = installId + "-X";
+                }
+                else
+                {
+                    if (installId != "")
+                    {
+                        LastInt = (Convert.ToInt32(installId.Replace("SUB", "")) + 1).ToString(); //This will remove leading zeros
+                        installId = "SUB" + (LastInt.Length == 1 ? "00" : (LastInt.Length == 2 ? "0" : (LastInt.Length == 3 ? "0" : ""))) + LastInt;
+                    }
+                    else
+                    {
+                        installId = "SUB001";
+                    }
+                }
+            }
+
+            Session["installId"] = installId;
+            Session["IdGenerated"] = installId;
+            return installId;
+        }
         private void SendEmail(string emailId, string FName, string LName, string status, string Reason)
         {
             try
@@ -4241,7 +4334,7 @@ namespace JG_Prospect.Sr_App
                     Session["installId"] = GetUpdatedId(Convert.ToString(Session["installId"]));
                     objuser.InstallId = Convert.ToString(Session["installId"]);
                 }
-                DataSet dsCheckDuplicate = InstallUserBLL.Instance.CheckInstallUserOnEdit(txtemail.Text, txtPhone.Text, Convert.ToInt32(Session["ID"]));
+                DataSet dsCheckDuplicate = InstallUserBLL.Instance.CheckInstallUserOnEdit(txtemail.Text, txtPhone.Text, id);
                 if (dsCheckDuplicate.Tables[0].Rows.Count > 0)
                 {
                     ScriptManager.RegisterStartupScript(this, GetType(), "overlay", "alert('Record with same email or phone number already exists.')", true);
@@ -11065,16 +11158,26 @@ namespace JG_Prospect.Sr_App
             }
             else if (ddlstatus.SelectedValue == "OfferMade")
             {
-                ValidationSummary1.ValidationGroup = lnkSubmit.ValidationGroup = "OfferMade";
-                ddlInsteviewtime.Visible = false;
-                txtReson.Visible = false;
-                RequiredFieldValidator7.Enabled = false;
-                // RequiredFieldValidator7.Enabled = true;
-                dtInterviewDate.Visible = false;
-                pnlnewHire.Visible = true;
-                pnlNew2.Visible = true;
-                btnNewPluse.Visible = false;
-                btnNewMinus.Visible = true;
+                if (!string.IsNullOrWhiteSpace(Convert.ToString(Request.QueryString["id"])) &&
+                    (string.IsNullOrWhiteSpace(txtemail.Text) || string.IsNullOrWhiteSpace(txtpassword.Text) || string.IsNullOrWhiteSpace(txtpassword1.Text)))
+                {
+                    ModalPopupExtender2.Show();
+                    ddlstatus.SelectedValue = "Applicant";
+                    return;
+                }
+                else
+                {
+                    ValidationSummary1.ValidationGroup = lnkSubmit.ValidationGroup = "OfferMade";
+                    ddlInsteviewtime.Visible = false;
+                    txtReson.Visible = false;
+                    RequiredFieldValidator7.Enabled = false;
+                    // RequiredFieldValidator7.Enabled = true;
+                    dtInterviewDate.Visible = false;
+                    pnlnewHire.Visible = true;
+                    pnlNew2.Visible = true;
+                    btnNewPluse.Visible = false;
+                    btnNewMinus.Visible = true;
+                }
             }
             else
             {
@@ -11535,6 +11638,28 @@ namespace JG_Prospect.Sr_App
                 lblReqEmpType.Visible = true;
                 rqEmpType.Enabled = true;
                 #endregion
+                string lMessage = "";
+                if (txtemail.Text == "")
+                {
+                    lMessage += "Email is required\n";
+                }
+                if (txtpassword.Text == "")
+                {
+                    lMessage += "Password is required\n";
+                }
+                else
+                {
+                    if(txtpassword1.Text != txtpassword.Text){
+                        lMessage += "Password and Confirm password does not match\n";
+                    }
+                }
+                if (lMessage!="")
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('" + lMessage + "')", true);
+                    return;
+                }
+                
+
                 //ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Fill new hire section above')", true);
                 //return;
             }
@@ -11757,7 +11882,8 @@ namespace JG_Prospect.Sr_App
                 lblConfirmPass.Visible = false;
             }
             #endregion
-
+            InstallUserBLL.Instance.UpdateInstallUserStatus(ddlstatus.SelectedValue,  Convert.ToInt32(Session["ID"]));
+            
         }
 
         //protected void btnPassword_Click(object sender, EventArgs e)
@@ -11988,5 +12114,37 @@ namespace JG_Prospect.Sr_App
                 //myItem.Attributes.Add("style", "background-color:#111111");
             }
         }
+
+        protected void ddlstatus_PreRender(object sender, EventArgs e)
+        {
+            string imageURL = "";
+            for (int i = 0; i < ddlstatus.Items.Count; i++)
+            {
+                switch (ddlstatus.Items[i].Value)
+                {
+                    case "Applicant": imageURL = "../Sr_App/img/red-astrek.png";
+                        ddlstatus.Items[i].Attributes["data-image"] = imageURL;
+                        break;
+                    case "OfferMade": imageURL = "../Sr_App/img/dark-blue-astrek.png";
+                        ddlstatus.Items[i].Attributes["data-image"] = imageURL;
+                        break;
+                    case "PhoneScreened": imageURL = "../Sr_App/img/yellow-astrek.png";
+                        ddlstatus.Items[i].Attributes["data-image"] = imageURL;
+                        break;
+                    case "Active": imageURL = "../Sr_App/img/green-astrek.png";
+                        ddlstatus.Items[i].Attributes["data-image"] = imageURL;
+                        break;
+                    case "InterviewDate": imageURL = "../Sr_App/img/purple-astrek.png";
+                        ddlstatus.Items[i].Attributes["data-image"] = imageURL;
+                        break;
+                    default:
+                        ddlstatus.Items[i].Attributes["data-image"] = "../Sr_App/img/white-astrek.png";
+                        break;
+                }
+                //System.Web.UI.WebControls.ListItem item = ddlCountry.Items[i];
+                //item.Attributes["data-image"] = imageURL;
+            }
+        }
+
     }
 }

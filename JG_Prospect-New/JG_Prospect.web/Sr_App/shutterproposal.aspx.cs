@@ -31,15 +31,28 @@ namespace JG_Prospect.Sr_App
         static string[] arr;
         private Boolean IsPageRefresh = false;
         ErrorLog logManager = new ErrorLog();
-        int customerId = 0, productType = 0, productId = 0;
+        int productType = 0, productId = 0;
         static int ProductTypeID;
         List<Tuple<int, string, int>> proposalOptionList = null;
         static int[] productIdList = new int[50];
         static int[] estimateIdList = new int[50];
         static string QuoteNumber = string.Empty;
-
+        decimal amount = 0;
+        protected string soldJobID
+        {
+            get { return (ViewState["SoldJobID"] != null ? ViewState["SoldJobID"].ToString() : ""); }
+            set { ViewState["SoldJobID"] = value; }
+        }
+        protected int customerId
+        {
+            get { return ViewState["CustomerIDVS"] != null ? Convert.ToInt32(ViewState["CustomerIDVS"].ToString()) : 0; }
+            set { ViewState["CustomerIDVS"] = value; }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
+
+
+
             if (Request.QueryString["success"] != null)
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alsert('Your Transaction is successfull')", true);
@@ -47,6 +60,17 @@ namespace JG_Prospect.Sr_App
             }
             if (!IsPostBack)
             {
+                #region DropDownList Databind
+
+                for (int i = 1; i <= 12; i++)
+                    ccExpireMonth.Items.Add(new System.Web.UI.WebControls.ListItem((new DateTime(1, i, 1)).ToString("MMMM"), i.ToString("00")));
+
+                for (int i = DateTime.Now.Year; i <= DateTime.Now.Year + 10; i++)
+                    ccExpireYear.Items.Add(new System.Web.UI.WebControls.ListItem(i.ToString(), i.ToString("0000")));
+
+                #endregion
+
+                decimal amount;
                 if (Request.QueryString["UserId"] != null && Request.QueryString["CustomerId"] != null && Request.QueryString["EstId"] != null && Request.QueryString["paymentMode"] != null && Request.QueryString["amount"] != null && Request.QueryString["checkNo"] != null && Request.QueryString["creditCardDetails"] != null && Request.QueryString["IsEmail"] != null && Request.QueryString["TransactionId"] != null)
                 {
                     TransactionComplete(true, Request.QueryString["UserId"], Request.QueryString["CustomerId"], Request.QueryString["EstId"], Request.QueryString["paymentMode"], Request.QueryString["amount"], Request.QueryString["checkNo"], Request.QueryString["creditCardDetails"], Request.QueryString["TransactionId"]);
@@ -282,7 +306,7 @@ namespace JG_Prospect.Sr_App
 
                         if (IsEmail)
                         {
-                            SendEmailToCustomer(tempInvoiceFileName);
+                            SendEmailToCustomer(tempInvoiceFileName, "");
                         }
                         RefreshData();
                         //GeneratePDF(path, tempWorkOrderFilename , false, createWorkOrder("Work Order-" + Session["CustomerId"].ToString(), int.Parse(ViewState["EstimateId"].ToString())));
@@ -499,6 +523,10 @@ namespace JG_Prospect.Sr_App
                 amountpart1 = Math.Round(amt1, 2).ToString();
                 amountpart2 = Math.Round(amt2, 2).ToString();
                 amountpart3 = Math.Round(amt3, 2).ToString();
+
+
+                Session["CCtxtAmount"] = amountpart1;
+                Label7.Text = Session["CCtxtAmount"].ToString();
                 //txtAmount.Text = amountpart1;
                 //txtAmount.ReadOnly = true;
             }
@@ -532,7 +560,7 @@ namespace JG_Prospect.Sr_App
             string customerId = "";
             string quoteNo = "";
             DataSet ds = new DataSet();
-            ds = AdminBLL.Instance.FetchContractTemplate(productIdList[0]);
+            ds = AdminBLL.Instance.FetchContractTemplate(1); ;// AdminBLL.Instance.FetchContractTemplate(productIdList[0]);
             string result = "";
             if (ds.Tables[0].Rows.Count > 0)
             {
@@ -544,6 +572,7 @@ namespace JG_Prospect.Sr_App
             if (DS1 != null)
             {
                 Customername = DS1.Tables[0].Rows[0]["CustomerName"].ToString();
+                Session["Name"] = Customername;
                 customercellphone = DS1.Tables[0].Rows[0]["CellPh"].ToString();
                 customerhousePh = DS1.Tables[0].Rows[0]["HousePh"].ToString();
                 customeraddress = DS1.Tables[0].Rows[0]["CustomerAddress"].ToString();
@@ -708,6 +737,7 @@ namespace JG_Prospect.Sr_App
             result = result.Replace("lblProposalTerms", proposalTerm);
             result = result.Replace("lblWorkArea", WorkArea);
             result = result.Replace("lblCustomerSuppliedMaterial", CustomerSuppliedMaterial);
+
             result = result.Replace("lblMaterialDumpsterStorage", MaterialDumpsterStorage);
             result = result.Replace("lblPermitRequired", PermitRequired);
             result = result.Replace("lblHabitatForHumanityPickUp", HabitatForHumanityPickUp);
@@ -751,201 +781,12 @@ namespace JG_Prospect.Sr_App
 
         private void GeneratePDF(string path, string fileName, bool download, string text, bool IsFooter)//download set to false in calling method
         {
-            #region sandeep patil logic
-            /*
             var document = new Document();
-            //text = text.Replace("src='jgp.jmgroveconstruction.com.192-185-6-42.secure23.win.hostgator.com/img/Bar2.png'", "src='~/img/Bar2.png'");
-            //text = text.Replace("src='jgp.jmgroveconstruction.com.192-185-6-42.secure23.win.hostgator.com/img/LogoJG_PDF.png'", "src='~/img/LogoJG_PDF.png'");
-            //text = text.Replace("src='jgp.jmgroveconstruction.com.192-185-6-42.secure23.win.hostgator.com/img/Bar1.png'", "src='~/img/Bar1.png'");
-            //text = text.Replace("src='jgp.jmgroveconstruction.com.192-185-6-42.secure23.win.hostgator.com/img/ma.png'", "src='~/img/ma.png'");
-
-            //text = text.Replace("background:url(http://176.31.133.194:205/img/logo_bg.png)", "src='~/img/logo_bg.png'");
-            //text = text.Replace("background: url(http://176.31.133.194:205/img/logo_bg.png)", "src='~/img/logo_bg.png'");
-
-
-
-
-            text = text.Replace("src='jgp.jmgroveconstruction.com.192-185-6-42.secure23.win.hostgator.com/img/Bar2.png'", "");
-            text = text.Replace("src='jgp.jmgroveconstruction.com.192-185-6-42.secure23.win.hostgator.com/img/LogoJG_PDF.png'", "");
-            text = text.Replace("src='jgp.jmgroveconstruction.com.192-185-6-42.secure23.win.hostgator.com/img/Bar1.png'", "");
-            text = text.Replace("src='jgp.jmgroveconstruction.com.192-185-6-42.secure23.win.hostgator.com/img/ma.png'", "");
-
-            text = text.Replace("background:url(http://176.31.133.194:205/img/logo_bg.png)", "");
-            text = text.Replace("background: url(http://176.31.133.194:205/img/logo_bg.png)", "");
-
-            ////////////
-
-            text = text.Replace("src='jgp.jmgroveconstruction.com.192-185-6-42.secure23.win.hostgator.com/img/Bar2.png'", "");
-            text = text.Replace("src='jgp.jmgroveconstruction.com.192-185-6-42.secure23.win.hostgator.com/img/LogoJG_PDF.png'", "");
-            text = text.Replace("src='jgp.jmgroveconstruction.com.192-185-6-42.secure23.win.hostgator.com/img/Bar1.png'", "");
-            text = text.Replace("src='jgp.jmgroveconstruction.com.192-185-6-42.secure23.win.hostgator.com/img/ma.png'", "");
-            text = text.Replace("src=\"jgp.jmgroveconstruction.com.192-185-6-42.secure23.win.hostgator.com/img/ma.png\"", "");
-            text = text.Replace("background:url(http://176.31.133.194:205/img/logo_bg.png)", "");
-            text = text.Replace("background: url(http://176.31.133.194:205/img/logo_bg.png)", "");
-
-            text = text.Replace("src=jgp.jmgroveconstruction.com.192-185-6-42.secure23.win.hostgator.com/img/JG-Logo.gif", "");
-            // FileStream FS = new FileStream(path + fileName, FileMode.Create);
             try
             {
-                //if (download)
-                //{
-                //    Response.Clear();
-                //    Response.ContentType = "application/pdf";
-                //    PdfWriter.GetInstance(document, Response.OutputStream);
-                //}
-                //else
-                //{
-                //    //PdfWriter.GetInstance(document, new FileStream(path + fileName, FileMode.Create));
-                //    PdfWriter.GetInstance(document, FS);
-                //}
-                // generates the grid first
                 StringBuilder strB = new StringBuilder();
                 strB.Append(text);
-                document.Open();
-                // now read the Grid html one by one and add into the document object
-
-                //using (TextReader sReader = new StringReader(strB.ToString()))
-                //{
-                //    document.Open();
-                //    List<IElement> list = HTMLWorker.ParseToList(sReader, new StyleSheet());
-                //    foreach (IElement elm in list)
-                //    {
-                //        document.Add(elm);
-                //    }
-                //}
-
-                //var htmlContent = strB.ToString();
-                //var htmlToPdf = new NReco.PdfGenerator.HtmlToPdfConverter();
-                //var pdfBytes = htmlToPdf.GeneratePdf(htmlContent);
-                //byte[] byteData = pdfBytes;
-                string filePath = Server.MapPath("~/CustomerDocs/Pdfs/wkhtmltopdf.exe");
-                // string filePath = Server.MapPath("/CustomerDocs/Pdfs/wkhtmltox-0.12.2.4_msvc2013-win32.exe");
-                byte[] byteData = ConvertHtmlToByte(strB.ToString(), "", "", filePath, IsFooter);
-                //string destination = Server.MapPath("~/CustomerDocs/Pdfs/") + fileName;
-                //byte[] byteData = HTMLToPdf(text, destination);
-                ////HTMLToPdf(text, destination);
-                if (byteData != null)
-                {
-                    StreamByteToPDF(byteData, Server.MapPath("~/CustomerDocs/Pdfs/") + fileName);
-                }
-            }
-            catch (Exception ex)
-            {
-                //throw ee;
-                logManager.writeToLog(ex, "ShutterProposal", Request.ServerVariables["remote_addr"].ToString());
-            }
-            //finally
-            //{
-            //    if (document.IsOpen())
-            //        document.Close();
-
-            //}
-            document.Close();
-            */
-            #endregion
-
-            #region PDF generation through Exe
-
-            //var document = new Document();
-            //StringBuilder strnew = new StringBuilder();
-            //string filePath = string.Empty;
-            //strnew.Append("In Genrate PDF");
-            //// FileStream FS = new FileStream(path + fileName, FileMode.Create);
-            //try
-            //{
-            //    //if (download)
-            //    //{
-            //    //    Response.Clear();
-            //    //    Response.ContentType = "application/pdf";
-            //    //    PdfWriter.GetInstance(document, Response.OutputStream);
-            //    //}
-            //    //else
-            //    //{
-            //    //    //PdfWriter.GetInstance(document, new FileStream(path + fileName, FileMode.Create));
-            //    //    PdfWriter.GetInstance(document, FS);
-            //    //}
-            //    // generates the grid first
-            //    StringBuilder strB = new StringBuilder();
-            //    strB.Append(text);
-            //    strnew.Append(text);
-            //    // now read the Grid html one by one and add into the document object
-
-            //    //using (TextReader sReader = new StringReader(strB.ToString()))
-            //    //{
-            //    //    document.Open();
-            //    //    List<IElement> list = HTMLWorker.ParseToList(sReader, new StyleSheet());
-            //    //    foreach (IElement elm in list)
-            //    //    {
-            //    //        document.Add(elm);
-            //    //    }
-            //    //}
-
-            //    // filePath = Server.MapPath("/CustomerDocs/Pdfs/wkhtmltopdf.exe");
-            //    filePath = "C:\\inetpub\\wwwroot\\TestPublishNew\\CustomerDocs\\Pdfs\\wkhtmltopdf.exe";
-
-            //    string filepathnew = "C:\\inetpub\\wwwroot\\TestPublishNew\\CustomerDocs\\Pdfs\\";
-            //   // string filepathnew = "E:\\JGPTest\\JG_Prospect.root\\JG_Prospect\\JG_Prospect.web\\CustomerDocs\\Pdfs\\";
-
-            //    byte[] byteData = ConvertHtmlToByte(Convert.ToString(strB), "", "", filePath, IsFooter);
-            //    if (byteData != null)
-            //    {//E:\JGPTest\JG_Prospect.root\JG_Prospect\JG_Prospect.web\CustomerDocs\Pdfs\wkhtmltopdf.exe
-            //        strnew.Append("before convert");
-            //        StreamByteToPDF(byteData, filepathnew + fileName);
-            //        //StreamByteToPDF(byteData, Server.MapPath("/CustomerDocs/Pdfs/") + fileName);
-            //        strnew.Append("after convert");
-            //    }
-
-            //    // lblpath.Text = filePath;
-
-            //}
-            //catch (Exception ex)
-            //{
-            //    //throw ee;
-            //    lblerrornew.Text = strnew + ex.Message + ex.StackTrace;
-            //    logManager.writeToLog(ex, "ShutterProposal", Request.ServerVariables["remote_addr"].ToString());
-            //    // lblpath.Text = filePath;
-            //}
-            ////finally
-            ////{
-            ////    if (document.IsOpen())
-            ////        document.Close();
-
-            ////}
-
-            #endregion
-
-            var document = new Document();
-
-            // FileStream FS = new FileStream(path + fileName, FileMode.Create);
-            try
-            {
-                //if (download)
-                //{
-                //    Response.Clear();
-                //    Response.ContentType = "application/pdf";
-                //    PdfWriter.GetInstance(document, Response.OutputStream);
-                //}
-                //else
-                //{
-                //    //PdfWriter.GetInstance(document, new FileStream(path + fileName, FileMode.Create));
-                //    PdfWriter.GetInstance(document, FS);
-                //}
-                // generates the grid first
-                StringBuilder strB = new StringBuilder();
-                strB.Append(text);
-                // now read the Grid html one by one and add into the document object
-
-                //using (TextReader sReader = new StringReader(strB.ToString()))
-                //{
-                //    document.Open();
-                //    List<IElement> list = HTMLWorker.ParseToList(sReader, new StyleSheet());
-                //    foreach (IElement elm in list)
-                //    {
-                //        document.Add(elm);
-                //    }
-                //}
-
-                string filePath = Server.MapPath("~/CustomerDocs/Pdfs/wkhtmltopdf.exe");
+                string filePath = Server.MapPath("/CustomerDocs/Pdfs/wkhtmltopdf.exe");
                 byte[] byteData = ConvertHtmlToByte(strB.ToString(), "", "", filePath);
                 if (byteData != null)
                 {
@@ -954,67 +795,56 @@ namespace JG_Prospect.Sr_App
             }
             catch (Exception ex)
             {
-                //throw ee;
                 logManager.writeToLog(ex, "Custom", Request.ServerVariables["remote_addr"].ToString());
             }
-            //finally
-            //{
-            //    if (document.IsOpen())
-            //        document.Close();
-
-            //}
-
         }
 
         public static byte[] ConvertHtmlToByte(string HtmlData, string headerPath, string footerPath, string filePath)
         {
-            string url = ConfigurationManager.AppSettings["URL"].ToString();
-            //ContractFooter cf=new ContractFooter();
-            footerPath = url + @"/Sr_App/ContractFooter.aspx";
-
-            //headerPath = headerPath.Replace(@"src=""../img", @"src=""" + url + @"/img");
-
             Process p;
             ProcessStartInfo psi = new ProcessStartInfo();
 
-            psi.FileName = filePath;
-            psi.WorkingDirectory = Path.GetDirectoryName(psi.FileName);
-
-            // run the conversion utility
-            psi.UseShellExecute = false;
-            psi.CreateNoWindow = true;
-            psi.RedirectStandardInput = true;
-            psi.RedirectStandardOutput = true;
-            psi.RedirectStandardError = true;
-            // note: that we tell wkhtmltopdf to be quiet and not run scripts
-            string args = "-q -n ";
-            args += "--disable-smart-shrinking ";
-            args += "--orientation Portrait ";
-            args += "--outline-depth 0 ";
-            //args += "--header-spacing 140 ";
-            //args += "--default-header ";
-
-            if (footerPath != string.Empty)
-            {
-                args += "--footer-html " + footerPath + " ";
-
-            }
-            if (headerPath != string.Empty)
-            {
-                args += "--header-spacing 2 ";
-                args += "--header-html " + headerPath + " ";
-
-            }
-            //args += "--header-font-size  20 ";
-            args += "--page-size A4 --encoding windows-1250";
-            args += " - -";
-
-            psi.Arguments = args;
-
-            p = Process.Start(psi);
-
             try
             {
+                string url = ConfigurationManager.AppSettings["URL"].ToString();
+                footerPath = url + @"/Sr_App/ContractFooter.aspx";
+                psi.FileName = filePath;
+                psi.WorkingDirectory = Path.GetDirectoryName(psi.FileName);
+
+                // run the conversion utility
+                psi.UseShellExecute = false;
+                psi.CreateNoWindow = true;
+                psi.RedirectStandardInput = true;
+                psi.RedirectStandardOutput = true;
+                psi.RedirectStandardError = true;
+                // note: that we tell wkhtmltopdf to be quiet and not run scripts
+                string args = "-q -n ";
+                args += "--disable-smart-shrinking ";
+                args += "--orientation Portrait ";
+                args += "--outline-depth 0 ";
+                //args += "--header-spacing 140 ";
+                //args += "--default-header ";
+
+                if (footerPath != string.Empty)
+                {
+                    args += "--footer-html " + footerPath + " ";
+
+                }
+                if (headerPath != string.Empty)
+                {
+                    args += "--header-spacing 2 ";
+                    args += "--header-html " + headerPath + " ";
+
+                }
+                //args += "--header-font-size  20 ";
+                args += "--page-size A4 --encoding windows-1250";
+                args += " - -";
+
+                psi.Arguments = args;
+
+                p = Process.Start(psi);
+
+
                 using (StreamWriter stdin = new StreamWriter(p.StandardInput.BaseStream, Encoding.UTF8))
                 {
                     stdin.AutoFlush = true;
@@ -1046,17 +876,18 @@ namespace JG_Prospect.Sr_App
 
                 if (returnCode == 0)
                     return file;
-                //else
-                //    log.Error("Could not create PDF, returnCode:" + returnCode);
+                
+                p.Close();
+                p.Dispose();
             }
-            catch (Exception ex)
+            catch 
             {
                 // log.Error("Could not create PDF", ex);
             }
             finally
             {
-                p.Close();
-                p.Dispose();
+                p = null;
+                psi = null;
             }
             return null;
         }
@@ -1422,20 +1253,12 @@ namespace JG_Prospect.Sr_App
             return finalEmail;
         }
 
-        public DataSet fetchCustomerEmailTemplate()
-        {
-            DataSet ds = new DataSet();
-            ds = AdminBLL.Instance.FetchContractTemplate(20);
-            return ds;
-        }
-
-        protected void SendEmailToCustomer(string contractName)
+        protected void SendEmailToCustomer(string contractName, string triggerOrgin)
         {
             string finalEmail = GetCustomerEmail();
             if (finalEmail != string.Empty)
             {
-                //bool emailStatus = true;
-                string htmlBody = string.Empty;
+                StringBuilder lHTMLBody = new StringBuilder();
                 try
                 {
 
@@ -1443,135 +1266,166 @@ namespace JG_Prospect.Sr_App
                     // string vendorName = dr["VendorName"].ToString();
 
                     MailMessage m = new MailMessage();
-                    SmtpClient sc = new SmtpClient();
+                    SmtpClient sc = new SmtpClient(ConfigurationManager.AppSettings["smtpHost"].ToString(), Convert.ToInt32(ConfigurationManager.AppSettings["smtpPort"].ToString()));
 
                     string userName = ConfigurationManager.AppSettings["CustomerEmailUsername"].ToString();
                     string password = ConfigurationManager.AppSettings["CustomerEmailPassword"].ToString();
 
                     m.From = new MailAddress(userName, "JMGROVECONSTRUCTION");
                     m.To.Add(new MailAddress(mailId, ""));
+                    m.Bcc.Add(new MailAddress("shabbir.kanchwala@straitapps.com", "Shabbir Kanchwala"));
+                    m.CC.Add(new MailAddress("jgrove.georgegrove@gmail.com", "Justin Grove"));
+
+                    DataSet dsEmailTemplate = AdminBLL.Instance.GetEmailTemplate(triggerOrgin); //#- triggerOrigin is the sub email template name.
+
                     m.Subject = "JMGrove proposal " + "C" + customerId.ToString() + "-" + QuoteNumber;
                     m.IsBodyHtml = true;
-                    DataSet dsEmailTemplate = fetchCustomerEmailTemplate();
 
                     if (dsEmailTemplate.Tables[0].Rows.Count > 0)
                     {
-                        string templateHeader = dsEmailTemplate.Tables[0].Rows[0][0].ToString();
-                        StringBuilder tHeader = new StringBuilder();
-                        tHeader.Append(templateHeader);
-                        var replacedHeader = tHeader.Replace("src=\"../img/Email art header.png\"", "src=cid:myImageHeader")
-                                                    .Replace("lblJobId", "C" + customerId.ToString() + "-" + QuoteNumber)
-                                                    .Replace("lblCustomerId", "C" + customerId.ToString());
-                        htmlBody = replacedHeader.ToString();
-                        htmlBody += "</br></br></br>";
-                        string templateBody = dsEmailTemplate.Tables[0].Rows[0][1].ToString();
-
-                        StringBuilder tbody = new StringBuilder();
-                        tbody.Append(templateBody);
-
-                        htmlBody += templateBody.ToString();
-
-                        htmlBody += "</br></br></br>";
-
-                        string templateFooter = dsEmailTemplate.Tables[0].Rows[0][2].ToString();
-                        StringBuilder tFooter = new StringBuilder();
-                        tFooter.Append(templateFooter);
-                        var replacedFooter = tFooter.Replace("src=\"../img/JG-Logo.gif\"", "src=cid:myImageLogo")
-                                                      .Replace("src=\"../img/Email footer.png\"", "src=cid:myImageFooter")
-                                                   .Replace("src=\"../img/facebook.jpg\"", "src=cid:myImageFooterF")
-                                                   .Replace("src=\"../img/twitter.jpg\"", "src=cid:myImageFooterT")
-                                                  .Replace("src=\"../img/g+.png\"", "src=cid:myImageFooterG");
-                        htmlBody += replacedFooter.ToString();
+                        m.Subject = dsEmailTemplate.Tables[0].Rows[0]["HTMLSubject"].ToString().Replace("#trackingid#", "C" + customerId.ToString() + "-" + QuoteNumber);
+                        lHTMLBody.Append(dsEmailTemplate.Tables[0].Rows[0]["HTMLHeader"].ToString() + "<br/><br/>");
+                        lHTMLBody.Append(dsEmailTemplate.Tables[0].Rows[0]["HTMLBody"].ToString() + "<br/><br/>");
+                        lHTMLBody.Append(dsEmailTemplate.Tables[0].Rows[0]["HTMLFooter"].ToString() + "<br/><br/>");
                     }
-                    AlternateView htmlView = AlternateView.CreateAlternateViewFromString(htmlBody, null, "text/html");
 
-                    string imageSourceHeader = Server.MapPath(@"~\img") + @"\Email art header.png";
-                    LinkedResource theEmailImageHeader = new LinkedResource(imageSourceHeader);
-                    theEmailImageHeader.ContentId = "myImageHeader";
-
-                    string imageSourceLogo = Server.MapPath(@"~\img") + @"\JG-Logo.gif";
-                    LinkedResource theEmailImageLogo = new LinkedResource(imageSourceLogo);
-                    theEmailImageLogo.ContentId = "myImageLogo";
-
-                    string imageFooter = Server.MapPath(@"~\img") + @"\Email footer.png";
-                    LinkedResource theImageFooter = new LinkedResource(imageFooter);
-                    theImageFooter.ContentId = "myImageFooter";
-
-                    string imageFooterF = Server.MapPath(@"~\img") + @"\facebook.jpg";
-                    LinkedResource theImageFooterF = new LinkedResource(imageFooterF);
-                    theImageFooterF.ContentId = "myImageFooterF";
-
-                    string imageFooterT = Server.MapPath(@"~\img") + @"\twitter.jpg";
-                    LinkedResource theImageFooterT = new LinkedResource(imageFooterT);
-                    theImageFooterT.ContentId = "myImageFooterT";
-
-                    string imageFooterG = Server.MapPath(@"~\img") + @"\g+.png";
-                    LinkedResource theImageFooterG = new LinkedResource(imageFooterG);
-                    theImageFooterG.ContentId = "myImageFooterG";
-
-                    //Add the Image to the Alternate view
-                    htmlView.LinkedResources.Add(theEmailImageHeader);
-                    htmlView.LinkedResources.Add(theEmailImageLogo);
-                    htmlView.LinkedResources.Add(theImageFooterF);
-                    htmlView.LinkedResources.Add(theImageFooter);
-                    htmlView.LinkedResources.Add(theImageFooterT);
-                    htmlView.LinkedResources.Add(theImageFooterG);
-
-                    m.AlternateViews.Add(htmlView);
-
-                    m.Body = htmlBody;
+                    m.Body = lHTMLBody.ToString().Replace("lblJobId", "C" + customerId.ToString() + "-" + QuoteNumber).Replace("lblCustomerId", "C" + customerId.ToString()).Replace("#trackingid#", "C" + customerId.ToString() + "-" + QuoteNumber);
 
                     string sourceDirContract = Server.MapPath("~/CustomerDocs/Pdfs/");
-                    if (contractName != string.Empty)
-                    {
-                        Attachment attachment = new Attachment(sourceDirContract + "\\" + contractName);
-                        attachment.Name = contractName;
-                        m.Attachments.Add(attachment);
-                    }
-                    DataSet ds = AdminBLL.Instance.FetchCustomerAttachments();
-                    string sourceDirDocs = Server.MapPath("~/CustomerDocs/CustomerEmailDocument/");
-
-                    if (ds.Tables[0].Rows.Count > 0)
-                    {
-                        for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-                        {
-                            string filename = ds.Tables[0].Rows[i][i].ToString();
-                            Attachment attachment1 = new Attachment(sourceDirDocs + "\\" + filename);
-                            attachment1.Name = filename;
-                            m.Attachments.Add(attachment1);
-                        }
-                    }
-
-                    sc.UseDefaultCredentials = false;
-                    sc.Host = "jmgrove.fatcow.com";
-                    //sc.Host = "smtp.gmail.com";
-                    sc.Port = 25;
-
-
-                    sc.Credentials = new System.Net.NetworkCredential(userName, password);
-                    sc.EnableSsl = false; // runtime encrypt the SMTP communications using SSL
-                    //sc.EnableSsl = true; // runtime encrypt the SMTP communications using SSL
                     try
                     {
-                        sc.Send(m);
+                        if (contractName != string.Empty)
+                        {
+                            Attachment attachment = new Attachment(sourceDirContract + "\\" + contractName);
+                            attachment.Name = contractName;
+                            m.Attachments.Add(attachment);
+                        }
 
+
+                        DataSet ds = AdminBLL.Instance.FetchCustomerAttachments();
+                        string sourceDirDocs = Server.MapPath("~/CustomerDocs/CustomerEmailDocument/");
+
+                        if (dsEmailTemplate.Tables[1].Rows.Count > 0)
+                        {
+                            for (int i = 0; i < dsEmailTemplate.Tables[1].Rows.Count; i++)
+                            {
+                                string filename = dsEmailTemplate.Tables[1].Rows[i]["DocumentName"].ToString();
+                                Attachment attachment1 = new Attachment(sourceDirDocs + "\\" + filename);
+                                attachment1.Name = filename;
+                                m.Attachments.Add(attachment1);
+                            }
+                        }
                     }
-                    catch (Exception ex)
+                    catch
                     {
 
-
                     }
 
+                    NetworkCredential ntw = new System.Net.NetworkCredential(userName, password);
+                    sc.UseDefaultCredentials = false;
+                    sc.Credentials = ntw;
+
+                    sc.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    sc.EnableSsl = Convert.ToBoolean(ConfigurationManager.AppSettings["enableSSL"].ToString()); // runtime encrypt the SMTP communications using SSL
+                    sc.Send(m);
+                    if (triggerOrgin == "Sold Job")
+                    {
+                        SendOffertoInstallers(contractName);
+                    }
                 }
-
-
-
                 catch (Exception ex)
                 {
                     // ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('" + ex.Message + "');", true);
                 }
             }
         }
+
+        protected void SendOffertoInstallers(string ContractName)
+        {
+            DataSet lDsInstEmails = AdminBLL.Instance.GetInstallerEmails();
+
+            StringBuilder lHTMLBody = new StringBuilder();
+            try
+            {
+                string mailId = "";
+                for (int i = 0; i < lDsInstEmails.Tables[0].Rows.Count; i++)
+                {
+                    mailId += lDsInstEmails.Tables[0].Rows[i]["email"].ToString() + ",";
+                }
+
+                // string vendorName = dr["VendorName"].ToString();
+
+                MailMessage m = new MailMessage();
+                SmtpClient sc = new SmtpClient(ConfigurationManager.AppSettings["smtpHost"].ToString(), Convert.ToInt32(ConfigurationManager.AppSettings["smtpPort"].ToString()));
+
+                string userName = ConfigurationManager.AppSettings["CustomerEmailUsername"].ToString();
+                string password = ConfigurationManager.AppSettings["CustomerEmailPassword"].ToString();
+
+                m.From = new MailAddress(userName, "JMGROVECONSTRUCTION");
+                // m.To.Add(new MailAddress(mailId, ""));
+                m.CC.Add(new MailAddress("shabbir.kanchwala@straitapps.com", "Shabbir Kanchwala"));
+                m.To.Add(new MailAddress("jgrove.georgegrove@gmail.com", "Justin Grove"));
+
+                DataSet dsEmailTemplate = AdminBLL.Instance.GetEmailTemplate("Foreman Mailer"); //#- triggerOrigin is the sub email template name.
+
+                m.Subject = "JMGrove proposal " + "C" + customerId.ToString() + "-" + QuoteNumber;
+                m.IsBodyHtml = true;
+
+                if (dsEmailTemplate.Tables[0].Rows.Count > 0)
+                {
+                    m.Subject = dsEmailTemplate.Tables[0].Rows[0]["HTMLSubject"].ToString().Replace("#trackingid#", "C" + customerId.ToString() + "-" + QuoteNumber);
+                    lHTMLBody.Append("Email TO:" + mailId + "<br/><br/><br/>");
+                    lHTMLBody.Append(dsEmailTemplate.Tables[0].Rows[0]["HTMLHeader"].ToString() + "<br/><br/>");
+                    lHTMLBody.Append(dsEmailTemplate.Tables[0].Rows[0]["HTMLBody"].ToString() + "<br/><br/>");
+                    lHTMLBody.Append(dsEmailTemplate.Tables[0].Rows[0]["HTMLFooter"].ToString() + "<br/><br/>");
+                }
+
+                m.Body = lHTMLBody.ToString().Replace("lblJobId", "C" + customerId.ToString() + "-" + QuoteNumber).Replace("lblCustomerId", "C" + customerId.ToString()).Replace("#trackingid#", "C" + customerId.ToString() + "-" + QuoteNumber);
+
+                string sourceDirContract = Server.MapPath("~/CustomerDocs/Pdfs/");
+                try
+                {
+                    if (ContractName != string.Empty)
+                    {
+                        Attachment attachment = new Attachment(sourceDirContract + "\\" + ContractName);
+                        attachment.Name = ContractName;
+                        m.Attachments.Add(attachment);
+                    }
+
+
+                    string sourceDirDocs = Server.MapPath("~/CustomerDocs/CustomerEmailDocument/");
+                    if (dsEmailTemplate.Tables[1].Rows.Count > 0)
+                    {
+                        for (int i = 0; i < dsEmailTemplate.Tables[1].Rows.Count; i++)
+                        {
+                            string filename = dsEmailTemplate.Tables[1].Rows[i]["DocumentName"].ToString();
+                            Attachment attachment1 = new Attachment(sourceDirDocs + "\\" + filename);
+                            attachment1.Name = filename;
+                            m.Attachments.Add(attachment1);
+                        }
+                    }
+                }
+                catch
+                {
+
+                }
+
+                NetworkCredential ntw = new System.Net.NetworkCredential(userName, password);
+                sc.UseDefaultCredentials = false;
+                sc.Credentials = ntw;
+
+                sc.DeliveryMethod = SmtpDeliveryMethod.Network;
+                sc.EnableSsl = Convert.ToBoolean(ConfigurationManager.AppSettings["enableSSL"].ToString()); // runtime encrypt the SMTP communications using SSL
+                sc.Send(m);
+
+            }
+            catch (Exception ex)
+            {
+                // ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('" + ex.Message + "');", true);
+            }
+
+        }
+
         protected void btnSaveEmailSold_Click(object sender, EventArgs e)
         {
             if (txtEmailSold.Text.Trim() != "")
@@ -1582,8 +1436,34 @@ namespace JG_Prospect.Sr_App
         }
         protected void btnSold_Click(object sender, EventArgs e)
         {
-            #region Original code....
+            
+            if (ddlpaymode.SelectedIndex == 1)
+            {
 
+                txtPwd.Visible = false;
+                decimal amt = Convert.ToDecimal(Convert.ToDecimal(hdnAmount.Value).ToString("N2"));
+                Payline payline = new Payline();
+                payline = payline.ECheckSale(txtFirstName.Text, txtRoutingNo.Text, txtBank.Text, ddlperbus.SelectedValue.ToString().ToLower(), (rdoChecking.Checked ? "checking" : "savings"), "WEB", "check", amt, ddlCurrency.SelectedValue.Trim());
+                if (payline.IsApproved)
+                {
+                    bool res = ShutterPriceControlBLL.InsertTransaction(ShutterPriceControlBLL.Encode(txtCardNumber.Text.ToString()), ShutterPriceControlBLL.Encode(txtSecurityCode.Text.ToString()), txtFirstName.Text.ToString(), txtLastName.Text.ToString(), ccExpireMonth.Text.ToString() + ccExpireYear.Text.ToString(), amt, payline.IsApproved, payline.Message, payline.Response, payline.Request, customerId, productType, payline.AuthorizationCode, payline.AuthCaptureId, soldJobID);
+                    lblMsg.Text = "Success";
+                    lblMsg.Visible = false;
+                    SoldTasks(true);
+                    txtPromotionalcode.Visible = false;
+                    mp_sold.Show();
+                    return;
+                }
+                else
+                {
+                    bool res = ShutterPriceControlBLL.InsertTransaction(ShutterPriceControlBLL.Encode(txtCardNumber.Text.ToString()), ShutterPriceControlBLL.Encode(txtSecurityCode.Text.ToString()), txtFirstName.Text.ToString(), txtLastName.Text.ToString(), ccExpireMonth.Text.ToString() + ccExpireYear.Text.ToString(), amt, payline.IsApproved, payline.Message, payline.Response, payline.Request, customerId, productType, payline.AuthorizationCode, payline.AuthCaptureId, soldJobID);
+                    lblMsg.Text = "Error";
+                    lblMsg.Visible = false;
+                    txtPromotionalcode.Visible = false;
+                    ClientScript.RegisterStartupScript(this.GetType(), "On_Error", "alert('Transaction Failed. Possible reason is: " + payline.Message + "');", true);
+                }
+                //Response.Redirect("~/Sr_App/Customer_Profile.aspx");
+            }
             if (chkSendEmailSold.Checked == true)
             {
                 bool result = CheckCustomerEmail();
@@ -1602,10 +1482,6 @@ namespace JG_Prospect.Sr_App
                 SoldTasks(false);
             }
             Session["Proposal"] = null;
-
-            #endregion
-
-
         }
 
         protected void SoldTasks(bool IsEmail)
@@ -1635,13 +1511,13 @@ namespace JG_Prospect.Sr_App
                     if (stat)
                     {
                         int userId = Convert.ToInt16(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]);
-                        string soldJobID = string.Empty;
+                        
                         string s1 = Session["EstID"].ToString();
                         string[] EstID = s1.Split(',');
                         int count = EstID.Count();
 
                         string paymentMode = string.Empty, checkNo = string.Empty, creditCardDetails = string.Empty;
-                        decimal amount = 0;
+
                         if (ddlpaymode.SelectedIndex != -1)
                         {
                             paymentMode = ddlpaymode.SelectedItem.Text;
@@ -1662,7 +1538,17 @@ namespace JG_Prospect.Sr_App
                         }
                         checkNo = txtchequeno.Text.Trim();
                         Session["checkNo"] = checkNo;
-                        creditCardDetails = txtcardholderNm.Text.Trim();
+
+                        if (ddlpaymode.SelectedIndex == 2)
+                        {
+                            creditCardDetails = txtCardNumber.Text.Trim();
+                        }
+                        else
+                        {
+                            creditCardDetails = txtcardholderNm.Text.Trim();
+                        }
+
+                        // creditCardDetails = txtcardholderNm.Text.Trim();
                         Session["creditCardDetails"] = creditCardDetails;
                         foreach (TextBox textBox in pnlControls.Controls.OfType<TextBox>())
                         {
@@ -1698,11 +1584,11 @@ namespace JG_Prospect.Sr_App
                                 }
                             }
 
-                            GenerateWorkOrder(soldJobID);
+                             GenerateWorkOrder(soldJobID);
 
                             if (IsEmail)
                             {
-                                // SendEmailToCustomer(tempInvoiceFileName);
+                                SendEmailToCustomer(tempInvoiceFileName, "Sold Job");
                             }
                             RefreshData();
                             //GeneratePDF(path, tempWorkOrderFilename , false, createWorkOrder("Work Order-" + Session["CustomerId"].ToString(), int.Parse(ViewState["EstimateId"].ToString())));
@@ -1720,62 +1606,16 @@ namespace JG_Prospect.Sr_App
                             {
                                 CheckSave = "Saving";
                             }
-                            //ClientScript.RegisterClientScriptBlock(Page.GetType(), "Myscript", "<script language='javascript'>window.open('" + url + "/CustomerDocs/Pdfs/" + tempInvoiceFileName  + "', null, 'width=487px,height=455px,center=1,resize=0,scrolling=1,location=no');</script>");
-
                             string completeFileName = "../CustomerDocs/Pdfs/" + tempInvoiceFileName;
                             Session["FilePath"] = completeFileName;
-                            //string filename = tempInvoiceFileName.Replace(".pdf", "");
                             HidCV.Value = string.Empty;
-                            // Response.Redirect("~/Sr_App/Procurement.aspx?FileToOpen=" + completeFileName,false);
-                            //string SynapsePay = System.Configuration.ConfigurationManager.AppSettings["SynapsePay"].ToString();
-                            //SynapsePay = SynapsePay + // "?Email=" + txtSynapseEmail.Text.Trim()
-                            // + "&Password=" + txtPassword.Text.Trim()
-                            // + "&UserId=" + userId
-                            //SynapsePay = SynapsePay + "?UserId=" + userId
-                            //                           + "&CustomerId=" + Convert.ToString(Session["CustomerId"].ToString())
-                            //                         + "&EstId=" + s1
-                            //                         + "&paymentMode=" + paymentMode
-                            //                         + "&amount=" + amount
-                            //                         + "&checkNo=" + checkNo
-                            //                         + "&creditCardDetails" + creditCardDetails
-                            //                         + "&completeFileName=" + filename
-                            //                         + "&loginid=" + Convert.ToString(Session["loginid"])
-                            //                         + "&IsEmail=" + IsEmail
-                            //                         + "&Bank=" + txtBank.Text
-                            //                         + "&RoutingNo=" + txtRoutingNo.Text
-                            //                         + "&AccountNo=" + txtMFAATRT.Text
-                            //                         + "&SSN=" + txtLASTSSN.Text
-                            //                         + "&DOB=" + txtDOB.Text
-                            //                         + "&CheckSave=" + CheckSave
-                            //                         + "&PerBus=" + ddlperbus.SelectedValue
-                            //+ "&en=" + txtPassword.Text
-                            ;
-                            //Response.Redirect(SynapsePay);
-
-
-                            completeFileName = url + "/CustomerDocs/Pdfs/" + tempInvoiceFileName;
-
-                            HidCV.Value = string.Empty;
-                            string urlll = url + "/Sr_App/Procurement.aspx?FileToOpen=" + completeFileName;
-                            // Response.Redirect(url+"/Sr_App/Procurement.aspx?FileToOpen=" + completeFileName);
-                            //Page.ClientScript.RegisterStartupScript(this.GetType(), "redirect", "location.href = '" + urlll + "'", true);
-                            //Response.Redirect("~/Sr_App/Procurement.aspx?FileToOpen=" + completeFileName);
-
-                            string script = "window.location='" + urlll + "';";
-
-                            ScriptManager.RegisterStartupScript(this, typeof(Page), "RedirectTo", script, true);
-
+                            //Response.Redirect("~/Sr_App/Procurement.aspx?FileToOpen=" + completeFileName, false);
+                            ClientScript.RegisterStartupScript(this.GetType(), "onload", "alert('Payment Transaction Successful.'); window.location.href='Procurement.aspx?FileToOpen=" + completeFileName + "';", true);
+                            return;
                         }
                     }
                     else
                     {
-                        //ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please Accept Terms & Conditions');", true);
-                        //RequiredAmount.IsValid = false;
-                        //CV.IsValid = false;
-                        //CV.ErrorMessage = "Invalid Password";
-                        //CV.ForeColor = System.Drawing.Color.Red;
-                        //mp_sold.Show();
-
 
                     }
                 }
@@ -1792,7 +1632,6 @@ namespace JG_Prospect.Sr_App
             try
             {
                 string path = Server.MapPath("~/CustomerDocs/Pdfs/");
-                //string path = "C:\\inetpub\\wwwroot\\TestPublishNew\\CustomerDocs\\Pdfs\\wkhtmltopdf.exe";
                 string tempWorkOrderFilename = string.Empty;
                 string originalWorkOrderFilename = "WorkOrder" + ".pdf";
 
@@ -1923,45 +1762,41 @@ namespace JG_Prospect.Sr_App
         protected void NotSoldTasks(bool IsEmail)
         {
             DateTime followupdate = (txtfollowupdate.Text != "") ? Convert.ToDateTime(txtfollowupdate.Text, JGConstant.CULTURE) : Convert.ToDateTime(DateTime.Now.ToString("MM/dd/yyyy"), JGConstant.CULTURE);
-            string tempInvoiceFileName = "Invoice" + DateTime.Now.Ticks + ".pdf";
             string status = ddlstatus.SelectedValue;
             int userId = Convert.ToInt16(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]);
+            new_customerBLL.Instance.AddCustomerFollowUp(Convert.ToInt32(Session["CustomerId"].ToString()), followupdate, status, userId, false, 0);
 
-            //# Changes by Shabbir, to add follow up entries in customer follow up.
-            if (productIdList.Count() >= 1)
-            {
-                for (int i = 0; i < estimateIdList.Length; i++)
-                {
-                    int outEstID = 0;
-                    if (int.TryParse(estimateIdList[i].ToString(), out outEstID))
-                    {
-                        if (outEstID > 0)
-                        {
-                            new_customerBLL.Instance.AddCustomerFollowUp(Convert.ToInt32(Session["CustomerId"].ToString()), followupdate, status, userId, false, 0, tempInvoiceFileName, outEstID);
-                        }
-                    }
-                }
-            }
-            
-            
+
+
+            // ViewState["EstimateId"]
             if (txtfollowupdate.Text.Trim() != "")
             {
+
                 new_customerBLL.Instance.UpdateCustomerFollowUpDate(followupdate, Convert.ToInt32(Session["CustomerId"].ToString()));
             }
             string mailid = ViewState["customeremail"].ToString();
             string path = Server.MapPath("/CustomerDocs/Pdfs/");
             string g = Guid.NewGuid().ToString().Substring(0, 5);
-            
+            string tempInvoiceFileName = "Proposal" + DateTime.Now.Ticks + ".pdf";
 
             GeneratePDF(path, tempInvoiceFileName, false, createEstimate("InvoiceNumber-" + Session["CustomerId"].ToString(), Convert.ToInt32(Session["CustomerId"].ToString())), true);
 
+            if ((Session["FormDataObjects"] != null) || (productId > 0))
+            {
+                List<Tuple<int, string, int>> proposalOptionList = (List<Tuple<int, string, int>>)Session["FormDataObjects"];
+
+                foreach (var prop in proposalOptionList)
+                {
+                    new_customerBLL.Instance.AddCustomerDocs(Convert.ToInt32(Session["CustomerId"].ToString()), prop.Item1, tempInvoiceFileName, "Contract", tempInvoiceFileName, prop.Item3, 0);
+                }
+            }
             string url = ConfigurationManager.AppSettings["URL"].ToString();
 
             string completeFileName = url + "/CustomerDocs/Pdfs/" + tempInvoiceFileName;
 
             if (IsEmail)
             {
-                SendEmailToCustomer(tempInvoiceFileName);
+                SendEmailToCustomer(tempInvoiceFileName, "Not Sold Job");
             }
 
             RefreshData();
@@ -2032,12 +1867,12 @@ namespace JG_Prospect.Sr_App
                 {
                     HDAmountA.Value = DS1.Tables[0].Rows[0]["ProposalCost"].ToString();
                 }
-                //if (Session["Proposal"] != null)
-                //{
-                //    LiteralBody.Text = Session["Proposal"].ToString();
-                //}
-                //else
-                LiteralBody.Text = createBodyEstimateCustom("", int.Parse(hidstId.Value), productType);
+                if (Session["Proposal"] != null)
+                {
+                    LiteralBody.Text = Session["Proposal"].ToString();
+                }
+                else
+                    LiteralBody.Text = createBodyEstimateCustom("", int.Parse(hidstId.Value), productType);
             }
         }
 
@@ -2138,30 +1973,30 @@ namespace JG_Prospect.Sr_App
             }
         }
 
-        
-        //protected void createcontract()
-        //{
-        //    string fileName = string.Empty;
-        //    string path = Server.MapPath("/CustomerDocs/Pdfs/");
-        //    string workorder = string.Empty;
-        //    // Create and display the value of two GUIDs.
-        //    string g = Guid.NewGuid().ToString().Substring(0, 5);
-        //    fileName = "Contract" + g.ToString() + ".pdf";
-        //    workorder = "WorkOrder" + g.ToString() + ".pdf";
-        //    // Create Invoice with Pdf for Transaction.....
-        //    StringBuilder sbWork = new StringBuilder();
-        //    sbWork.Append(createWorkOrder("InvoiceNumber", int.Parse(ViewState["EstimateId"].ToString())));
-        //    string FileWorkText = sbWork.ToString();
-        //    GeneratePDF(path, workorder, false, FileWorkText);
+        /*
+        protected void createcontract()
+        {
+            string fileName = string.Empty;
+            string path = Server.MapPath("/CustomerDocs/Pdfs/");
+            string workorder = string.Empty;
+            // Create and display the value of two GUIDs.
+            string g = Guid.NewGuid().ToString().Substring(0, 5);
+            fileName = "Contract" + g.ToString() + ".pdf";
+            workorder = "WorkOrder" + g.ToString() + ".pdf";
+            // Create Invoice with Pdf for Transaction.....
+            StringBuilder sbWork = new StringBuilder();
+            sbWork.Append(createWorkOrder("InvoiceNumber", int.Parse(ViewState["EstimateId"].ToString())));
+            string FileWorkText = sbWork.ToString();
+            GeneratePDF(path, workorder, false, FileWorkText);
 
-        //    StringBuilder sbEstimate = new StringBuilder();
-        //    sbEstimate.Append(createHeaderEstimate("InvoiceNumber", int.Parse(arr[0].ToString())));
-        //    sbEstimate.Append(createBodyEstimate("InvoiceNumber", int.Parse(arr[0].ToString())));
-        //    sbEstimate.Append(createFooterEstimate("InvoiceNumber", int.Parse(arr[0].ToString())));
-        //    string FileText = sbEstimate.ToString();
-        //    GeneratePDF(path, fileName, false, FileText);
-        //}
-        
+            StringBuilder sbEstimate = new StringBuilder();
+            sbEstimate.Append(createHeaderEstimate("InvoiceNumber", int.Parse(arr[0].ToString())));
+            sbEstimate.Append(createBodyEstimate("InvoiceNumber", int.Parse(arr[0].ToString())));
+            sbEstimate.Append(createFooterEstimate("InvoiceNumber", int.Parse(arr[0].ToString())));
+            string FileText = sbEstimate.ToString();
+            GeneratePDF(path, fileName, false, FileText);
+        }
+        */
 
         protected void RadioButtonList1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -2210,10 +2045,10 @@ namespace JG_Prospect.Sr_App
             string[] Emails;
             int count = 0;
             DataSet ds = shuttersBLL.Instance.GetEmails(Convert.ToInt32(Session["CustomerId"].ToString()));
-            //if (Convert.ToString(ds.Tables[0].Rows[0][1]) != "")
-            //{
-            //    txtNotSoldEmail.Text = Convert.ToString(ds.Tables[0].Rows[0][1]);
-            //}
+            if (Convert.ToString(ds.Tables[0].Rows[0][1]) != "")
+            {
+                txtNotSoldEmail.Text = Convert.ToString(ds.Tables[0].Rows[0][1]);
+            }
             if (ds.Tables[0].Rows.Count > 0)
             {
                 if (Convert.ToString(ds.Tables[0].Rows[0][0]) != "")
@@ -2235,63 +2070,6 @@ namespace JG_Prospect.Sr_App
 
             mp_notsold.Show();
         }
-        protected void chkedit_CheckedChanged(object sender, EventArgs e)
-        {
-            if (chkedit.Checked == true)
-            {
-                txtAmount.ReadOnly = false;
-                trauthpass.Visible = true;
-            }
-            else
-            {
-                txtAmount.ReadOnly = true;
-                trauthpass.Visible = false;
-
-            }
-            if (txtAmount.Text == "")
-            {
-                txtAmount.Text = hidDownPayment.Value;
-            }
-            if (ddlpaymode.SelectedIndex==1)
-            {
-                txtPromotionalcode.Visible = true;
-                txtPwd.Visible = false;
-            }
-            else
-            {
-                txtPromotionalcode.Visible = false;
-                txtPwd.Visible = true;
-            }
-
-            string[] Emails;
-            int count = 0;
-            DataSet ds = shuttersBLL.Instance.GetEmails(Convert.ToInt32(Session["CustomerId"].ToString()));
-            //if (Convert.ToString(ds.Tables[0].Rows[0][1]) != "")
-            //{
-            //    txtEmailId.Text = Convert.ToString(ds.Tables[0].Rows[0][1]);
-            //}
-            if (Convert.ToString(ds.Tables[0].Rows[0][2]) != "")
-            {
-                txtDOB.Text = Convert.ToString(ds.Tables[0].Rows[0][2]);
-            }
-            if (ds.Tables[0].Rows.Count > 0)
-            {
-                if (Convert.ToString(ds.Tables[0].Rows[0][0]) != "")
-                {
-                    Emails = Convert.ToString(ds.Tables[0].Rows[0][0]).Split(',');
-                    count = Emails.Count();
-                    for (int i = 0; i < count; i++)
-                    {
-                        TextBox NewTextBox = new TextBox();
-                        NewTextBox.ID = "TextBoxE" + i.ToString();
-                        NewTextBox.Text = Emails[i];
-                        //form1 is a form in my .aspx file with runat=server attribute
-                        pnlControls.Controls.Add(NewTextBox);
-                    }
-                }
-            }
-            //txtPromotionalcode.Visible = false;
-        }
         protected void ddlstatus_SelectedIndexChanged(object sender, EventArgs e)
         {
             DropDownList ddlstatus = sender as DropDownList;
@@ -2304,29 +2082,6 @@ namespace JG_Prospect.Sr_App
             {
                 txtfollowupdate.Text = "";
                 mp_notsold.Show();
-            }
-            string[] Emails;
-            int count = 0;
-            DataSet ds = shuttersBLL.Instance.GetEmails(Convert.ToInt32(Session["CustomerId"].ToString()));
-            //if (Convert.ToString(ds.Tables[0].Rows[0][1]) != "")
-            //{
-            //    txtNotSoldEmail.Text = Convert.ToString(ds.Tables[0].Rows[0][1]);
-            //}
-            if (ds.Tables[0].Rows.Count > 0)
-            {
-                if (Convert.ToString(ds.Tables[0].Rows[0][0]) != "")
-                {
-                    Emails = Convert.ToString(ds.Tables[0].Rows[0][0]).Split(',');
-                    count = Emails.Count();
-                    for (int i = 0; i < count; i++)
-                    {
-                        TextBox NewTextBox = new TextBox();
-                        NewTextBox.ID = "TextBoxE" + i.ToString();
-                        NewTextBox.Text = Emails[i];
-                        //form1 is a form in my .aspx file with runat=server attribute
-                        NotSoldEmails.Controls.Add(NewTextBox);
-                    }
-                }
             }
         }
 
@@ -2373,16 +2128,24 @@ namespace JG_Prospect.Sr_App
             string[] Emails;
             int count = 0;
             DataSet ds = shuttersBLL.Instance.GetEmails(Convert.ToInt32(Session["CustomerId"].ToString()));
-            //if (Convert.ToString(ds.Tables[0].Rows[0][1]) != "")
-            //{
-            //    txtEmailId.Text = Convert.ToString(ds.Tables[0].Rows[0][1]);
-            //}
-            if (Convert.ToString(ds.Tables[0].Rows[0][2]) != "")
-            {
-                txtDOB.Text = Convert.ToString(ds.Tables[0].Rows[0][2]);
-            }
+
             if (ds.Tables[0].Rows.Count > 0)
             {
+                if (Convert.ToString(ds.Tables[0].Rows[0][1]) != "")
+                {
+                    txtEmailId.Text = Convert.ToString(ds.Tables[0].Rows[0][1]);
+                }
+                if (Convert.ToString(ds.Tables[0].Rows[0][2]) != "")
+                {
+                    txtDOB.Text = Convert.ToString(ds.Tables[0].Rows[0][2]);
+                }
+                txtAddress.Value = ds.Tables[0].Rows[0]["CustomerAddress"].ToString();
+                txtZip.Text = ds.Tables[0].Rows[0]["ZipCode"].ToString();
+                ddlState.Items.Clear();
+                ddlState.Items.Add(new System.Web.UI.WebControls.ListItem(ds.Tables[0].Rows[0]["State"].ToString(), ds.Tables[0].Rows[0]["State"].ToString()));
+                ddlCity.Items.Clear();
+                ddlCity.Items.Add(new System.Web.UI.WebControls.ListItem(ds.Tables[0].Rows[0]["City"].ToString(), ds.Tables[0].Rows[0]["City"].ToString()));
+
                 if (Convert.ToString(ds.Tables[0].Rows[0][0]) != "")
                 {
                     Emails = Convert.ToString(ds.Tables[0].Rows[0][0]).Split(',');
@@ -2397,6 +2160,8 @@ namespace JG_Prospect.Sr_App
                     }
                 }
             }
+            ddlpaymode.SelectedValue = "E-Check";
+            ddlpaymode_SelectedIndexChanged(null, null);
             mp_sold.Show();
         }
 
@@ -2415,25 +2180,45 @@ namespace JG_Prospect.Sr_App
                 TxtBoxE.ID = "TextBoxE" + i.ToString();
                 //Add the labels and textboxes to the Panel.
                 NotSoldEmails.Controls.Add(TxtBoxE);
-                // txtNotSoldEmail.Visible = false;
             }
             mp_notsold.Show();
         }
 
         protected void ddlpaymode_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (ddlpaymode.SelectedIndex == 0)
+            if (ddlpaymode.SelectedIndex == 2)
             {
+                otheramount.Visible = false;
+                labelAmount.Visible = true;
+                amountvalue.Visible = true;
                 lblPwd.Visible = false;
                 txtPwd.Visible = false;
-                btnsavesold.Visible = true;
-                btnSaveSold2.Visible = false;
-                btnSaveSold2.Style.Add("display", "none");
-                txtPwd.Style.Add("display", "none");
-                btnsavesold.Style.Add("display", "block");
-                PanelHide.Visible = true;
-                lblPro.Visible = true;
-                txtPromotionalcode.Visible = true;
+                btnsavesold.Visible = false;
+                btnSaveSold2.Visible = true;
+                btnSaveSold2.Style.Add("display", "block");
+                btnsavesold.Style.Add("display", "none");
+                txtPwd.Style.Add("display", "block");
+                PanelHide.Visible = false;
+                lblPro.Visible = false;
+                txtPromotionalcode.Visible = false;
+                txtccamount.Text = ((Convert.ToDecimal(Session["CCtxtAmount"].ToString()) * 3 / 100) + Convert.ToDecimal(Session["CCtxtAmount"].ToString())).ToString("N2");
+                hdnAmount.Value = txtccamount.Text;
+                txtEmailId.Text = ViewState["customeremail"].ToString();
+                rdoChecking.Visible = false;
+                rdoSaving.Visible = false;
+
+                string[] FN = Session["Name"].ToString().Split(' ');
+                txtFirstName.Text = FN[0];
+                txtLastName.Text = FN[1];
+
+
+                Name.Visible = true;
+                Card.Visible = true;
+                Currency.Visible = true;
+                Address.Visible = true;
+                CountryState.Visible = true;
+                CityZip.Visible = true;
+
             }
             else if (ddlpaymode.SelectedIndex == 1)
             {
@@ -2444,13 +2229,32 @@ namespace JG_Prospect.Sr_App
                 btnSaveSold2.Style.Add("display", "none");
                 txtPwd.Style.Add("display", "none");
                 btnsavesold.Style.Add("display", "block");
+                txtAmount.Text = Convert.ToDecimal(Session["CCtxtAmount"]).ToString("N2");
+                hdnAmount.Value = txtAmount.Text;
+                txtEmailId.Text = ViewState["customeremail"].ToString();
+                
+                string[] FN = Session["Name"].ToString().Split(' ');
+                txtFirstName.Text = FN[0];
+                txtLastName.Text = FN[1];
+
+
                 PanelHide.Visible = true;
                 lblPro.Visible = true;
                 txtPromotionalcode.Visible = true;
-                rdoChecking.Visible = true;
-                rdoSaving.Visible = true;
+                //PanelCC.Visible = false;
+                Name.Visible = false;
+                Card.Visible = false;
+                Currency.Visible = false;
+                Address.Visible = false;
+                CountryState.Visible = false;
+                CityZip.Visible = false;
+                otheramount.Visible = true;
+                labelAmount.Visible = false;
+                amountvalue.Visible = false;
+
 
             }
+
             else
             {
                 lblPwd.Visible = true;
@@ -2463,81 +2267,17 @@ namespace JG_Prospect.Sr_App
                 PanelHide.Visible = false;
                 lblPro.Visible = false;
                 txtPromotionalcode.Visible = false;
-                rdoChecking.Visible = false;
-                rdoSaving.Visible = false;
 
-                /*
-                lblPerBus.Visible = false;
-                Label5.Visible = false;
-                lblDOB.Visible = false;
-                Label4.Visible = false;
-                lblSSN4.Visible = false;
-                Label6.Visible = false;
-                lblRouting.Visible = false;
-                Label3.Visible = false;
-                lblAccNo.Visible = false;
-                Label2.Visible = false;
-                lblBank.Visible = false;
-                Label1.Visible = false;
-                rdoChecking.Visible = false;
-                rdoSaving.Visible = false;
-                lblAmount.Visible = false;
-                chkedit.Visible = false;
-                lblA.Visible = false;
-                lblReqAmt.Visible = false;
+                Name.Visible = false;
+                Card.Visible = false;
+                Currency.Visible = false;
+                Address.Visible = false;
+                CountryState.Visible = false;
+                CityZip.Visible = false;
+                otheramount.Visible = true;
+                labelAmount.Visible = false;
+                amountvalue.Visible = false;
 
-                txtAmount.Visible = false;
-                txtBank.Visible = false;
-                txtMFAATRT.Visible = false;
-                txtRoutingNo.Visible = false;
-                txtLASTSSN.Visible = false;
-                txtDOB.Visible = false;
-                ddlperbus.Visible = false;
-                txtAmount.Visible = false;
-                txtAmount.Visible = false;
-                 * */
-            }
-
-           
-            trauthpass.Visible = false;
-            //if (!string.IsNullOrEmpty(Session["PaymentAmount"] as string))
-            //{
-            // Session["PaymentAmount"]= hidDownPayment.Value;
-            if (txtAmount.Text == "")
-            {
-                txtAmount.Text = hidDownPayment.Value;
-            }
-
-            //txtAmount.Text = Session["PaymentAmount"].ToString();
-
-            //}
-
-            string[] Emails;
-            int count = 0;
-            DataSet ds = shuttersBLL.Instance.GetEmails(Convert.ToInt32(Session["CustomerId"].ToString()));
-            //if (Convert.ToString(ds.Tables[0].Rows[0][1]) != "")
-            //{
-            //    txtEmailId.Text = Convert.ToString(ds.Tables[0].Rows[0][1]);
-            //}
-            if (Convert.ToString(ds.Tables[0].Rows[0][2]) != "")
-            {
-                txtDOB.Text = Convert.ToString(ds.Tables[0].Rows[0][2]);
-            }
-            if (ds.Tables[0].Rows.Count > 0)
-            {
-                if (Convert.ToString(ds.Tables[0].Rows[0][0]) != "")
-                {
-                    Emails = Convert.ToString(ds.Tables[0].Rows[0][0]).Split(',');
-                    count = Emails.Count();
-                    for (int i = 0; i < count; i++)
-                    {
-                        TextBox NewTextBox = new TextBox();
-                        NewTextBox.ID = "TextBoxE" + i.ToString();
-                        NewTextBox.Text = Emails[i];
-                        //form1 is a form in my .aspx file with runat=server attribute
-                        pnlControls.Controls.Add(NewTextBox);
-                    }
-                }
             }
 
         }
@@ -2546,14 +2286,7 @@ namespace JG_Prospect.Sr_App
         {
 
         }
-        protected void btnCancelsold_Click(object sender, EventArgs e)
-        {
-            this.mp_sold.Hide();
-            //ddlpaymode.SelectedIndex = 0;
-            Response.Redirect("shutterproposal.aspx");
-            //txtPromotionalcode.Visible = false;
-            //txtPwd.Visible = false;
-        }
+
         protected void btnSaveAdminDetails_Click(object sender, EventArgs e)
         {
             Response.Redirect("~/Sr_App/CallSheet.aspx");
@@ -2561,35 +2294,80 @@ namespace JG_Prospect.Sr_App
 
         protected void btnSaveSold2_Click(object sender, EventArgs e)
         {
-            if (txtPwd.Text != "")
+            decimal amt = Convert.ToDecimal(Convert.ToDecimal(hdnAmount.Value).ToString("N2"));
+            if (ddlpaymode.SelectedIndex == 2)
             {
-                //Verify Password...
-                int isvaliduser = 0;
-                isvaliduser = UserBLL.Instance.chklogin("jgrove@jmgroveconstruction.com", txtPwd.Text);
-                //isvaliduser = UserBLL.Instance.chklogin("nitintold@custom-soft.com", txtPwd.Text);
-                if (isvaliduser == 1)
+
+                txtPwd.Visible = false;
+              //  amt = Convert.ToDecimal(txtccamount.Text);
+                Payline payline = new Payline();
+                payline = payline.Sale(txtFirstName.Text.ToString(), txtLastName.Text.ToString(), txtCardNumber.Text.ToString(), ccExpireMonth.Text.ToString(), ccExpireYear.Text.ToString(), txtSecurityCode.Text.ToString(), amt, ddlCurrency.SelectedValue.Trim(), txtAddress.InnerText.Trim(), Convert.ToInt32(txtZip.Text.Trim()), ddlCity.SelectedValue.Trim(), ddlState.SelectedValue.Trim(), ddlCountry.SelectedValue.Trim());
+                if (payline.IsApproved)
                 {
-                    Session["Sols"] = "Sold";
-                    Session["SaveEID"] = "SaveEmail";
-                    //NotSoldTasks(true);
+                    //AuthorizationCode, PaylineTransectionId
+
+                    
+                    lblMsg.Text = "Success";
+                    lblMsg.Visible = false;
                     SoldTasks(true);
+                    txtPromotionalcode.Visible = false;
+                    bool res = ShutterPriceControlBLL.InsertTransaction(ShutterPriceControlBLL.Encode(txtCardNumber.Text.ToString()), ShutterPriceControlBLL.Encode(txtSecurityCode.Text.ToString()), txtFirstName.Text.ToString(), txtLastName.Text.ToString(), ccExpireMonth.Text.ToString() + ccExpireYear.Text.ToString(), amt, payline.IsApproved, payline.Message, payline.Response, payline.Request, customerId, productType, payline.AuthorizationCode, payline.AuthCaptureId, soldJobID);
+                    mp_sold.Show();
+                    return;
                 }
                 else
                 {
-                    ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Enter correct password .');", true);
+                    bool res = ShutterPriceControlBLL.InsertTransaction(ShutterPriceControlBLL.Encode(txtCardNumber.Text.ToString()), ShutterPriceControlBLL.Encode(txtSecurityCode.Text.ToString()), txtFirstName.Text.ToString(), txtLastName.Text.ToString(), ccExpireMonth.Text.ToString() + ccExpireYear.Text.ToString(),amt, payline.IsApproved, payline.Message, payline.Response, payline.Request, customerId, productType, payline.AuthorizationCode, payline.AuthCaptureId, soldJobID);
+                    lblMsg.Text = "Error";
+                    lblMsg.Visible = false;
+                    txtPromotionalcode.Visible = false;
+                    //ClientScript.RegisterStartupScript(this.GetType(), "On_Error", "", true);
+                    ClientScript.RegisterStartupScript(this.GetType(), "On_Error", "alert('Transaction Failed. Possible reason is: " + payline.Message + "');", true);
                 }
-
+               // Response.Redirect("~/Sr_App/Customer_Profile.aspx");
             }
             else
             {
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please Enter password .');", true);
+
+                if (txtPwd.Text != "")
+                {
+                    //Verify Password...
+                    int isvaliduser = 0;
+                    isvaliduser = UserBLL.Instance.chklogin("jgrove@jmgroveconstruction.com", txtPwd.Text);
+                    //isvaliduser = UserBLL.Instance.chklogin("nitintold@custom-soft.com", txtPwd.Text);
+                    if (isvaliduser == 1)
+                    {
+                        Session["Sols"] = "Sold";
+                        Session["SaveEID"] = "SaveEmail";
+                        //NotSoldTasks(true);
+                        SoldTasks(true);
+                    }
+                    else
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Enter correct password .');", true);
+                    }
+
+                }
+                else
+                {
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please Enter password .');", true);
+                }
             }
+
 
         }
 
         private void EntryOnProcurement()
         {
 
+        }
+
+        protected void btnCancelsold_Click(object sender, EventArgs e)
+        {
+            if (ddlpaymode.SelectedIndex == 2)
+            {
+                Response.Redirect("~/Sr_App/Shutterproposal.aspx");
+            }
         }
 
         //protected void txtauthpass_TextChanged(object sender, EventArgs e)

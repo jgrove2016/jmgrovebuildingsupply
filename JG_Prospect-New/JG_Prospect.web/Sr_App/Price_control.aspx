@@ -5,7 +5,15 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit.HTMLEditor" TagPrefix="cc1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 
-
+    <script type="text/javascript" language="javascript">
+        function ConfirmOnDelete1() {
+            var res = confirm("Are you sure you wish to remove this Product?");
+            if (res == true)
+                return true;
+            else
+                return false;
+        }
+    </script>
 
 
 
@@ -133,7 +141,7 @@ table-striped > tbody > tr:nth-child(odd) > th {
   background-color: #f9f9f9;
 }
 .grid td {
-    line-height: 5px !important;
+    line-height: 14px !important;
     padding: 10px;
     text-align: left;
     min-height: 30px;
@@ -263,7 +271,7 @@ table th[class*="col-"] {
         <!-- appointment tabs section start -->
         <ul class="appointment_tab">
             <li><a href="Price_control.aspx">Product Line Estimate</a></li>
-            <li><a href="#">Inventory</a></li>
+            <li><a href="Inventory.aspx">Inventory</a></li>
             <li><a href="Maintenace.aspx">Maintainance</a></li>
         </ul>
         <!-- appointment tabs section end -->
@@ -294,11 +302,28 @@ table th[class*="col-"] {
                 </div>
             </div>
         </div>--%>
+
+
+          <br />
+
+        <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+            <ContentTemplate>
+          <asp:LinkButton ID="lnkAddProduct" runat="server" OnClick="lnkAddProduct_Click">Add Product Line Item</asp:LinkButton>
+
+        <asp:Panel ID="pnlAddProduct" runat="server" Visible="false">
+             <br />
+             <asp:Label ID="lblProductName" runat="server" Text="Enter Product Name"></asp:Label> <br /> <br />
+             <asp:TextBox ID="txtProductName" runat="server"></asp:TextBox> &nbsp;
+            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Please enter Product Line Item" ControlToValidate="txtProductName" ForeColor="Red" Display="Dynamic" ValidationGroup="a1"></asp:RequiredFieldValidator>
+           <br/><br />
+             <asp:Button ID="btnSave1" runat="server" CausesValidation="true" OnClick="btnSave1_Click" Text="Save" ValidationGroup="a1" />  &nbsp;&nbsp; <asp:Button ID="btncancel1" runat="server" OnClick="btncancel1_Click" Text="Cancel"  />
+        </asp:Panel>
+
         <div class="show_hide">
             <h3>
                 <%--<span class="span_click down">Shutter</span>--%>
                <%-- <a href="CustomerEmailTemplate.aspx">Default Customer Email</a>--%>
-                <a href="ContractTemplate.aspx?ProductId=1">Contract Template</a><a href="ContractTemplate.aspx?ProductId=1" runat="server" visible="false">Shutter Contract Template</a><a
+                <a href="ContractTemplate.aspx?ProductId=1" runat="server" visible="false">Shutter Contract Template</a><a
                     href="ShutterTemplate.aspx">Shutter W.O.</a>
                 <label>Change%</label>
                 <asp:TextBox ID="txtpercentage" runat="server" Text="0" Width="50px"
@@ -317,7 +342,7 @@ table th[class*="col-"] {
             <div class="grid">
                 
                 <asp:GridView ID="gvProductLine" GridLines="Both" runat="server" AutoGenerateColumns="False" AllowSorting="true"
-                    OnRowCommand="gvProductLine_RowCommand" OnRowDataBound="gvProductLine_RowDataBound" Width="636px">
+                    OnRowCommand="gvProductLine_RowCommand" OnRowDataBound="gvProductLine_RowDataBound" ><%-- Width="636px"--%>
                     <Columns>
                         <asp:TemplateField ShowHeader="True" HeaderText="Product Line Item" ControlStyle-ForeColor="Black"
                             ItemStyle-HorizontalAlign="Center">
@@ -334,6 +359,59 @@ table th[class*="col-"] {
                                     CommandArgument='<%#Eval("ProductName")%>'></asp:LinkButton>
                             </ItemTemplate>
                         </asp:TemplateField>
+
+                          <asp:TemplateField ShowHeader="True" HeaderText="Install Selling Pricing" ControlStyle-ForeColor="Black"
+                            ItemStyle-HorizontalAlign="Center">
+                            <ItemTemplate>
+                                <asp:Label ID="lblInstallsale" runat="server"></asp:Label>
+                            </ItemTemplate>
+                            <ControlStyle ForeColor="Black" />
+                            <ControlStyle ForeColor="Black" />
+                            <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                        </asp:TemplateField>
+
+                         <asp:TemplateField ShowHeader="True" HeaderText="Labor Pricing" ControlStyle-ForeColor="Black"
+                            ItemStyle-HorizontalAlign="Center">
+                            <ItemTemplate>
+                                <asp:Label ID="lblLaborPrice" runat="server" ></asp:Label>
+                            </ItemTemplate>
+                            <ControlStyle ForeColor="Black" />
+                            <ControlStyle ForeColor="Black" />
+                            <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                        </asp:TemplateField>
+
+                         <asp:TemplateField ShowHeader="True" HeaderText="Tool Checklist" ControlStyle-ForeColor="Black"
+                            ItemStyle-HorizontalAlign="Center">
+                            <ItemTemplate>
+                                <asp:Label ID="lblToolChecklist" runat="server"></asp:Label>
+                            </ItemTemplate>
+                            <ControlStyle ForeColor="Black" />
+                            <ControlStyle ForeColor="Black" />
+                            <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                        </asp:TemplateField>
+
+                         <asp:TemplateField ShowHeader="True" HeaderText="Edit" ControlStyle-ForeColor="Black"
+                            ItemStyle-HorizontalAlign="Center">
+                            <ItemTemplate>
+                                <asp:LinkButton ID="lnkEdit" runat="server" CommandName="EditProduct" CommandArgument='<%#Eval("ProductId")%>'>Edit</asp:LinkButton>
+                            </ItemTemplate>
+                            <ControlStyle ForeColor="Black" />
+                            <ControlStyle ForeColor="Black" />
+                            <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                        </asp:TemplateField>
+
+
+                        <asp:TemplateField ShowHeader="True" HeaderText="Delete" ControlStyle-ForeColor="Black"
+                            ItemStyle-HorizontalAlign="Center">
+                            <ItemTemplate>
+                                <asp:LinkButton ID="lnkDel" runat="server" OnClientClick="return ConfirmOnDelete1();" CommandName="DeleteProduct" CommandArgument='<%#Eval("ProductId")%>'>Delete</asp:LinkButton>
+                            </ItemTemplate>
+                            <ControlStyle ForeColor="Black" />
+                            <ControlStyle ForeColor="Black" />
+                            <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                        </asp:TemplateField>
+
+
                     </Columns>
                 </asp:GridView>
             </div>
@@ -548,7 +626,11 @@ table th[class*="col-"] {
             <div class="clr">
             </div>
         </div>
+
+                  </ContentTemplate>
+ 
+        </asp:UpdatePanel>
     </div>
-    </div>
-    </div>
+  <%--  </div>
+    </div>--%>
 </asp:Content>

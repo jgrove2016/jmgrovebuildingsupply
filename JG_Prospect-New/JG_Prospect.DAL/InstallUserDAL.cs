@@ -40,6 +40,7 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@LastName", DbType.String, objuser.lastname);
                     database.AddInParameter(command, "@Email", DbType.String, objuser.email);
                     database.AddInParameter(command, "@phone", DbType.String, objuser.phone);
+                    database.AddInParameter(command, "@phonetype", DbType.String, objuser.phonetype );
                     database.AddInParameter(command, "@Address", DbType.String, objuser.address);
                     database.AddInParameter(command, "@Zip", DbType.String, objuser.zip);
                     database.AddInParameter(command, "@State", DbType.String, objuser.state);
@@ -989,7 +990,7 @@ namespace JG_Prospect.DAL
             {
                 SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
                 {
-                    DbCommand command = database.GetStoredProcCommand("UDP_UpdateStatus");
+                    DbCommand command = database.GetStoredProcCommand("jgrov_User.UDP_UpdateStatus ");
                     command.CommandType = CommandType.StoredProcedure;
                     database.AddInParameter(command, "@id", DbType.String, Convert.ToInt32(id));
                     database.AddInParameter(command, "@status", DbType.String, Status);
@@ -1625,6 +1626,53 @@ namespace JG_Prospect.DAL
             catch (Exception ex)
             {
                 return null;
+            }
+        }
+        public DataSet GetSalesTouchPointLogData(int CustomerId, int userid)
+        {
+            returndata = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("UDP_FetchSalesUserTouchPointLogData");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@customerId", DbType.Int32, CustomerId);
+                    database.AddInParameter(command, "@userid", DbType.Int32, userid);
+                    returndata = database.ExecuteDataSet(command);
+                    return returndata;
+                }
+            }
+
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+            }
+            return returndata;
+        }
+
+        public int AddSalesFollowUp(int customerid, DateTime meetingdate, string Status, int userId)
+        {
+            int result = 0;
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("UDP_AddEntryInSalesUser_followup");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@custId", DbType.Int32, customerid);
+                    database.AddInParameter(command, "@MeetingDate", DbType.DateTime, meetingdate);
+                    database.AddInParameter(command, "@MeetingStatus", DbType.String, Status);
+                    database.AddInParameter(command, "@UserId", DbType.Int32, userId);
+
+                    database.ExecuteNonQuery(command);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+                return 0;
             }
         }
     }

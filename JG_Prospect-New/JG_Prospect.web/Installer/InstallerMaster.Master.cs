@@ -11,7 +11,13 @@ namespace JG_Prospect.Installer
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (Session["loginid"] != null)
+            {
+            }
+            else
+            {
+                Response.Redirect("~/login.aspx");
+            }
         }
     }
 }

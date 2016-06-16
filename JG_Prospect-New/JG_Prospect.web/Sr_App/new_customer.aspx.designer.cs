@@ -301,13 +301,22 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.TextBox txtestimate_date;
         
         /// <summary>
+        /// chkAutoEmailer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkAutoEmailer;
+        
+        /// <summary>
         /// UCAddress control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UserControl UCAddress;
+        protected global::JG_Prospect.UserControl.UCAddress UCAddress;
         
         /// <summary>
         /// panel4 control.
@@ -344,6 +353,15 @@ namespace JG_Prospect.Sr_App {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtCompetitorBids;
+        
+        /// <summary>
+        /// txtestimate_time control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtestimate_time;
         
         /// <summary>
         /// tblBestTime control.
@@ -391,15 +409,6 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.HtmlControls.HtmlInputButton btnAddTime;
         
         /// <summary>
-        /// txtestimate_time control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtestimate_time;
-        
-        /// <summary>
         /// UpdatePanel2 control.
         /// </summary>
         /// <remarks>
@@ -427,6 +436,15 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.HiddenField hdnBestTimeToContact;
         
         /// <summary>
+        /// btnUpdate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnUpdate;
+        
+        /// <summary>
         /// hdnStatus control.
         /// </summary>
         /// <remarks>
@@ -452,5 +470,95 @@ namespace JG_Prospect.Sr_App {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnCancel;
+        
+        /// <summary>
+        /// lblSatartAddress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblSatartAddress;
+        
+        /// <summary>
+        /// txtStartAddress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTextArea txtStartAddress;
+        
+        /// <summary>
+        /// lblEndAddress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblEndAddress;
+        
+        /// <summary>
+        /// txtEndAddress control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtEndAddress;
+        
+        /// <summary>
+        /// ddlCompany1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.AutoCompleteExtender ddlCompany1;
+        
+        /// <summary>
+        /// lblSoldJobId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblSoldJobId;
+        
+        /// <summary>
+        /// iblBeforeImg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label iblBeforeImg;
+        
+        /// <summary>
+        /// lblAfterImg control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAfterImg;
+        
+        /// <summary>
+        /// ddlSoldJobId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlSoldJobId;
+        
+        /// <summary>
+        /// LinkButton1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton LinkButton1;
     }
 }

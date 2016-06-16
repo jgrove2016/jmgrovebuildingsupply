@@ -1,0 +1,88 @@
+/****** Object:  StoredProcedure [dbo].[USP_GetCustomMaterialList]    Script Date: 03/17/2016 17:46:50 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_GetCustomMaterialList]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_GetCustomMaterialList]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_GetCustomMaterialList]    Script Date: 03/17/2016 17:46:50 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-03-08
+-- Description:	This procedure will return custom material list
+-- Test Run:    USP_GetCustomMaterialList 'C3690-SJ1', 3690
+-- =============================================
+CREATE PROCEDURE [dbo].[USP_GetCustomMaterialList]
+(
+	@soldJobId varchar(50),
+	@customerID int
+)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+SELECT 
+	DISTINCT c.ProductCatID,
+	PM.ProductName
+FROM tblCustom_MaterialList c 
+INNER JOIN tblProductMaster PM ON PM.productid = c.ProductCatID
+WHERE c.SoldJobID = @SoldJobID
+
+SELECT cm.MaterialList
+	,cm.VendorCategoryId 
+	,vc.VendorCategoryNm
+	,v.VendorName  
+	,cm.Amount 
+	,cm.VendorId 
+	,cm.Line 
+	,cm.JGSkuPartNo
+	,cm.Quantity
+	,cm.UOM
+	,cm.MaterialCost
+	,cm.extend
+	,cm.VendorIds
+	,cm.Total
+	,cd.DocName
+	,cd.TempName
+	,cm.Id
+	,cm.ProductCatID
+	,PM.ProductName
+	,ISNULL(cm.IsForemanPermission,'') as IsForemanPermission
+	,ISNULL(cm.IsSrSalemanPermissionF,'') as IsSrSalemanPermissionF
+	,ISNULL(cm.IsAdminPermission,'') as IsAdminPermission
+	,ISNULL(cm.IsSrSalemanPermissionA,'') as IsSrSalemanPermissionA
+	,ISNULL(cm.EmailStatus,'') as EmailStatus
+	,ISNULL(up.Id, 0) AS lastUpdatedByID	,ISNULL(up.firstname, '') as lastUpdatedByFirstName, ISNULL(up.LastName, '') as lastUpdatedByLastName, ISNULL(up.Username, '') as lastUpdatedByUserName
+	,ISNULL(FM.Id, 0) AS foremanID	,ISNULL(FM.firstname, '') as foremanFirstName, ISNULL(FM.LastName, '') as foremanLastName, ISNULL(FM.Username, '') as foremanUserName
+	,ISNULL(SLF.Id, 0) AS SLFID	,ISNULL(SLF.firstname, '') as SLFFirstName, ISNULL(SLF.LastName, '') as SLFLastName, ISNULL(SLF.Username, '') as SLFUserName
+	,ISNULL(SLA.Id, 0) AS SLAID	,ISNULL(SLA.firstname, '') as SLAFirstName, ISNULL(SLA.LastName, '') as SLALastName, ISNULL(SLA.Username, '') as SLAUserName
+	,ISNULL(AD.Id, 0) AS ADID	,ISNULL(AD.firstname, '') as ADFirstName, ISNULL(AD.LastName, '') as ADLastName, ISNULL(AD.Username, '') as ADUserName
+	FROM tblCustom_MaterialList cm 
+	LEFT OUTER JOIN tblVendorCategory vc on vc.VendorCategpryId =cm.VendorCategoryId
+	LEFT OUTER JOIN tblProductMaster PM ON PM.productid = cm.ProductCatID
+	LEFT OUTER JOIN tblVendors v on v.VendorId =cm.VendorId 
+	--inner join tblJobSequence js on js.SoldJobId=cm.SoldJobId--js.Id=cm.JobSequenceId 
+	LEFT JOIN tblVendorQuotes cd on cd.SoldJobId=cm.SoldJobId and cd.VendorId=cm.VendorId
+	-- tblCustomersDocument cd on cd.CustomerId =js.CustomerId and cd.ProductId=js.EstimateId and cd.ProductTypeId=js.ProductId and cd.VendorId=cm.VendorId and cd.DocType= 'VendorQuotes' 
+	LEFT OUTER JOIN tblUsers FM on FM.id = cm.ForemanApproverID
+	LEFT OUTER JOIN tblUsers SLF on SLF.id = cm.SrSalesFApproverID
+	LEFT OUTER JOIN tblUsers SLA on SLA.id = cm.SrSalesAApproverID
+	LEFT OUTER JOIN tblUsers AD on AD.id = cm.AdminApproverID
+	LEFT OUTER JOIN tblUsers up on up.id = cm.updatedby
+	WHERE cm.SoldJobId=@soldJobId
+	ORDER BY cm.Id
+	
+	EXEC UDP_GetSoldJobsForProcurementBySoldJobID @soldJobId   
+    
+    SELECT Id,FristName +' '+ LastName +'-'+Email as QualifiedName from tblInstallUsers Where Status = 'Active'
+END
+
+GO
+
+

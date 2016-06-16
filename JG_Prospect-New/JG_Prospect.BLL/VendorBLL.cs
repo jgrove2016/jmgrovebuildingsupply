@@ -85,7 +85,15 @@ namespace JG_Prospect.BLL
         {
             return VendorDAL.Instance.fetchVendorListByCategoryForEmail(category);
         }
-
+        /// <summary>
+        /// This method will return one or more Vendors/
+        /// </summary>
+        /// <param name="pVendorIDs">Command separated vendor ids</param>
+        /// <returns></returns>
+        public DataSet GetVendors(string pVendorIDs)
+        {
+            return VendorDAL.Instance.GetVendors(pVendorIDs);
+        }
         public bool deletevendor(int vendorid)
         {
             return VendorDAL.Instance.deletevendor(vendorid);
@@ -106,16 +114,19 @@ namespace JG_Prospect.BLL
         {
             return VendorDAL.Instance.savevendorcatalogdetails(objcatalog);
         }
-
+        public DataSet GetProductCategoryByVendorCatID(string VendorCategoryId)
+        {
+            return VendorDAL.Instance.GetProductCategoryByVendorCatID(VendorCategoryId);
+        }
         public DataSet GetAllvendorDetails()
         {
             return VendorDAL.Instance.GetAllvendorDetails();
         }
 
 
-        public DataSet GetVendorList(string FilterParams, string FilterBy, string ManufacturerType, string VendorCategoryId)
+        public DataSet GetVendorList(string FilterParams, string FilterBy, string ManufacturerType, string VendorCategoryId, string VendorStatus)
         {
-            return VendorDAL.Instance.GetVendorList(FilterParams, FilterBy, ManufacturerType, VendorCategoryId);
+            return VendorDAL.Instance.GetVendorList(FilterParams, FilterBy, ManufacturerType, VendorCategoryId, VendorStatus);
         }
 
         public string SaveNewVendorCategory(NewVendorCategory objNewVendorCat)
@@ -131,21 +142,56 @@ namespace JG_Prospect.BLL
         {
             return VendorDAL.Instance.SaveNewVendorSubCat(objVendorsubCat);
         }
+        public bool UpdateVendorCategory(NewVendorCategory objVendorCat)
+        {
+            return VendorDAL.Instance.UpdateVendorCategory(objVendorCat);
+        }
+        public bool UpdateVendorSubCat(VendorSubCategory objVendorsubCat)
+        {
+            return VendorDAL.Instance.UpdateVendorSubCat(objVendorsubCat);
+        }
         public bool DeleteVendorSubCat(VendorSubCategory objVendorsubCat)
         {
             return VendorDAL.Instance.DeleteVendorSubCat(objVendorsubCat);
+        }
+        public bool DeleteVendorDetail(string VendorId)
+        {
+            return VendorDAL.Instance.DeleteVendorDetail(VendorId);
         }
         public DataSet GetVendorSubCategory()
         {
             return VendorDAL.Instance.GetVendorSubCategory();
         }
-        public bool InsertVendorEmail(Vendor objvendor)
+        public bool InsertVendorEmail(DataTable tblVendorEmail, int addressID)
         {
-            return VendorDAL.Instance.InsertVendorEmail(objvendor);
+            return VendorDAL.Instance.InsertVendorEmail(tblVendorEmail, addressID);
         }
-        public bool InsertVendorAddress(Vendor objvendor)
+        public DataSet GetVendorEmail(Vendor objVendor)
+        {
+            return VendorDAL.Instance.GetVendorEmail(objVendor);
+        }
+
+        public DataSet GetVendorEmailByAddress(Vendor objVendor)
+        {
+            return VendorDAL.Instance.GetVendorEmailByAddress(objVendor);
+        }
+
+        public int InsertVendorAddress(DataTable objvendor)
         {
             return VendorDAL.Instance.InsertVendorAddress(objvendor);
+        }
+        public DataSet GetALLVendorAddress(string manufacturer, string productId, string vendorCatId, string vendorSubCatId)
+        {
+            return VendorDAL.Instance.GetALLVendorAddress(manufacturer, productId, vendorCatId, vendorSubCatId);
+        }
+        public DataSet GetVendorAddress(int VendorId)
+        {
+            return VendorDAL.Instance.GetVendorAddress(VendorId);
+        }
+
+        public DataSet GetVendorAddress(int VendorId, string TempID)
+        {
+            return VendorDAL.Instance.GetVendorAddress(VendorId, TempID);
         }
 
         public List<AutoCompleteVendor> SearchVendor(string searchString, string tableName)
@@ -158,7 +204,8 @@ namespace JG_Prospect.BLL
                 {
                     id = Convert.ToInt32(item["VendorId"].ToString()),
                     label = Convert.ToString(item["VendorName"]),
-                    value = Convert.ToString(item["VendorName"])
+                    value = Convert.ToString(item["VendorName"]),
+                    addressId = Convert.ToString(item["addressId"])
                 });
             }
             return lstResult;
@@ -166,6 +213,94 @@ namespace JG_Prospect.BLL
         public DataSet fetchvendorcategory(bool Isretail_Wholesale, bool IsManufacturer)
         {
             return VendorDAL.Instance.fetchvendorcategory(Isretail_Wholesale, IsManufacturer);
+        }
+
+        public DataSet GETInvetoryCatogriesList(string ManufactureType)
+        {
+            return VendorDAL.Instance.GETInvetoryCatogriesList(ManufactureType);
+        }
+
+        public bool SaveVendorNotes(int VendorId, string UserId, string Notes, string TempId)
+        {
+            return VendorDAL.Instance.SaveVendorNotes(VendorId, UserId, Notes, TempId);
+        }
+
+        public DataSet GetVendorNotes(int VendorId, string TempId)
+        {
+            return VendorDAL.Instance.GetVendorNotes(VendorId, TempId);
+        }
+
+        public DataSet GetVendorMaterialList(string ManufacturerType, string VendorId, string ProductCatId, string VendorCatId, string VendorSubCatId, string PeriodStart, string PeriodEnd, string PayPeriod)
+        {
+            return VendorDAL.Instance.GetVendorMaterialList(ManufacturerType, VendorId, ProductCatId, VendorCatId, VendorSubCatId, PeriodStart, PeriodEnd, PayPeriod);
+        }
+        public DataSet GetCategoryList(string ProductCategory, string VendorCategory, string action)
+        {
+            return VendorDAL.Instance.GetCategoryList(ProductCategory, VendorCategory, action);
+        }
+
+        public DataSet FetchCategories(string VendorId)
+        {
+            return VendorDAL.Instance.FetchCategories(VendorId);
+        }
+
+        public bool SaveSku(clsSku objsku)
+        {
+            return VendorDAL.Instance.SaveSku(objsku);
+        }
+        public bool UpdateSku(clsSku objsku)
+        {
+            return VendorDAL.Instance.UpdateSku(objsku);
+        }
+
+
+        public DataSet GetSku()
+        {
+            return VendorDAL.Instance.GetSku();
+        }
+
+        public bool DeleteSku(int skuId)
+        {
+            return VendorDAL.Instance.DeleteSku(skuId);
+        }
+
+        public DataSet GetSupplierCatogriesList()
+        {
+            return VendorDAL.Instance.GetSupplierCatogriesList();
+        }
+
+        public bool SaveSupSubCat(clsSupplierCategory obj)
+        {
+            return VendorDAL.Instance.SaveSupSubCat(obj);
+        }
+        public bool UpdateSupSubCat(clsSupplierCategory obj)
+        {
+            return VendorDAL.Instance.UpdateSupSubCat(obj);
+        }
+
+        public bool DeleteSupSubCat(clsSupplierCategory objNewSupSubCat)
+        {
+            return VendorDAL.Instance.DeleteSupSubCat(objNewSupSubCat);
+        }
+
+        public DataSet CheckSource(string Source)
+        {
+            return VendorDAL.Instance.CheckDuplicateSource(Source);
+        }
+
+        public DataSet AddSource(string Source)
+        {
+            return VendorDAL.Instance.AddSource(Source);
+        }
+
+        public DataSet GetSource()
+        {
+            return VendorDAL.Instance.getSource();
+        }
+
+        public void DeleteSource(string Source)
+        {
+            VendorDAL.Instance.DeleteSource(Source);
         }
     }
 
@@ -175,5 +310,6 @@ namespace JG_Prospect.BLL
         public int id { get; set; }
         public string value { get; set; }
         public string label { get; set; }
+        public string addressId { get; set; }
     }
 }

@@ -78,14 +78,14 @@ namespace JG_Prospect.JGCalender
 
 
             sb.Append("  SELECT f.Id as event_id,   ");
-            sb.Append("  isnull((Cast( c.id as varchar(10)) +' ## Last Name: '+ c.LastName+' ## Contact: '+c.PrimaryContact+' ## Address: '   ");
+            sb.Append("  isnull((Cast( c.id as varchar(10)) +' ## Last Name: '+ c.LastName+' ## Contact: '+ ISNULL(c.PrimaryContact,'')+' ## Address: '   ");
             sb.Append("  + c.CustomerAddress+' ## Zip: '+ c.ZipCode+' ## Status: '+ f.MeetingStatus+ ' ## Product ' +cast( isnull(p.ProductName,'')  as varchar(10))),'') as  description,  ");
-            sb.Append("  isnull((Cast( c.id as varchar(10)) +' ## Last Name: '+ c.LastName+' ## Contact: '+c.PrimaryContact+' ## Address: '   ");
+            sb.Append("  isnull((Cast( c.id as varchar(10)) +' ## Last Name: '+ c.LastName+' ## Contact: '+ISNULL(c.PrimaryContact,'')+' ## Address: '   ");
             sb.Append("  + c.CustomerAddress+' ## Zip: '+ c.ZipCode+' ## Status: '+ f.MeetingStatus+ ' ## Product ' +cast( isnull(p.ProductName,'')  as varchar(10))),'') as  title,  ");
             sb.Append("  MeetingDate as  event_start,  ");
             sb.Append("  DATEADD(hour,1,MeetingDate) as event_end,   ");
             sb.Append("  0 as all_day,   ");
-            sb.Append("  f.MeetingStatus  as status  ");
+            sb.Append("  f.MeetingStatus  as status,c.id, c.lastname, ISNULL(c.PrimaryContact,'') AS PrimaryContact, c.CustomerAddress,c.ZipCode  , isnull(p.ProductName,'') as ProductName  ");
             sb.Append("  FROM tblcustomer_followup f   ");
             sb.Append("  left join new_customer c on c.id=f.CustomerId   ");
             sb.Append("  left join tblProductMaster p on p.ProductId=f.ProductId   ");
@@ -136,6 +136,12 @@ namespace JG_Prospect.JGCalender
                 cevent.end = (DateTime)reader["event_end"];
                 cevent.allDay = Convert.ToBoolean(reader["all_day"]);
                 cevent.status = reader["status"].ToString();
+                cevent.customerid = Convert.ToInt32(reader["id"]);
+                cevent.lastname = reader["lastname"].ToString();
+                cevent.primarycontact = reader["PrimaryContact"].ToString();
+                cevent.address = reader["customeraddress"].ToString();
+                cevent.zipcode = reader["zipcode"].ToString();
+                cevent.productline = reader["productname"].ToString();
                 if (string.IsNullOrEmpty(searchFilter) || searchFilter.Trim().Length == 0 || cevent.description.ToLower().Contains(searchFilter.ToLower().Trim()))
                 {
                     events.Add(cevent);

@@ -151,6 +151,25 @@
                 <br />
                 <asp:Label ID="Label1" runat="server" />
             </div>
+            <div id="divTest">
+                <asp:Label ID="lblPrimaryTrade" Text="Primary Trade" runat="server" />
+                <asp:DropDownList ID="ddlPrimaryTrade" runat="server" Width="140px" OnSelectedIndexChanged="ddlUserStatus_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>&nbsp;
+                <asp:Label ID="lblUserStatus" Text="User Status" runat="server" /><span style="color: red">*</span>
+                <asp:DropDownList ID="ddlUserStatus" runat="server" Width="140px" AutoPostBack="true" OnSelectedIndexChanged="ddlUserStatus_SelectedIndexChanged">
+                    <asp:ListItem Text="--Select--" Value="--Select--"></asp:ListItem>
+                    <asp:ListItem Text="Applicant" Value="Applicant"></asp:ListItem>
+                    <asp:ListItem Text="Phone/Video Screened" Value="PhoneScreened"></asp:ListItem>
+                    <asp:ListItem Text="Rejected" Value="Rejected"></asp:ListItem>
+                    <asp:ListItem Text="Interview Date" Value="InterviewDate"></asp:ListItem>
+                    <asp:ListItem Text="Offer Made" Value="OfferMade"></asp:ListItem>
+                    <asp:ListItem Text="Active" Value="Active"></asp:ListItem>
+                    <asp:ListItem Text="Deactive" Value="Deactive"></asp:ListItem>
+                    <asp:ListItem Text="Install Prospect" Value="Install Prospect"></asp:ListItem>
+                </asp:DropDownList>&nbsp;
+                <asp:Label ID="lblDesignation" Text="Designation" runat="server" />
+                <asp:DropDownList ID="ddlDesignation" runat="server" Width="140px" OnSelectedIndexChanged="ddlUserStatus_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+            </div>
+            <br />
             <asp:LinkButton ID="lnkDownload" Text="Download Sample Format For Bulk Upload" CommandArgument='../UserFile/sample.xlsx' runat="server" OnClick="DownloadFile"></asp:LinkButton>
             <div class="grid">
                 <%-- <asp:UpdatePanel ID="updatepanel" runat="server">
@@ -165,10 +184,12 @@
                             <ItemTemplate>
                                 <asp:LinkButton ID="lbltest" Text="Edit" CommandName="Edit" runat="server"
                                     CommandArgument='<%#Eval("ID")%>'></asp:LinkButton>
+                                <asp:LinkButton ID="lnkDelete" Text="Delete" CommandName="Delete" runat="server" OnClientClick="return confirm('Are you sure you want to delete this record?')"
+                                    CommandArgument='<%#Eval("Id")%>' ></asp:LinkButton>
                             </ItemTemplate>
                         </asp:TemplateField>
                         <asp:TemplateField ShowHeader="True" HeaderText="Id" ControlStyle-ForeColor="Black"
-                            ItemStyle-HorizontalAlign="Center" Visible="false">
+                            ItemStyle-HorizontalAlign="Center" Visible="true">
                             <EditItemTemplate>
                                 <asp:TextBox ID="txtid" runat="server" MaxLength="30" Text='<%#Eval("Id")%>'></asp:TextBox>
                             </EditItemTemplate>
@@ -191,12 +212,11 @@
                             <ControlStyle ForeColor="Black" />
                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                         </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Picture" SortExpression="picture">
+                       <%-- <asp:TemplateField HeaderText="Picture" SortExpression="picture">
                             <ItemTemplate>
-                                <asp:LinkButton ID="lbtnPicture" Text="Picture" CommandName="ShowPicture" runat="server"
-                                    CommandArgument='<%#Eval("picture")%>'></asp:LinkButton>
+                                <asp:LinkButton ID="lbtnPicture" Text="Picture" CommandName="ShowPicture" runat="server" CommandArgument='<%#Eval("picture")%>'></asp:LinkButton>
                             </ItemTemplate>
-                        </asp:TemplateField>
+                        </asp:TemplateField>--%>
                         <asp:TemplateField ShowHeader="True" HeaderText="First Name" SortExpression="FristName" ControlStyle-ForeColor="Black"
                             ItemStyle-HorizontalAlign="Center">
                             <EditItemTemplate>
@@ -256,19 +276,31 @@
                                     <asp:ListItem Text="Active" Value="Active"></asp:ListItem>
                                     <asp:ListItem Text="Deactive" Value="Deactive"></asp:ListItem>
                                     <asp:ListItem Text="Install Prospect" Value="Install Prospect"></asp:ListItem>
-                                </asp:DropDownList>
+                                </asp:DropDownList> <br />
+                                <asp:Label ID="lblRejectDetail" runat="server" Text='<%#Eval("RejectDetail") %>'></asp:Label>
+                                <asp:Label ID="lblInterviewDetail" runat="server" Text='<%#Eval("InterviewDetail") %>'></asp:Label>
                             </ItemTemplate>
                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                         </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Hire Date" SortExpression="HireDate" ItemStyle-HorizontalAlign="Center">
-                            <EditItemTemplate>
-                                <asp:TextBox ID="txtHireDate" runat="server" Text='<%#Eval("HireDate")%>'></asp:TextBox>
-                            </EditItemTemplate>
+                         <asp:TemplateField HeaderText="Added By" SortExpression="AddedBy" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="60px" ItemStyle-Wrap="true" HeaderStyle-Width="60px" >
                             <ItemTemplate>
-                                <asp:Label ID="lblHireDate" runat="server" Text='<%#Eval("HireDate")%>'></asp:Label>
+                                <asp:Label ID="lblAddedBy" runat="server" Text='<%#Eval("AddedBy")%>'></asp:Label>
                             </ItemTemplate>
                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                         </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Added On" SortExpression="CreatedDateTime" ItemStyle-HorizontalAlign="Center">
+                            <ItemTemplate>
+                                <asp:Label ID="lblHireDate" runat="server" Text='<%# Convert.ToDateTime( Eval("CreatedDateTime")).ToString("MM/dd/yyyy")%>'></asp:Label>
+                            </ItemTemplate>
+                            <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                        </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Source" SortExpression="Source" ItemStyle-HorizontalAlign="Center">
+                            <ItemTemplate>
+                                <asp:Label ID="lblSource" runat="server" Text='<%#Eval("Source")%>'></asp:Label>
+                            </ItemTemplate>
+                            <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                        </asp:TemplateField>
+
                         <asp:TemplateField HeaderText="Phone" ItemStyle-HorizontalAlign="Center" SortExpression="Phone">
                             <EditItemTemplate>
                                 <asp:TextBox ID="txtPhone" runat="server" Text='<%# Bind("Phone") %>'></asp:TextBox>
@@ -363,20 +395,22 @@
     <div id="fade" class="black_overlay">
     </div>
     <asp:Panel ID="panel2" runat="server">
-        <div id="interviewDatelite" class="white_content">
+        <div id="interviewDatelite" class="white_content" style="height:auto;">
             <h3>Interview Details
                 </h3>
-            <a href="javascript:void(0)" onclick="document.getElementById('interviewDatelight').style.display='none';document.getElementById('interviewDatefade').style.display='none'">
+            <a href="javascript:void(0)" onclick="document.getElementById('interviewDatelite').style.display='none';document.getElementById('interviewDatefade').style.display='none'">
                 Close</a>
-            <table width="100%" style="border: Solid 3px #b04547; width: 100%; height: 100%"
+            <table width="100%" style="border: Solid 3px #b04547; width: 100%; height: 200px;"
                 cellpadding="0" cellspacing="0">
                 <tr>
                     <td align="center" style="height:15px;">
+                        Date :
                     <asp:TextBox ID="dtInterviewDate" placeholder="Select Date" runat="server" ClientIDMode="Static" onkeypress="return false" TabIndex="104" Width="127px"></asp:TextBox>
-                        <cc1:CalendarExtender ID="CalendarExtender1" TargetControlID="dtInterviewDate" runat="server"></cc1:CalendarExtender>
+                        <cc1:CalendarExtender ID="CalendarExtender1" Format="MM/dd/yyyy"  TargetControlID="dtInterviewDate" runat="server"></cc1:CalendarExtender>
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Select Date" ControlToValidate="dtInterviewDate" ValidationGroup="InterviewDate"></asp:RequiredFieldValidator>
                     </td>
                     <td>
+                        Time :
                         <asp:DropDownList ID="ddlInsteviewtime" runat="server" TabIndex="105" Width="112px"></asp:DropDownList>
                     </td>
                 </tr>

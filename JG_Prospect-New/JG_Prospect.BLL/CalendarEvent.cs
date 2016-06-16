@@ -17,6 +17,15 @@ namespace JG_Prospect.JGCalender
         public DateTime start { get; set; }
         public DateTime end { get; set; }
         public bool allDay { get; set; }
+
+        public int customerid { get; set; }
+        public string lastname { get; set; }
+        public string primarycontact{ get; set; }
+        public string address { get; set; }
+        public string zipcode { get; set; }
+        public string productline { get; set; }
+        public string addedby { get; set; }
+
     }
     public class DropdownObject
     {

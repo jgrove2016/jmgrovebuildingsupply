@@ -91,7 +91,7 @@ namespace JG_Prospect.BLL
             string ContractPdfBody = string.Empty;
             CustomerContract contract = null;
 
-            ds = AdminBLL.Instance.FetchContractTemplate(proposalOptionList[0].Item3);
+            ds = AdminBLL.Instance.FetchContractTemplate(1);//AdminBLL.Instance.FetchContractTemplate(proposalOptionList[0].Item3);
             string resultHeader="",resultBody="",resultBody2="",resultFooter="";
             if (ds.Tables[0].Rows.Count > 0)
             {

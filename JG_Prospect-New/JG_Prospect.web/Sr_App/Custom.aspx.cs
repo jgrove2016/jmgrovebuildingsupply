@@ -14,6 +14,7 @@ using System.Web.Services;
 using System.Web.Script.Services;
 using AjaxControlToolkit;
 using System.Text.RegularExpressions;
+using JG_Prospect.Sr_App.Controls;
 
 namespace JG_Prospect.Sr_App.Product_Line
 {
@@ -140,14 +141,73 @@ namespace JG_Prospect.Sr_App.Product_Line
             }
         }
 
+        #region Shital Added
+
+        private const string SESSIONKEY = "ProductLineControlsCount";
+        private const string USER_CONTROL_NAME_PREFIX = "AddProductLineUserControl";
+        public int AddedControlCount
+        {
+            get
+            {
+                return Session[SESSIONKEY] == null ? 0 : int.Parse(Session[SESSIONKEY].ToString());
+            }
+            set
+            {
+                Session[SESSIONKEY] = value;
+            }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+            if (!Page.IsPostBack)
+            {
+                Session[SESSIONKEY] = null;
+            }
+            LoadContactControls();
+        }
+
+        protected void btnAddProductLine_Click(object sender, EventArgs e)
+        {
+            AddedControlCount++;
+            AddProductLineControl(USER_CONTROL_NAME_PREFIX + AddedControlCount);
+        }
+
+        /// <summary>
+        /// Load the user controls based on session key
+        /// </summary>
+        private void LoadContactControls()
+        {
+            for (int i = 1; i <= AddedControlCount; i++)
+            {
+                AddProductLineControl(USER_CONTROL_NAME_PREFIX + i);
+            }
+        }
+
+        private void AddProductLineControl(string Id)
+        {
+            System.Web.UI.UserControl x = (System.Web.UI.UserControl)LoadControl("~/Sr_App/Controls/AddProductLinesControl.ascx");
+            x.ID = Id;
+            placeHolderProductLines.Controls.Add(x);
+        }
+
+        #endregion
+
+
+
         private void DisableControls()
         {
             txtProposalTerm.Enabled = false;
             txtProposalCost.Enabled = false;
             txtCustSupMaterial.Enabled = false;
             chkCustSupMaterial.Enabled = false;
-            txtStorage.Enabled = false;
-            chkStorage.Enabled = false;
+
+            ddlMaterialStorage.Enabled = false;
+            chkMaterialStorage.Enabled = false;
+
+            ddlDumpStorageLocation.Enabled = false;
+            chkDumpStorageLocation.Enabled = false;
+
             txtspecialIns.Enabled = false;
             chkPermit.Enabled = false;
             chkHabitat.Enabled = false;
@@ -191,8 +251,30 @@ namespace JG_Prospect.Sr_App.Product_Line
                 txtworkarea.Text = custom.WorkArea;
                 txtCustSupMaterial.Text = custom.CustSuppliedMaterial;
                 chkCustSupMaterial.Checked = custom.IsCustSupMatApplicable;
-                txtStorage.Text = custom.MaterialStorage;
-                chkStorage.Checked = custom.IsMatStorageApplicable;
+
+                chkMaterialStorage.Checked = !custom.IsMatStorageApplicable;
+
+                if (custom.IsMatStorageApplicable)
+                {
+                    ddlMaterialStorage.Enabled = true;
+                    var customMaterialStorageItem = ddlMaterialStorage.Items.FindByText(custom.MaterialStorage);
+                    if (customMaterialStorageItem != null)
+                    {
+                        customMaterialStorageItem.Selected = true;
+                    }
+                }
+
+                chkDumpStorageLocation.Checked = !custom.IsDumpStorageApplicable;
+                if (custom.IsDumpStorageApplicable)
+                {
+                    ddlDumpStorageLocation.Enabled = true;
+                    var customDumpStorageItem = ddlDumpStorageLocation.Items.FindByText(custom.DumpStorage);
+                    if (customDumpStorageItem != null)
+                    {
+                        customDumpStorageItem.Selected = true;
+                    }
+                }
+
                 chkPermit.Checked = custom.IsPermitRequired;
                 chkHabitat.Checked = custom.IsHabitat;
                 lnkDownload.Text = custom.Attachment;
@@ -214,8 +296,13 @@ namespace JG_Prospect.Sr_App.Product_Line
             txtworkarea.Text = string.Empty;
             txtCustSupMaterial.Text = string.Empty;
             chkCustSupMaterial.Checked = false;
-            txtStorage.Text = string.Empty;
-            chkStorage.Checked = false;
+
+            ddlMaterialStorage.SelectedIndex = 0;
+            chkMaterialStorage.Checked = false;
+
+            ddlDumpStorageLocation.SelectedIndex = 0;
+            chkDumpStorageLocation.Checked = false;
+
             chkPermit.Checked = false;
             chkHabitat.Checked = false;
             lnkDownload.Visible = false;
@@ -315,8 +402,13 @@ namespace JG_Prospect.Sr_App.Product_Line
                     else { custom.Attachment = string.Empty; }
                     custom.CustSuppliedMaterial = txtCustSupMaterial.Text.Trim();
                     custom.IsCustSupMatApplicable = chkCustSupMaterial.Checked;
-                    custom.MaterialStorage = txtStorage.Text.Trim();
-                    custom.IsMatStorageApplicable = chkStorage.Checked;
+
+                    custom.MaterialStorage = ddlMaterialStorage.SelectedItem.Text;
+                    custom.DumpStorage = ddlDumpStorageLocation.SelectedItem.Text;
+
+                    custom.IsMatStorageApplicable = !chkMaterialStorage.Checked;
+                    custom.IsDumpStorageApplicable = !chkDumpStorageLocation.Checked;
+
                     custom.IsPermitRequired = chkPermit.Checked;
                     custom.IsHabitat = chkHabitat.Checked;
                     custom.Others = OtherText;
@@ -489,19 +581,23 @@ namespace JG_Prospect.Sr_App.Product_Line
             }
         }
 
-        protected void chkStorage_CheckedChanged(object sender, EventArgs e)
+        protected void chkDumpStorageLocation_CheckedChanged(object sender, EventArgs e)
         {
-            if (chkStorage.Checked == true)
-            {
-                txtStorage.Enabled = false;
-                txtStorage.Text = "";
-            }
+            ddlDumpStorageLocation.SelectedIndex = 0;
+            if (chkDumpStorageLocation.Checked == true)
+                ddlDumpStorageLocation.Enabled = false;
             else
-            {
-                txtStorage.Enabled = true;
-                txtStorage.Text = "";
-            }
+                ddlDumpStorageLocation.Enabled = true;
         }
 
+        protected void chkMaterialStorage_CheckedChanged(object sender, EventArgs e)
+        {
+            ddlMaterialStorage.SelectedIndex = 0;
+            if (chkMaterialStorage.Checked == true)
+                ddlMaterialStorage.Enabled = false;
+            else
+                ddlMaterialStorage.Enabled = true;
+        }
+        
     }
 }

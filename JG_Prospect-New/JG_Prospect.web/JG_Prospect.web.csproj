@@ -33,6 +33,7 @@
     <SccProvider>
     </SccProvider>
     <TargetFrameworkProfile />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,6 +45,8 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
+    <IncludeIisSettings>false</IncludeIisSettings>
+    <IncludeAppPool>false</IncludeAppPool>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -110,47 +113,51 @@
       <HintPath>..\..\..\..\iTextSharpProject\itextsharp-all-5.5.6\itextsharp-src-core\bin\Debug_woDrawing\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Office.Interop.Excel, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="Microsoft.Office.Interop.Word, Version=14.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Caching, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>\\ANWAR-PC\Users\Public\screen\Microsoft.Practices.EnterpriseLibrary.Caching.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>G:\office dlls\Office11\Microsoft.Office.Interop.Excel.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Caching.Database, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Office.Interop.Word, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>\\ANWAR-PC\Users\Public\screen\Microsoft.Practices.EnterpriseLibrary.Caching.Database.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>G:\office dlls\Office11\Microsoft.Office.Interop.Word.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Caching, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DLL\Microsoft.Practices.EnterpriseLibrary.Caching.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Caching.Database, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\DLL\Microsoft.Practices.EnterpriseLibrary.Caching.Database.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>\\ANWAR-PC\Users\Public\screen\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+      <HintPath>..\..\..\JM Grove\jmgrovebuildingsupply-master\jmgrovebuildingsupply-master\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>\\192.168.0.223\New1\Sandeep\JGP\JG_Prospect.web\bin\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
+      <HintPath>..\DLL\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data.SqlCe, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data.SqlCe, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>\\ANWAR-PC\Users\Public\screen\Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.dll</HintPath>
+      <HintPath>..\DLL\Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>\\ANWAR-PC\Users\Public\screen\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll</HintPath>
+      <HintPath>..\DLL\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>\\ANWAR-PC\Users\Public\screen\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging.dll</HintPath>
+      <HintPath>..\DLL\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Logging, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Logging, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>\\ANWAR-PC\Users\Public\screen\Microsoft.Practices.EnterpriseLibrary.Logging.dll</HintPath>
+      <HintPath>..\DLL\Microsoft.Practices.EnterpriseLibrary.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Logging.Database, Version=5.0.414.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Logging.Database, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>\\ANWAR-PC\Users\Public\screen\Microsoft.Practices.EnterpriseLibrary.Logging.Database.dll</HintPath>
+      <HintPath>..\DLL\Microsoft.Practices.EnterpriseLibrary.Logging.Database.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -209,6 +216,7 @@
     <Content Include="bin\Google.GData.Extensions.dll" />
     <Content Include="bin\Ionic.Zip.dll" />
     <Content Include="bin\itextsharp.dll" />
+    <Content Include="bin\JG_Prospect.Common.dll" />
     <Content Include="bin\Microsoft.Practices.EnterpriseLibrary.Caching.Database.dll" />
     <Content Include="bin\Microsoft.Practices.EnterpriseLibrary.Caching.dll" />
     <Content Include="bin\Microsoft.Practices.EnterpriseLibrary.Common.dll" />
@@ -220,6 +228,7 @@
     <Content Include="bin\Microsoft.Practices.ServiceLocation.dll" />
     <Content Include="bin\Microsoft.Practices.Unity.dll" />
     <Content Include="bin\Microsoft.Practices.Unity.Interception.dll" />
+    <Content Include="bin\Newtonsoft.Json.dll" />
     <Content Include="bin\Telerik.Web.UI.dll" />
     <Content Include="calendar\calendar.aspx" />
     <Content Include="calendar\calvis.js" />
@@ -234,6 +243,7 @@
     <Content Include="Controls\LeftMenu_home.ascx" />
     <Content Include="CreateUser.aspx" />
     <Content Include="css\jquery-ui.css" />
+    <Content Include="css\jquery.multiselect.css" />
     <Content Include="css\pgwslideshow.min.css" />
     <Content Include="CustomerDocs\LocationPics\017aaf2f-442b-4408-bfb6-4f9eb50edd95-Hydrangeas.jpg" />
     <Content Include="CustomerDocs\LocationPics\01cc5970-1d8a-43b8-9e44-ee8e8c00596d-Jellyfish.jpg" />
@@ -348,6 +358,28 @@
     <Content Include="CustomerDocs\LocationPics\f8a93f58-1447-40c6-9a5e-3ef1c6218430-Desert.jpg" />
     <Content Include="CustomerDocs\Pdfs\pdf.jpg" />
     <Content Include="CustomerDocs\Pdfs\wkhtmltopdf.exe" />
+    <Content Include="datetime\jq\jquery-1.9.0.min.js" />
+    <Content Include="datetime\jq\jquery.ui.core.min.js" />
+    <Content Include="datetime\jq\jquery.ui.position.min.js" />
+    <Content Include="datetime\jq\jquery.ui.tabs.min.js" />
+    <Content Include="datetime\jq\jquery.ui.timepicker.css" />
+    <Content Include="datetime\jq\jquery.ui.timepicker.js" />
+    <Content Include="datetime\jq\jquery.ui.widget.min.js" />
+    <Content Include="datetime\jq\ui-lightness\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
+    <Content Include="datetime\jq\ui-lightness\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
+    <Content Include="datetime\jq\ui-lightness\images\ui-bg_flat_10_000000_40x100.png" />
+    <Content Include="datetime\jq\ui-lightness\images\ui-bg_glass_100_f6f6f6_1x400.png" />
+    <Content Include="datetime\jq\ui-lightness\images\ui-bg_glass_100_fdf5ce_1x400.png" />
+    <Content Include="datetime\jq\ui-lightness\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="datetime\jq\ui-lightness\images\ui-bg_gloss-wave_35_f6a828_500x100.png" />
+    <Content Include="datetime\jq\ui-lightness\images\ui-bg_highlight-soft_100_eeeeee_1x100.png" />
+    <Content Include="datetime\jq\ui-lightness\images\ui-bg_highlight-soft_75_ffe45c_1x100.png" />
+    <Content Include="datetime\jq\ui-lightness\images\ui-icons_222222_256x240.png" />
+    <Content Include="datetime\jq\ui-lightness\images\ui-icons_228ef1_256x240.png" />
+    <Content Include="datetime\jq\ui-lightness\images\ui-icons_ef8c08_256x240.png" />
+    <Content Include="datetime\jq\ui-lightness\images\ui-icons_ffd27a_256x240.png" />
+    <Content Include="datetime\jq\ui-lightness\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="datetime\jq\ui-lightness\jquery-ui-1.10.0.custom.min.css" />
     <Content Include="fonts\barcodefont-demo.html" />
     <Content Include="fonts\barcodefont-webfont.svg" />
     <Content Include="fonts\generator_config.txt" />
@@ -455,10 +487,13 @@
     <Content Include="js\jquery-latest.js" />
     <Content Include="js\jquery-latest_old.js" />
     <Content Include="js\jquery-ui.js" />
+    <Content Include="js\Jquery.Actual.min.js" />
     <Content Include="js\jquery.datetimepicker.css" />
     <Content Include="js\jquery.datetimepicker.js" />
+    <Content Include="js\jquery.dd.min.js" />
     <Content Include="js\jquery.js" />
     <Content Include="js\jquery.MultiFile.js" />
+    <Content Include="js\jquery.multiselect.js" />
     <Content Include="js\jquery.ui.core.js" />
     <Content Include="Location_img\Jellyfish.jpg" />
     <Content Include="Location_img\Lighthouse.jpg" />
@@ -477,10 +512,12 @@
     <Content Include="Sr_App\CallSheet.aspx" />
     <Content Include="Sr_App\ConstructionCalendar.aspx" />
     <Content Include="Sr_App\ContractFooter.aspx" />
+    <Content Include="Sr_App\Controls\AddProductLinesControl.ascx" />
     <Content Include="Sr_App\CreateSalesUser.aspx" />
     <Content Include="Sr_App\Custom.aspx" />
     <Content Include="Sr_App\CustomerEmailTemplate.aspx" />
     <Content Include="Sr_App\Custom_MaterialList.aspx" />
+    <Content Include="Sr_App\EditEmailTemplate.aspx" />
     <Content Include="Sr_App\EditInstallUser.aspx" />
     <Content Include="Sr_App\EmailTemplateForVendorCategories.aspx" />
     <Content Include="Sr_App\EmailTemplateForVendors.aspx" />
@@ -491,25 +528,40 @@
     <Content Include="Sr_App\Gutter.aspx" />
     <Content Include="Sr_App\Gutter_Guards.aspx" />
     <Content Include="Sr_App\HRReports.aspx" />
+    <Content Include="Sr_App\img\black-astrek.png" />
+    <Content Include="Sr_App\img\dark-blue-astrek.png" />
     <Content Include="Sr_App\img\Email art header.png" />
+    <Content Include="Sr_App\img\green-astrek.png" />
     <Content Include="Sr_App\img\jmFooter.png" />
     <Content Include="Sr_App\img\jmFooterSmall.png" />
     <Content Include="Sr_App\img\JmHeaderNew.png" />
     <Content Include="Sr_App\img\Logo_BG.png" />
     <Content Include="Sr_App\img\Logo_BG_JPG.jpg" />
     <Content Include="Sr_App\img\main-header-bg.png" />
+    <Content Include="Sr_App\img\msdropdown\skin1\dd_arrow.gif" />
+    <Content Include="Sr_App\img\msdropdown\skin1\title-bg.gif" />
+    <Content Include="Sr_App\img\msdropdown\skin2\dd_arrow.gif" />
+    <Content Include="Sr_App\img\msdropdown\skin2\icon-ok.gif" />
+    <Content Include="Sr_App\img\msdropdown\skin2\title-bg.gif" />
+    <Content Include="Sr_App\img\purple-astrek.png" />
+    <Content Include="Sr_App\img\red-astrek.png" />
     <Content Include="Sr_App\img\SubmitButton.png" />
+    <Content Include="Sr_App\img\white-astrek.png" />
+    <Content Include="Sr_App\img\yellow-astrek.png" />
     <Content Include="Sr_App\InstallCreateProspect.aspx" />
     <Content Include="Sr_App\InstallCreateUser.aspx" />
     <Content Include="Sr_App\InstallCreateUser2.aspx" />
+    <Content Include="Sr_App\Inventory.aspx" />
     <Content Include="Sr_App\JMGroveCONTRACT-%28email-version%29.html" />
     <Content Include="Sr_App\Maintenace.aspx" />
     <Content Include="Sr_App\MasterAppointment.aspx" />
+    <Content Include="Sr_App\OverheadExp.aspx" />
     <Content Include="Sr_App\Procurement.aspx" />
     <Content Include="Sr_App\r.aspx" />
     <Content Include="Sr_App\s.aspx" />
     <Content Include="Sr_App\ShowResources.aspx" />
     <Content Include="Sr_App\shutter-work-order.html" />
+    <Content Include="Sr_App\skuImages\ic-nav.png" />
     <Content Include="Sr_App\Soffit.aspx" />
     <Content Include="Sr_App\Sold_popup.aspx" />
     <Content Include="Sr_App\SrAnnualCalendar.aspx" />
@@ -724,6 +776,7 @@
     <Content Include="Sr_App\Vendors.aspx" />
     <Content Include="Sr_App\video.aspx" />
     <Content Include="StaticReport.aspx" />
+    <Content Include="Styles\dd.css" />
     <Content Include="Styles\Site.css" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\jquery-1.4.1-vsdoc.js" />
@@ -763,6 +816,7 @@
     <Compile Include="AddResourcesJr.aspx.designer.cs">
       <DependentUpon>AddResourcesJr.aspx</DependentUpon>
     </Compile>
+    <Content Include="App_Code\DropDownListAdapter.cs" />
     <Compile Include="App_Code\PDFCheckBoxFieldType.cs" />
     <Compile Include="App_Code\PDFFieldType.cs" />
     <Compile Include="App_Code\PDFHelper.cs" />
@@ -950,6 +1004,13 @@
     <Compile Include="Sr_App\ContractFooter.aspx.designer.cs">
       <DependentUpon>ContractFooter.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Sr_App\Controls\AddProductLinesControl.ascx.cs">
+      <DependentUpon>AddProductLinesControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Sr_App\Controls\AddProductLinesControl.ascx.designer.cs">
+      <DependentUpon>AddProductLinesControl.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Sr_App\CreateSalesUser.aspx.cs">
       <DependentUpon>CreateSalesUser.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -978,6 +1039,13 @@
     </Compile>
     <Compile Include="Sr_App\Custom_MaterialList.aspx.designer.cs">
       <DependentUpon>Custom_MaterialList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Sr_App\EditEmailTemplate.aspx.cs">
+      <DependentUpon>EditEmailTemplate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Sr_App\EditEmailTemplate.aspx.designer.cs">
+      <DependentUpon>EditEmailTemplate.aspx</DependentUpon>
     </Compile>
     <Compile Include="Sr_App\EditInstallUser.aspx.cs">
       <DependentUpon>EditInstallUser.aspx</DependentUpon>
@@ -1070,6 +1138,13 @@
     <Compile Include="Sr_App\InstallCreateUser2.aspx.designer.cs">
       <DependentUpon>InstallCreateUser2.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Sr_App\Inventory.aspx.cs">
+      <DependentUpon>Inventory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Sr_App\Inventory.aspx.designer.cs">
+      <DependentUpon>Inventory.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Sr_App\Maintenace.aspx.cs">
       <DependentUpon>Maintenace.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1083,6 +1158,13 @@
     </Compile>
     <Compile Include="Sr_App\MasterAppointment.aspx.designer.cs">
       <DependentUpon>MasterAppointment.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Sr_App\OverheadExp.aspx.cs">
+      <DependentUpon>OverheadExp.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Sr_App\OverheadExp.aspx.designer.cs">
+      <DependentUpon>OverheadExp.aspx</DependentUpon>
     </Compile>
     <Compile Include="Sr_App\Procurement.aspx.cs">
       <DependentUpon>Procurement.aspx</DependentUpon>
@@ -1471,6 +1553,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="CustomerDocs\Maps\" />
+    <Folder Include="CustomerDocs\MaterialListAttachment\" />
     <Folder Include="CustomerDocs\VendorQuotes\" />
     <Folder Include="InvoicePdf\" />
     <Folder Include="Sr_App\MailDocument\" />
@@ -1480,6 +1563,7 @@
     <Content Include="JG.Master" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Browsers\BrowserFile.browser" />
     <None Include="css\notes\screen.css.mno" />
     <Content Include="fonts\barcodefont-webfont.eot" />
     <Content Include="fonts\barcodefont-webfont.ttf" />
@@ -1545,9 +1629,9 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>False</AutoAssignPort>
-          <DevelopmentServerPort>61394</DevelopmentServerPort>
+          <DevelopmentServerPort>61396</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost/JG_Prospect.web</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

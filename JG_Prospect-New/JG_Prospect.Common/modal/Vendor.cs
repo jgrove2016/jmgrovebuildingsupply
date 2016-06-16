@@ -28,5 +28,13 @@ namespace JG_Prospect.Common.modal
         public string ContactExten;
         public DataTable tblVendorEmail;
         public DataTable tblVendorAddress;
+        public string Vendrosource;
+        public Nullable<int> AddressID;
+        public string PaymentTerms;
+        public string PaymentMethod;
+        public string TempID;
+        public string NotesTempID;
+        public string VendorCategories;
+        public string VendorSubCategories;
     }
 }

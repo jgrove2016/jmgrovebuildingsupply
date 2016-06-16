@@ -95,19 +95,9 @@ D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\JG_Prospect-
 D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\JG_Prospect-New\JG_Prospect-New\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.csprojResolveAssemblyReference.cache
 D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\JG_Prospect.Common.dll
 D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\JG_Prospect.Common.pdb
-D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Caching.Database.dll
-D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Caching.dll
-D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
-D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
-D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.dll
-D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll
-D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging.dll
-D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.Database.dll
-D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll
 D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.ServiceLocation.dll
 D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.Unity.dll
 D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.Unity.Interception.dll
-D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.csprojResolveAssemblyReference.cache
 D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.dll
 D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.pdb
 D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\Git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\JG_Prospect.Common.dll
@@ -124,6 +114,57 @@ D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\Git\jmgroveb
 D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\Git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.ServiceLocation.dll
 D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\Git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.Unity.dll
 D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\Git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.Unity.Interception.dll
+D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\Git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.csprojResolveAssemblyReference.cache
 D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\Git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.dll
 D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\Git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.pdb
-D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\Git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.csprojResolveAssemblyReference.cache
+D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.csprojResolveAssemblyReference.cache
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\JG_Prospect.Common.dll
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\JG_Prospect.Common.pdb
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.dll
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging.dll
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.Database.dll
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.Unity.dll
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.Unity.Interception.dll
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.dll
+D:\.Net Projects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.pdb
+D:\Personal\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.csprojResolveAssemblyReference.cache
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\JG_Prospect.Common.dll
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\JG_Prospect.Common.pdb
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.dll
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging.dll
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.Database.dll
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.Unity.dll
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.Unity.Interception.dll
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.csprojResolveAssemblyReference.cache
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.dll
+D:\NetProjects\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.pdb
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\JG_Prospect.Common.dll
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\JG_Prospect.Common.pdb
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.dll
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.dll
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging.dll
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.Database.dll
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.Unity.dll
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.Unity.Interception.dll
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.dll
+E:\JGGrove\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.pdb
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\JG_Prospect.Common.dll
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\JG_Prospect.Common.pdb
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.Unity.dll
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.Unity.Interception.dll
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.csprojResolveAssemblyReference.cache
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.dll
+D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.pdb

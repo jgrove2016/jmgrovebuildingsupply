@@ -31,6 +31,7 @@ namespace JG_Prospect.Common.modal
         public bool IsPermitRequired{ get; set; }
         public bool IsHabitat { get; set; }
         public int ProductId { get; set; }
-
+        public bool IsDumpStorageApplicable { get; set; }
+        public string DumpStorage { get; set; }
     }
 }

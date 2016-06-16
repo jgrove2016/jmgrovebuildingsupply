@@ -1,0 +1,25 @@
+
+
+/****** Object:  Table [dbo].[tbl_Vendor_VendorCat]    Script Date: 03/11/2016 17:54:01 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tbl_Vendor_VendorCat]') AND type in (N'U'))
+DROP TABLE [dbo].[tbl_Vendor_VendorCat]
+GO
+
+
+/****** Object:  Table [dbo].[tbl_Vendor_VendorCat]    Script Date: 03/11/2016 17:54:01 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[tbl_Vendor_VendorCat](
+	[VendorId] [int] NULL,
+	[VendorCatId] [int] NULL
+) ON [PRIMARY]
+
+GO
+
+
+
+

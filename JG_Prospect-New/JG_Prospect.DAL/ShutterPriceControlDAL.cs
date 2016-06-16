@@ -15,13 +15,16 @@ namespace JG_Prospect.DAL
         private ShutterPriceControlDAL()
         {
         }
+
+
+
         public static ShutterPriceControlDAL Instance
         {
             get { return m_ShutterPriceControlDAL; }
             set { ;}
         }
         private DataSet DS = new DataSet();
-       
+
         public DataSet fetchshutterdetails()
         {
             try
@@ -40,6 +43,41 @@ namespace JG_Prospect.DAL
                 return null;
             }
         }
+    
+        public static bool InsertTransaction(string ccNumber, string ccSecurityCode, string ccFirstName, string ccLastName, string ExpirationDate, decimal ccPriceValue, bool ccStatus, string ccMessage, string ccResponse, string ccRequest, int CustomerId, int ProductId, string AuthorizationCode, string PaylineTransectionId, string pSoldJobID)
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DataSet DS = new DataSet();
+                    DbCommand cm = database.GetStoredProcCommand("InsertTransaction");
+                    cm.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(cm, "@ccNumber", DbType.String, ccNumber);
+                    database.AddInParameter(cm, "@ccSecurityCode", DbType.String, ccSecurityCode);
+                    database.AddInParameter(cm, "@ccFirstName", DbType.String, ccFirstName);
+                    database.AddInParameter(cm, "@ccLastName", DbType.String, ccLastName);
+                    database.AddInParameter(cm, "@ExpirationDate", DbType.Int32, ExpirationDate);
+                    database.AddInParameter(cm, "@ccPriceValue", DbType.Int32, ccPriceValue);
+                    database.AddInParameter(cm, "@ccStatus", DbType.Byte, ccStatus);
+                    database.AddInParameter(cm, "@ccMessage", DbType.String, ccMessage);
+                    database.AddInParameter(cm, "@ccResponse", DbType.String, ccResponse);
+                    database.AddInParameter(cm, "@ccRequest", DbType.String, ccRequest);
+                    database.AddInParameter(cm, "@CustomerId", DbType.Int32, CustomerId);
+                    database.AddInParameter(cm, "@ProductId", DbType.Int32, ProductId);
+                    database.AddInParameter(cm, "@AuthorizationCode", DbType.String, AuthorizationCode);
+                    database.AddInParameter(cm, "@PaylineTransectionId", DbType.String, PaylineTransectionId);
+                    database.AddInParameter(cm, "@SoldJobID", DbType.String, pSoldJobID);
+                    DS = database.ExecuteDataSet(cm);
+                    return true;
+                }
+            }
+            catch 
+            {
+                return false;
+            }
+        }
+
         public DataSet fetchtopshutterdetails()
         {
             try

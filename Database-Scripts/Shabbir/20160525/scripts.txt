@@ -1,0 +1,270 @@
+IF NOT EXISTS(SELECT * FROM sys.columns WHERE Name = N'SoldJobID' AND Object_ID = Object_ID(N'PaylineTransaction'))
+BEGIN
+	ALTER TABLE dbo.PaylineTransaction ADD SoldJobID VARCHAR(15) NULL
+END
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_GetEmails]    Script Date: 26-05-2016 13:24:03 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_GetEmails]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_GetEmails]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_GetEmails]    Script Date: 26-05-2016 13:24:03 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_GetEmails]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[USP_GetEmails] AS' 
+END
+GO
+
+
+
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+ALTER PROCEDURE [dbo].[USP_GetEmails] 
+(
+	@Id int = 0
+)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+    -- Insert statements for procedure here
+	--Original SP
+	--SELECT AdditionalEmail,Email,DateOfBirth FROM [dbo].[new_customer]
+	--WHERE id = @id
+
+	--Altered
+	SELECT Email,AdditionalEmail,DateOfBirth, ISNULL(CustomerAddress, '') AS CustomerAddress, ISNULL(ZipCode, '') AS ZipCode, ISNULL(State, '') AS State, ISNULL(City,'') AS City FROM [dbo].[new_customer]
+	WHERE id = @id
+END
+
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[InsertTransaction]    Script Date: 26-05-2016 13:24:55 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[InsertTransaction]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[InsertTransaction]
+GO
+
+/****** Object:  StoredProcedure [dbo].[InsertTransaction]    Script Date: 26-05-2016 13:24:55 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[InsertTransaction]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[InsertTransaction] AS' 
+END
+GO
+
+
+
+
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+ALTER PROCEDURE [dbo].[InsertTransaction] 
+	-- Add the parameters for the stored procedure here
+	@ccNumber varchar(max),
+	@ccSecurityCode varchar(max),
+	@ccFirstName varchar(100),
+	@ccLastName varchar(100),
+	@ExpirationDate int,
+	@ccPriceValue money,
+	@ccStatus bit,
+	@ccMessage varchar(50),
+	@ccResponse varchar(max),
+	@ccRequest varchar(max),
+	@CustomerId INT,
+	@ProductId INT,
+	@AuthorizationCode VARCHAR(max),
+	@PaylineTransectionId VARCHAR(max),
+	@SoldJobID VARCHAR(15)
+
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	insert into PaylineTransaction values(@ccNumber,@ccSecurityCode,@ccFirstName,@ccLastName,
+	@ExpirationDate,@ccPriceValue,@ccStatus,@ccMessage,@ccResponse,@ccRequest,@CustomerId,
+	@ProductId,GETDATE(),@AuthorizationCode,@PaylineTransectionId,@SoldJobID)
+END
+
+
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[UDP_GetSoldjobsforprocurement]    Script Date: 26-05-2016 13:26:25 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UDP_GetSoldjobsforprocurement]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[UDP_GetSoldjobsforprocurement]
+GO
+
+/****** Object:  StoredProcedure [dbo].[UDP_GetSoldjobsforprocurement]    Script Date: 26-05-2016 13:26:25 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UDP_GetSoldjobsforprocurement]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[UDP_GetSoldjobsforprocurement] AS' 
+END
+GO
+
+
+ALTER Proc [dbo].[UDP_GetSoldjobsforprocurement]
+As 
+Begin
+
+	declare @SoldJobId varchar(100),@ProductIdCustom int =0,@ProductIdShutter int =0
+	set nocount on;
+	SELECT @ProductIdShutter = ProductId FROM tblProductMaster WHERE ProductName ='Shutters'
+
+	create table #tempJobs
+			(id smallint identity(1,1),JobSequenceId int,SoldDate datetime, CustomerId varchar(50), LastName varchar(50),SoldJob# varchar(50),Category nvarchar(500),[Status] varchar(100),ProductId int,MaterialList varchar(100),ProductTypeId int,StatusId int,Disable bit,Reason VARCHAR(MAX), ForemanApproverID INT, ForemanUserName varchar(80), SrSalesFApproverID INT, SalesUserName varchar(80), AdminApproverID INT, AdminUserName varchar(80), TotalPrice Decimal(18,2), TotalPaid Decimal(18,2))
+	declare @temp table(id int identity(1,1),soldJobId varchar(100))
+	insert into @temp(soldJobId) select distinct SoldJobId from tblJobSequence 
+	
+--SELECT @ProductIdCustom = ProductId FROM tblProductMaster WHERE ProductName ='Custom'
+	--SELECT @ProductIdShutter = ProductId FROM tblProductMaster WHERE ProductName ='Shutters'
+	declare @counter int=1
+	while (@counter<=(select MAX(id) from @temp))
+	begin
+	declare @productId int,@estimateId int 
+	declare @pSoldjobid varchar(100);
+	
+	
+	select @pSoldjobid=soldJobId from @temp where id=@counter
+	select @productId=ProductId,@estimateId=EstimateId from tblJobSequence where Id=(
+	select min(Id) from tblJobSequence where SoldJobId=(select soldJobId from @temp where id=@counter))
+	DECLARE @TotalPaid Decimal(18,2) 
+	Select @TotalPaid = isnull(sum(Amount),0) from PaylineTransaction Where SoldJobID = @pSoldjobid
+		if(@productId=1)
+		begin
+			insert into #tempJobs
+			
+			select  js.Id as JobSequenceId, js.CreatedOn as 'SoldDate'
+				,'C' + CAST(a.CustomerId as varchar) as 'CustomerId' ,
+				(b.CustomerName+' '+b.LastName) as 'LastName',
+				SUBSTRING(js.SoldJobId,CHARINDEX('SJ',js.SoldJobId),LEN(js.SoldJobId)) as 'SoldJob#',
+				'Shutter' as Category,
+				(case when (a.[Status] like 'Sold%' ) then 'Material Confirmation(1)' 
+				when (a.[Status] like 'Procurring%' ) then 'Procurring Quotes(2)' 
+				when (a.[Status] like 'Ordered%' ) then 'Ordered(3)' 
+				else a.[Status]
+				end) AS 'Status'
+				,a.Id as [ProductId], 
+				js.SoldJobId + ' '+ 'Material List' as 'MaterialList'
+				,1 as [ProductTypeId]
+				,(select StatusId from tblStatusMaster where StatusName like a.[Status]+'%') as StatusId
+				,b.Disable
+				,(b.Email  + CHAR(13) +  b.Reason) as Reason, 
+				ISNULL(Foreman.ForemanApproverID, '0') AS ForemanApproverID, ISNULL(Foreman.Username, '') AS ForeManUserName,
+				ISNULL(SLS.SrSalesFApproverID, '0') AS SrSalesFApproverID, ISNULL(SLS.Username, '') AS SalesUserName,
+				ISNULL(ADM.AdminApproverID, '0') AS AdminApproverID, ISNULL(ADM.Username, '') AS AdminUserName,
+				a.TotalPrice, @TotalPaid
+				--,(SELECT Disable FROM new_customer WHERE id = a.[CustomerId]) as Disable
+			from tblShuttersEstimate a
+				inner join new_customer b on a.CustomerId = b.id
+				inner join tblJobSequence js on a.CustomerId =js.CustomerId  and js.EstimateId =a.Id and js.ProductId =@ProductIdShutter 
+				Left Outer Join (Select top 1 ForemanApproverID,  U.UserName, SoldJobId
+									from tblCustom_MaterialList CM
+									INNER JOIN tblUsers U ON CM.ForemanApproverID = U.ID WHERE SoldJobId = @pSoldjobid
+								) Foreman ON Foreman.SoldJobId = js.SoldJobId
+				Left Outer Join (Select top 1 SrSalesFApproverID, U.UserName, SoldJobId
+									from tblCustom_MaterialList CM
+									INNER JOIN tblUsers U ON CM.SrSalesFApproverID = U.ID WHERE SoldJobId = @pSoldjobid
+								) SLS ON SLS.SoldJobId = js.SoldJobId
+				Left Outer Join (Select top 1 AdminApproverID ,U.UserName, SoldJobId
+									from tblCustom_MaterialList CM
+									INNER JOIN tblUsers U ON CM.AdminApproverID = U.ID WHERE SoldJobId = @pSoldjobid
+								) ADM ON ADM.SoldJobId = js.SoldJobId
+
+			where  (a.[Status] like 'Sold%' 
+				or a.[Status] like 'Procurring%' 
+				or a.[Status] like 'Ordered%' 
+				or a.[Status] like 'Received “storage location?”' 
+				or a.[Status] like 'On Standby @ vendor link to vendor profile'
+				or a.[Status] like 'Being delivered to job site') and js.SoldJobId=(select soldJobId from @temp where id=@counter)
+				and a.Id=@estimateId
+		end
+		else
+		begin
+			insert into #tempJobs
+		
+			select  js.Id as JobSequenceId,js.CreatedOn as 'SoldDate'
+				,'C' + CAST(c.CustomerId as varchar) as 'CustomerId' ,
+				(b.CustomerName+' '+b.LastName) as 'LastName',
+				SUBSTRING(js.SoldJobId,CHARINDEX('SJ',js.SoldJobId),LEN(js.SoldJobId))as 'SoldJob#',
+				(select ProductName from tblProductMaster where ProductId=c.ProductTypeIdFrom) as Category,
+				(case when (c.[Status] like 'Sold%' ) then 'Material Confirmation(1)' 
+				when (c.[Status] like 'Procurring%' ) then 'Procurring Quotes(2)' 
+				when (c.[Status] like 'Ordered%' ) then 'Ordered(3)' 
+				else	 c.[Status]
+				end) AS 'Status'
+				,c.Id as [ProductId] , 
+				js.SoldJobId + ' '+ 'Material List' as 'MaterialList'
+				,c.ProductTypeIdFrom as [ProductTypeId]
+				,(select StatusId from tblStatusMaster where StatusName like c.[Status]+'%') as StatusId
+				,b.Disable
+				,(b.Email  + CHAR(13) +  b.Reason) as Reason, 
+				ISNULL(Foreman.ForemanApproverID, '0') AS ForemanApproverID, ISNULL(Foreman.Username, '') AS ForeManUserName,
+				ISNULL(SLS.SrSalesFApproverID, '0') AS SrSalesFApproverID, ISNULL(SLS.Username, '') AS SalesUserName,
+				ISNULL(ADM.AdminApproverID, '0') AS AdminApproverID, ISNULL(ADM.Username, '') AS AdminUserName,
+				c.ProposalCost AS TotalPrice, @TotalPaid
+			from tblCustom c
+				inner join new_customer b on c.CustomerId = b.id
+				inner join tblJobSequence js on c.CustomerId =js.CustomerId  and js.EstimateId =c.Id and js.ProductId !=@ProductIdShutter  --js.ProductId =@ProductIdCustom 
+				Left Outer Join (Select top 1 ForemanApproverID,  U.UserName, SoldJobId
+									from tblCustom_MaterialList CM
+									INNER JOIN tblUsers U ON CM.ForemanApproverID = U.ID WHERE SoldJobId = @pSoldjobid
+								) Foreman ON Foreman.SoldJobId = js.SoldJobId
+				Left Outer Join (Select top 1  SrSalesFApproverID, U.UserName, SoldJobId
+									from tblCustom_MaterialList CM
+									INNER JOIN tblUsers U ON CM.SrSalesFApproverID = U.ID WHERE SoldJobId = @pSoldjobid
+								) SLS ON SLS.SoldJobId = js.SoldJobId
+				Left Outer Join (Select top 1  AdminApproverID ,U.UserName, SoldJobId
+									from tblCustom_MaterialList CM
+									INNER JOIN tblUsers U ON CM.AdminApproverID = U.ID WHERE SoldJobId = @pSoldjobid
+								) ADM ON ADM.SoldJobId = js.SoldJobId
+			where  (c.[Status] like 'Sold%' 
+				or c.[Status] like 'Procurring%' 
+				or c.[Status] like 'Ordered%' 
+				or c.[Status] like 'Received “storage location?”' 
+				or c.[Status] like 'On Standby @ vendor link to vendor profile'
+				or c.[Status] like 'Being delivered to job site') and js.SoldJobId=(select soldJobId from @temp where id=@counter)
+				and c.Id=@estimateId
+		end
+
+		set @counter+=1
+	end
+	SELECt t.id,t.JobSequenceId,t.SoldDate,t.CustomerId,t.LastName,t.SoldJob#,t.Category,t.[Status],t.ProductId,t.MaterialList,t.ProductTypeId,t.StatusId,t.Disable,t.Reason,SM.StatusName,PM.ProductName,
+	t.ForemanApproverID, t.ForemanUserName, t.SrSalesFApproverID, t.SalesUserName, t.AdminApproverID, t.AdminUserName, t.TotalPrice, t.TotalPaid
+	from #tempJobs t LEFT JOIN tblStatusMaster SM ON SM.StatusId = t.StatusId LEFT JOIN tblProductMaster PM ON PM.ProductId = t.ProductTypeId order by t.SoldDate desc
+	--select * from #tempJobs order by SoldDate desc
+	drop table #tempJobs
+End
+
+
+--exec [UDP_GetSoldjobsforprocurement]
+
+
+GO

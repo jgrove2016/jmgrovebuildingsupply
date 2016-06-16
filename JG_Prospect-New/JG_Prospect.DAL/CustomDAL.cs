@@ -97,12 +97,14 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@UOM", DbType.String, cm.UOM);
                     //database.AddInParameter(command, "@VendorQuotesPath"	varchar(MAX) = '',
                     database.AddInParameter(command, "@MaterialCost", DbType.Decimal, cm.MaterialCost);
-                    database.AddInParameter(command, "@extend", DbType.String, cm.extend);
+                    database.AddInParameter(command, "@extend", DbType.Double, cm.extend);
                     database.AddInParameter(command, "@Total", DbType.Decimal, cm.Total);
                     database.AddInParameter(command, "@JobSeqId", DbType.Int32, cm.JobSeqId);
                     database.AddInParameter(command, "@VendorIds", DbType.String, cm.VendorIds);
                     database.AddInParameter(command, "@Visible", DbType.String, cm.DisplaDLL);
                     database.AddInParameter(command, "@ID", DbType.String, cm.Id);
+                    database.AddInParameter(command, "@InstallerID", DbType.String, cm.InstallerID);
+                    database.AddInParameter(command, "@RequestStatus", DbType.String, cm.RequestStatus);
 
 
                     //database.AddInParameter(command, "@productId", DbType.Int16, productTypeId);
@@ -232,6 +234,59 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@emailStatus", DbType.String, emailStatus);
                     //database.AddInParameter(command, "@productId", DbType.Int16, productTypeId);
                     //database.AddInParameter(command, "@estimateId", DbType.Int16, estimateId);
+
+                    result = database.ExecuteNonQuery(command);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return result > JGConstant.RETURN_ZERO ? JGConstant.RETURN_TRUE : JGConstant.RETURN_FALSE;
+        }
+
+        public bool UpdateEmailStatusOfCustomMaterialList(string jobid, Int32 pProdCatID, string emailStatus)//, int productTypeId, int estimateId)
+        {
+            int result = JGConstant.RETURN_ZERO;
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("UDP_UpdateEmailStatusOfCustomMaterialList");
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    database.AddInParameter(command, "@soldJobId", DbType.String, jobid);
+                    database.AddInParameter(command, "@emailStatus", DbType.String, emailStatus);
+                  //  database.AddInParameter(command, "@ProdCatID", DbType.Int16, pProdCatID);
+                   // database.AddOutParameter(command, "@result", DbType.Int16, result);
+
+                    result = database.ExecuteNonQuery(command);
+                   // result = Convert.ToInt16(database.GetParameterValue(command, "@result"));
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return result > JGConstant.RETURN_ZERO ? JGConstant.RETURN_TRUE : JGConstant.RETURN_FALSE;
+        }
+
+        public bool UpdateStatusOfJobProdCat(string jobid, int prodCatID, string emailStatus)
+        {
+            int result = JGConstant.RETURN_ZERO;
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_UpdateCustomMaterialList");
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    database.AddInParameter(command, "@JobID", DbType.String, jobid);
+                    database.AddInParameter(command, "@EmailStatus", DbType.String, emailStatus);
+                    database.AddInParameter(command, "@ProdCatID", DbType.Int16, prodCatID);
+                    
 
                     result = database.ExecuteNonQuery(command);
                 }
@@ -469,6 +524,31 @@ namespace JG_Prospect.DAL
             return result;
         }
 
+        public int CheckPermissionsForVendorsByProdCat(string jobid, int pProdCatID)//, int productTypeId, int estimateId)
+        {
+            int result = JGConstant.RETURN_ZERO;
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_CheckPermissionsForVendorsByProdCat");
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    database.AddInParameter(command, "@soldJobId", DbType.String, jobid);
+                    database.AddOutParameter(command, "@result", DbType.Int16, result);
+                    database.AddInParameter(command, "@prodcatid", DbType.Int16, pProdCatID);
+                    database.ExecuteNonQuery(command);
+                    result = Convert.ToInt16(database.GetParameterValue(command, "@result"));
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return result;
+        }
+
         public int CheckPermissionsForCategories(string jobid)//, int productTypeId, int estimateId)
         {
             int result = JGConstant.RETURN_ZERO;
@@ -484,6 +564,30 @@ namespace JG_Prospect.DAL
                     //database.AddInParameter(command, "@productId", DbType.Int16, productTypeId);
                     //database.AddInParameter(command, "@estimateId", DbType.Int16, estimateId);
 
+                    database.ExecuteNonQuery(command);
+                    result = Convert.ToInt16(database.GetParameterValue(command, "@result"));
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return result;
+        }
+        public int CheckPermissionsForCategories(string jobid, int pProductCatID)
+        {
+            int result = JGConstant.RETURN_ZERO;
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("UDP_CheckPermissionsForCategoriesOfProductCat");
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    database.AddInParameter(command, "@soldJobId", DbType.String, jobid);
+                    database.AddInParameter(command, "@productCatId", DbType.Int32, pProductCatID);
+                    database.AddOutParameter(command, "@result", DbType.Int16, result);
                     database.ExecuteNonQuery(command);
                     result = Convert.ToInt16(database.GetParameterValue(command, "@result"));
                 }
@@ -738,6 +842,23 @@ namespace JG_Prospect.DAL
             }
             return lListOfCustomMaterial;
         }
+
+        public DataSet GetRequestMaterialList(string jobId, int pCustomerID, int pInstallerID)
+        {
+            DataSet lListOfCustomMaterial = new DataSet();
+            SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+            {
+
+                DbCommand command = database.GetStoredProcCommand("USP_GetRequestMaterialList");
+                command.CommandType = CommandType.StoredProcedure;
+                database.AddInParameter(command, "@soldJobId", DbType.String, jobId);
+                database.AddInParameter(command, "@customerID", DbType.String, pCustomerID);
+                database.AddInParameter(command, "@InstallerID", DbType.String, pInstallerID);
+                
+                lListOfCustomMaterial = database.ExecuteDataSet(command);
+            }
+            return lListOfCustomMaterial;
+        }
        
         public Customs GetCustomDetail(Customs custom)
         {
@@ -898,6 +1019,236 @@ namespace JG_Prospect.DAL
             }
 
             return result;
+        }
+        public bool AddInstallerToMaterialList(String pSoldJobID, Int32 pInstallerID)
+        {
+            Int32 lRecordExisted = 0;
+            SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+            {
+                DbCommand command = database.GetStoredProcCommand("usp_AddInstallerToCustomMaterial");
+                command.CommandType = CommandType.StoredProcedure;
+
+                database.AddInParameter(command, "@InstallerID", DbType.Int32, pInstallerID);
+                database.AddInParameter(command, "@SoldJobID", DbType.String, pSoldJobID);
+                database.AddOutParameter(command, "@RecordExisted", DbType.Int32, lRecordExisted);
+                database.ExecuteNonQuery(command);
+            }
+            return (lRecordExisted != 1);
+        }
+
+        public Int32 UpdateInstallerPrmToMaterialList(String pSoldJobID, Int32 pInstallerID, String pInstallerPwd)
+        {
+            Int16 lPasswordCrt = -1;
+            SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+            {
+                DbCommand command = database.GetStoredProcCommand("usp_approveInstallerRequest");
+                command.CommandType = CommandType.StoredProcedure;
+                database.AddInParameter(command, "@InstallerID", DbType.Int32, pInstallerID);
+                database.AddInParameter(command, "@SoldJobID", DbType.String, pSoldJobID);
+                database.AddInParameter(command, "@InstallerPwd", DbType.String, pInstallerPwd);
+                database.AddOutParameter(command, "@PasswordCrt", DbType.Int32, lPasswordCrt);
+                database.ExecuteNonQuery(command);
+                lPasswordCrt = Convert.ToInt16(database.GetParameterValue(command, "@PasswordCrt"));
+            }
+            return lPasswordCrt;
+        }
+
+        public void RemoveInstallerFromMaterialList(Int32 ID)
+        {
+            SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+            {
+                DbCommand command = database.GetStoredProcCommand("usp_DeleteInstallerFromMaterialList");
+                command.CommandType = CommandType.StoredProcedure;
+                database.AddInParameter(command, "@ID", DbType.Int32, ID);
+                database.ExecuteNonQuery(command);
+            }
+        }
+        public void UpdateVendorIDs(String pVendorIDs, Int32 pProductCatID, String pExcludedMaterialListID, String pSoldJobID)
+        {
+            SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+            {
+                DbCommand command = database.GetStoredProcCommand("USP_SaveVendorIDs");
+                command.CommandType = CommandType.StoredProcedure;
+                database.AddInParameter(command, "@ExcMaterialListId", DbType.String, pExcludedMaterialListID);
+                database.AddInParameter(command, "@ProductCatID", DbType.Int32, pProductCatID);
+                database.AddInParameter(command, "@VendorIDs", DbType.String, pVendorIDs);
+                database.AddInParameter(command, "@SoldJobID", DbType.String, pSoldJobID);
+                database.ExecuteNonQuery(command);
+            }
+        }
+
+        public void AssociateVendorToCat(String pVendorIDs, Int32 pProductCatID, Int32 pProdLineID, String pSoldJobID)
+        {
+            SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+            {
+                DbCommand command = database.GetStoredProcCommand("USP_SaveProductLineVendors");
+                command.CommandType = CommandType.StoredProcedure;
+                database.AddInParameter(command, "@ProductCatID", DbType.Int32, pProductCatID);
+                database.AddInParameter(command, "@ProdLineID", DbType.Int32, pProdLineID);
+                database.AddInParameter(command, "@VendorIDs", DbType.String, pVendorIDs);
+                database.AddInParameter(command, "@SoldJobID", DbType.String, pSoldJobID);
+                database.ExecuteNonQuery(command);
+            }
+        }
+
+
+        public void UpdateVendorForPO(Int32 pVendorID, Int32 pProductCatID, Int32 pProdLineID, String pSoldJobID)
+        {
+            SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+            {
+                DbCommand command = database.GetStoredProcCommand("USP_UpdatePOVendor");
+                command.CommandType = CommandType.StoredProcedure;
+                database.AddInParameter(command, "@ProductLineID", DbType.Int32, pProdLineID);
+                database.AddInParameter(command, "@ProductCatID", DbType.Int32, pProductCatID);
+                database.AddInParameter(command, "@VendorID", DbType.Int32, pVendorID);
+                database.AddInParameter(command, "@SoldJobID", DbType.String, pSoldJobID);
+                database.ExecuteNonQuery(command);
+            }
+        }
+
+        public void UpdateDefaultVendorsInProdLine(Boolean pDefaultVendor, Int32 pProductCatID, Int32 pProdLineID, String pSoldJobID)
+        {
+            SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+            {
+                DbCommand command = database.GetStoredProcCommand("USP_UpdateDefaultVendorinProdLine");
+                command.CommandType = CommandType.StoredProcedure;
+                database.AddInParameter(command, "@ProductLineID", DbType.Int32, pProdLineID);
+                database.AddInParameter(command, "@ProductCatID", DbType.Int32, pProductCatID);
+                database.AddInParameter(command, "@DefaultVendor", DbType.Boolean, pDefaultVendor);
+                database.AddInParameter(command, "@SoldJobID", DbType.String, pSoldJobID);
+                database.ExecuteNonQuery(command);
+            }
+        }
+
+        public void UpdateSpecificProductLine(string pFieldName, String pFieldValue, Int32 pID, String pSoldJobID)
+        {
+            SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+            {
+                DbCommand command = database.GetStoredProcCommand("USP_UpdateSpecificProductLine");
+                command.CommandType = CommandType.StoredProcedure;
+                database.AddInParameter(command, "@FieldName", DbType.String, pFieldName);
+                database.AddInParameter(command, "@Value", DbType.String, pFieldValue);
+                database.AddInParameter(command, "@ID", DbType.Int32, pID);
+                database.AddInParameter(command, "@SoldJobID", DbType.String, pSoldJobID);
+                database.ExecuteNonQuery(command);
+            }
+        }
+        public void UpdateSpecificPaymentDetails(string pFieldName, String pFieldValue, Int32 pProdCatID, Int32 pVendorID, String pSoldJobID)
+        {
+            SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+            {
+                DbCommand command = database.GetStoredProcCommand("USP_UpdatePaymentDetails");
+                command.CommandType = CommandType.StoredProcedure;
+                database.AddInParameter(command, "@FieldName", DbType.String, pFieldName);
+                database.AddInParameter(command, "@Value", DbType.String, pFieldValue);
+                database.AddInParameter(command, "@ProdCatID", DbType.Int32, pProdCatID);
+                database.AddInParameter(command, "@VendorID", DbType.Int32, pVendorID);
+                database.AddInParameter(command, "@SoldJobID", DbType.String, pSoldJobID);
+                database.ExecuteNonQuery(command);
+            }
+        }
+        public void UpdateVendorIDForSpecMaterial(String pVendorIDs, Int32 pMaterialListID)
+        {
+             SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+            {
+                DbCommand command = database.GetStoredProcCommand("usp_SaveVendorsForSpecMaterial");
+                command.CommandType = CommandType.StoredProcedure;
+                database.AddInParameter(command, "@ID", DbType.String, pMaterialListID);
+                database.AddInParameter(command, "@VendorIDs", DbType.String, pVendorIDs);
+                database.ExecuteNonQuery(command);
+            }
+        }
+
+        public int AddBankDetails( String pPersonName, String pBankName,  String pBankBranch, String pAccountName, String pAccountNumber, String IFSCCode, String SwiftCode)
+        {
+            Int32 lBankID = 0;
+            SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+            {
+                DbCommand command = database.GetStoredProcCommand("USP_AddBank");
+                command.CommandType = CommandType.StoredProcedure;
+                //database.AddInParameter(command, "@BankID", DbType.String, pMaterialListID);
+                database.AddInParameter(command, "@PersonName", DbType.String, pPersonName);
+                database.AddInParameter(command, "@BankName", DbType.String, pBankName);
+                database.AddInParameter(command, "@BankBranch", DbType.String, pBankBranch);
+                database.AddInParameter(command, "@AccountName", DbType.String, pAccountName);
+                database.AddInParameter(command, "@AccountNumber", DbType.String, pAccountNumber);
+                database.AddInParameter(command, "@IFSCCode", DbType.String, IFSCCode);
+                database.AddInParameter(command, "@SWIFTCode", DbType.String, SwiftCode);
+                database.AddInParameter(command, "@BankID", DbType.Int32, 0);
+                database.ExecuteNonQuery(command);
+                lBankID = Convert.ToInt16(database.GetParameterValue(command, "@BankID"));
+            }
+            return lBankID;
+        }
+        public void UpdateBankDetails(Int32 pBankID, String pPersonName, String pBankName, String pBankBranch, String pAccountName, String pAccountNumber, String IFSCCode, String SwiftCode)
+        {
+            Int32 lBankID = 0;
+            SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+            {
+                DbCommand command = database.GetStoredProcCommand("USP_UpdateBankRecord");
+                command.CommandType = CommandType.StoredProcedure;
+                database.AddInParameter(command, "@BankID", DbType.Int32, pBankID);
+                database.AddInParameter(command, "@PersonName", DbType.String, pPersonName);
+                database.AddInParameter(command, "@BankName", DbType.String, pBankName);
+                database.AddInParameter(command, "@BankBranch", DbType.String, pBankBranch);
+                database.AddInParameter(command, "@AccountName", DbType.String, pAccountName);
+                database.AddInParameter(command, "@AccountNumber", DbType.String, pAccountNumber);
+                database.AddInParameter(command, "@IFSCCode", DbType.String, IFSCCode);
+                database.AddInParameter(command, "@SWIFTCode", DbType.String, SwiftCode);
+                database.ExecuteNonQuery(command);
+            }
+        }
+       
+        public void DeleteBankDetails(Int32 pBankID)
+        {
+            SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+            {
+                DbCommand command = database.GetStoredProcCommand("USP_DeleteBankRecord");
+                command.CommandType = CommandType.StoredProcedure;
+                database.AddInParameter(command, "@BankID", DbType.Int32, pBankID);
+                database.ExecuteNonQuery(command);
+            }
+        }
+        public DataSet GetBanks()
+        {
+            DataSet returndata = null;
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    returndata = new DataSet();
+                    DbCommand command = database.GetStoredProcCommand("USP_GetBanks");
+                    command.CommandType = CommandType.StoredProcedure;
+                
+                    returndata = database.ExecuteDataSet(command);
+
+                    return returndata;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public DataSet GetBanks(Int32 pBankID)
+        {
+            DataSet returndata = null;
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    returndata = new DataSet();
+                    DbCommand command = database.GetStoredProcCommand("USP_GetBankById");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@BankID", DbType.Int32, pBankID);
+                    returndata = database.ExecuteDataSet(command);
+                    return returndata;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

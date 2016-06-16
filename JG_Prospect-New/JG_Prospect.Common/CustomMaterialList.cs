@@ -61,6 +61,10 @@ namespace JG_Prospect.Common
 
         public int StaffID { get; set; }
         public string StaffName { get; set; }
+
+        public int InstallerID { get; set; }
+        public int RequestStatus { get; set; }
+
     }
 }
 

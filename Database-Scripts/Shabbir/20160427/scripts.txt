@@ -1,0 +1,442 @@
+/****** Object:  StoredProcedure [dbo].[USP_SaveProductLineVendors]    Script Date: 04/27/2016 17:43:00 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_SaveProductLineVendors]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_SaveProductLineVendors]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_SaveProductLineVendors]    Script Date: 04/27/2016 17:43:00 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-04-27
+-- Description:	This procedure will save vendor id 
+-- =============================================
+CREATE PROCEDURE [dbo].[USP_SaveProductLineVendors]
+	@ProductCatID INT,
+	@ProdLineID INT,
+	@VendorIDs VARCHAR(1000),
+	@SoldJobID VARCHAR(1000)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    --# Lets find if it is the first product line
+	IF NOT EXISTS (Select * from tblCustom_MaterialList WHERE SoldJobId = @SoldJobID AND ProductCatId = @ProductCatID AND Id < @ProdLineID)
+	BEGIN 
+		--# This is the first row 
+		UPDATE tblCustom_MaterialList SET VendorIds = @VendorIDs WHERE Id = @ProdLineID
+		UPDATE tblCustom_MaterialList SET VendorIds = @VendorIDs WHERE SoldJobId = @SoldJobID AND ProductCatId = @ProductCatID AND DefaultVendorForCategory=1
+	END
+	ELSE
+	BEGIN 
+		--#Random Category 
+		UPDATE tblCustom_MaterialList SET VendorIds = @VendorIDs WHERE Id = @ProdLineID
+	END
+	
+END
+
+GO
+
+
+
+
+/****** Object:  StoredProcedure [dbo].[USP_UpdateDefaultVendorinProdLine]    Script Date: 04/27/2016 18:48:17 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_UpdateDefaultVendorinProdLine]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_UpdateDefaultVendorinProdLine]
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[USP_UpdateDefaultVendorinProdLine]    Script Date: 04/27/2016 18:48:17 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-04-27
+-- Description:	This procedure will update default
+-- =============================================
+CREATE PROCEDURE [dbo].[USP_UpdateDefaultVendorinProdLine]
+	@ProductLineID INT,
+	@ProductCatID INT,
+	@SoldJobID VARCHAR(200),
+	@DefaultVendor BIT
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	UPDATE tblCustom_MaterialList SET DefaultVendorForCategory = @DefaultVendor WHERE Id = @ProductLineID
+	IF (@DefaultVendor = 1)
+	BEGIN 
+		DECLARE @LineID INT
+		DECLARE @VendorIDs VARCHAR(MAX)
+		SELECT TOP 1 @LineID = Id, @VendorIDs = VendorIds from tblCustom_MaterialList WHERE ProductCatId = @ProductCatID AND SoldJobID=@SoldJobID order by id asc
+		UPDATE tblCustom_MaterialList SET VendorIds = @VendorIDs WHERE Id = @ProductLineID
+	END 
+    
+END
+
+GO
+
+
+
+/****** Object:  StoredProcedure [dbo].[USP_DeleteMaterialListAttachment]    Script Date: 04/27/2016 21:13:47 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_DeleteMaterialListAttachment]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_DeleteMaterialListAttachment]
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[USP_DeleteMaterialListAttachment]    Script Date: 04/27/2016 21:13:47 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-03-11
+-- Description:	This procedure will delete the file
+-- =============================================
+CREATE PROCEDURE [dbo].[USP_DeleteMaterialListAttachment]
+@ID INT
+AS
+BEGIN
+	
+	SET NOCOUNT ON;
+
+	SELECT * FROM tblMaterialListAttachment WHERE ID = @ID -- We need the path to delete the physical file on server
+	DELETE FROM tblMaterialListAttachment WHERE ID = @ID
+    
+END
+
+
+
+GO
+
+USE [jgrove_JGP]
+GO
+
+/****** Object:  StoredProcedure [dbo].[UDP_FetchContractTemplate]    Script Date: 28-04-2016 16:05:03 ******/
+DROP PROCEDURE [dbo].[UDP_FetchContractTemplate]
+GO
+
+/****** Object:  StoredProcedure [dbo].[UDP_FetchContractTemplate]    Script Date: 28-04-2016 16:05:03 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE Proc [dbo].[UDP_FetchContractTemplate]  
+
+(
+
+	@ProductType int
+
+)
+
+AS  
+
+BEGIN  
+
+	IF(@ProductType = 4)
+
+	BEGIN
+
+	--	SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLBody2 from tblHTMLTemplates  
+		SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLBody2,HTMLBodyA,HTMLSubject from tblHTMLTemplates  
+		WHERE Html_Name =   'Custom_Template' --'temp'-- 
+
+	END
+
+	ELSE IF (@ProductType = 7)
+
+	BEGIN
+
+		--SELECT HTMLHeader,HTMLBody,HTMLFooter from tblHTMLTemplates  
+		SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLBody2,HTMLSubject from tblHTMLTemplates  
+		WHERE Html_Name = 'Soffit_Template'  
+
+	END
+
+	
+
+	
+
+	---OLD Logic to get cotracttemplate-----------
+
+	IF(@ProductType =1)
+
+	BEGIN
+
+		SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLBody2,HTMLBodyA,HTMLBodyB ,HTMLSubject
+
+		from tblHTMLTemplates  
+
+		WHERE Html_Name = 'Contract_Template'  
+
+	END
+
+	ELSE 
+
+	IF(@ProductType =0)
+
+	BEGIN
+
+		SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLSubject from tblHTMLTemplates  
+
+		WHERE Html_Name = 'VendorCategoryEmail_Template'  
+
+	END
+
+	ELSE IF(@ProductType =100)
+
+	BEGIN
+
+		SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLSubject from tblHTMLTemplates  
+
+		WHERE Html_Name = 'VendorEmail_Template'  
+
+	END
+
+	ELSE IF(@ProductType =20)
+
+	BEGIN
+
+		SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLSubject from tblHTMLTemplates  
+
+		WHERE Html_Name = 'Sales Auto Email' 
+
+		select * from tblCustomerAttachment where HTMLTemplateID = 100
+
+	END
+
+	ELSE
+
+	BEGIN
+
+		SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLBody2,HTMLSubject from tblHTMLTemplates  
+
+		WHERE Html_Name = 'Custom_Template'  
+
+	END
+
+
+
+	-----OLD Logic to get cotracttemplate-----------
+
+
+
+
+
+	--Added by Sandeep.....
+
+	--IF(@ProductType =1)
+
+	--BEGIN
+
+	--	SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLBody2,HTMLBodyA,HTMLBodyB 
+
+	--	from tblHTMLTemplates  
+
+	--	WHERE Html_Name = 'Contract_Template'  
+
+	--END
+
+	--ELSE 
+
+	--BEGIN
+
+	--	SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLBody2 from tblHTMLTemplates  
+
+	--	WHERE Html_Name IN (SELECT ProductName FROM [jgrove_JGP].[dbo].[tblProductMaster] WHERE ProductId = @ProductType)
+
+	--END
+
+
+
+
+
+END
+
+
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[UDP_FetchContractTemplate]    Script Date: 04/29/2016 11:03:32 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UDP_FetchContractTemplate]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[UDP_FetchContractTemplate]
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[UDP_FetchContractTemplate]    Script Date: 04/29/2016 11:03:32 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE Proc [dbo].[UDP_FetchContractTemplate]  
+
+(
+
+	@ProductType int
+
+)
+
+AS  
+
+BEGIN  
+
+	IF(@ProductType = 4)
+
+	BEGIN
+
+	--	SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLBody2 from tblHTMLTemplates  
+		SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLBody2,HTMLBodyA,HTMLSubject from tblHTMLTemplates  
+		WHERE Html_Name =   'Custom_Template' --'temp'-- 
+
+	END
+
+	ELSE IF (@ProductType = 7)
+
+	BEGIN
+
+		--SELECT HTMLHeader,HTMLBody,HTMLFooter from tblHTMLTemplates  
+		SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLBody2,HTMLSubject from tblHTMLTemplates  
+		WHERE Html_Name = 'Soffit_Template'  
+
+	END
+
+	
+
+	
+
+	---OLD Logic to get cotracttemplate-----------
+
+	IF(@ProductType =1)
+
+	BEGIN
+
+		SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLBody2,HTMLBodyA,HTMLBodyB ,HTMLSubject
+
+		from tblHTMLTemplates  
+
+		WHERE Html_Name = 'Contract_Template'  
+
+	END
+
+	ELSE 
+
+	IF(@ProductType =0)
+
+	BEGIN
+
+		SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLSubject from tblHTMLTemplates  
+
+		WHERE Html_Name = 'VendorCategoryEmail_Template'  
+
+	END
+
+	ELSE IF(@ProductType =100)
+
+	BEGIN
+
+		SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLSubject from tblHTMLTemplates  
+
+		WHERE Html_Name = 'VendorEmail_Template'  
+
+	END
+
+	ELSE IF(@ProductType =20)
+
+	BEGIN
+
+		SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLSubject from tblHTMLTemplates  
+
+		WHERE Html_Name = 'Sales Auto Email' 
+
+		select * from tblCustomerAttachment where HTMLTemplateID = 100
+
+	END
+	ELSE IF(@ProductType =104)
+
+	BEGIN
+
+		SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLSubject from tblHTMLTemplates  
+
+		WHERE Html_Name = 'Interview Date Auto Email' 
+
+		select * from tblCustomerAttachment where HTMLTemplateID = 104
+
+	END
+	ELSE
+
+	BEGIN
+
+		SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLBody2,HTMLSubject from tblHTMLTemplates  
+
+		WHERE Html_Name = 'Custom_Template'  
+
+	END
+
+
+
+	-----OLD Logic to get cotracttemplate-----------
+
+
+
+
+
+	--Added by Sandeep.....
+
+	--IF(@ProductType =1)
+
+	--BEGIN
+
+	--	SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLBody2,HTMLBodyA,HTMLBodyB 
+
+	--	from tblHTMLTemplates  
+
+	--	WHERE Html_Name = 'Contract_Template'  
+
+	--END
+
+	--ELSE 
+
+	--BEGIN
+
+	--	SELECT HTMLHeader,HTMLBody,HTMLFooter,HTMLBody2 from tblHTMLTemplates  
+
+	--	WHERE Html_Name IN (SELECT ProductName FROM [jgrove_JGP].[dbo].[tblProductMaster] WHERE ProductId = @ProductType)
+
+	--END
+
+
+
+
+
+END
+
+
+
+
+GO
+
+
+
+

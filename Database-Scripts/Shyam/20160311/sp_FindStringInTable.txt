@@ -1,0 +1,42 @@
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[sp_FindStringInTable]    Script Date: 03/11/2016 10:56:59 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[sp_FindStringInTable]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[sp_FindStringInTable]
+GO
+
+
+/****** Object:  StoredProcedure [dbo].[sp_FindStringInTable]    Script Date: 03/11/2016 10:56:59 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+CREATE PROCEDURE [dbo].[sp_FindStringInTable] @stringToFind VARCHAR(100),@table sysname 
+AS
+
+BEGIN TRY
+   DECLARE @sqlCommand varchar(max) = 'SELECT VendorId,VendorName FROM [' + @table + '] WHERE ' 
+	   
+   SELECT @sqlCommand = @sqlCommand + '[' + COLUMN_NAME + '] LIKE ''' + @stringToFind + ''' OR '
+   FROM INFORMATION_SCHEMA.COLUMNS 
+   WHERE TABLE_NAME = @table 
+   AND DATA_TYPE IN ('char','nchar','ntext','nvarchar','text','varchar')
+
+   SET @sqlCommand = left(@sqlCommand,len(@sqlCommand)-3)
+   EXEC (@sqlCommand)
+   PRINT @sqlCommand
+END TRY
+
+BEGIN CATCH 
+   PRINT 'There was an error. Check to make sure object exists.'
+   PRINT error_message()
+END CATCH 
+
+GO
+
+

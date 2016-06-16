@@ -1,0 +1,5 @@
+ALTER TABLE new_customer DROP CONSTRAINT FK__new_custo__Produ__2EA5EC27
+
+ALTER TABLE new_customer DROP CONSTRAINT FK__new_custo__Secon__2F9A1060
+
+ALTER TABLE tblJobSequence DROP CONSTRAINT FK_tblJobsequence_tblProductMaster

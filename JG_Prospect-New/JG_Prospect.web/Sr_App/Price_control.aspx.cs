@@ -50,19 +50,18 @@ namespace JG_Prospect.Sr_App
                     {
                         DataTable d = newDs.Tables[0];
 
-                        // d.Columns.Add("ProductName");
-                        //  d.Columns.Add("ProductName");
-                        DataRow row = d.NewRow();
-                        row["ProductId"] = "331";
-                        row["ProductName"] = "Dump";
+                     
+                        //DataRow row = d.NewRow();
+                        //row["ProductId"] = "331";
+                        //row["ProductName"] = "Dump";
 
-                        d.Rows.Add(row);
+                        //d.Rows.Add(row);
 
-                        DataRow row1 = d.NewRow();
-                        row1["ProductId"] = "332";
-                        row1["ProductName"] = "Overhead";
+                        //DataRow row1 = d.NewRow();
+                        //row1["ProductId"] = "332";
+                        //row1["ProductName"] = "Overhead";
 
-                        d.Rows.Add(row1);
+                        //d.Rows.Add(row1);
 
                         gvProductLine.DataSource = d;
                         //   gvProductLine.DataSource = newDs.Tables[0];
@@ -405,6 +404,35 @@ namespace JG_Prospect.Sr_App
 
         protected void gvProductLine_RowCommand(object sender, GridViewCommandEventArgs e)
         {
+
+            if (e.CommandName == "EditProduct")
+            {
+                txtProductName.Focus();
+                btnSave1.Text = "Update";
+                pnlAddProduct.Visible = true;
+                int productId = Convert.ToInt32(e.CommandArgument);
+                ViewState["ProductId_Price"] = productId;
+
+                DataSet newDs = new DataSet();
+                newDs = AdminBLL.Instance.SelectProduct_PriceControl(productId);
+                if (newDs.Tables[0].Rows.Count > 0)
+                {
+                    txtProductName.Text = Convert.ToString(newDs.Tables[0].Rows[0]["ProductName"]);
+                }
+
+                return;
+            }
+
+            if (e.CommandName == "DeleteProduct")
+            {
+                int productId = Convert.ToInt32(e.CommandArgument);
+                DataSet newDs = new DataSet();
+                newDs = AdminBLL.Instance.DeleteProduct_PriceControl(productId);
+                BindProductLineGrid();
+                ScriptManager.RegisterStartupScript(this.Page, GetType(), "sv", "alert('Product Removed Successfully.');", true);
+                return;
+            }
+
             StringBuilder strerr = new StringBuilder();
             try
             {
@@ -501,7 +529,13 @@ namespace JG_Prospect.Sr_App
                 {
                     Label lblProductLine = (e.Row.FindControl("lblInstallid") as Label);
                     LinkButton lblContractTemplate = (e.Row.FindControl("lbtnContractTemplate") as LinkButton);
-                    if (lblProductLine.Text == "Dumb" || lblProductLine.Text == "Overhead" )
+
+                    Label lblInstallsale = (e.Row.FindControl("lblInstallsale") as Label);
+                    Label lblLaborPrice = (e.Row.FindControl("lblLaborPrice") as Label);
+                    //Label lblToolChecklist = (e.Row.FindControl("lblToolChecklist") as Label);
+
+
+                    if (lblProductLine.Text == "Dump" || lblProductLine.Text == "Overhead" )
                     {
                         lblContractTemplate.Text = "";
                     }
@@ -526,7 +560,8 @@ namespace JG_Prospect.Sr_App
                         lblProductLine.Attributes.Add("style", "color:Red !important");
                         // lblProductLine.ForeColor = Color.Red;
                     }
-
+                    lblInstallsale.Text = lblProductLine.Text + " " + "Install Selling Pricing";
+                    lblLaborPrice.Text = lblProductLine.Text + " " + "Labor Pricing";
                 }
                
             }
@@ -585,6 +620,78 @@ namespace JG_Prospect.Sr_App
                 Session["ProductContractId"] = "";
                 ScriptManager.RegisterStartupScript(this, GetType(), "ClosePopup", "ClosePopup();", true);
             }
+        }
+
+        protected void lnkAddProduct_Click(object sender, EventArgs e)
+        {
+            pnlAddProduct.Visible = true;
+            txtProductName.Focus();
+        }
+
+        protected void btnSave1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+
+                DataSet newDs = new DataSet();
+
+                if (ViewState["ProductId_Price"] == null)
+                {
+
+                    // check for duplicate
+                    DataSet newDs1 = new DataSet();
+                    newDs1 = AdminBLL.Instance.CheckDuplicateProduct_PriceControl(txtProductName.Text.Trim());
+                    if (newDs1.Tables[0].Rows.Count > 0)
+                    {
+                        ScriptManager.RegisterStartupScript(this.Page, GetType(), "sv1", "alert('Product Line Item already exist.');", true);
+                        return;
+                    }
+
+                    newDs = AdminBLL.Instance.InsertProduct_PriceControl(txtProductName.Text);
+
+                    BindProductLineGrid();
+                    // ScriptManager.RegisterStartupScript(this, GetType(), "overlay", "Product Added Successfully;", true);
+                    ScriptManager.RegisterStartupScript(this.Page, GetType(), "sv", "alert('Product Line Item Added Successfully.');", true);
+                }
+                else if (ViewState["ProductId_Price"] != null)
+                {
+
+                    // check for duplicate
+                    DataSet newDs1 = new DataSet();
+                    newDs1 = AdminBLL.Instance.CheckDuplicateProduct_Update_PriceControl(txtProductName.Text.Trim(), Convert.ToInt32(ViewState["ProductId_Price"]));
+                    if (newDs1.Tables[0].Rows.Count > 0)
+                    {
+                        ScriptManager.RegisterStartupScript(this.Page, GetType(), "sv1", "alert('Product Line Item already exist.');", true);
+                        return;
+                    }
+
+
+                    newDs = AdminBLL.Instance.UpdateProduct_PriceControl(txtProductName.Text, Convert.ToInt32(ViewState["ProductId_Price"]));
+
+                    BindProductLineGrid();
+                    //  ScriptManager.RegisterStartupScript(this, GetType(), "overlay", "Product Updated Successfully;", true);
+                    ScriptManager.RegisterStartupScript(this.Page, GetType(), "sv", "alert('Product Line Item Updated Successfully.');", true);
+                    ViewState["ProductId_Price"] = null;
+                    btnSave1.Text = "Save";
+                }
+
+                txtProductName.Text = string.Empty;
+                pnlAddProduct.Visible = false;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+        }
+
+        protected void btncancel1_Click(object sender, EventArgs e)
+        {
+            ViewState["ProductId_Price"] = null;
+            btnSave1.Text = "Save";
+            txtProductName.Text = string.Empty;
+            pnlAddProduct.Visible = false;
         }
 
 

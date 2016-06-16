@@ -1,0 +1,57 @@
+﻿changes 7 april
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch and 'origin/master' have diverged,
+# and have 1 and 1 different commit each, respectively.
+#   (use "git pull" to merge the remote branch into yours)
+#
+# Changes to be committed:
+#	modified:   JG_Prospect-New/JG_Prospect.BLL/JG_Prospect.BLL.csproj
+#	modified:   JG_Prospect-New/JG_Prospect.BLL/bin/Debug/JG_Prospect.BLL.dll
+#	modified:   JG_Prospect-New/JG_Prospect.BLL/bin/Debug/JG_Prospect.BLL.pdb
+#	modified:   JG_Prospect-New/JG_Prospect.BLL/bin/Debug/JG_Prospect.Common.dll
+#	modified:   JG_Prospect-New/JG_Prospect.BLL/bin/Debug/JG_Prospect.Common.pdb
+#	modified:   JG_Prospect-New/JG_Prospect.BLL/bin/Debug/JG_Prospect.DAL.dll
+#	modified:   JG_Prospect-New/JG_Prospect.BLL/bin/Debug/JG_Prospect.DAL.pdb
+#	modified:   JG_Prospect-New/JG_Prospect.BLL/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+#	modified:   JG_Prospect-New/JG_Prospect.BLL/obj/Debug/JG_Prospect.BLL.csproj.FileListAbsolute.txt
+#	modified:   JG_Prospect-New/JG_Prospect.BLL/obj/Debug/JG_Prospect.BLL.csprojResolveAssemblyReference.cache
+#	modified:   JG_Prospect-New/JG_Prospect.BLL/obj/Debug/JG_Prospect.BLL.dll
+#	modified:   JG_Prospect-New/JG_Prospect.BLL/obj/Debug/JG_Prospect.BLL.pdb
+#	modified:   JG_Prospect-New/JG_Prospect.Common/JG_Prospect.Common.csproj
+#	modified:   JG_Prospect-New/JG_Prospect.Common/bin/Debug/JG_Prospect.Common.dll
+#	modified:   JG_Prospect-New/JG_Prospect.Common/bin/Debug/JG_Prospect.Common.pdb
+#	deleted:    JG_Prospect-New/JG_Prospect.Common/bin/Debug/Microsoft.Practices.EnterpriseLibrary.Caching.Database.dll
+#	deleted:    JG_Prospect-New/JG_Prospect.Common/bin/Debug/Microsoft.Practices.EnterpriseLibrary.Caching.dll
+#	modified:   JG_Prospect-New/JG_Prospect.Common/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+#	modified:   JG_Prospect-New/JG_Prospect.Common/obj/Debug/JG_Prospect.Common.csproj.FileListAbsolute.txt
+#	modified:   JG_Prospect-New/JG_Prospect.Common/obj/Debug/JG_Prospect.Common.dll
+#	modified:   JG_Prospect-New/JG_Prospect.Common/obj/Debug/JG_Prospect.Common.pdb
+#	modified:   JG_Prospect-New/JG_Prospect.DAL/JG_Prospect.DAL.csproj
+#	modified:   JG_Prospect-New/JG_Prospect.DAL/bin/Debug/JG_Prospect.Common.dll
+#	modified:   JG_Prospect-New/JG_Prospect.DAL/bin/Debug/JG_Prospect.Common.pdb
+#	modified:   JG_Prospect-New/JG_Prospect.DAL/bin/Debug/JG_Prospect.DAL.dll
+#	modified:   JG_Prospect-New/JG_Prospect.DAL/bin/Debug/JG_Prospect.DAL.pdb
+#	modified:   JG_Prospect-New/JG_Prospect.DAL/obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+#	modified:   JG_Prospect-New/JG_Prospect.DAL/obj/Debug/JG_Prospect.DAL.csproj.FileListAbsolute.txt
+#	modified:   JG_Prospect-New/JG_Prospect.DAL/obj/Debug/JG_Prospect.DAL.csprojResolveAssemblyReference.cache
+#	modified:   JG_Prospect-New/JG_Prospect.DAL/obj/Debug/JG_Prospect.DAL.dll
+#	modified:   JG_Prospect-New/JG_Prospect.DAL/obj/Debug/JG_Prospect.DAL.pdb
+#	modified:   JG_Prospect-New/JG_Prospect.web/JG_Prospect.web.csproj
+#	modified:   JG_Prospect-New/JG_Prospect.web/Web.config
+#	modified:   JG_Prospect-New/JG_Prospect.web/bin/JG_Prospect.BLL.dll
+#	modified:   JG_Prospect-New/JG_Prospect.web/bin/JG_Prospect.BLL.pdb
+#	modified:   JG_Prospect-New/JG_Prospect.web/bin/JG_Prospect.Common.dll
+#	modified:   JG_Prospect-New/JG_Prospect.web/bin/JG_Prospect.Common.pdb
+#	modified:   JG_Prospect-New/JG_Prospect.web/bin/JG_Prospect.DAL.dll
+#	modified:   JG_Prospect-New/JG_Prospect.web/bin/JG_Prospect.DAL.pdb
+#	modified:   JG_Prospect-New/JG_Prospect.web/bin/JG_Prospect.dll
+#	deleted:    JG_Prospect-New/JG_Prospect.web/bin/JG_Prospect.dll.config
+#	modified:   JG_Prospect-New/JG_Prospect.web/bin/JG_Prospect.pdb
+#	modified:   JG_Prospect-New/JG_Prospect.web/bin/Newtonsoft.Json.dll
+#
+# Untracked files:
+#	xqyxbvn4.ntw.txt
+#
+

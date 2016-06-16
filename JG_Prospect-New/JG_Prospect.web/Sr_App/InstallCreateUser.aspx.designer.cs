@@ -13,13 +13,40 @@ namespace JG_Prospect.Sr_App {
     public partial class InstallCreateUser {
         
         /// <summary>
-        /// ScriptManagerProxy1 control.
+        /// lnkDummy control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.ScriptManagerProxy ScriptManagerProxy1;
+        protected global::System.Web.UI.WebControls.LinkButton lnkDummy;
+        
+        /// <summary>
+        /// ModalPopupExtender2 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::AjaxControlToolkit.ModalPopupExtender ModalPopupExtender2;
+        
+        /// <summary>
+        /// pnlMandatoryFields control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel pnlMandatoryFields;
+        
+        /// <summary>
+        /// btnHide control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnHide;
         
         /// <summary>
         /// ValidationSummary1 control.
@@ -38,15 +65,6 @@ namespace JG_Prospect.Sr_App {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlAll;
-        
-        /// <summary>
-        /// UpdatePanel8 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel UpdatePanel8;
         
         /// <summary>
         /// btnNewPluse control.

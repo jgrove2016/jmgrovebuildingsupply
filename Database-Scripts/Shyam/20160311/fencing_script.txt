@@ -1,0 +1,59 @@
+insert into tblVendorSubCategory values ('Driveway Gates',1,1),('Fence Accessories',1,1),('Fence Gate Hardware',1,1),('Fence Gates',1,1),('Fence Hardware',0,1),('Fence Panels',1,1),('Fence Pickets',0,1),('Fence Post Caps',1,1),('Fence Post Sleeves',0,1),('Fence Posts',1,1),('Fence Rails',1,1) 
+go
+declare @pcatid int
+select @pcatid=productid from tblProductMaster
+where ProductName='fencing'
+print @pcatid
+if(@pcatid is null)
+begin
+	INSERT INTO [dbo].[tblProductMaster]
+           ([ProductName])
+     VALUES
+           ('fencing')
+end
+
+DECLARE @vCatID INT
+DECLARE @getVCatID CURSOR
+SET @getVCatID = CURSOR FOR
+SELECT [VendorCategpryId]
+FROM tblVendorCategory
+where [VendorCategoryNm] in ('Fencing Vinyl','Aluminum Fencing','Fencing Wood','Iron Fencing')
+      and [IsRetail_Wholesale]=1
+      and [IsManufacturer]=1
+OPEN @getVCatID
+FETCH NEXT
+FROM @getVCatID INTO @vCatID
+WHILE @@FETCH_STATUS = 0
+BEGIN
+	insert into tblProductVendorCat values (@pcatid,@vCatID)
+	DECLARE @vSCatID INT
+	DECLARE @getVSCatID CURSOR
+	SET @getVSCatID = CURSOR FOR
+	SELECT [VendorSubCategoryId]
+	FROM [tblVendorSubCategory]
+	where [VendorSubCategoryName] in ('Driveway Gates','Fence Accessories','Fence Gate Hardware','Fence Gates','Fence Hardware','Fence Panels','Fence Pickets','Fence Post Caps','Fence Post Sleeves','Fence Posts','Fence Rails')      
+	OPEN @getVSCatID
+	FETCH NEXT
+	FROM @getVSCatID INTO @vSCatID
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+		INSERT INTO [dbo].[tbl_VendorCat_VendorSubCat]
+           ([VendorCategoryId]
+           ,[VendorSubCategoryId])
+     VALUES
+           (@vCatID,@vSCatID)
+		PRINT @vSCatID
+	FETCH NEXT
+	FROM @getVSCatID INTO @vSCatID
+	END
+	CLOSE @getVSCatID
+	DEALLOCATE @getVSCatID
+	INSERT INTO [dbo].[tbl_Vendor_VendorCat]
+           ([VendorId]
+           ,[VendorCatId])
+   select vendorid,@vCatID from tblVendors where VendorCategoryId=@vCatID
+FETCH NEXT
+FROM @getVCatID INTO @vCatID
+END
+CLOSE @getVCatID
+DEALLOCATE @getVCatID

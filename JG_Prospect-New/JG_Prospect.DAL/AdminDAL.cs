@@ -50,6 +50,28 @@ namespace JG_Prospect.DAL
             }
         }
 
+        public DataSet GetAutoEmailTemplate(int pHTMLTemplateID, int pSubHTMLTemplateID=0)
+        {
+            DataSet result = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_GETAutoEmailTemplates");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@HTMLTemplateID", DbType.Int32, pHTMLTemplateID);
+                    database.AddInParameter(command, "@SubHTMLTempID", DbType.Int32, pSubHTMLTemplateID);
+                    result = database.ExecuteDataSet(command);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+                return null;
+            }
+        }
+
         public DataSet FetchContractTemplate(int id)
         {
             DataSet result = new DataSet();
@@ -62,6 +84,70 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@ProductType", DbType.Int32, id);
                     result = database.ExecuteDataSet(command);
                 }               
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+                return null;
+            }
+        }
+
+        public DataSet GetEmailTemplate(String pTemplateName)
+        {
+            DataSet result = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_GetEmailTemplate");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@TemplateName", DbType.String, pTemplateName);
+                    result = database.ExecuteDataSet(command);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+                return null;
+            }
+        }
+
+        public DataSet GetJobInformation(String pSoldJobID, Int32 pProductCatID, Int32 pVendorID)
+        {
+            DataSet result = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_GetPurchaseOrderEmailContent");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@SoldJobID", DbType.String, pSoldJobID);
+                    database.AddInParameter(command, "@ProductCatID", DbType.String, pProductCatID);
+                    database.AddInParameter(command, "@VendorID", DbType.String, pVendorID);
+                    result = database.ExecuteDataSet(command);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+                return null;
+            }
+        }
+
+        public DataSet GetInstallerEmails()
+        {
+            DataSet result = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_GetInstallerEmailAddress");
+                    command.CommandType = CommandType.StoredProcedure;
+                    result = database.ExecuteDataSet(command);
+                }
                 return result;
             }
             catch (Exception ex)
@@ -197,7 +283,7 @@ namespace JG_Prospect.DAL
             }
         }
 
-        public bool UpdateEmailVendorCategoryTemplate(string EmailTemplateHeader, string EmailTemplateFooter,String Attachment)
+        public bool UpdateEmailVendorCategoryTemplate(string EmailTemplateHeader, string EmailTemplateFooter,String Attachment, string subject)
         {
             bool result = false;
             try
@@ -210,7 +296,10 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@EmailTemplateHeader", DbType.String, EmailTemplateHeader);
                     database.AddInParameter(command, "@EmailTemplateFooter", DbType.String, EmailTemplateFooter);
                     database.AddInParameter(command, "@AttachmentPath", DbType.String, Attachment);
+                    database.AddInParameter(command, "@Subject", DbType.String, subject);
                     database.ExecuteNonQuery(command);
+
+                   
                     result = true;
                 }
 
@@ -225,7 +314,7 @@ namespace JG_Prospect.DAL
             }
 
         }
-        public bool UpdateEmailVendorTemplate(string EmailTemplateHeader, string EmailTemplateFooter)
+        public bool UpdateEmailVendorTemplate(string EmailTemplateHeader, string EmailTemplateFooter, string subject, int pHTMLTemplateID, List<CustomerDocument> custList)
         {
             bool result = false;
             try
@@ -237,7 +326,18 @@ namespace JG_Prospect.DAL
                     command.CommandType = CommandType.StoredProcedure;
                     database.AddInParameter(command, "@EmailTemplateHeader", DbType.String, EmailTemplateHeader);
                     database.AddInParameter(command, "@EmailTemplateFooter", DbType.String, EmailTemplateFooter);
+                    database.AddInParameter(command, "@Subject", DbType.String, subject);
                     database.ExecuteNonQuery(command);
+                    foreach (var item in custList)
+                    {
+                        DbCommand command2 = database.GetStoredProcCommand("UDP_AddCustomerFile");
+                        command2.CommandType = CommandType.StoredProcedure;
+                        database.AddInParameter(command2, "@DocumentName", DbType.String, item.DocumentName);
+                        database.AddInParameter(command2, "@DocumentPath", DbType.String, item.DocumentPath);
+                        database.AddInParameter(command2, "@HTMLTemplateID", DbType.String, pHTMLTemplateID);
+                        database.ExecuteNonQuery(command2);
+                    }
+
                     result = true;
                 }
 
@@ -249,6 +349,90 @@ namespace JG_Prospect.DAL
             {
                 //LogManager.Instance.WriteToFlatFile(ex);
                 return false;
+            }
+
+        }
+        public string AddMaterialListAttachment(String pSoldJobID, Int32 pProductCatID, List<CustomerDocument> pAttachmentList, int pAttachmentType, int pVendorID)
+        {
+            string result = "";
+            try
+            {
+
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    
+                    foreach (var item in pAttachmentList)
+                    {
+                        DbCommand command2 = database.GetStoredProcCommand("USP_AddMaterialListAttachment");
+                        command2.CommandType = CommandType.StoredProcedure;
+                        database.AddInParameter(command2, "@DocumentName", DbType.String, item.DocumentName);
+                        database.AddInParameter(command2, "@DocumentPath", DbType.String, item.DocumentPath);
+                        database.AddInParameter(command2, "@SoldJobID", DbType.String, pSoldJobID);
+                        database.AddInParameter(command2, "@ProductCatID", DbType.String, pProductCatID);
+                        database.AddInParameter(command2, "@AttachmentType", DbType.Int32, pAttachmentType);
+                        database.AddInParameter(command2, "@VendorID", DbType.Int32, pVendorID);
+                        result = Convert.ToString(database.ExecuteScalar(command2));
+                    }
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+
+        }
+        /// <summary>
+        /// This method deletes the record and returns the path of physical file, so that it could be deleted from server.
+        /// </summary>
+        /// <param name="pAttachmentID"></param>
+        /// <returns></returns>
+        public DataSet DeleteEmailAttachment(int pAttachmentID)
+        {
+            DataSet result = new DataSet();
+            try
+            {
+
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_DeleteHTMLTemplateAttachment");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@ID", DbType.String, pAttachmentID);
+                    result = database.ExecuteDataSet(command);
+                }
+                return result;
+            }
+
+            catch (Exception ex)
+            {
+                return null;
+            }
+
+        }
+        /// <summary>
+        /// This method deletes the record and returns the path of physical file, so that it could be deleted from server.
+        /// </summary>
+        /// <param name="pAttachmentID"></param>
+        /// <returns></returns>
+        public DataSet DeleteMaterialListAttachment(int pAttachmentID)
+        {
+            DataSet result = new DataSet();
+            try
+            {
+
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_DeleteMaterialListAttachment");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@ID", DbType.String, pAttachmentID);
+                    result = database.ExecuteDataSet(command);
+                }
+                return result;
+            }
+
+            catch (Exception ex)
+            {
+                return null;
             }
 
         }
@@ -340,6 +524,27 @@ namespace JG_Prospect.DAL
 
         }
 
+        public DataSet GetHTMLTemplateAttachedFile(int pHTMLTemplateID)
+        {
+            DataSet result = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_GetAttachedFile");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@HTMLTemplateID", DbType.Int32, pHTMLTemplateID);
+                    result = database.ExecuteDataSet(command);
+                    command.Dispose();
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+                return null;
+            }
+        }
 
         public DataSet GetShutterStyle()
         {
@@ -385,6 +590,99 @@ namespace JG_Prospect.DAL
         }
 
 
+
+        public DataSet SelectProduct_PriceControl(int ProductId)
+        {
+            DataSet result = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_SelectProduct_PriceControl");
+                    database.AddInParameter(command, "@ProductId", DbType.Int32, ProductId);
+                    database.AddInParameter(command, "@Type", DbType.String, "S");
+                    command.CommandType = CommandType.StoredProcedure;
+                    result = database.ExecuteDataSet(command);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+                return null;
+            }
+        }
+
+
+        public DataSet DeleteProduct_PriceControl(int ProductId)
+        {
+            DataSet result = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_SelectProduct_PriceControl");
+                    database.AddInParameter(command, "@ProductId", DbType.Int32, ProductId);
+                    database.AddInParameter(command, "@Type", DbType.String, "D");
+                    command.CommandType = CommandType.StoredProcedure;
+                    result = database.ExecuteDataSet(command);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+                return null;
+            }
+        }
+
+
+        public DataSet CheckDuplicateProduct_PriceControl(string Productname)
+        {
+            DataSet result = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_SelectProduct_PriceControl");
+                    database.AddInParameter(command, "@ProductName", DbType.String, Productname);
+                    database.AddInParameter(command, "@Type", DbType.String, "Dup");
+                    command.CommandType = CommandType.StoredProcedure;
+                    result = database.ExecuteDataSet(command);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+                return null;
+            }
+        }
+
+
+        public DataSet CheckDuplicateProduct_Update_PriceControl(string Productname, int ProdId)
+        {
+            DataSet result = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_SelectProduct_PriceControl");
+                    database.AddInParameter(command, "@ProductName", DbType.String, Productname);
+                    database.AddInParameter(command, "@ProductId", DbType.Int32, ProdId);
+                    database.AddInParameter(command, "@Type", DbType.String, "DupU");
+                    command.CommandType = CommandType.StoredProcedure;
+                    result = database.ExecuteDataSet(command);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+                return null;
+            }
+        }
+
         public DataSet GetContractTemplateByName(string ProductLineName)
         {
             DataSet result = new DataSet();
@@ -394,6 +692,54 @@ namespace JG_Prospect.DAL
                 {
                     DbCommand command = database.GetStoredProcCommand("USP_GetContractTemplateByNameNew");
                     database.AddInParameter(command, "@Html_Name", DbType.String, ProductLineName);
+                    command.CommandType = CommandType.StoredProcedure;
+                    result = database.ExecuteDataSet(command);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+                return null;
+            }
+        }
+
+
+        public DataSet InsertProduct_PriceControl(string ProductLineName)
+        {
+            DataSet result = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_InsertProduct_PriceControl");
+                    database.AddInParameter(command, "@ProductName", DbType.String, ProductLineName);
+                    database.AddInParameter(command, "@Type", DbType.String, "I");
+
+                    command.CommandType = CommandType.StoredProcedure;
+                    result = database.ExecuteDataSet(command);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+                return null;
+            }
+        }
+
+        public DataSet UpdateProduct_PriceControl(string ProductLineName, int ProdId)
+        {
+            DataSet result = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_InsertProduct_PriceControl");
+                    database.AddInParameter(command, "@ProductName", DbType.String, ProductLineName);
+                    database.AddInParameter(command, "@ProductId", DbType.Int32, ProdId);
+                    database.AddInParameter(command, "@Type", DbType.String, "U");
+
                     command.CommandType = CommandType.StoredProcedure;
                     result = database.ExecuteDataSet(command);
                 }
@@ -1388,6 +1734,7 @@ namespace JG_Prospect.DAL
                         command2.CommandType = CommandType.StoredProcedure;
                         database.AddInParameter(command2, "@DocumentName", DbType.String, item.DocumentName);
                         database.AddInParameter(command2, "@DocumentPath", DbType.String, item.DocumentPath);
+                        database.AddInParameter(command2, "@HTMLTemplateID", DbType.String, id);
                         database.ExecuteNonQuery(command2);
                         //custList.Add(new CustomerDocument
                         //{
@@ -1514,7 +1861,7 @@ namespace JG_Prospect.DAL
                 return null;
             }
         }
-        public bool UpdateEmailVendorCategoryTemplate(string EmailTemplateHeader, string EmailTemplateFooter)
+        public bool UpdateEmailVendorCategoryTemplate(string EmailTemplateHeader, string EmailTemplateFooter, string subject, int pHTMLTemplateID, List<CustomerDocument> custList)
         {
             bool result = false;
             try
@@ -1526,7 +1873,60 @@ namespace JG_Prospect.DAL
                     command.CommandType = CommandType.StoredProcedure;
                     database.AddInParameter(command, "@EmailTemplateHeader", DbType.String, EmailTemplateHeader);
                     database.AddInParameter(command, "@EmailTemplateFooter", DbType.String, EmailTemplateFooter);
+                    database.AddInParameter(command, "@Subject", DbType.String, subject);
                     database.ExecuteNonQuery(command);
+                    foreach (var item in custList)
+                    {
+                        DbCommand command2 = database.GetStoredProcCommand("UDP_AddCustomerFile");
+                        command2.CommandType = CommandType.StoredProcedure;
+                        database.AddInParameter(command2, "@DocumentName", DbType.String, item.DocumentName);
+                        database.AddInParameter(command2, "@DocumentPath", DbType.String, item.DocumentPath);
+                        database.AddInParameter(command2, "@HTMLTemplateID", DbType.String, pHTMLTemplateID);
+                        database.ExecuteNonQuery(command2);
+                    }
+                    command.Dispose();
+                    result = true;
+                }
+
+                return result;
+
+            }
+
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+                return false;
+            }
+
+        }
+
+        public bool UpdateHTMLTemplate(string EmailTemplateHeader, string EmailTemplateBody, string EmailTemplateFooter, string subject, int pHTMLTemplateID, List<CustomerDocument> custList)
+        {
+            bool result = false;
+            try
+            {
+
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_SaveHTMLTemplate");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@EmailTemplateHeader", DbType.String, EmailTemplateHeader);
+                    database.AddInParameter(command, "@EmailTemplateBody", DbType.String, EmailTemplateBody);
+                    database.AddInParameter(command, "@EmailTemplateFooter", DbType.String, EmailTemplateFooter);
+                    database.AddInParameter(command, "@Subject", DbType.String, subject);
+                    database.AddInParameter(command, "@SubHTMLTemplateID", DbType.Int32, pHTMLTemplateID);
+                    
+                    database.ExecuteNonQuery(command);
+                    foreach (var item in custList)
+                    {
+                        DbCommand command2 = database.GetStoredProcCommand("UDP_AddCustomerFile");
+                        command2.CommandType = CommandType.StoredProcedure;
+                        database.AddInParameter(command2, "@DocumentName", DbType.String, item.DocumentName);
+                        database.AddInParameter(command2, "@DocumentPath", DbType.String, item.DocumentPath);
+                        database.AddInParameter(command2, "@SubHTMLTemplateID", DbType.String, pHTMLTemplateID);
+                        database.ExecuteNonQuery(command2);
+                    }
+                    command.Dispose();
                     result = true;
                 }
 
@@ -1550,6 +1950,28 @@ namespace JG_Prospect.DAL
                 SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
                 {
                     DbCommand command = database.GetStoredProcCommand("USP_GetProductLineNew");
+                    command.CommandType = CommandType.StoredProcedure;
+                    result = database.ExecuteDataSet(command);
+                }
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+                return null;
+            }
+        }
+
+        public DataSet GetAllVendorCategory(bool Isretail_wholesale, bool IsManufacturer)
+        {
+            DataSet result = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_GetProductVendor");
+                    database.AddInParameter(command, "@IsRetail_Wholesale", DbType.Boolean, Isretail_wholesale);
+                    database.AddInParameter(command, "@IsManufacturer", DbType.Boolean, IsManufacturer);
                     command.CommandType = CommandType.StoredProcedure;
                     result = database.ExecuteDataSet(command);
                 }

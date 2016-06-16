@@ -1,0 +1,270 @@
+/****** Object:  StoredProcedure [dbo].[UDP_AddnewCustomer_new]    Script Date: 08-06-2016 14:42:51 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UDP_AddnewCustomer_new]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[UDP_AddnewCustomer_new]
+GO
+
+/****** Object:  StoredProcedure [dbo].[UDP_AddnewCustomer_new]    Script Date: 08-06-2016 14:42:51 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UDP_AddnewCustomer_new]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[UDP_AddnewCustomer_new] AS' 
+END
+GO
+
+ALTER Proc [dbo].[UDP_AddnewCustomer_new]                  
+(                  
+@firstName varchar(50),                  
+@lastName varchar(50),                  
+@CustomerAddress varchar(100),                  
+@State varchar(50),                  
+@City varchar(50),                  
+@ZipCode varchar(20),                  
+@EstDateSchdule datetime,                  
+@EstTime varchar(10),                  
+@CellPh varchar(20),                  
+@HousePh varchar(20),                  
+@Email varchar(100),                  
+@Email2 varchar(100),                  
+@Email3 varchar(100),                  
+@CallTakenBy varchar(50),                  
+--@Service varchar(500),                  
+@ProductOfInterest int,                  
+@SecProductOfInterest int,                  
+@ProjectManager varchar(100),                  
+@AddedBy varchar(50),                  
+@leadtype varchar(100),                  
+@AlternatePh varchar(20),                  
+@BillingAddress varchar(Max),                  
+@BestTimetocontact varchar(max),                  
+@PrimaryContact varchar(20),                  
+@ContactPreference varchar(20),                  
+@Map1 varchar(100),                  
+@Map2 varchar(100),                  
+@status varchar(30),                  
+@Isrepeated bit,                  
+@missing_contacts int,                  
+@followup_date date,                  
+@CustAdd  dbo.CustomersAddress readonly,                
+@CustBilling dbo.BillingAddress readonly,                
+@primary dbo.CustomersPrimaryContact readonly,                
+@dtPrimaryContact dbo.Bestofcontact readonly,          
+@strContactType varchar(50),           
+@strPhoneType varchar(50),         
+@strAddressType varchar(50),        
+@strBillingAddressType varchar(50),        
+@strCompetitorBids varchar(50),        
+@YesNo Bit,      
+@result int output                  
+)                  
+as                  
+begin                  
+  
+ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[CustomerAddressTempSave]') AND type in (N'U'))  
+  DROP TABLE CustomerAddressTempSave;  
+           
+ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[CustomersPrimaryContactTempSave]') AND type in (N'U'))  
+  DROP TABLE CustomersPrimaryContactTempSave;  
+  
+  
+  
+  
+set @result=0;                  
+declare @assignid int, @periodid int, @jrId int                  
+SET @assignid = (select Id from tblUsers where Login_Id=@CallTakenBy)                  
+SET @periodid = case when (@EstDateSchdule!= '1753-01-01') then                   
+(select Id from tblPeriod where @EstDateSchdule between FromDate and ToDate) else null end                  
+SET @jrId = (select Id from tblUsers where Email=@CallTakenBy)                  
+set @SecProductOfInterest =(case @SecProductOfInterest when 0 then null else @SecProductOfInterest end)                  
+set @ProductOfInterest=(case @ProductOfInterest when 0 then null else @ProductOfInterest end)                  
+set @followup_date=(case @followup_date when '1753-01-01' then null else @followup_date end)                  
+set @EstDateSchdule=(case @EstDateSchdule when '1753-01-01' then null else @EstDateSchdule end)              
+  
+IF (@yesNo=1)  
+BEGIN  
+If @firstName Is Null Or @firstName = ''        
+Begin        
+ Select Top 1 @firstName = strFirstName, @lastName = strLastName, @strContactType = strContactType, @strPhoneType = strPhoneType, @Email = strEMail,        
+ @CellPh =  strPhoneNumber from @primary        
+End        
+END        
+ELSE   
+BEGIN  
+select * into CustomersPrimaryContactTempSave from   
+(  
+(SELECT strFirstName as firstname,strLastName as lastname,strEMail as email,strPhoneNumber as phonenmber  From @primary  
+Except  
+(SELECT CustomerName as firstname,lastname as lastname,Email as email ,CellPh as phonenmber From  dbo.new_Customer  
+UNION ALL    
+ SELECT strFirstName as firstname,strLastName as lastname,strEMail as email ,strPhoneNumber as phonenmber From dbo.tblCustomersPrimaryContact)))t  
+   
+ Select Top 1 @firstName = firstname, @lastName = lastname, @Email = email,        
+ @CellPh =  phonenmber from CustomersPrimaryContactTempSave     
+ SELECT Top 1 @strContactType = strContactType, @strPhoneType = strPhoneType   
+ FROM @primary WHERE strFirstName = @firstName AND strLastName = @lastName  
+ AND strEMail=@Email AND strPhoneNumber=@CellPh  
+  
+END  
+  
+  
+IF (@yesNo=1)  
+BEGIN  
+If @CustomerAddress Is Null Or @CustomerAddress = ''        
+Begin        
+ Select Top 1 @CustomerAddress = strAddress, @strAddressType = strAddressType, @State = strState, @City = strCity, @ZipCode = strZipCode From @CustAdd        
+End        
+END      
+ELSE  
+BEGIN    
+select * into CustomerAddressTempSave from   
+(select strAddress as address,strAddressType as addtype,strState as [state],strCity as city,strZipCode as zipcode from @CustAdd    
+except  
+(select CustomerAddress as address,strAddressType as addtype,State as [state],City as city,zipcode as zipcode  from new_customer  
+UNION ALL  
+select strAddress as address,strAddressType as addtype ,strState as [state],strCity as city,strZipCode as zipcode from tblCustomersAddress )) as s  
+  
+Select Top 1 @CustomerAddress = address, @strAddressType = addtype, @State = [state], @City = city, @ZipCode = zipcode From CustomerAddressTempSave        
+  
+END  
+  
+  
+If @BillingAddress Is Null Or @BillingAddress = ''        
+Begin        
+ Select Top 1 @strBillingAddressType = strAddressType,@BillingAddress = strBillingAddress from @CustBilling           
+End        
+        
+        
+            
+insert into dbo.new_customer                   
+(CustomerName,LastName,CustomerAddress,[State],City,ZipCode,JobLocation,EstDateSchdule,EstTime,CellPh,HousePh,Email,Email2,Email3,CallTakenBy,                  
+ --[Service],                  
+ AddedBy,LeadType,AlternatePh,BillingAddress,BestTimetocontact,PrimaryContact,ContactPreference,                  
+ PeriodId,AssignedToId,Map1,Map2,[Status],IsRepeated,Missing_contacts,Followup_date,ProductOfInterest,SecondaryProductOfInterest,ProjectManager,Password,         
+ PhoneType, strContactType, strAddressType, strBillingAddressType, strCompetitorBids)                  
+values                  
+(                  
+@firstName,                  
+@lastName,                  
+@CustomerAddress,                  
+@State,                  
+@City,          
+@ZipCode,                  
+@City,                  
+@EstDateSchdule,                  
+@EstTime,                  
+@CellPh,                  
+@HousePh,                  
+@Email,                  
+@Email2,                  
+@Email3,          
+@jrId,                  
+--@Service,                  
+@AddedBy,                  
+@leadtype,                  
+@AlternatePh,                  
+@BillingAddress,                  
+@BestTimetocontact,                  
+@PrimaryContact,                  
+@ContactPreference,                  
+@periodid,                  
+@assignid,                  
+@Map1,                  
+@Map2,                  
+@status,                  
+@Isrepeated,                  
+@missing_contacts,                  
+@followup_date ,                  
+@ProductOfInterest,                  
+@SecProductOfInterest,                  
+@ProjectManager,                  
+'jmgrove',        
+@strPhoneType,        
+@strContactType,        
+@strAddressType,        
+@strBillingAddressType,        
+@strCompetitorBids              
+)                  
+set @result=SCOPE_IDENTITY();                  
+  
+  
+declare @meetingdate datetime                   
+SET @meetingdate = @EstDateSchdule + CAST(@EstTime as time)                  
+                  
+                  
+  Update dbo.tblcustomer_followup set CustomerId= @result      
+  WHERE userid =@assignid and customerid is null AND (MeetingStatus is not null AND MeetingStatus <>'')      
+  AND createdon >= dateadd(minute, -30, getdate())    
+  
+  Insert into tblBillingAddress (intCustomerId,strAddressType,strBillingAddress)           
+   Select Result, strAddressType,strBillingAddress from        
+   (Select @result As Result,strAddressType,strBillingAddress,row_number() over (order by @result) RowNumber         
+   from @CustBilling) innerCustomerBillingAddressQuery        
+   Where RowNumber != 1        
+           
+    Insert into tblCustomersProductofInterest (intCustomerId,intProductId,strType,strProductType )                
+ Select @result,[ProductId],isnull([Type], ''),ProductType from @dtPrimaryContact   
+  
+  
+              
+ IF (@yesNo=1)                
+ BEGIN  
+ Insert into tblCustomersAddress(intCustomerId,strAddress,strZipCode,strAddressType,strCity,strState)                
+ select Result,strAddress,strZipCode,strAddressType,strCity,strState from        
+ (Select @result As Result,strAddress,strZipCode,strAddressType,strCity,strState,row_number() over (order by @result) RowNumber         
+ from @CustAdd) innerCustomerAddressQuery        
+ Where RowNumber != 1        
+ END  
+ ELSE  
+ BEGIN  
+ Insert into tblCustomersAddress(intCustomerId,strAddress,strAddressType,strState,strCity,strZipCode)   
+  SELECT  Result,address,addtype,[state],city, zipcode from   
+ (SELECT @Result as Result,address,addtype,[state],city, zipcode,row_number() over (order by @result) RowNumber         
+  FROM CustomerAddressTempSave)  CustomerAddressTempSaveROW       
+  Where RowNumber != 1        
+    
+ END  
+         
+         
+           
+    
+     
+     
+     
+         
+ IF (@yesNo=1)      
+ BEGIN         
+ Insert into tblCustomersPrimaryContact (intCustomerId,IsPrimaryContact,strContactType,strFirstName,strLastName,strPhoneType,strEMail,strPhoneNumber)        
+ Select Result,IsPrimaryContact,strContactType,strFirstName,strLastName,strPhoneType,strEMail,strPhoneNumber From        
+ (Select @result As Result,IsPrimaryContact,strContactType,strFirstName,strLastName,strPhoneType,strEMail,strPhoneNumber,         
+ row_number() over (order by @result) RowNumber         
+ from @primary) innerPrimaryContactQuery        
+ Where RowNumber != 1     
+ --print  @result   
+ END   
+ ELSE  
+ BEGIN  
+ declare @IsPrimaryContact Bit   
+ SELECT TOP 1 @IsPrimaryContact = IsPrimaryContact,@strContactType=strContactType,@strPhoneType=strPhoneType  
+ FROM @primary WHERE strFirstName = @firstName AND strLastName = @lastName  
+ AND strEMail=@Email AND strPhoneNumber=@CellPh  
+   
+ Insert into tblCustomersPrimaryContact (intCustomerId,IsPrimaryContact,strContactType,strFirstName,strLastName,strPhoneType,strEMail,strPhoneNumber)        
+ SELECT Result,IsPrimaryContact,strContactType,firstname,lastname,strPhoneType,email,phonenmber FROM  
+ (SELECT @result as Result,@IsPrimaryContact As IsPrimaryContact ,@strContactType as strContactType,  
+  firstname,lastname,@strPhoneType as strPhoneType,email,phonenmber,row_number() over (order by @result) RowNumber   
+  from CustomersPrimaryContactTempSave)   CustomersPrimaryContactTempSaverowNumber  
+  Where RowNumber != 1   
+  
+ END                
+END 
+
+
+
+
+GO
+
+

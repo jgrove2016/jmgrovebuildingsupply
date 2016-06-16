@@ -59,6 +59,14 @@ namespace JG_Prospect.BLL
         {
             return CustomDAL.Instance.UpdateEmailStatusOfCustomMaterialList(jobid, emailStatus);//, productTypeId, estimateId);
         }
+        public bool UpdateEmailStatusOfCustomMaterialList(string jobid, Int32 pProdCatID, string emailStatus)//, int productTypeId, int estimateId)
+        {
+            return CustomDAL.Instance.UpdateEmailStatusOfCustomMaterialList(jobid, pProdCatID, emailStatus);//, productTypeId, estimateId);
+        }
+        public bool UpdateStatusOfJobProdCat(string jobid, int prodCatID, string emailStatus)
+        {
+            return CustomDAL.Instance.UpdateStatusOfJobProdCat(jobid, prodCatID, emailStatus);
+        }
 
         public int UpdateForemanPermissionOfCustomMaterialList2(string jobid, char permissionStatus, string FormanEmail)//, int productTypeId, int estimateId)
         {
@@ -116,10 +124,17 @@ namespace JG_Prospect.BLL
         {
             return CustomDAL.Instance.CheckPermissionsForCategories(jobid);//, productTypeId, estimateId);
         }
-
+        public int CheckPermissionsForCategories(string jobid, int pProductCatID)
+        {
+            return CustomDAL.Instance.CheckPermissionsForCategories(jobid, pProductCatID);
+        }
         public int CheckPermissionsForVendors(string jobid)//, int productTypeId, int estimateId)
         {
             return CustomDAL.Instance.CheckPermissionsForVendors(jobid);//, productTypeId, estimateId);
+        }
+        public int CheckPermissionsForVendorsByProdCat(string jobid, int pProdCatID)//, int productTypeId, int estimateId)
+        {
+            return CustomDAL.Instance.CheckPermissionsForVendorsByProdCat(jobid, pProdCatID);
         }
         public int UpdateSrSalesmanPermissionOfCustomMaterialList(string jobid, char permissionStatus, int updatedby)//, int productTypeId, int estimateId)
         {
@@ -175,6 +190,10 @@ namespace JG_Prospect.BLL
         {
             return CustomDAL.Instance.GetCustomMaterialList(pJobID, pCustomerID);
         }
+        public DataSet GetRequestMaterialList(string jobId, int pCustomerID, int pInstallerID)
+        {
+            return CustomDAL.Instance.GetRequestMaterialList(jobId, pCustomerID, pInstallerID);
+        }
 
         public string GetEmailStatusOfCustomMaterialList(string jobId)//, int productTypeId, int estimateId)
         {
@@ -194,6 +213,85 @@ namespace JG_Prospect.BLL
         {
             return CustomDAL.Instance.UpdateAdminPermissionOfCustomMaterialList(jobid, permissionStatus,updatedby);//, productTypeId, estimateId);
         }
+
+        public bool AddInstallerToMaterialList(String pSoldJobID, Int32 pInstallerID)
+        {
+            return CustomDAL.Instance.AddInstallerToMaterialList(pSoldJobID, pInstallerID);
+        }
+
+        public Int32 UpdateInstallerPrmToMaterialList(String pSoldJobID, Int32 pInstallerID, String pInstallerPwd)
+        {
+            return CustomDAL.Instance.UpdateInstallerPrmToMaterialList(pSoldJobID, pInstallerID, pInstallerPwd);
+        }
+        public void RemoveInstallerFromMaterialList(Int32 ID)
+        {
+            CustomDAL.Instance.RemoveInstallerFromMaterialList(ID);
+        }
+
+        public string GetRequestStatusText(int pRequestStatusID)
+        {
+            String lRequestStatus = "";
+            switch (pRequestStatusID)
+            {
+                case 1:
+                    lRequestStatus = "Pending";
+                    break;
+                case 2:
+                    lRequestStatus = "Approved";
+                    break;
+                case 3:
+                    lRequestStatus = "Rejected";
+                    break;
+            }
+            return lRequestStatus;
+        }
+        public void UpdateVendorIDs(String pVendorIDs, Int32 pProductCatID, String pExcludedMaterialListID, String pSoldJobID){
+            CustomDAL.Instance.UpdateVendorIDs( pVendorIDs, pProductCatID, pExcludedMaterialListID, pSoldJobID);
+        }
+        public void AssociateVendorToCat(String pVendorIDs, Int32 pProductCatID, Int32 pProdLineID, String pSoldJobID)
+        {
+            CustomDAL.Instance.AssociateVendorToCat(pVendorIDs, pProductCatID, pProdLineID, pSoldJobID);
+        }
+        public void UpdateDefaultVendorsInProdLine(Boolean pDefaultVendor, Int32 pProductCatID, Int32 pProdLineID, String pSoldJobID)
+        {
+            CustomDAL.Instance.UpdateDefaultVendorsInProdLine(pDefaultVendor, pProductCatID, pProdLineID, pSoldJobID);
+        }
+        public void UpdateVendorForPO(Int32 pVendorID, Int32 pProductCatID, Int32 pProdLineID, String pSoldJobID)
+        {
+            CustomDAL.Instance.UpdateVendorForPO(pVendorID, pProductCatID, pProdLineID, pSoldJobID);
+        }
+        public void UpdateVendorIDForSpecMaterial(String pVendorIDs, Int32 pMaterialListID)
+        {
+            CustomDAL.Instance.UpdateVendorIDForSpecMaterial(pVendorIDs, pMaterialListID);
+        }
+        public void UpdateSpecificProductLine(string pFieldName, String pFieldValue, Int32 pID, String pSoldJobID)
+        {
+            CustomDAL.Instance.UpdateSpecificProductLine(pFieldName, pFieldValue, pID, pSoldJobID);
+        }
+        public void UpdateSpecificPaymentDetails(string pFieldName, String pFieldValue, Int32 pProdCatID, Int32 pVendorID, String pSoldJobID)
+        {
+            CustomDAL.Instance.UpdateSpecificPaymentDetails(pFieldName, pFieldValue, pProdCatID, pVendorID, pSoldJobID);
+        }
+        public int AddBankDetails(String pPersonName, String pBankName, String pBankBranch, String pAccountName, String pAccountNumber, String IFSCCode, String SwiftCode)
+        {
+            return CustomDAL.Instance.AddBankDetails(pPersonName, pBankName, pBankBranch, pAccountName, pAccountNumber, IFSCCode, SwiftCode);
+        }
        
+        public void UpdateBankDetails(Int32 pBankID, String pPersonName, String pBankName, String pBankBranch, String pAccountName, String pAccountNumber, String IFSCCode, String SwiftCode)
+        {
+            CustomDAL.Instance.UpdateBankDetails(pBankID, pPersonName, pBankName, pBankBranch, pAccountName, pAccountNumber, IFSCCode, SwiftCode);
+        }
+        public void DeleteBankDetails(Int32 pBankID)
+        {
+            CustomDAL.Instance.DeleteBankDetails(pBankID);
+        }
+        public DataSet GetBanks()
+        {
+            return CustomDAL.Instance.GetBanks();
+        }
+        public DataSet GetBanks(Int32 pBankID)
+        {
+           return CustomDAL.Instance.GetBanks(pBankID);
+        }
     }
 }

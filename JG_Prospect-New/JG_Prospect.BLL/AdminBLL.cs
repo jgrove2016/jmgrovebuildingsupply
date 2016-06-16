@@ -46,6 +46,25 @@ namespace JG_Prospect.BLL
         {
             return AdminDAL.Instance.FetchContractTemplate(id);
         }
+        
+        public DataSet GetEmailTemplate(String pTemplateName)
+        {
+            return AdminDAL.Instance.GetEmailTemplate(pTemplateName);
+        }
+        public DataSet GetJobInformation(String pSoldJobID, Int32 pProductCatID, Int32 pVendorID)
+        {
+            return AdminDAL.Instance.GetJobInformation(pSoldJobID, pProductCatID, pVendorID);
+        }
+        public DataSet GetInstallerEmails()
+        {
+            return AdminDAL.Instance.GetInstallerEmails();
+        }
+
+        public DataSet GetAutoEmailTemplate(int pHTMLTemplateID, int pSubHTMLTemplateID = 0)
+        {
+            return AdminDAL.Instance.GetAutoEmailTemplate(pHTMLTemplateID, pSubHTMLTemplateID);
+        }
+
 
         public DataSet FetchWorkOrderTemplate()
         {
@@ -60,9 +79,9 @@ namespace JG_Prospect.BLL
             return AdminDAL.Instance.UpdateContractTemplate(ContracttemplateHeader, ContracttemplateBodyA, ContracttemplateBodyB, ContracttemplateFooter, ContractTemplateBody2, id);
         }
 
-        public bool UpdateEmailVendorCategoryTemplate(string EmailTemplateHeader, string EmailTemplateFooter, string EAttachment)
+        public bool UpdateEmailVendorCategoryTemplate(string EmailTemplateHeader, string EmailTemplateFooter, string EAttachment, string subject ="")
         {
-            return AdminDAL.Instance.UpdateEmailVendorCategoryTemplate(EmailTemplateHeader, EmailTemplateFooter, EAttachment);
+            return AdminDAL.Instance.UpdateEmailVendorCategoryTemplate(EmailTemplateHeader, EmailTemplateFooter, EAttachment, subject);
         }
 
         public void DisableCustomer(int Id, string Reason)
@@ -74,9 +93,32 @@ namespace JG_Prospect.BLL
         {
             return AdminDAL.Instance.UpdateEmailVendorTemplate2(EmailTemplateHeader, EmailTemplateFooter, AttPath);
         }
-        public bool UpdateEmailVendorTemplate(string EmailTemplateHeader, string EmailTemplateFooter)
+        public bool UpdateEmailVendorTemplate(string EmailTemplateHeader, string EmailTemplateFooter, string subject, int pHTMLTemplateID, List<CustomerDocument> custList)
         {
-            return AdminDAL.Instance.UpdateEmailVendorTemplate(EmailTemplateHeader, EmailTemplateFooter);
+            return AdminDAL.Instance.UpdateEmailVendorTemplate(EmailTemplateHeader, EmailTemplateFooter, subject, pHTMLTemplateID, custList);
+        }
+
+        public string AddMaterialListAttachment(String pSoldJobID, Int32 pProductCatID, List<CustomerDocument> pAttachmentList, int pAttachmentType, int pVendorID)
+        {
+            return AdminDAL.Instance.AddMaterialListAttachment(pSoldJobID, pProductCatID, pAttachmentList, pAttachmentType, pVendorID);
+        }
+        /// <summary>
+        /// This method deletes the record and returns the path of physical file, so that it could be deleted from server.
+        /// </summary>
+        /// <param name="pAttachmentID"></param>
+        /// <returns></returns>
+        public DataSet DeleteEmailAttachment(int pAttachmentID)
+        {
+            return AdminDAL.Instance.DeleteEmailAttachment(pAttachmentID);
+        }
+        /// <summary>
+        /// This method deletes the record and returns the path of physical file, so that it could be deleted from server.
+        /// </summary>
+        /// <param name="pAttachmentID"></param>
+        /// <returns></returns>
+        public DataSet DeleteMaterialListlAttachment(int pAttachmentID)
+        {
+            return AdminDAL.Instance.DeleteMaterialListAttachment(pAttachmentID);
         }
         public bool UpdateWorkOrderTemplate(string WorkOrdertemplate)
         {
@@ -92,6 +134,38 @@ namespace JG_Prospect.BLL
         {
             return AdminDAL.Instance.GetProductLineForGrid();
         }
+
+
+        public DataSet InsertProduct_PriceControl(string ProductLineName)
+        {
+            return AdminDAL.Instance.InsertProduct_PriceControl(ProductLineName);
+        }
+
+        public DataSet UpdateProduct_PriceControl(string ProductLineName, int ProdId)
+        {
+            return AdminDAL.Instance.UpdateProduct_PriceControl(ProductLineName, ProdId);
+        }
+
+        public DataSet SelectProduct_PriceControl(int ProductId)
+        {
+            return AdminDAL.Instance.SelectProduct_PriceControl(ProductId);
+        }
+
+        public DataSet DeleteProduct_PriceControl(int ProductId)
+        {
+            return AdminDAL.Instance.DeleteProduct_PriceControl(ProductId);
+        }
+        public DataSet CheckDuplicateProduct_PriceControl(string Productname)
+        {
+            return AdminDAL.Instance.CheckDuplicateProduct_PriceControl(Productname);
+        }
+
+        public DataSet CheckDuplicateProduct_Update_PriceControl(string Productname, int ProdId)
+        {
+            return AdminDAL.Instance.CheckDuplicateProduct_Update_PriceControl(Productname, ProdId);
+        }
+
+
 
         public DataSet GetContractTemplate(string ProductLineName)
         {
@@ -346,9 +420,19 @@ namespace JG_Prospect.BLL
         {
             return AdminDAL.Instance.UpdateCompanyAddress(Addressid, CompanyAddress, CompanyCity, CompanyState, CompanyZipCode);
         }
-        public bool UpdateEmailVendorCategoryTemplate(string EmailTemplateHeader, string EmailTemplateFooter)
+        public bool UpdateEmailVendorCategoryTemplate(string EmailTemplateHeader, string EmailTemplateFooter, string subject, int pHTMLTemplateID,  List<CustomerDocument> custList)
         {
-            return AdminDAL.Instance.UpdateEmailVendorCategoryTemplate(EmailTemplateHeader, EmailTemplateFooter);
+            return AdminDAL.Instance.UpdateEmailVendorCategoryTemplate(EmailTemplateHeader, EmailTemplateFooter,subject,pHTMLTemplateID,custList);
+        }
+
+        public bool UpdateHTMLTemplate(string EmailTemplateHeader, string EmailTemplateBody, string EmailTemplateFooter, string subject, int pHTMLTemplateID, List<CustomerDocument> custList)
+        {
+            return AdminDAL.Instance.UpdateHTMLTemplate(EmailTemplateHeader, EmailTemplateBody, EmailTemplateFooter, subject, pHTMLTemplateID, custList);
+        }
+        
+        public DataSet GetHTMLTemplateAttachedFile(int pHTMLTemplateID)
+        {
+            return AdminDAL.Instance.GetHTMLTemplateAttachedFile(pHTMLTemplateID);
         }
 
         public DataSet GetProductCategory()

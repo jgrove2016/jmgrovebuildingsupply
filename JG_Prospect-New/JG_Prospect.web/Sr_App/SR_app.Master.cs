@@ -18,7 +18,7 @@ namespace JG_Prospect.Sr_App
             {
                 if ((string)Session["usertype"] == "MM" || (string)Session["usertype"] == "SSE")
                 {
-                   // li_addresources.Visible = false;
+                    // li_addresources.Visible = false;
                     li_pricecontrol.Visible = false;
                     li_statusoverride.Visible = true;
                 }
@@ -30,6 +30,10 @@ namespace JG_Prospect.Sr_App
                     ScriptEditor.Enabled = false;
                     ScriptEditor.Attributes.Add("readonly", "readonly");
                 }
+            }
+            else
+            {
+                Response.Redirect("~/login.aspx");
             }
         }
       

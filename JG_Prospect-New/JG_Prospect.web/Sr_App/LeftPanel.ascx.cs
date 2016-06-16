@@ -56,7 +56,7 @@ namespace JG_Prospect.Sr_App
                 }
                 else
                 {
-                    user = Session["loginid"].ToString();
+                   // user = Session["loginid"].ToString();
                 }
                 DataSet ds = new DataSet();
                 ds = null;
