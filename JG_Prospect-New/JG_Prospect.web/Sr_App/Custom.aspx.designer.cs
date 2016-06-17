@@ -184,6 +184,15 @@ namespace JG_Prospect.Sr_App.Product_Line {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvworkarea;
         
         /// <summary>
+        /// locimages control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden locimages;
+        
+        /// <summary>
         /// ajaxFileUpload control.
         /// </summary>
         /// <remarks>

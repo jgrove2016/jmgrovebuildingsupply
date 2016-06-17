@@ -348,7 +348,10 @@ namespace JG_Prospect.Sr_App.Product_Line
 
                     string xml = "<root>";
 
-                    List<CustomerLocationPic> pics = (List<CustomerLocationPic>)ViewState[SessionKey.Key.PagedataTable.ToString()];
+                    //Commented by Yogesh Keraliya : Technical intervie task#9
+                    //Implemented drag and drop location image uploader so images will be stored in hidden file and from that need to get pic list
+                    //List<CustomerLocationPic> pics = (List<CustomerLocationPic>)ViewState[SessionKey.Key.PagedataTable.ToString()];
+                    List<CustomerLocationPic> pics = GetUploadedLocationPictures();
 
                     var image = pics.AsEnumerable().Take(1);
                     string mainImage = image.FirstOrDefault().LocationPicture;
@@ -443,6 +446,32 @@ namespace JG_Prospect.Sr_App.Product_Line
             {
                 logManager.writeToLog(ex, "Custom", Request.ServerVariables["remote_addr"].ToString());
             }
+        }
+
+        /// <summary>
+        /// Get location pictures uploaded by user from hidden filed.
+        /// Created By: Yogesh K
+        /// Created Date: 06/17/2016
+        /// </summary>
+        /// <returns>List of CustomerLocationPic</returns>
+        private List<CustomerLocationPic> GetUploadedLocationPictures()
+        {
+            List<CustomerLocationPic> pics = new List<CustomerLocationPic>();
+
+            //check if any image is uplopaded by customer or not.
+            if (!String.IsNullOrEmpty(locimages.Value))
+            {
+                String[] locationPics = locimages.Value.Split(new char[] { '^' }, StringSplitOptions.RemoveEmptyEntries);
+
+                for (int i = 0; i < locationPics.Length; i++)
+                {
+                    pics.Add(new CustomerLocationPic { RowSerialNo = i + 1, LocationPicture = locationPics[i] });
+                }
+
+                locimages.Value = string.Empty;
+            }
+
+            return pics;
         }
 
         protected void btnImageUploadClick_Click(object sender, EventArgs e)
@@ -598,6 +627,6 @@ namespace JG_Prospect.Sr_App.Product_Line
             else
                 ddlMaterialStorage.Enabled = true;
         }
-        
+
     }
 }
