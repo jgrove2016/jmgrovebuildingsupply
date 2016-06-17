@@ -36,6 +36,9 @@
         }
     </style>
     <script type="text/javascript">
+
+      
+
         function ConfirmDelete() {
             var Ok = confirm('Are you sure you want to Delete this User?');
             if (Ok)
@@ -90,6 +93,31 @@
          return isValidFile;
      }
 
+        function submitButton(event) {
+            if (event.which == 13) {                
+                $("[id$='btnSubmitSearchUser']").trigger('click');
+            }
+        }
+
+        function doClick(buttonName, e) {
+            //the purpose of this function is to allow the enter key to 
+            //point to the correct button to click.
+            var key;
+
+            if (window.event)
+                key = window.event.keyCode;     //IE
+            else
+                key = e.which;     //firefox
+
+            if (key == 13) {
+                //Get the button the user wants to have clicked
+                var btn = document.getElementById(buttonName);
+                if (btn != null) { //If we find the button click it
+                    btn.click();
+                    event.keyCode = 0
+                }
+            }
+        }
     </script>
     <style type="text/css">
         .modalBackground {
@@ -129,7 +157,17 @@
             <label>
                 Upload Prospects using xlsx file:
              <asp:FileUpload ID="BulkProspectUploader"  runat="server" /></label>
-            <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator1" ControlToValidate="BulkProspectUploader" runat="server" ErrorMessage="Select file to import data." ValidationGroup="BulkImport"></asp:RequiredFieldValidator>--%>
+            <%--
+                    <asp:TemplateField>
+                        <EditItemTemplate>
+                          <asp:LinkButton ID="lnkAction" Text="Cancel" CommandName="SelPastAttendance" CommandArgument='<%#Eval("Id")+","+ Eval("EmployeePrimaryDetail.EmployeeCode")+","+ Eval("RequestStatus") %>'
+                                            runat="server"></asp:LinkButton>
+                        </EditItemTemplate>
+                        <ItemTemplate>
+                            <asp:Label ID="Label2" runat="server"></asp:Label>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                        --%>
             <div class="btn_sec">
                 <asp:Button ID="btnUpload" runat="server" Text="Upload"
                     OnClientClick="return ValidateFile()"  OnClick="btnUpload_Click" />
@@ -137,6 +175,7 @@
                 <asp:Label ID="Label1" runat="server" />
             </div>
             <div id="divTest">
+                <asp:Panel ID="PanelSearch" DefaultButton="btnSubmitSearchUser" runat="server">
                 <asp:Label ID="lblUserStatus" Text="User Status" runat="server" /><span style="color: red">*</span>
                 <asp:DropDownList ID="ddlUserStatus" runat="server" Width="140px" AutoPostBack="true" OnSelectedIndexChanged="ddlUserStatus_SelectedIndexChanged">
                     <asp:ListItem Text="--Select--" Value="--Select--"></asp:ListItem>
@@ -151,12 +190,31 @@
                 </asp:DropDownList>&nbsp;
                 <asp:Label ID="lblDesignation" Text="Designation" runat="server" />
                 <asp:DropDownList ID="ddlDesignation" runat="server" Width="140px" OnSelectedIndexChanged="ddlUserStatus_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+           
+                 <asp:Label ID="lblCreationDate" Text="Added On" runat="server" />
+                <asp:TextBox ID="txtCreationDate" runat="server" AutoPostBack="True" OnTextChanged="txtCreationDate_TextChanged"></asp:TextBox>
+                <cc1:CalendarExtender ID="CECreationDate" runat="server" TargetControlID="txtCreationDate" Format="MM/dd/yyyy"></cc1:CalendarExtender>
+                 <asp:Label ID="lblUserSearch" Text="User" runat="server" />
+                <asp:TextBox ID="txtUserSearch" runat="server" onKeyDown="submitButton(event)" OnDataBinding="btnSubmitSearchUser_Click"></asp:TextBox>
+                <cc1:TextBoxWatermarkExtender ID="TBWEtxtUser" runat="server" TargetControlID="txtUserSearch" WatermarkText="Search User"></cc1:TextBoxWatermarkExtender>
+                <cc1:AutoCompleteExtender ServiceMethod="SearchUsers"
+    MinimumPrefixLength="2"
+    CompletionInterval="100" EnableCaching="false" CompletionSetCount="10"
+    TargetControlID="txtUserSearch"
+    ID="ACESearchUsers" runat="server" FirstRowSelected = "false">
+</cc1:AutoCompleteExtender>
+                    <asp:Label ID="lblCreatedBy" Text="Added/Edited By" runat="server" />
+                <asp:DropDownList ID="ddlCreatedBy"  runat="server" Width="140px" AutoPostBack="true" OnSelectedIndexChanged="ddlCreatedBy_SelectedIndexChanged" ></asp:DropDownList>
+
+
+                <asp:Button ID="btnSubmitSearchUser" runat="server" OnClick="btnSubmitSearchUser_Click" />
+                    </asp:Panel>
             </div>
             <asp:LinkButton ID="lnkDownload" Text="Download Sample Format For Bulk Upload" CommandArgument='../UserFile/SalesSample.xlsx' runat="server" OnClick="DownloadFile"></asp:LinkButton>
             <div class="grid">
-                <%-- <asp:UpdatePanel ID="updatepanel" runat="server">
-                    <ContentTemplate>--%>
-                <asp:GridView ID="GridViewUser" runat="server" AutoGenerateColumns="False" DataKeyNames="Id" AllowSorting="true"
+                <%-- </ContentTemplate>
+                </asp:UpdatePanel>--%>
+                <asp:GridView ID="GridViewUser" runat="server" AutoGenerateColumns="False" DataKeyNames="Id" AllowSorting="True"
                     OnRowCancelingEdit="GridViewUser_RowCancelingEdit" OnRowEditing="GridViewUser_RowEditing"
                     OnRowUpdating="GridViewUser_RowUpdating" OnRowDeleting="GridViewUser_RowDeleting"
                     OnRowDataBound="GridViewUser_RowDataBound" OnSelectedIndexChanged="GridViewUser_SelectedIndexChanged"
@@ -219,6 +277,8 @@
                             <ItemTemplate>
                                 <asp:Label ID="lblLastName" runat="server" Text='<%# Bind("Lastname") %>'></asp:Label>
                             </ItemTemplate>
+
+<ItemStyle HorizontalAlign="Center"></ItemStyle>
                         </asp:TemplateField>
                        <%-- <asp:TemplateField HeaderText="Primary Trade" SortExpression="PTradeName" ItemStyle-HorizontalAlign="Center">
                             <EditItemTemplate>
@@ -260,24 +320,25 @@
                                     <asp:ListItem Text="Deactive" Value="Deactive"></asp:ListItem>
                                     <asp:ListItem Text="Install Prospect" Value="Install Prospect"></asp:ListItem>
                                 </asp:DropDownList><br />
-                                <asp:Label ID="lblRejectDetail" runat="server" Text='<%#Eval("RejectDetail") %>'></asp:Label>
-                                <asp:Label ID="lblInterviewDetail" runat="server" Text='<%#Eval("InterviewDetail") %>'></asp:Label>
+                                <asp:Label ID="lblRejectDetail" runat="server" Text=""></asp:Label> <%--'<%#Eval("RejectDetail") %>'--%>
+                                <asp:Label ID="lblInterviewDetail" runat="server" Text=""></asp:Label> <%--'<%#Eval("InterviewDetail") %>'--%>
                             </ItemTemplate>
                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                         </asp:TemplateField>
                         <asp:TemplateField HeaderText="Added By" SortExpression="AddedBy" ItemStyle-HorizontalAlign="Center">
                             <ItemTemplate>
-                                <asp:Label ID="lblAddedBy" runat="server" Text='<%#Eval("AddedBy")%>'></asp:Label>
+                                <asp:Label ID="lblAddedBy" runat="server" Text='<%#Eval("SourceUser")%>'></asp:Label> 
                             </ItemTemplate>
                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                         </asp:TemplateField>
                         <asp:TemplateField HeaderText="Added On" SortExpression="CreatedDateTime" ItemStyle-HorizontalAlign="Center">
                             <ItemTemplate>
-                                <asp:Label ID="lblHireDate" runat="server" Text='<%#Eval("CreatedDateTime")%>'></asp:Label>
+                                <asp:Label ID="lblCreationDate" runat="server" Text='<%#Eval("DateSourced")%>'></asp:Label>                             
                             </ItemTemplate>
                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                         </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Source" SortExpression="Source" ItemStyle-HorizontalAlign="Center">
+                    
+                      <%--  <asp:TemplateField HeaderText="Source" SortExpression="Source" ItemStyle-HorizontalAlign="Center">
                             <ItemTemplate>
                                 <asp:Label ID="lblSource" runat="server" Text='<%#Eval("Source")%>'></asp:Label>
                             </ItemTemplate>
@@ -300,7 +361,7 @@
                             <ItemTemplate>
                                 <asp:Label ID="lblZip" runat="server" Text='<%# Bind("Zip") %>'></asp:Label>
                             </ItemTemplate>
-                        </asp:TemplateField>
+                        </asp:TemplateField>--%>
                         <%--   <asp:TemplateField HeaderText="Delete User">
                 <ItemTemplate>
                  <asp:HiddenField ID="id" runat="server" Value='<%# Eval("Id") %>' />
@@ -325,10 +386,11 @@
                         </ItemTemplate>
                     </asp:TemplateField>
                         --%>
+                       
                     </Columns>
                 </asp:GridView>
-                <%-- </ContentTemplate>
-                </asp:UpdatePanel>--%>
+                <%--<asp:UpdatePanel ID="updatepanel1" runat="server">
+                    <ContentTemplate>--%>
             </div>
             <br />
             <br />
@@ -337,8 +399,7 @@
             </div>
         </div>
     </div>
-    <%--<asp:UpdatePanel ID="updatepanel1" runat="server">
-                    <ContentTemplate>--%>
+    <%--<asp:Button ID="Button2" runat="server" OnClick="" />--%>
     <asp:Button ID="Button1" Style="display: none;" runat="server" Text="Button" />
     <cc1:ModalPopupExtender ID="mp1" runat="server" PopupControlID="Panel1" TargetControlID="Button1" 
         CancelControlID="btnClose" BackgroundCssClass="modalBackground">

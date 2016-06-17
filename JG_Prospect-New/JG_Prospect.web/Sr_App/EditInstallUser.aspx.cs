@@ -17,6 +17,7 @@ using Word = Microsoft.Office.Interop.Word;
 using System.Net;
 using System.Net.Mail;
 using System.Globalization;
+using System.Drawing;
 
 namespace JG_Prospect.Sr_App
 {
@@ -59,7 +60,7 @@ namespace JG_Prospect.Sr_App
             {
                 dsNew = InstallUserBLL.Instance.getallInstallusers();
                 DataSet dsExport = InstallUserBLL.Instance.ExportAllInstallUsersData();
-                Session["GridData"] = dsExport.Tables[0];
+                Session["GridData"] = dsNew.Tables[0];
                 if (dsNew.Tables[0].Rows.Count > 0)
                 {
                     strb.Append("DS data found");
@@ -76,6 +77,14 @@ namespace JG_Prospect.Sr_App
                                                  select Convert.ToString(ptrade["Designation"])).Distinct().ToList();
                     ddlDesignation.DataBind();
                     ddlDesignation.Items.Insert(0, "--Select--");
+
+
+                    ddlUser.DataSource = (from fname in dsNew.Tables[0].AsEnumerable()
+                                          where !string.IsNullOrEmpty(fname.Field<string>("SourceUser"))
+                                          orderby fname.Field<string>("SourceUser") ascending
+                                          select Convert.ToString(fname["SourceUser"])).Distinct().ToList();
+                    ddlUser.DataBind();
+                    ddlUser.Items.Insert(0, "--Select--");
                 }
                 else
                 {
@@ -164,7 +173,7 @@ namespace JG_Prospect.Sr_App
                         }
                         else
                         {
-                            //ddlStatus.Items.FindByValue(Status).Selected = true;
+                            //ddlStatus.Items.FindByValue(Status).Selected = true;                           
                             ddlStatus.SelectedIndex = ddlStatus.Items.IndexOf(ddlStatus.Items.FindByValue(Convert.ToString(Status)));
                         }
 
@@ -172,6 +181,7 @@ namespace JG_Prospect.Sr_App
                     else
                     {
                         strb.Append("Start else ");
+                        e.Row.BackColor = Color.Yellow;
                         ddlStatus.Items.FindByValue("Applicant").Selected = true;
                     }
                 }
@@ -1771,6 +1781,8 @@ namespace JG_Prospect.Sr_App
                         where (userdata.Field<string>("Status") == UStatus || ddlUserStatus.SelectedIndex == 0)
                         && (userdata.Field<string>("PTradeName") == PTrade || ddlPrimaryTrade.SelectedIndex == 0)
                         && (userdata.Field<string>("Designation") == Designation || ddlDesignation.SelectedIndex == 0)
+                         && (userdata.Field<string>("FristName") == ddlUser.SelectedItem.Text || ddlUser.SelectedIndex == 0)
+                                && (userdata.Field<string>("DateSourced") == txtCreationDate.Text || txtCreationDate.Text == string.Empty)
                         select userdata;
                 if (query.Count() > 0)
                 {
@@ -1781,6 +1793,16 @@ namespace JG_Prospect.Sr_App
             }
             GridViewUser.DataSource = dt;
             GridViewUser.DataBind();
+        }
+
+        protected void ddlUser_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BindGrid(ddlPrimaryTrade.SelectedItem.Text, ddlUserStatus.SelectedItem.Text, ddlDesignation.SelectedItem.Text);
+        }
+
+        protected void txtCreationDate_TextChanged(object sender, EventArgs e)
+        {
+            BindGrid(ddlPrimaryTrade.SelectedItem.Text, ddlUserStatus.SelectedItem.Text, ddlDesignation.SelectedItem.Text);
         }
     }
 }

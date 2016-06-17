@@ -168,6 +168,11 @@
                 </asp:DropDownList>&nbsp;
                 <asp:Label ID="lblDesignation" Text="Designation" runat="server" />
                 <asp:DropDownList ID="ddlDesignation" runat="server" Width="140px" OnSelectedIndexChanged="ddlUserStatus_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+                 <asp:Label ID="lblUser" Text="Added By" runat="server" />
+                <asp:DropDownList ID="ddlUser"  runat="server" Width="140px" AutoPostBack="true" OnSelectedIndexChanged="ddlUser_SelectedIndexChanged"></asp:DropDownList>
+                 <asp:Label ID="lblCreationDate" Text="Added On" runat="server" />
+                <asp:TextBox ID="txtCreationDate" runat="server" AutoPostBack="True" OnTextChanged="txtCreationDate_TextChanged"></asp:TextBox>
+                <cc1:CalendarExtender ID="CECreationDate" runat="server" TargetControlID="txtCreationDate" Format="MM/dd/yyyy"></cc1:CalendarExtender>
             </div>
             <br />
             <asp:LinkButton ID="lnkDownload" Text="Download Sample Format For Bulk Upload" CommandArgument='../UserFile/sample.xlsx' runat="server" OnClick="DownloadFile"></asp:LinkButton>
@@ -277,26 +282,26 @@
                                     <asp:ListItem Text="Deactive" Value="Deactive"></asp:ListItem>
                                     <asp:ListItem Text="Install Prospect" Value="Install Prospect"></asp:ListItem>
                                 </asp:DropDownList> <br />
-                                <asp:Label ID="lblRejectDetail" runat="server" Text='<%#Eval("RejectDetail") %>'></asp:Label>
-                                <asp:Label ID="lblInterviewDetail" runat="server" Text='<%#Eval("InterviewDetail") %>'></asp:Label>
+                              <%--  <asp:Label ID="lblRejectDetail" runat="server" Text='<%#Eval("RejectDetail") %>'></asp:Label>
+                                <asp:Label ID="lblInterviewDetail" runat="server" Text='<%#Eval("InterviewDetail") %>'></asp:Label>--%>
                             </ItemTemplate>
                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                         </asp:TemplateField>
                          <asp:TemplateField HeaderText="Added By" SortExpression="AddedBy" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="60px" ItemStyle-Wrap="true" HeaderStyle-Width="60px" >
                             <ItemTemplate>
-                                <asp:Label ID="lblAddedBy" runat="server" Text='<%#Eval("AddedBy")%>'></asp:Label>
+                                <asp:Label ID="lblAddedBy" runat="server" Text='<%#Eval("SourceUser")%>'></asp:Label>
                             </ItemTemplate>
                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                         </asp:TemplateField>
                         <asp:TemplateField HeaderText="Added On" SortExpression="CreatedDateTime" ItemStyle-HorizontalAlign="Center">
                             <ItemTemplate>
-                                <asp:Label ID="lblHireDate" runat="server" Text='<%# Convert.ToDateTime( Eval("CreatedDateTime")).ToString("MM/dd/yyyy")%>'></asp:Label>
+                                <asp:Label ID="lblCreationDate" runat="server" Text='<%#Eval("DateSourced")%>'></asp:Label>
                             </ItemTemplate>
                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                         </asp:TemplateField>
                         <asp:TemplateField HeaderText="Source" SortExpression="Source" ItemStyle-HorizontalAlign="Center">
                             <ItemTemplate>
-                                <asp:Label ID="lblSource" runat="server" Text='<%#Eval("Source")%>'></asp:Label>
+                               <%-- <asp:Label ID="lblSource" runat="server" Text='<%#Eval("Source")%>'></asp:Label>--%>
                             </ItemTemplate>
                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                         </asp:TemplateField>

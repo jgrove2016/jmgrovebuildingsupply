@@ -16,6 +16,7 @@ using System.Text;
 using Word = Microsoft.Office.Interop.Word;
 using System.Net;
 using System.Net.Mail;
+using System.Drawing;
 
 namespace JG_Prospect
 {
@@ -39,6 +40,9 @@ namespace JG_Prospect
             }
             if (!IsPostBack)
             {
+                //txtUserSearch.Attributes.Add("onKeyPress",
+                //  "doClick('" + btnSubmitSearchUser.ClientID + "',event)");
+
                 CalendarExtender1.StartDate = DateTime.Now;
                 Session["DeactivationStatus"] = "";
                 Session["FirstNameNewSC"] = "";
@@ -68,6 +72,16 @@ namespace JG_Prospect
                                          select Convert.ToString(ptrade["Designation"])).Distinct().ToList();
             ddlDesignation.DataBind();
             ddlDesignation.Items.Insert(0, "--Select--");
+
+
+            ddlCreatedBy.DataSource = (from fname in DS.Tables[0].AsEnumerable()
+                                  where !string.IsNullOrEmpty(fname.Field<string>("SourceUser"))
+                                  orderby fname.Field<string>("SourceUser") ascending
+                                  select Convert.ToString(fname["SourceUser"])).Distinct().ToList();
+            ddlCreatedBy.DataBind();
+            ddlCreatedBy.Items.Insert(0, "--Select--");
+
+            
         }
 
 
@@ -145,6 +159,7 @@ namespace JG_Prospect
                     }
                     else
                     {
+                        e.Row.BackColor = Color.Yellow;
                         ddlStatus.Items.FindByValue("Applicant").Selected = true;
                     }
                 }
@@ -1225,6 +1240,9 @@ namespace JG_Prospect
                 query = from userdata in dt.AsEnumerable()
                         where (userdata.Field<string>("Status") == Status  || ddlUserStatus.SelectedIndex == 0)
                         && (userdata.Field<string>("Designation") == ddlDesignation.SelectedItem.Text || ddlDesignation.SelectedIndex == 0)
+                           && (userdata.Field<string>("SourceUser") == ddlCreatedBy .SelectedItem.Text || ddlCreatedBy.SelectedIndex == 0)
+                                && (userdata.Field<string>("DateSourced") == txtCreationDate.Text || txtCreationDate.Text == string.Empty )
+                                    && (userdata.Field<string>("FristName") == txtUserSearch.Text || txtUserSearch.Text == string.Empty)
                         select userdata;
                 if (query.Count() > 0)
                 {
@@ -1237,5 +1255,53 @@ namespace JG_Prospect
             GridViewUser.DataBind();
         }
 
+      
+        protected void txtCreationDate_TextChanged(object sender, EventArgs e)
+        {
+            BindGrid();
+        }
+
+        [System.Web.Script.Services.ScriptMethod()]
+        [System.Web.Services.WebMethod]
+        public static List<string> SearchUsers(string prefixText, int count)
+        {
+            using (SqlConnection conn = new SqlConnection())
+            {
+                conn.ConnectionString = ConfigurationManager
+                        .ConnectionStrings["JGPA"].ConnectionString;
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    cmd.CommandText = "select FristName from tblInstallUsers where " +
+                    "FristName like @SearchText + '%'";
+                    cmd.Parameters.AddWithValue("@SearchText", prefixText);
+                    cmd.Connection = conn;
+                    conn.Open();
+                    List<string> Users = new List<string>();
+
+                  
+                    using (SqlDataReader sdr = cmd.ExecuteReader())
+                    {
+                        while (sdr.Read())
+                        {
+                            Users.Add(sdr["FristName"].ToString());
+                        }
+                    }
+                    conn.Close();
+                    return Users;
+                }
+            }
+        }
+
+        protected void btnSubmitSearchUser_Click(object sender, EventArgs e)
+        {
+            BindGrid();
+        }
+
+        protected void ddlCreatedBy_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BindGrid();
+        }
     }
+
+   
 }

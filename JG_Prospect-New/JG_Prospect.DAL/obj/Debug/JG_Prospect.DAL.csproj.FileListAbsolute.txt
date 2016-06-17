@@ -112,3 +112,13 @@ D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bi
 D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\Microsoft.Practices.Unity.Interception.pdb
 D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\obj\Debug\JG_Prospect.DAL.dll
 D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\obj\Debug\JG_Prospect.DAL.pdb
+C:\Users\MUNEER MK\Documents\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\JG_Prospect.DAL.dll
+C:\Users\MUNEER MK\Documents\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\JG_Prospect.DAL.pdb
+C:\Users\MUNEER MK\Documents\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\JG_Prospect.Common.dll
+C:\Users\MUNEER MK\Documents\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\Microsoft.Practices.Unity.dll
+C:\Users\MUNEER MK\Documents\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\Microsoft.Practices.Unity.Interception.dll
+C:\Users\MUNEER MK\Documents\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\Microsoft.AnalysisServices.AdomdClient.dll
+C:\Users\MUNEER MK\Documents\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\JG_Prospect.Common.pdb
+C:\Users\MUNEER MK\Documents\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\obj\Debug\JG_Prospect.DAL.csprojResolveAssemblyReference.cache
+C:\Users\MUNEER MK\Documents\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\obj\Debug\JG_Prospect.DAL.dll
+C:\Users\MUNEER MK\Documents\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\obj\Debug\JG_Prospect.DAL.pdb

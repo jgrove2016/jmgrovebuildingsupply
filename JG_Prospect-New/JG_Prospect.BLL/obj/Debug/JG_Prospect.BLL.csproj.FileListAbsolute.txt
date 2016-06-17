@@ -196,3 +196,20 @@ D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bi
 D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging.xml
 D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.Database.pdb
 D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.Database.xml
+C:\Users\MUNEER MK\Documents\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.BLL.dll
+C:\Users\MUNEER MK\Documents\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.BLL.pdb
+C:\Users\MUNEER MK\Documents\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.AccessControl.dll
+C:\Users\MUNEER MK\Documents\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.Calendar.dll
+C:\Users\MUNEER MK\Documents\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.Client.dll
+C:\Users\MUNEER MK\Documents\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.Extensions.dll
+C:\Users\MUNEER MK\Documents\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\itextsharp.dll
+C:\Users\MUNEER MK\Documents\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.Common.dll
+C:\Users\MUNEER MK\Documents\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.DAL.dll
+C:\Users\MUNEER MK\Documents\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.Unity.dll
+C:\Users\MUNEER MK\Documents\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.Unity.Interception.dll
+C:\Users\MUNEER MK\Documents\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.AnalysisServices.AdomdClient.dll
+C:\Users\MUNEER MK\Documents\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.Common.pdb
+C:\Users\MUNEER MK\Documents\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.DAL.pdb
+C:\Users\MUNEER MK\Documents\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.csprojResolveAssemblyReference.cache
+C:\Users\MUNEER MK\Documents\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.dll
+C:\Users\MUNEER MK\Documents\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.pdb
