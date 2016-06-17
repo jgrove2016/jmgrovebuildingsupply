@@ -1,0 +1,50 @@
+USE [jgrove_JGP]
+GO
+
+/****** Object:  StoredProcedure [dbo].[UDP_GetallInstallusersdataNew]    Script Date: 06/17/2016 10:17:40 PM ******/
+DROP PROCEDURE [dbo].[UDP_GetallInstallusersdataNew]
+GO
+
+/****** Object:  StoredProcedure [dbo].[UDP_GetallInstallusersdataNew]    Script Date: 06/17/2016 10:17:40 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+CREATE ProcEDURE [dbo].[UDP_GetallInstallusersdataNew] 
+
+AS
+
+BEGIN
+
+	
+
+	SELECT t.Id,t.FristName,t.LastName,t.Phone,t.Zip,t.Designation,t.Status,t.PrimeryTradeId,d.TradeName AS 'PTradeName',t.HireDate,t.InstallId,t.picture,t.DateSourced,(select Username from tblUsers usr where  usr.Id=t.SourceUser  ) SourceUser 
+	  FROM tblInstallUsers t LEFT OUTER JOIN Trades d
+	  ON d.Id = t.PrimeryTradeId
+	 --WHERE usertype = 'installer' OR usertype = 'Prospect' OR (usertype IS NULL AND Designation = 'SubContractor') OR (usertype IS NULL AND Designation = 'Installer') OR (usertype IS NULL AND (Designation = 'ForeMan' OR Designation = 'Fore Man'))
+	  order by t.Status asc
+	  
+
+
+	   --WHERE t.UserType <> 'SalesUser' AND t.UserType <> 'sales' 
+
+	--SELECT Id,FristName,Lastname,Email,Address,Designation,[Status],[Password],[Address],Phone,Picture,Attachements,Source,Notes,StatusReason 
+
+	--from tblInstallUsers 
+
+	--order by Id desc
+
+	
+
+END
+
+--modified/created by Other Party
+
+
+
+
+
+GO

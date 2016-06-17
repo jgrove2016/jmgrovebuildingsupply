@@ -1,0 +1,47 @@
+USE [jgrove_JGP]
+GO
+
+/****** Object:  StoredProcedure [dbo].[GetAllEditSalesUser]    Script Date: 06/17/2016 10:22:03 PM ******/
+DROP PROCEDURE [dbo].[GetAllEditSalesUser]
+GO
+
+/****** Object:  StoredProcedure [dbo].[GetAllEditSalesUser]    Script Date: 06/17/2016 10:22:03 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[GetAllEditSalesUser]
+	-- Add the parameters for the stored procedure here
+	AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	
+	SELECT t.Id,t.FristName,t.LastName,t.Phone,t.Zip,t.Designation,t.Status,t.HireDate,t.InstallId,t.picture,t.DateSourced,(select Username from tblUsers usr where  usr.Id=t.SourceUser  ) SourceUser 
+	  FROM tblInstallUsers t 
+	 WHERE t.UserType = 'SalesUser' OR t.UserType = 'sales'
+	  order by t.Status asc
+
+
+
+
+  --select t.Id,r.InstallerId,t.InstallId,t.FristName,t.LastName,t.HireDate,t.Phone,t.Zip,t.Designation,t.Status,t.Picture 
+  --FROM tblInstallUsers t 
+	 -- WHERE t.UserType = 'SalesUser' OR t.UserType = 'sales'
+	 -- order by Id desc 
+ 
+END
+
+GO
+
+
