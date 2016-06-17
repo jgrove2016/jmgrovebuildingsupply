@@ -461,50 +461,50 @@ function RemoveLocationPicFromViewState(filename) {
                             <td>
                                 <label>
                                     Customer Supplied Material:</label>
-                                <asp:TextBox ID="txtCustSupMaterial" runat="server" Enabled="false"></asp:TextBox>
+                                 <asp:DropDownList ID="drpMaterial" runat="server" Enabled="false" AutoPostBack="True"  OnTextChanged="drpMaterial_TextChanged">
+                                     <asp:ListItem Text="Select" Value="Select"></asp:ListItem>
+                                    <asp:ListItem Text="Driveway" Value="Driveway"></asp:ListItem>
+                                    <asp:ListItem Text="Garage" Value="Garage"></asp:ListItem>
+                                    <asp:ListItem Text="Front Yard" Value="Front Yard"></asp:ListItem>
+                                    <asp:ListItem Text="Back Yard" Value="Back Yard"></asp:ListItem>
+                                    <asp:ListItem Text="Lside" Value="Lside"></asp:ListItem>
+                                    <asp:ListItem Text="Rside" Value="Rside"></asp:ListItem>
+                                    
+                                    <asp:ListItem Text="other" Value="other"></asp:ListItem>
+                                </asp:DropDownList>
+                               
                                 <label>
                                     <asp:CheckBox ID="chkCustSupMaterial" runat="server" Text="N/A" AutoPostBack="true"
                                         Checked="true" TextAlign="Right" OnCheckedChanged="chkCustSupMaterial_CheckedChanged" />
                                 </label>
+                             
+                                
                             </td>
                         </tr>
+                       <tr><td><asp:TextBox ID="txtCustSupMaterial" runat="server" Visible="false" ></asp:TextBox></td></tr>
                         <tr>
                             <td>
                                 <label>
-                                    Material Storage:</label>
-                                <asp:DropDownList ID="ddlMaterialStorage" runat="server" Enabled="false">
-                                    <asp:ListItem>Driveway</asp:ListItem>
-                                    <asp:ListItem>Garage</asp:ListItem>
-                                    <asp:ListItem>Front Yard</asp:ListItem>
-                                    <asp:ListItem>Back Yard</asp:ListItem>
-                                    <asp:ListItem>Lside</asp:ListItem>
-                                    <asp:ListItem>Rside</asp:ListItem>
-                                    <asp:ListItem>Other</asp:ListItem>
+                                    Material / Dumpster Storage:</label>
+                                <asp:DropDownList ID="drpStorage" runat="server" Enabled="false" AutoPostBack="True" OnTextChanged="drpStorage_TextChanged">
+                                     <asp:ListItem Text="Select" Value="Select"></asp:ListItem>
+                                     <asp:ListItem Text="Driveway" Value="Driveway"></asp:ListItem>
+                                    <asp:ListItem Text="Garage" Value="Garage"></asp:ListItem>
+                                    <asp:ListItem Text="Front Yard" Value="Front Yard"></asp:ListItem>
+                                    <asp:ListItem Text="Back Yard" Value="Back Yard"></asp:ListItem>
+                                    <asp:ListItem Text="Lside" Value="Lside"></asp:ListItem>
+                                    <asp:ListItem Text="Rside" Value="Rside"></asp:ListItem>
+                                    
+                                    <asp:ListItem Text="other" Value="other"></asp:ListItem>
                                 </asp:DropDownList>
+                                
                                 <label>
-                                    <asp:CheckBox ID="chkMaterialStorage" runat="server" Text="N/A" TextAlign="Right" AutoPostBack="true"
-                                        Checked="true" OnCheckedChanged="chkMaterialStorage_CheckedChanged" />
+                                    <asp:CheckBox ID="chkStorage" runat="server" Text="N/A" TextAlign="Right" AutoPostBack="true"
+                                        Checked="true" OnCheckedChanged="chkStorage_CheckedChanged" />
                                 </label>
                             </td>
                         </tr>
-                        <tr>
-                            <td>
-                                <label>
-                                    Waste/Dump Storage Location:</label>
-                                <asp:DropDownList ID="ddlDumpStorageLocation" runat="server" Enabled="false">
-                                    <asp:ListItem>Driveway</asp:ListItem>
-                                    <asp:ListItem>Garage</asp:ListItem>
-                                    <asp:ListItem>Front Yard</asp:ListItem>
-                                    <asp:ListItem>Back Yard</asp:ListItem>
-                                    <asp:ListItem>Lside</asp:ListItem>
-                                    <asp:ListItem>Rside</asp:ListItem>
-                                </asp:DropDownList>
-                                <label>
-                                    <asp:CheckBox ID="chkDumpStorageLocation" runat="server" Text="N/A" TextAlign="Right" AutoPostBack="true"
-                                        Checked="true" OnCheckedChanged="chkDumpStorageLocation_CheckedChanged" />
-                                </label>
-                            </td>
-                        </tr>
+                        <tr><td><asp:TextBox ID="txtStorage" runat="server" visible="false"></asp:TextBox></td></tr>
                     </table>
                 </li>
                 <li style="width: 49%;" class="last">
@@ -512,8 +512,7 @@ function RemoveLocationPicFromViewState(filename) {
                         <tr>
                             <td>
                                 <label>
-                                    Work Area:                      
-                                    <asp:TextBox ID="txtworkarea" runat="server" MaxLength="35" TabIndex="2"></asp:TextBox>
+                                   Work Area:                       <asp:TextBox ID="txtworkarea" runat="server" MaxLength="35" TabIndex="2"></asp:TextBox>
                                     <label>
                                     </label>
                                     <asp:RequiredFieldValidator ID="rfvworkarea" runat="server" ForeColor="Red" ValidationGroup="save"
@@ -560,34 +559,25 @@ function RemoveLocationPicFromViewState(filename) {
                                         <td colspan="3">
                                             <asp:UpdatePanel ID="pnlUpdate" runat="server">
                                                 <ContentTemplate>
-                                                    <asp:GridView runat="server" ID="gvCategory" AutoGenerateColumns="false" OnRowCommand="gvCategory_RowCommand"
-                                                        DataKeyNames="RowSerialNo" AllowPaging="true" OnRowDataBound="gvCategory_RowDataBound"
-                                                        PageSize="1" OnPageIndexChanging="gvCategory_PageIndexChanging">
-                                                        <EmptyDataTemplate>
-                                                            <asp:Label ID="lblNoDataFound" runat="server" Text="Image Not Found."></asp:Label>
-                                                        </EmptyDataTemplate>
-                                                        <Columns>
-                                                            <asp:TemplateField>
-                                                                <ItemStyle Width="90%" />
-                                                                <HeaderTemplate>
-                                                                    <asp:Label ID="Image" runat="server" Text="Image" Font-Bold="true"></asp:Label>
-                                                                </HeaderTemplate>
+                                                    <asp:Label ID="Image" runat="server" Text="Image" Font-Bold="true" Visible="false"></asp:Label><br />
+                                                     <asp:Image ID="imglocation" runat="server" 
+                                                                Height="100px" Width="100px" Visible="false" />
+                                                    <asp:DataList ID="gvCategory1" runat="server" OnItemCommand="gvCategory1_ItemCommand"
+                                                        DataKeyField="RowSerialNo" AllowPaging="true" OnItemDataBound="gvCategory1_ItemDataBound"
+                                                         RepeatColumns="0"  RepeatDirection="Horizontal" >
+                                                     
+                                                        
                                                                 <ItemTemplate>
-                                                                    <asp:Image ID="imglocation" runat="server" ImageUrl='<%#Eval("LocationPicture")%>'
-                                                                        Height="100px" Width="100px" />
-                                                                </ItemTemplate>
-                                                            </asp:TemplateField>
-                                                            <asp:TemplateField>
-                                                                <ItemStyle Width="10%" />
-                                                                <HeaderTemplate>
-                                                                </HeaderTemplate>
-                                                                <ItemTemplate>
+
+
+                                                            <asp:ImageButton ID="imglocation2" runat="server" ImageUrl='<%#Eval("LocationPicture")%>'
+                                                                Height="50px" Width="50px" CommandArgument='<%#Eval("RowSerialNo")%>'
+                                                                CommandName="ShowRec" /><br />
                                                                     <asp:LinkButton ID="lnkCategoryDelete" runat="server" Text="X" CommandArgument='<%#Eval("RowSerialNo")%>'
                                                                         CommandName="DeleteRec" CausesValidation="false" OnClientClick='javascript:return confirm("Are you sure want to delete this entry?");'></asp:LinkButton>
+
                                                                 </ItemTemplate>
-                                                            </asp:TemplateField>
-                                                        </Columns>
-                                                    </asp:GridView>
+                                                    </asp:DataList>
                                                     <asp:HiddenField ID="hidCount" runat="server" />
                                                 </ContentTemplate>
 
@@ -627,14 +617,6 @@ function RemoveLocationPicFromViewState(filename) {
                 <asp:HiddenField ID="hidProdId" runat="server" />
                 <asp:HiddenField ID="hidProdType" runat="server" />
             </div>
-
-            <div>
-                <asp:PlaceHolder ID="placeHolderProductLines" runat="server"></asp:PlaceHolder>
-                <div class="btn_sec">
-                    <asp:Button ID="btnAddProductLine" type="submit" runat="server" Text="Add Product Category" OnClick="btnAddProductLine_Click" />
-                </div>
-            </div>
-
             <div id="mask">
             </div>
             <asp:Panel ID="pnlpopup" runat="server" BackColor="White" Height="175px" Width="300px"
