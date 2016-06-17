@@ -17,7 +17,6 @@ using JG_Prospect.UserControl;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json;
 using System.Web.UI.HtmlControls;
-using System.Net.Mail;
 
 namespace JG_Prospect.Sr_App
 {
@@ -101,6 +100,15 @@ namespace JG_Prospect.Sr_App
             drpProductOfInterest2.DataValueField = "ProductId";
             drpProductOfInterest2.DataBind();
             drpProductOfInterest2.Items.Insert(0, new ListItem("Select", "0"));
+
+
+            drpProductCategory.DataSource = ds;
+            drpProductCategory.DataTextField = "ProductName";
+            drpProductCategory.DataValueField = "ProductId";
+            drpProductCategory.DataBind();
+            drpProductCategory.Items.Insert(0, new ListItem("Select", "0"));
+
+
         }
         private void FillsoldJobs(int customerId)
         {
@@ -1170,110 +1178,7 @@ namespace JG_Prospect.Sr_App
                 return strResult;
 
         }
-        private DataSet GetCustomerEmail()
-        {
-            string finalEmail = string.Empty;
-            DataSet ds = new DataSet();
-            if (Session["CustomerId"].ToString() != null)
-                ds = new_customerBLL.Instance.GetCustomerDetails(Convert.ToInt32(Session["CustomerId"].ToString()));
 
-
-            return ds;
-        }
-        protected void SendEmailToCustomer()
-        {
-            DataSet ds = GetCustomerEmail();
-            string finalEmail = "";
-            if (ds.Tables[0].Rows.Count > 0)
-            {
-                string email1 = ds.Tables[0].Rows[0]["Email"].ToString();
-                string email2 = ds.Tables[0].Rows[0]["Email2"].ToString();
-                string email3 = ds.Tables[0].Rows[0]["Email3"].ToString();
-
-                if (email1 != "")
-                {
-                    finalEmail = email1;
-                }
-                else if (email2 != "")
-                {
-                    finalEmail = email2;
-                }
-                else if (email3 != "")
-                {
-                    finalEmail = email3;
-                }
-            }
-            if (finalEmail != string.Empty)
-            {
-                StringBuilder lHTMLBody = new StringBuilder();
-                try
-                {
-
-                    string mailId = finalEmail;
-                    // string vendorName = dr["VendorName"].ToString();
-
-                    MailMessage m = new MailMessage();
-                    SmtpClient sc = new SmtpClient(ConfigurationManager.AppSettings["smtpHost"].ToString(), Convert.ToInt32(ConfigurationManager.AppSettings["smtpPort"].ToString()));
-
-                    string userName = ConfigurationManager.AppSettings["CustomerEmailUsername"].ToString();
-                    string password = ConfigurationManager.AppSettings["CustomerEmailPassword"].ToString();
-
-                    m.From = new MailAddress(userName, "JMGROVECONSTRUCTION");
-                    m.To.Add(new MailAddress(mailId, ds.Tables[0].Rows[0]["CustomerName"].ToString()));
-                    m.Bcc.Add(new MailAddress("shabbir.kanchwala@straitapps.com", "Shabbir Kanchwala"));
-                    m.CC.Add(new MailAddress("jgrove.georgegrove@gmail.com", "Justin Grove"));
-
-                    DataSet dsEmailTemplate = AdminBLL.Instance.GetEmailTemplate("Set Appointment"); //#- triggerOrigin is the sub email template name.
-
-                    //m.Subject = "JMGrove proposal " + "C" + customerId.ToString() + "-" + QuoteNumber;
-                    m.IsBodyHtml = true;
-
-                    if (dsEmailTemplate.Tables[0].Rows.Count > 0)
-                    {
-                        m.Subject = dsEmailTemplate.Tables[0].Rows[0]["HTMLSubject"].ToString().Replace("#customername#", ds.Tables[0].Rows[0]["CustomerName"].ToString()).Replace("#appointmentdatetime#", txtestimate_date.Text + " " + txtestimate_time.Text);//.Replace("#trackingid#", "C" + customerId.ToString() + "-" + QuoteNumber);
-                        lHTMLBody.Append(dsEmailTemplate.Tables[0].Rows[0]["HTMLHeader"].ToString() + "<br/><br/>");
-                        lHTMLBody.Append(dsEmailTemplate.Tables[0].Rows[0]["HTMLBody"].ToString() + "<br/><br/>");
-                        lHTMLBody.Append(dsEmailTemplate.Tables[0].Rows[0]["HTMLFooter"].ToString() + "<br/><br/>");
-                    }
-
-                    m.Body = lHTMLBody.ToString().Replace("#customername#", ds.Tables[0].Rows[0]["CustomerName"].ToString()).Replace("#appointmentdatetime#", txtestimate_date.Text + " " + txtestimate_time.Text);
-
-                    string sourceDirContract = Server.MapPath("~/CustomerDocs/Pdfs/");
-                    try
-                    {
-                        string sourceDirDocs = Server.MapPath("~/CustomerDocs/CustomerEmailDocument/");
-
-                        if (dsEmailTemplate.Tables[1].Rows.Count > 0)
-                        {
-                            for (int i = 0; i < dsEmailTemplate.Tables[1].Rows.Count; i++)
-                            {
-                                string filename = dsEmailTemplate.Tables[1].Rows[i]["DocumentName"].ToString();
-                                Attachment attachment1 = new Attachment(sourceDirDocs + "\\" + filename);
-                                attachment1.Name = filename;
-                                m.Attachments.Add(attachment1);
-                            }
-                        }
-                    }
-                    catch
-                    {
-
-                    }
-
-                    NetworkCredential ntw = new System.Net.NetworkCredential(userName, password);
-                    sc.UseDefaultCredentials = false;
-                    sc.Credentials = ntw;
-
-                    sc.DeliveryMethod = SmtpDeliveryMethod.Network;
-                    sc.EnableSsl = Convert.ToBoolean(ConfigurationManager.AppSettings["enableSSL"].ToString()); // runtime encrypt the SMTP communications using SSL
-                    sc.Send(m);
-
-                }
-                catch (Exception ex)
-                {
-                    // ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('" + ex.Message + "');", true);
-                }
-            }
-        }
         protected void btnUpdate_Click(object sender, EventArgs e)
         {
             try
@@ -1399,14 +1304,9 @@ namespace JG_Prospect.Sr_App
                         //string gaddress = txtaddress.Text + " " + txtcity.Text + "," + txtstate.Text + " -" + txtzip.Text;
                         string gaddress = ""; //TCT
 
-                        if (txtestimate_date.Text != "" && txtestimate_time.Text != "")
-                        {
-                            new_customerBLL.Instance.AddCustomerFollowUp(Convert.ToInt32(Session["CustomerId"].ToString()), datetime, "", UserId, true, 0, "", 0, Convert.ToInt32(drpProductOfInterest1.SelectedValue));
-                            if (chkAutoEmailer.Checked)
-                            {
-                                SendEmailToCustomer();
-                            }
-                        }
+
+                        new_customerBLL.Instance.AddCustomerFollowUp(Convert.ToInt32(Session["CustomerId"].ToString()), datetime, "", UserId, true, 0, "", 0, Convert.ToInt32(drpProductOfInterest1.SelectedValue));
+                       
 
                         //if (GoogleCalendarEvent.DeleteEvent(objcust.id.ToString(), gtitle, gcontent, gaddress, datetime, datetime.AddHours(1), AdminId))
                         //{
