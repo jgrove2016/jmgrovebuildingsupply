@@ -18,6 +18,7 @@ using JG_Prospect.Common.modal;
 using JG_Prospect.Common;
 using System.Web.Script.Serialization;
 using System.Net.Mail;
+using System.Web.Services;
 
 
 namespace JG_Prospect.Sr_App
@@ -482,6 +483,12 @@ namespace JG_Prospect.Sr_App
             return ZipCodes.ToArray();
         }
 
+        [WebMethod]
+        public static string CheckDuplicateCustomerCredentials(String pValueForValidation, Int32 pValidationType)
+        {
+            return new_customerBLL.Instance.CheckDuplicateCustomerCredentials(pValueForValidation, pValidationType, 0);
+        }
+
         [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
         public static string CheckForDuplication(List<NameValue> formVars)
         {
@@ -662,8 +669,8 @@ namespace JG_Prospect.Sr_App
                 if (drow["FirstName"] == "")
                 {
 
-                    //strResult = "Please fill First Name";
-                    //return strResult;
+                    strResult = "Please fill First Name";
+                    return strResult;
                 }
             }
 

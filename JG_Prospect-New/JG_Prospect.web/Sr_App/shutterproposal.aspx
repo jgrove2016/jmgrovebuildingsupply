@@ -413,14 +413,16 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td align="right" style="width: 31%">
+                                    <td align="right" style="text-align:center" colspan="5">
                                         <asp:UpdatePanel ID="UpdatePanel2" runat="server">
                                             <ContentTemplate>
-                                                <asp:LinkButton ID="lnkAddNotSoldEmail" OnClick="lnkAddNotSoldEmail_Click" customerid='<%=customerid %>' OnClientClick="window.open('customer_profile.aspx?Customerid='+this.getAttribute('customerid'));return false;" runat="server">Add Email</asp:LinkButton>
+                                                <asp:LinkButton Visible="false" ID="lnkAddNotSoldEmail" OnClick="lnkAddNotSoldEmail_Click" customerid='<%=customerid %>' OnClientClick="window.open('customer_profile.aspx?Customerid='+this.getAttribute('customerid'));return false;" runat="server">Add Email</asp:LinkButton>
+                                                <a href="#" customerid='<%=customerId %>' onclick="window.open('customer_profile.aspx?Customerid='+this.getAttribute('customerid'));return false;">Add Email</a>
+                                                
                                             </ContentTemplate>
                                         </asp:UpdatePanel>
                                     </td>
-                                    <td colspan="4">
+                                    <td colspan="4" style="display:none">
                                         <asp:UpdatePanel ID="UpdatePanel3" runat="server">
                                             <ContentTemplate>
                                                 <asp:TextBox ID="txtNotSoldEmail" runat="server" placeholder="Email Id"

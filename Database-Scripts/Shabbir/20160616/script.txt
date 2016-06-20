@@ -1,0 +1,191 @@
+/****** Object:  StoredProcedure [dbo].[USP_CheckDuplicateCustomerCredentials]    Script Date: 16-06-2016 14:39:04 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_CheckDuplicateCustomerCredentials]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[USP_CheckDuplicateCustomerCredentials]
+GO
+
+/****** Object:  StoredProcedure [dbo].[USP_CheckDuplicateCustomerCredentials]    Script Date: 16-06-2016 14:39:04 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[USP_CheckDuplicateCustomerCredentials]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[USP_CheckDuplicateCustomerCredentials] AS' 
+END
+GO
+
+-- =============================================
+-- Author:		Shabbir Kanchwala
+-- Create date: 2016-06-16
+-- Description:	This procedure will check duplicate phone no and email id of a customer
+-- =============================================
+ALTER PROCEDURE [dbo].[USP_CheckDuplicateCustomerCredentials]
+	@CustomerID INT,
+	@DataForValidation NVARCHAR(100),
+	@DataType INT
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	DECLARE @Message NVARCHAR(1000)=''
+	IF(@DataType = 1 ) --#Check Phone Number
+	BEGIN 
+		IF EXISTS (SELECT 1 FROM new_customer WHERE CellPh = @DataForValidation AND ID <> @CustomerID) --#This will work for Edit page also
+		BEGIN
+			SET @Message = 'Contact number already exists'
+		END
+		ELSE IF EXISTS(SELECT 1 FROM tblCustomersPrimaryContact WHERE strPhoneNumber = @DataForValidation AND intCustomerId <> @CustomerID)
+		BEGIN
+			SET @Message = 'Contact number already exists'
+		END
+	END
+	ELSE IF(@DataType = 2) --#Check Email ID
+	BEGIN 
+		IF EXISTS (SELECT 1 FROM new_customer WHERE Email = @DataForValidation AND ID <> @CustomerID) --#This will work for Edit page also
+		BEGIN
+			SET @Message = 'Email ID already exists'
+		END
+		ELSE IF EXISTS(SELECT 1 FROM tblCustomersPrimaryContact WHERE strEMail = @DataForValidation AND intCustomerId <> @CustomerID)
+		BEGIN
+			SET @Message = 'Email ID already exists'
+		END
+	END
+    
+	SELECT @Message
+END
+
+GO
+
+/****** Object:  StoredProcedure [dbo].[UDP_GetCustomerDetails]    Script Date: 16-06-2016 16:58:32 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UDP_GetCustomerDetails]') AND type in (N'P', N'PC'))
+DROP PROCEDURE [dbo].[UDP_GetCustomerDetails]
+GO
+
+/****** Object:  StoredProcedure [dbo].[UDP_GetCustomerDetails]    Script Date: 16-06-2016 16:58:32 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[UDP_GetCustomerDetails]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dbo].[UDP_GetCustomerDetails] AS' 
+END
+GO
+
+ALTER Proc [dbo].[UDP_GetCustomerDetails]                  
+@Id int                  
+AS                  
+BEGIN                  
+                  
+              
+                
+select cus.CustomerName,cus.CustomerAddress,cus.State,cus.City
+,cus.ZipCode
+,cus.JobLocation
+,cus.EstDateSchdule
+,cus.EstTime
+,cus.CellPh
+,cus.HousePh
+,cus.Email
+,cus.CallTakenBy
+,cus.Service
+,cus.AddedBy
+,cus.LeadType
+,cus.AlternatePh
+,cus.BillingAddress
+,cus.BestTimetocontact
+,cus.PrimaryContact
+,cus.ContactPreference
+,cus.PeriodId
+,cus.AssignedToId
+,cus.Map1
+,cus.Map2
+,cus.ReasonofClosed
+,cus.Status
+,cus.IsRepeated
+,cus.Missing_contacts
+,cus.Followup_date
+,cus.CreatedDate
+,cus.ModifiedDate
+,cus.ProductOfInterest
+,cus.SecondaryProductOfInterest
+,cus.ProjectManager
+,cus.lastname
+,cus.Email2
+,cus.Email3
+,cus.Disable
+,cus.Reason
+,cus.Password
+,cus.AdditionalEmail
+,cus.DateOfBirth
+,cus.AdditionalPhoneNo
+,cus.PhoneType
+,cus.AdditionalPhoneType
+,cus.oauth
+,cus.oid
+,cus.AccType
+,cus.ConPref
+,isnull(cus.strAddressType,'Select') as strAddressType
+,isnull(cus.strContactType,'Select') as strContactType
+,isnull(cus.strBillingAddressType,'Select')as strBillingAddressType
+,cus.strCompetitorBids
+,Convert(varchar(10),cus.EstDateSchdule,111) as EstDate,              
+    IsNull(cus.LeadType, 'Select') As LeadSource,                
+    cus.Status + ' '  + CONVERT(nvarchar(10), cus.ModifiedDate, 103) As LastStatus,              
+    billAdd.strBillingAddress               
+from new_customer cus                 
+left join tblBillingAddress billAdd on billAdd.intCustomerId=cus.id               
+LEFT join tblUsers U on cus.CallTakenBy = U.Id and  cus.AssignedToId=U.Id where cus.id=@Id                
+SELECT * from tblCustomerLocationPics  L                    
+WHERE L.CustomerId = @Id                  
+              
+--select intAddressId,strAddress +' '+ strCity +' '+ strState +' '+ strZipCode  as ContactAddress from tblCustomersAddress where intcustomerid=@Id              
+            
+Select '0' As intAddressId, IsNull(CustomerAddress, '') +' '+ IsNull(City, '') +' '+ IsNull(State, '') +' '+ IsNull(ZipCode, '') As ContactAddress             
+From new_Customer Where id = @Id And CustomerAddress Is Not Null                
+Union All            
+select intAddressId,strAddress +' '+ strCity +' '+ strState +' '+ strZipCode  as ContactAddress from tblCustomersAddress where intcustomerid=@Id               
+              
+select strCompanyAddress +' '+ strCity +' '+ strState+' '+ strZipCode as CompanyAddress from tbl_companyAddress              
+          
+Select CustomerAddress as strAddress, ISNull(strAddressType, 'Select') As  strAddressType, City as strCity, State as strState, ZipCode As strZipCode            
+From new_Customer Where id = @Id And CustomerAddress Is Not Null          
+Union All          
+Select strAddress as strAddress, ISNull(strAddressType, 'Select') As strAddressType, strCity as strCity, strState as strState, strZipCode  As strZipCode         
+from tblCustomersAddress where intcustomerid=@Id           
+        
+--Bind SoldJobId to DDl        
+if(@Id = '')        
+ begin        
+  select distinct Soldjobid as SoldJobId from tblJobSequence        
+  union all         
+  select distinct QuoteNumber as SoldJobId from tblQuoteSequence        
+ end        
+else        
+ begin        
+  select distinct Soldjobid as SoldJobId from tblJobSequence where CustomerId=@Id        
+  union all         
+  select distinct QuoteNumber as SoldJobId from tblQuoteSequence where CustomerId=@Id        
+ end        
+       
+-- Select BillingAddress as strBillingAddress, ISNull(strBillingAddressType, 'Select') As  strBillingAddressType      
+--From new_Customer Where id = @Id And BillingAddress Is Not Null          
+--Union All          
+--Select strBillingAddress as strBillingAddress, ISNull(strAddressType, 'Select') As strBillingAddressType      
+--From tblBillingAddress where intcustomerid=@Id         
+
+Select strEMail from tblCustomersPrimaryContact WHERE intCustomerId = @Id
+    
+END 
+
+GO
+
+
+
+

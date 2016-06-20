@@ -187,42 +187,7 @@
         }
     </style>
     <script src="../Scripts/jquery.maskedinput.min.js" type="text/javascript"></script>
-    <%-- <script>
-        var myCenter = new google.maps.LatLng(40.748492, -73.985496);
-
-        function initialize() {
-            var mapProp = {
-                center: myCenter,
-                zoom: 5,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-
-            var map = new google.maps.Map(document.getElementById("map_canvas"), mapProp);
-
-            var marker = new google.maps.Marker({
-                position: myCenter,
-                title: 'Click to zoom'
-            });
-
-            marker.setMap(map);
-
-            // Zoom to 9 when clicking on marker
-            google.maps.event.addListener(marker, 'click', function () {
-                map.setZoom(9);
-                map.setCenter(marker.getPosition());
-            });
-
-            google.maps.event.addListener(map, 'center_changed', function () {
-                // 3 seconds after the center of the map has changed, pan back to the marker
-                window.setTimeout(function () {
-                    map.panTo(marker.getPosition());
-                }, 3000);
-            });
-        }
-        google.maps.event.addDomListener(window, 'load', initialize);
-</script>--%>
-
-    <script language="javascript" type="text/javascript">
+    <script type="text/javascript">
         try {
             var directionsDisplay;
             var directionsService = new google.maps.DirectionsService();
@@ -243,12 +208,7 @@
 
                 var control = document.getElementById('control');
                 // control.style.display = 'block';
-
-
             }
-
-
-
             function calcRoute() {
 
                 var start = document.getElementById('startvalue').value;
@@ -263,15 +223,10 @@
                         directionsDisplay.setDirections(response);
                     }
                 });
-
             }
-
-
-
             function Button1_onclick() {
                 calcRoute();
             }
-
             window.onload = InitializeMap;
         }
         catch(e2){}
@@ -477,43 +432,18 @@
             try {
                 
                 $(".date").datepicker();
-                
 
-                //$('.time').ptTimeSelect();
-            
                 try { $('.clsMaskPhone').mask("999-999-9999") }catch(e){}
                 //$('#txtBestTimetoContact').ptDaySelect({});
                 $('#txtBestDayToContact').ptDayOnlySelect({});
                 $('#txtBestStartTime').ptTimeOnlySelect({});
                 $('#txtBestEndTime').ptTimeOnlySelect({});
-
-                //$("#btnSubmit").click(function () {
-                //    var isduplicate = document.getElementById('hdnisduplicate').value;
-                //    var custid = document.getElementById('hdnCustId').value;
-                //    if (isduplicate.toString() == "1") {
-                //        if (confirm('Duplicate contact, Press Ok to add the another appointment for existing customer.')) {
-                //            window.open("../Prospectmaster.aspx?title=" + custid);
-                //        }
-                //        else {
-                //            // alert('false');
-                //        }
-                //    }
-                //});
             }
             catch(e){}
         });
 
 
         function fnCheckOne(me) {
-            //debugger;
-            //me.checked = true;
-            //var chkary = document.getElementsByTagName('input');
-            //for (i = 0; i < chkary.length; i++) {
-            //    if (chkary[i].type == 'checkbox') {
-            //        if (chkary[i].id != me.id)
-            //            chkary[i].checked = false;
-            //    }
-            //}
             $(me).closest('tr').find('input:checkbox').removeAttr('checked');
             me.checked = true;
         }
@@ -573,83 +503,31 @@
             }
         }
 
-        function CheckDuplicatePhone(obj){
-            try {
-                //Get the Value an assign hidden field
-                var tbl = document.getElementById("tblBestTime");
-                var row = tbl.getElementsByTagName("tr");
-                var value = "";
-                var BestTime = new Array();
-                if (row.length > 1) {
-                    for (i = 1; i < row.length; i++) {
-                        if (BestTime == "") {
-                            value = row[i].cells[0].innerText.split('X');
-                            BestTime = value[0].trim();;
-                        }
-                        else {
-                            value = row[i].cells[0].innerText.split('X');
-                            BestTime += ',' + value[0].trim();
-                        }
+        function CheckDuplicateCustomerCred(obj, type) {
+            $.ajax({
+                type: "POST",
+                url: "new_customer.aspx/CheckDuplicateCustomerCredentials",
+                contentType: "application/json; charset=utf-8",
+                dataType: "JSON",
+                data: "{'pValueForValidation':'" + obj.value + "', 'pValidationType':"+type+"}",
+                
+                success: function (data) {
+                    debugger;
+                    var dataInput = (data.d);
+                    if (dataInput != '') {
+                        alert(dataInput);
+                        obj.value = '';
                     }
-                    $('#hdnBestTimeToContact').val(BestTime);
                 }
-                var formData = [];
-                var formPushData = [];
-                $("#form1").find("input[name]:text,select[name],input:hidden[name][id^='hdn'],input[name]:radio,textarea[name],input[name]:checkbox").each(function (index, node) {
+            });
+        }
 
-                    //formData[node.name] = node.value;
-                    if (node.type == "checkbox") {
-                        node.value = $('#' + node.id).is(':checked');
-                    }
-                    if (node.type == "radio") {
-                        debugger;
-                        if ($('#' + node.id).is(':checked') == true) {
-                            formPushData.push({
-                                key: node.name,
-                                value: node.value
-                            });
-                        }
-                    }
-
-                    else {
-                        formPushData.push({
-                            key: node.name,
-                            value: node.value
-                        });
-                    }
-
-                });
-                $.ajax({
-                    type: "POST",
-                    url: "new_customer.aspx/CheckForDuplication",
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "JSON",
-                    //data: "{ 'formData' : '" + formData + "'}",
-                    data: JSON.stringify({ formVars: formPushData }),
-                    success: function (data) {
-                        debugger;
-                        var dataInput = (data.d);
-
-                        if (dataInput == "") {
-                            alert("Some error occured in checking customer duplication. Please Try again.")
-                            return;
-                        }
-                        else if (dataInput == "PhoneNumberEmpty") {
-                            alert("Please enter the Phone Number");
-                            return;
-                        }
-                        else if (dataInput == 'Contact is NOT Exists') { return;}
-                        else {
-                            alert(dataInput);
-                        }
-                   
-                    }
-                });
-            }catch (e3) {}
+        function CheckDuplicatePhone(obj){
+            CheckDuplicateCustomerCred(obj, 1);
         }
 
         function CheckDuplicateEmail(obj) {
-            CheckDuplicatePhone(this);
+            CheckDuplicateCustomerCred(obj, 2);
         }
         function AddTemplate(e) {
             debugger;
@@ -922,7 +800,7 @@
                                     <tr>
                                         <td class="paddingtd"></td>
                                         <td>
-                                            <input type="text" id="txtEMail1" runat="server" tabindex="7" placeholder="EMail" clientidmode="Static" onblur="CheckDuplicatePhone(this)" />
+                                            <input type="text" id="txtEMail1" runat="server" tabindex="7" placeholder="EMail" clientidmode="Static" onblur="CheckDuplicateEmail(this)" />
                                         </td>
                                     </tr>
                                     <tr>
@@ -1002,7 +880,7 @@
                                     <tr>
                                         <td class="paddingtd"></td>
                                         <td>
-                                            <input type="text" id="txtEMail2" runat="server" tabindex="7" placeholder="EMail" onblur="CheckDuplicatePhone(this)"/>
+                                            <input type="text" id="txtEMail2" runat="server" tabindex="7" placeholder="EMail" onblur="CheckDuplicateEmail(this)"/>
                                         </td>
                                     </tr>
                                     <tr>

@@ -167,6 +167,12 @@ namespace JG_Prospect.BLL
         {
             return new_customerDAL.Instance.CheckCustomerDuplication(dtAddress, dtDetails, CustomerId);
         }
+
+        public string CheckDuplicateCustomerCredentials(string pValForValidation, int pValidationType, int pCustomerID)
+        {
+            return new_customerDAL.Instance.CheckDuplicateCustomerCredentials(pValForValidation, pValidationType, pCustomerID);
+        }
+
         public DataSet GetCustomerDocsDetails(int customerId, int productId, int productTypeId)
         {
             return new_customerDAL.Instance.GetCustomerDocsDetails(customerId, productId, productTypeId);

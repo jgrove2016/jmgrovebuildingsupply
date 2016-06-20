@@ -31,7 +31,7 @@ namespace JG_Prospect.Sr_App
         static string[] arr;
         private Boolean IsPageRefresh = false;
         ErrorLog logManager = new ErrorLog();
-        int productType = 0, productId = 0;
+        int productType = 0;
         static int ProductTypeID;
         List<Tuple<int, string, int>> proposalOptionList = null;
         static int[] productIdList = new int[50];
@@ -47,6 +47,16 @@ namespace JG_Prospect.Sr_App
         {
             get { return ViewState["CustomerIDVS"] != null ? Convert.ToInt32(ViewState["CustomerIDVS"].ToString()) : 0; }
             set { ViewState["CustomerIDVS"] = value; }
+        }
+        protected int productId
+        {
+            get { return ViewState["productId"] != null ? Convert.ToInt32(ViewState["productId"].ToString()) : 0; }
+            set { ViewState["productId"] = value; }
+        }
+        protected int estimateid
+        {
+            get { return ViewState["estimateid"] != null ? Convert.ToInt32(ViewState["estimateid"].ToString()) : 0; }
+            set { ViewState["estimateid"] = value; }
         }
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -216,12 +226,14 @@ namespace JG_Prospect.Sr_App
                     {
                         // LiteralFooter.Text = createFooterEstimate("", int.Parse(arr[0].ToString()), productType);
 
-                        int productid = productIdList[0];
-                        if (productid != 0 && productid != 1)
+                        productId = productIdList[0];
+                        estimateid = estimateIdList[0];
+
+                        if (productId != 0 && productId != 1)
                         {
-                            productid = 2;
+                            productId = 2;
                         }
-                        string footer = createFooterEstimate("", estimateIdList[0], productid);
+                        string footer = createFooterEstimate("", estimateIdList[0], productId);
                         LiteralFooter.Text = footer.Replace(ConfigurationManager.AppSettings["UrlToReplaceForTemplates"].ToString(), host);
 
                         // LiteralFooter.Text = createFooterEstimate("", estimateIdList[0], productIdList[0]);
@@ -1250,7 +1262,15 @@ namespace JG_Prospect.Sr_App
                     finalEmail = email3;
                 }
             }
-            return finalEmail;
+            finalEmail += ";";
+            if (ds.Tables.Count > 2)
+            {
+                for (int i = 0; i < ds.Tables[2].Rows.Count; i++)
+                {
+                    finalEmail += ds.Tables[2].Rows[i]["strEmail"].ToString() + ";";
+                }
+            }
+            return finalEmail.TrimEnd(';');
         }
 
         protected void SendEmailToCustomer(string contractName, string triggerOrgin)
@@ -1272,7 +1292,18 @@ namespace JG_Prospect.Sr_App
                     string password = ConfigurationManager.AppSettings["CustomerEmailPassword"].ToString();
 
                     m.From = new MailAddress(userName, "JMGROVECONSTRUCTION");
-                    m.To.Add(new MailAddress(mailId, ""));
+                    if (mailId.Contains(";"))
+                    {
+                        m.To.Add(new MailAddress(mailId, ""));
+                    }
+                    else
+                    {
+                        foreach (string lStrEmail in mailId.Split(';'))
+                        {
+                            m.To.Add(new MailAddress(lStrEmail, ""));
+                        }
+                    }
+                    
                     m.Bcc.Add(new MailAddress("shabbir.kanchwala@straitapps.com", "Shabbir Kanchwala"));
                     m.CC.Add(new MailAddress("jgrove.georgegrove@gmail.com", "Justin Grove"));
 
@@ -1764,7 +1795,7 @@ namespace JG_Prospect.Sr_App
             DateTime followupdate = (txtfollowupdate.Text != "") ? Convert.ToDateTime(txtfollowupdate.Text, JGConstant.CULTURE) : Convert.ToDateTime(DateTime.Now.ToString("MM/dd/yyyy"), JGConstant.CULTURE);
             string status = ddlstatus.SelectedValue;
             int userId = Convert.ToInt16(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]);
-            new_customerBLL.Instance.AddCustomerFollowUp(Convert.ToInt32(Session["CustomerId"].ToString()), followupdate, status, userId, false, 0);
+            new_customerBLL.Instance.AddCustomerFollowUp(Convert.ToInt32(Session["CustomerId"].ToString()), followupdate, status, userId, false, 0,"", estimateid, productId);
 
 
 
@@ -1779,7 +1810,7 @@ namespace JG_Prospect.Sr_App
             string g = Guid.NewGuid().ToString().Substring(0, 5);
             string tempInvoiceFileName = "Proposal" + DateTime.Now.Ticks + ".pdf";
 
-            GeneratePDF(path, tempInvoiceFileName, false, createEstimate("InvoiceNumber-" + Session["CustomerId"].ToString(), Convert.ToInt32(Session["CustomerId"].ToString())), true);
+            GeneratePDF(path, tempInvoiceFileName, false, createEstimate("ProposalNumber-" + Session["CustomerId"].ToString()+DateTime.Now.Ticks, Convert.ToInt32(Session["CustomerId"].ToString())), true);
 
             if ((Session["FormDataObjects"] != null) || (productId > 0))
             {
