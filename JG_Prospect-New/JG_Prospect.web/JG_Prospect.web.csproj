@@ -242,7 +242,10 @@
     <Content Include="Controls\left.ascx" />
     <Content Include="Controls\LeftMenu_home.ascx" />
     <Content Include="CreateUser.aspx" />
+    <Content Include="css\connected-carousel.css" />
+    <Content Include="css\JCarousel.css" />
     <Content Include="css\jquery-ui.css" />
+    <Content Include="css\jquery.bxslider.css" />
     <Content Include="css\jquery.multiselect.css" />
     <Content Include="css\pgwslideshow.min.css" />
     <Content Include="CustomerDocs\LocationPics\017aaf2f-442b-4408-bfb6-4f9eb50edd95-Hydrangeas.jpg" />
@@ -484,6 +487,8 @@
     <Content Include="JGCalender\SalesCalender.aspx" />
     <Content Include="JGCalender\scripts\calendarscript.js" />
     <Content Include="JrAnnualCalendar.aspx" />
+    <Content Include="js\connected-jcarousel.js" />
+    <Content Include="js\JCarousel.js" />
     <Content Include="js\jquery-latest.js" />
     <Content Include="js\jquery-latest_old.js" />
     <Content Include="js\jquery-ui.js" />
@@ -517,6 +522,7 @@
     <Content Include="Sr_App\Custom.aspx" />
     <Content Include="Sr_App\CustomerEmailTemplate.aspx" />
     <Content Include="Sr_App\Custom_MaterialList.aspx" />
+    <Content Include="Sr_App\customerattachmentupload.aspx" />
     <Content Include="Sr_App\dropzoneimageupload.aspx" />
     <Content Include="Sr_App\EditEmailTemplate.aspx" />
     <Content Include="Sr_App\EditInstallUser.aspx" />
@@ -1041,6 +1047,13 @@
     </Compile>
     <Compile Include="Sr_App\Custom_MaterialList.aspx.designer.cs">
       <DependentUpon>Custom_MaterialList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Sr_App\customerattachmentupload.aspx.cs">
+      <DependentUpon>customerattachmentupload.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Sr_App\customerattachmentupload.aspx.designer.cs">
+      <DependentUpon>customerattachmentupload.aspx</DependentUpon>
     </Compile>
     <Compile Include="Sr_App\dropzoneimageupload.aspx.cs">
       <DependentUpon>dropzoneimageupload.aspx</DependentUpon>
