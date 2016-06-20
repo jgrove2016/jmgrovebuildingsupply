@@ -65,6 +65,16 @@
             document.getElementById('interviewDatefade').style.display = 'block';
         }
 
+        function ClosePopupOfferMade() {
+            document.getElementById('DivOfferMade').style.display = 'none';
+            document.getElementById('DivOfferMadefade').style.display = 'none';
+        }
+
+        function OverlayPopupOfferMade() {
+            document.getElementById('DivOfferMade').style.display = 'block';
+            document.getElementById('DivOfferMadefade').style.display = 'block';
+        }
+
 
         var validFilesTypes = ["xls", "xlsx"];
         function ValidateFile() {
@@ -448,6 +458,80 @@
     <div id="fadePassword" class="black_overlay">
     </div>
 
+    <asp:Panel ID="panel4" runat="server">
+        <div id="DivOfferMade" class="white_content" style="height:auto;">
+            <h3>Offer Made Details</h3>
+            <a href="javascript:void(0)" onclick="document.getElementById('DivOfferMade').style.display='none';document.getElementById('DivOfferMadefade').style.display='none'">
+                Close</a>
+            <asp:HiddenField ID="hdnFirstName" runat="server" />
+            <asp:HiddenField ID="hdnLastName" runat="server" />
+            <table width="100%" style="border: Solid 3px #b04547; width: 100%; height: 300px;"
+                cellpadding="0" cellspacing="0">
+                <tr>
+                    <td align="right" style="height:15px;">
+                        <br />
+                        <label>
+                        Email<span><asp:Label ID="lblReqEmail" Text="*" runat="server" ForeColor="Red"></asp:Label></span></label>
+                    </td>
+                    <td>
+                        <asp:TextBox ID="txtEmail" runat="server" MaxLength="40" Width="242px"></asp:TextBox>
+                        <br />
+                        <asp:RequiredFieldValidator ID="rqEmail" Display="Dynamic" runat="server" ControlToValidate="txtEmail"
+                            ValidationGroup="OfferMade" ForeColor="Red" ErrorMessage="Please Enter Email"></asp:RequiredFieldValidator>
+                        <asp:RegularExpressionValidator ID="reEmail" ControlToValidate="txtEmail" ValidationExpression="\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*"
+                            Display="Dynamic" runat="server" ForeColor="Red" ErrorMessage="Please Enter a valid Email"
+                            ValidationGroup="OfferMade">
+                        </asp:RegularExpressionValidator>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" style="height:15px;">
+                        <label>
+                            Password<asp:Label ID="lblPassReq" runat="server" Text="*" ForeColor="Red"></asp:Label></label>
+                    </td>
+                    <td>
+                        <asp:TextBox ID="txtPassword1" runat="server" TextMode="Password" MaxLength="30"
+                            autocomplete="off" Width="242px"></asp:TextBox>
+                        <br />
+                        <label>
+                        </label>
+                        <asp:RequiredFieldValidator ID="rqPass" runat="server" ControlToValidate="txtPassword1"
+                            ValidationGroup="OfferMade" ForeColor="Red" Display="Dynamic" ErrorMessage="Please Enter Password"></asp:RequiredFieldValidator><br />
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right" style="height:15px;">
+                        <label>
+                            Confirm Password<asp:Label ID="lblConfirmPass" runat="server" Text="*" ForeColor="Red"></asp:Label></label>
+                    </td>
+                    <td>
+                        <asp:TextBox ID="txtpassword2" runat="server" TextMode="Password" autocomplete="off"
+                            MaxLength="30" EnableViewState="false" AutoCompleteType="None" Width="242px" ></asp:TextBox>
+                        <br />
+                        <label>
+                        </label>
+                        <asp:CompareValidator ID="password" runat="server" ControlToValidate="txtpassword2"
+                            Display="Dynamic" ControlToCompare="txtPassword1" ForeColor="Red" ErrorMessage="Password didn't matched"
+                            ValidationGroup="OfferMade">
+                        </asp:CompareValidator>
+                        <asp:RequiredFieldValidator ID="rqConPass" runat="server" ControlToValidate="txtpassword2"
+                            ForeColor="Red" ValidationGroup="OfferMade" ErrorMessage="Enter Confirm Password"></asp:RequiredFieldValidator>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td align="center" colspan="2">
+                         <asp:Button ID="btnSaveOfferMade" runat="server" BackColor="#327FB5" ForeColor="White" Height="32px"
+                            Style="height: 26px; font-weight: 700; line-height: 1em;" Text="Save" Width="100px" ValidationGroup="OfferMade"
+                            TabIndex="119" OnClick="btnSaveOfferMade_Click" />
+                        <%--<asp:Button ID="Button2" runat="server" OnClick="" />--%>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </asp:Panel>
+    <div id="DivOfferMadefade" class="black_overlay">
+    </div>
     <%--</ContentTemplate>
         <Triggers>
             <asp:AsyncPostBackTrigger ControlID="GridViewUser" EventName="RowCommand" />

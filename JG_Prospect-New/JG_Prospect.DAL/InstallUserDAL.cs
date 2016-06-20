@@ -1675,5 +1675,29 @@ namespace JG_Prospect.DAL
                 return 0;
             }
         }
+
+        public bool UpdateOfferMade(int Id,string Email,string password)
+        {
+            StringBuilder strerr = new StringBuilder();
+
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("UDP_UpdateInstallUserOfferMade");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@Id", DbType.Int32, Id);
+                    database.AddInParameter(command, "@Email", DbType.String, Email);
+                    database.AddInParameter(command, "@password", DbType.String, password);
+                    database.ExecuteNonQuery(command);
+                    return true;
+                }
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+        }
+
     }
 }

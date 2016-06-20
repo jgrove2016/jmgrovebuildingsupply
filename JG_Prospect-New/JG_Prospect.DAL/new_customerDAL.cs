@@ -559,6 +559,29 @@ namespace JG_Prospect.DAL
                 return dsResult;
             }
         }
+
+        public string CheckDuplicateCustomerCredentials(string pValForValidation, int pValidationType, int pCustomerID)
+        {
+            DataSet dsResult = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("USP_CheckDuplicateCustomerCredentials");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@CustomerID", DbType.Int32, pCustomerID);
+                    database.AddInParameter(command, "@DataForValidation", DbType.String, pValForValidation);
+                    database.AddInParameter(command, "@DataType", DbType.Int32, pValidationType);
+
+                    string lResult = database.ExecuteScalar(command).ToString();
+                    return lResult;
+                }
+            }
+            catch(Exception ex)
+            {
+                return ex.Message;
+            }
+        }
         public DataSet GetAutoSuggestiveCustomers(string prefix)
         {
             returndata = new DataSet();
