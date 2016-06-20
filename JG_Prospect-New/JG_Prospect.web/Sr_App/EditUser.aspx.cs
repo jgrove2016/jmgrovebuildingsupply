@@ -193,8 +193,8 @@ namespace JG_Prospect
                 //}
                 //else if (type == "Sales")
                 //{
-                    string ID = e.CommandArgument.ToString();
-                    Response.Redirect("CreateSalesUser.aspx?id=" + ID);
+                string ID = e.CommandArgument.ToString();
+                Response.Redirect("CreateSalesUser.aspx?id=" + ID);
                 //}
 
             }
@@ -508,11 +508,11 @@ namespace JG_Prospect
                     objuser.Source = Convert.ToString(Session["Username"]);
                     objuser.designation = dtExcel.Rows[i][9].ToString().Trim();
                     objuser.status = dtExcel.Rows[i][10].ToString().Trim();
-                   
+
                     objuser.UserType = "SalesUser";
                     DataSet dsCheckDuplicate = InstallUserBLL.Instance.CheckInstallUser(dtExcel.Rows[i][5].ToString().Trim(), dtExcel.Rows[i][3].ToString().Trim());
                     if (dsCheckDuplicate.Tables[0].Rows.Count == 0) //Original Code .......
-                   // if (dsCheckDuplicate.Tables[0].Rows.Count != 0)
+                    // if (dsCheckDuplicate.Tables[0].Rows.Count != 0)
                     {
                         IdGenerated = GetId(dtExcel.Rows[i][9].ToString().Trim(), dtExcel.Rows[i][10].ToString().Trim());
                         objuser.InstallId = IdGenerated;
@@ -579,9 +579,19 @@ namespace JG_Prospect
             bool status = CheckRequiredFields(ddl.SelectedValue, Convert.ToInt32(Id.Text));
             if (!status)
             {
-                binddata();
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Status cannot be changed as required field for selected status are not field')", true);
-                return;
+                if (ddl.SelectedValue == "Offer Made" || ddl.SelectedValue == "OfferMade")
+                {
+                    hdnFirstName.Value = lblFirstName.Text;
+                    hdnLastName.Value = lblLastName.Text;
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Overlay", "OverlayPopupOfferMade();", true);
+                    return;
+                }
+                else
+                {
+                    binddata();
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Status cannot be changed as required field for selected status are not field')", true);
+                    return;
+                }
             }
 
             if ((ddl.SelectedValue == "Active" || ddl.SelectedValue == "Deactive") && (!(Convert.ToString(Session["usertype"]).Contains("Admin")) && !(Convert.ToString(Session["usertype"]).Contains("SM"))))
@@ -617,7 +627,7 @@ namespace JG_Prospect
                 string HireDate = "";
                 string EmpType = "";
                 string PayRates = "";
-                ds = InstallUserBLL.Instance.ChangeStatus(Convert.ToString(Session["EditStatus"]), Convert.ToInt32(Session["EditId"]),DateTime.Today.ToString("yyyy-MM-dd"), DateTime.Now.ToShortTimeString(), Convert.ToInt32(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]), txtReason.Text);
+                ds = InstallUserBLL.Instance.ChangeStatus(Convert.ToString(Session["EditStatus"]), Convert.ToInt32(Session["EditId"]), DateTime.Today.ToString("yyyy-MM-dd"), DateTime.Now.ToShortTimeString(), Convert.ToInt32(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]), txtReason.Text);
                 if (ds.Tables.Count > 0)
                 {
                     if (ds.Tables[0].Rows.Count > 0)
@@ -701,8 +711,10 @@ namespace JG_Prospect
                     }
                     else if (SelectedStatus == "OfferMade" || SelectedStatus == "Offer Made")
                     {
-                        if (Convert.ToString(dsNew.Tables[0].Rows[0][1]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][2]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][4]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][5]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][11]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][12]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][13]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][3]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][8]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][38]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][44]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][46]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][48]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][50]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][100]) == "")
+                        //if (Convert.ToString(dsNew.Tables[0].Rows[0][1]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][2]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][4]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][5]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][11]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][12]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][13]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][3]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][8]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][38]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][44]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][46]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][48]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][50]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][100]) == "")
+                        if (Convert.ToString(dsNew.Tables[0].Rows[0]["Email"]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0]["Password"]) == "")
                         {
+                            txtEmail.Text = Convert.ToString(dsNew.Tables[0].Rows[0]["Email"]);
                             //ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Status cannot be changed to Offer Made as required fields for it are not filled.')", true);
                             return false;
                         }
@@ -734,7 +746,7 @@ namespace JG_Prospect
                 {
                     ds = AdminBLL.Instance.GetEmailTemplate("Admin");
                 }
-                else if(ds.Tables[0].Rows.Count ==0)
+                else if (ds.Tables[0].Rows.Count == 0)
                 {
                     ds = AdminBLL.Instance.GetEmailTemplate("Admin");
                 }
@@ -764,7 +776,7 @@ namespace JG_Prospect
                 //Hi #lblFName#, <br/><br/>You are requested to appear for an interview on #lblDate# - #lblTime#.<br/><br/>Regards,<br/>
                 StringBuilder Body = new StringBuilder();
                 MailMessage Msg = new MailMessage();
-                 //Sender e-mail address.
+                //Sender e-mail address.
                 Msg.From = new MailAddress(userName, "JGrove Construction");
                 // Recipient e-mail address.
                 Msg.To.Add(emailId);
@@ -797,7 +809,7 @@ namespace JG_Prospect
                         Msg.Attachments.Add(attachment);
                     }
                 }
-                  
+
 
                 SmtpClient sc = new SmtpClient(ConfigurationManager.AppSettings["smtpHost"].ToString(), Convert.ToInt32(ConfigurationManager.AppSettings["smtpPort"].ToString()));
 
@@ -819,7 +831,7 @@ namespace JG_Prospect
                 Msg = null;
                 sc.Dispose();
                 sc = null;
-                Page.RegisterStartupScript("UserMsg", "<script>alert('An email notification has sent on "+ emailId +".');}</script>");
+                Page.RegisterStartupScript("UserMsg", "<script>alert('An email notification has sent on " + emailId + ".');}</script>");
             }
             catch (Exception ex)
             {
@@ -1160,11 +1172,11 @@ namespace JG_Prospect
             string EmpType = "";
             string PayRates = "";
 
-            
+
             //string InterviewDate = dtInterviewDate.Text;
             DateTime interviewDate;
             DateTime.TryParse(dtInterviewDate.Text, out interviewDate);
-            if(interviewDate==null)
+            if (interviewDate == null)
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "Overlay", "alert('Invalid Interview Date, Please verify');", true);
                 return;
@@ -1221,9 +1233,9 @@ namespace JG_Prospect
             EnumerableRowCollection<DataRow> query = null;
             if (ddlUserStatus.SelectedIndex != 0 || ddlDesignation.SelectedIndex != 0)
             {
-                string Status = ddlUserStatus.SelectedItem.Value;                    
+                string Status = ddlUserStatus.SelectedItem.Value;
                 query = from userdata in dt.AsEnumerable()
-                        where (userdata.Field<string>("Status") == Status  || ddlUserStatus.SelectedIndex == 0)
+                        where (userdata.Field<string>("Status") == Status || ddlUserStatus.SelectedIndex == 0)
                         && (userdata.Field<string>("Designation") == ddlDesignation.SelectedItem.Text || ddlDesignation.SelectedIndex == 0)
                         select userdata;
                 if (query.Count() > 0)
@@ -1235,6 +1247,46 @@ namespace JG_Prospect
             }
             GridViewUser.DataSource = dt;
             GridViewUser.DataBind();
+        }
+
+        protected void btnSaveOfferMade_Click(object sender, EventArgs e)
+        {
+            int EditId=0;
+            int.TryParse(Convert.ToString(Session["EditId"]),out EditId);
+            InstallUserBLL.Instance.UpdateOfferMade(EditId, txtEmail.Text, txtPassword1.Text);
+
+            DataSet ds = new DataSet();
+            string email = "";
+            string HireDate = "";
+            string EmpType = "";
+            string PayRates = "";
+            ds = InstallUserBLL.Instance.ChangeStatus(Convert.ToString(Session["EditStatus"]), EditId, DateTime.Today.ToString("yyyy-MM-dd"), DateTime.Now.ToShortTimeString(), Convert.ToInt32(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]), txtReason.Text);
+            if (ds.Tables.Count > 0)
+            {
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    if (Convert.ToString(ds.Tables[0].Rows[0][0]) != "")
+                    {
+                        email = Convert.ToString(ds.Tables[0].Rows[0][0]);
+                    }
+                    if (Convert.ToString(ds.Tables[0].Rows[0][1]) != "")
+                    {
+                        HireDate = Convert.ToString(ds.Tables[0].Rows[0][1]);
+                    }
+                    if (Convert.ToString(ds.Tables[0].Rows[0][2]) != "")
+                    {
+                        EmpType = Convert.ToString(ds.Tables[0].Rows[0][2]);
+                    }
+                    if (Convert.ToString(ds.Tables[0].Rows[0][3]) != "")
+                    {
+                        PayRates = Convert.ToString(ds.Tables[0].Rows[0][3]);
+                    }
+                }
+            }
+            //SendEmail(email, hdnFirstName.Value, hdnLastName.Value, "Offer Made", txtReason.Text, lblDesignation.Text, HireDate, EmpType, PayRates);
+            binddata();
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Overlay", "ClosePopupOfferMade()", true);
+            return;
         }
 
     }
