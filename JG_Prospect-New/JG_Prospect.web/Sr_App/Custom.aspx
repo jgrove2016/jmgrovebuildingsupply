@@ -3,9 +3,13 @@
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
+    <link href="../css/dropzone/css/basic.css" rel="stylesheet" />
+    <link href="../css/dropzone/css/dropzone.css" rel="stylesheet" />
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.2.js"></script>
     <script src="../js/jquery-latest.js" type="text/javascript"></script>
     <script type="text/javascript" src="../../Scripts/jquery.MultiFile.js"></script>
+    <script type="text/javascript" src="../js/dropzone.js"></script>
+
     <script type="text/javascript">
         function uploadComplete() {
 
@@ -148,14 +152,145 @@ $(".btnClose").live('click', function () {
     HidePopup();
 });
 
+//Technical Interview : Yogesh Keraliya
+//Code for drag and drop image upload.
+//File Upload response from the server
+Dropzone.options.dropzoneForm = {
+    maxFiles: 5,
+    url: "dropzoneimageupload.aspx",
+    thumbnailWidth: 100,
+    thumbnailHeight: 100,
+    init: function () {
+        this.on("maxfilesexceeded", function (data) {
+            //var res = eval('(' + data.xhr.responseText + ')');
+            alert('you are reached maximum pictures limit.');
+        });
+
+        // when file is uploaded successfully store its corresponding server side file name to preview element to remove later from server.
+        this.on("success", function (file, response) {
+            var filename = response.split("^");
+            $(file.previewTemplate).append('<span class="server_file">' + filename[0] + '</span>');
+
+            AddLocationPictoViewState(filename[0]);
+
+        });
+
+        //when file is removed from dropzone element, remove its corresponding server side file.
+        this.on("removedfile", function (file) {
+            var server_file = $(file.previewTemplate).children('.server_file').text();
+            RemoveLocPicFromServer(server_file);
+        });
+
+        // When is added to dropzone element, add its remove link.
+        this.on("addedfile", function (file) {
+
+            // Create the remove button
+            var removeButton = Dropzone.createElement("<a><small>Remove file</smalll></a>");
+
+            // Capture the Dropzone instance as closure.
+            var _this = this;
+
+            // Listen to the click event
+            removeButton.addEventListener("click", function (e) {
+                // Make sure the button click doesn't submit the form:
+                e.preventDefault();
+                e.stopPropagation();
+                // Remove the file preview.
+                _this.removeFile(file);
+            });
+
+            // Add the button to the file preview element.
+            file.previewElement.appendChild(removeButton);
+        });
+    }
+};
+
+function RemoveLocPicFromServer(filename) {
+
+    var param = { serverfilename: filename };
+
+    $.ajax({
+        type: "POST",
+        data: JSON.stringify(param),
+        url: "dropzoneimageupload.aspx/RemoveLocationPic",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: OnLocationPicRemoveSuccess,
+        error: OnLocationPicRemoveError
+    });
+
+}
+
+function OnLocationPicRemoveSuccess(data) {
+    var result = data.d;
+    if (result) {
+
+        RemoveLocationPicFromViewState(result);
+    }
+
+}
+function OnLocationPicRemoveError() {
+
+}
+
+//Add uploaded location picture to viewstate of page to save later.
+function AddLocationPictoViewState(serverfilename) {
+
+    var images;
+
+    if ($('#<%= locimages.ClientID %>').val()) {
+        images = $('#<%= locimages.ClientID %>').val() + serverfilename + "^";
+    }
+    else {
+        images = serverfilename + "^";
+    }
+   
+    $('#<%= locimages.ClientID %>').val(images);
+    console.log($('#<%= locimages.ClientID %>').val());
+}
+function RemoveLocationPicFromViewState(filename) {
+    console.log($('#<%= locimages.ClientID %>').val());
+    if ($('#<%= locimages.ClientID %>').val()) {
+
+        //split images added by ^ seperator
+        var images = $('#<%= locimages.ClientID %>').val().split("^");
+
+        console.log(images);
+
+        if (images.length > 0) {
+            //find index of filename and remove it.
+            var index = images.indexOf(filename);
+
+            if (index > -1) {
+                images.splice(index, 1);
+            }
+            console.log(images);
+                    
+
+            //join remaining images.
+            if (images.length > 0) {
+                $('#<%= locimages.ClientID %>').val(images.join("^"));
+            }
+            else {
+                $('#<%= locimages.ClientID %>').val("");
+            }
+        }
+
+    }
+}
+ 
+
     </script>
     <style type="text/css">
-        .style2
-        {
+        .style2 {
             width: 100%;
         }
-         #mask
-        {
+
+        .dz-max-files-reached {
+            background-color: #ffffff;
+        }
+
+        #mask {
             position: fixed;
             left: 0px;
             top: 0px;
@@ -172,25 +307,69 @@ $(".btnClose").live('click', function () {
 
     <%--Style for adding multiple product categories - controls are in AddProductLinesControl.ascx--%>
     <style>
-        .product-categories { margin: 10px 20px; border: 1px solid #ccc; padding: 10px; }
-            .product-categories .head .expand { float: right; padding: 10px; cursor: pointer; }
+        .product-categories {
+            margin: 10px 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
 
-            .product-categories .body { width: 100% !important; }
-            .product-categories table { width: 100%; }
-                .product-categories table tr td { vertical-align: top; padding: 5px; background:url('../img/line.png') repeat-x 50% bottom; }
+            .product-categories .head .expand {
+                float: right;
+                padding: 10px;
+                cursor: pointer;
+            }
 
-            .product-categories .head table tr td { width: 15%; }
-                .product-categories .head table tr td:nth-child(even) { width: 85%; }
+            .product-categories .body {
+                width: 100% !important;
+            }
 
-            .product-categories .body table tr td { width: 15%; }
-                .product-categories .body table tr td:nth-child(even) { width: 35%; }
+            .product-categories table {
+                width: 100%;
+            }
 
-                .product-categories .body table tr td strong { float: right; margin-top: 8px; }
+                .product-categories table tr td {
+                    vertical-align: top;
+                    padding: 5px;
+                    background: url('../img/line.png') repeat-x 50% bottom;
+                }
 
-            .product-categories label { margin: 10px 0; display: inline-block; font-weight: normal; }
+            .product-categories .head table tr td {
+                width: 15%;
+            }
+
+                .product-categories .head table tr td:nth-child(even) {
+                    width: 85%;
+                }
+
+            .product-categories .body table tr td {
+                width: 15%;
+            }
+
+                .product-categories .body table tr td:nth-child(even) {
+                    width: 35%;
+                }
+
+                .product-categories .body table tr td strong {
+                    float: right;
+                    margin-top: 8px;
+                }
+
+            .product-categories label {
+                margin: 10px 0;
+                display: inline-block;
+                font-weight: normal;
+            }
+
             .product-categories input,
             .product-categories textarea,
-            .product-categories select { padding: 5px; margin: 0; border-radius: 5px; border: #b5b4b4 1px solid; line-height: 14px; width: 300px; }
+            .product-categories select {
+                padding: 5px;
+                margin: 0;
+                border-radius: 5px;
+                border: #b5b4b4 1px solid;
+                line-height: 14px;
+                width: 300px;
+            }
     </style>
     <script>
         function uploadError_multiple() {
@@ -202,6 +381,7 @@ $(".btnClose").live('click', function () {
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+
     <div class="right_panel">
         <!-- appointment tabs section start -->
         <ul class="appointment_tab">
@@ -210,8 +390,7 @@ $(".btnClose").live('click', function () {
             <li><a href="#">Construction Calendar</a></li>
             <li><a href="CallSheet.aspx">Call Sheet</a></li>
         </ul>
-        <h1 id="h1Heading" runat="server">
-        </h1>
+        <h1 id="h1Heading" runat="server"></h1>
         <div class="form_panel_custom" id="customDiv">
             <span>
                 <label>
@@ -251,8 +430,9 @@ $(".btnClose").live('click', function () {
                             <td>
                                 <label>
                                     Proposal Costs: <span>*</span></label><strong>$</strong>
-                                <asp:TextBox ID="txtProposalCost" AutoCompleteType="Disabled" runat="server" onclick="ShowPopup()"
-                                    onkeypress="ShowPopup()" TabIndex="5"></asp:TextBox>
+                                <%--<asp:TextBox ID="txtProposalCost" AutoCompleteType="Disabled" runat="server" onclick="ShowPopup()"
+                                    onkeypress="ShowPopup()" TabIndex="5"></asp:TextBox>--%>
+                                <asp:TextBox ID="txtProposalCost" AutoCompleteType="Disabled" runat="server" TabIndex="5"></asp:TextBox>
                                 <label>
                                 </label>
                                 <asp:RequiredFieldValidator ID="rfvProposalCost" runat="server" ForeColor="Red" ValidationGroup="save"
@@ -265,7 +445,7 @@ $(".btnClose").live('click', function () {
                                     Customer Attachment:</label>
                                 <ajaxToolkit:AsyncFileUpload ID="AsyncFileUploadCustomerAttachment" runat="server" ClientIDMode="AutoID" ThrobberID="abc"
                                     OnUploadedComplete="AsyncFileUploadCustomerAttachment_UploadedComplete" CompleteBackColor="White"
-                                    Style="width: 22% !important;" OnClientUploadComplete="uploadComplete2"/>
+                                    Style="width: 22% !important;" OnClientUploadComplete="uploadComplete2" />
 
 
                                 <%-- <asp:FileUpload ID="fileAttachment" runat="server" class="multi" TabIndex="6" />--%>
@@ -281,50 +461,50 @@ $(".btnClose").live('click', function () {
                             <td>
                                 <label>
                                     Customer Supplied Material:</label>
-                                <asp:TextBox ID="txtCustSupMaterial" runat="server" Enabled="false"></asp:TextBox>
+                                 <asp:DropDownList ID="drpMaterial" runat="server" Enabled="false" AutoPostBack="True"  OnTextChanged="drpMaterial_TextChanged">
+                                     <asp:ListItem Text="Select" Value="Select"></asp:ListItem>
+                                    <asp:ListItem Text="Driveway" Value="Driveway"></asp:ListItem>
+                                    <asp:ListItem Text="Garage" Value="Garage"></asp:ListItem>
+                                    <asp:ListItem Text="Front Yard" Value="Front Yard"></asp:ListItem>
+                                    <asp:ListItem Text="Back Yard" Value="Back Yard"></asp:ListItem>
+                                    <asp:ListItem Text="Lside" Value="Lside"></asp:ListItem>
+                                    <asp:ListItem Text="Rside" Value="Rside"></asp:ListItem>
+                                    
+                                    <asp:ListItem Text="other" Value="other"></asp:ListItem>
+                                </asp:DropDownList>
+                               
                                 <label>
                                     <asp:CheckBox ID="chkCustSupMaterial" runat="server" Text="N/A" AutoPostBack="true"
                                         Checked="true" TextAlign="Right" OnCheckedChanged="chkCustSupMaterial_CheckedChanged" />
                                 </label>
+                             
+                                
                             </td>
                         </tr>
+                       <tr><td><asp:TextBox ID="txtCustSupMaterial" runat="server" Visible="false" ></asp:TextBox></td></tr>
                         <tr>
                             <td>
                                 <label>
-                                    Material Storage:</label>
-                                <asp:DropDownList ID="ddlMaterialStorage" runat="server" Enabled="false">
-                                    <asp:ListItem>Driveway</asp:ListItem>
-                                    <asp:ListItem>Garage</asp:ListItem>
-                                    <asp:ListItem>Front Yard</asp:ListItem>
-                                    <asp:ListItem>Back Yard</asp:ListItem>
-                                    <asp:ListItem>Lside</asp:ListItem>
-                                    <asp:ListItem>Rside</asp:ListItem>
-                                    <asp:ListItem>Other</asp:ListItem>
+                                    Material / Dumpster Storage:</label>
+                                <asp:DropDownList ID="drpStorage" runat="server" Enabled="false" AutoPostBack="True" OnTextChanged="drpStorage_TextChanged">
+                                     <asp:ListItem Text="Select" Value="Select"></asp:ListItem>
+                                     <asp:ListItem Text="Driveway" Value="Driveway"></asp:ListItem>
+                                    <asp:ListItem Text="Garage" Value="Garage"></asp:ListItem>
+                                    <asp:ListItem Text="Front Yard" Value="Front Yard"></asp:ListItem>
+                                    <asp:ListItem Text="Back Yard" Value="Back Yard"></asp:ListItem>
+                                    <asp:ListItem Text="Lside" Value="Lside"></asp:ListItem>
+                                    <asp:ListItem Text="Rside" Value="Rside"></asp:ListItem>
+                                    
+                                    <asp:ListItem Text="other" Value="other"></asp:ListItem>
                                 </asp:DropDownList>
+                                
                                 <label>
-                                    <asp:CheckBox ID="chkMaterialStorage" runat="server" Text="N/A" TextAlign="Right" AutoPostBack="true"
-                                        Checked="true" OnCheckedChanged="chkMaterialStorage_CheckedChanged" />
+                                    <asp:CheckBox ID="chkStorage" runat="server" Text="N/A" TextAlign="Right" AutoPostBack="true"
+                                        Checked="true" OnCheckedChanged="chkStorage_CheckedChanged" />
                                 </label>
                             </td>
                         </tr>
-                        <tr>
-                            <td>
-                                <label>
-                                    Waste/Dump Storage Location:</label>
-                                <asp:DropDownList ID="ddlDumpStorageLocation" runat="server" Enabled="false">
-                                    <asp:ListItem>Driveway</asp:ListItem>
-                                    <asp:ListItem>Garage</asp:ListItem>
-                                    <asp:ListItem>Front Yard</asp:ListItem>
-                                    <asp:ListItem>Back Yard</asp:ListItem>
-                                    <asp:ListItem>Lside</asp:ListItem>
-                                    <asp:ListItem>Rside</asp:ListItem>
-                                </asp:DropDownList>
-                                <label>
-                                    <asp:CheckBox ID="chkDumpStorageLocation" runat="server" Text="N/A" TextAlign="Right" AutoPostBack="true"
-                                        Checked="true" OnCheckedChanged="chkDumpStorageLocation_CheckedChanged" />
-                                </label>
-                            </td>
-                        </tr>
+                        <tr><td><asp:TextBox ID="txtStorage" runat="server" visible="false"></asp:TextBox></td></tr>
                     </table>
                 </li>
                 <li style="width: 49%;" class="last">
@@ -339,14 +519,23 @@ $(".btnClose").live('click', function () {
                                         ControlToValidate="txtworkarea" ErrorMessage="Enter Work Area"></asp:RequiredFieldValidator>
                             </td>
                         </tr>
-                        <tr align="left">
-                            <td align="left">
-                                <table cellpadding="0" cellspacing="0" class="style2">
+                        <tr>
+                            <td>
+                                <span>
+                                    Location Image: (Upload maximum 5 images) 
+                                    <input id="locimages" runat="server" type="hidden" />
+                                </span>
+                                <div class="dropzone" style="overflow: auto; max-height: 300px;" id="dropzoneForm">
+                                    <div class="fallback">
+                                        <input name="file" type="file" multiple />
+                                        <input type="submit" value="Upload" />
+                                    </div>
+                                </div>
+                                <table style="display: none;" cellpadding="0" cellspacing="0" class="style2">
                                     <tr>
-                                        <td style="width: 20%;">
-                                            Location Image
+                                        <td style="width: 20%;">Location Image
                                         </td>
-                                        <td style="width: 60%;">
+                                        <td style="width: 60%; display: none;">
 
                                             <ajaxToolkit:AsyncFileUpload ID="ajaxFileUpload" runat="server" ClientIDMode="AutoID"
                                                 OnUploadedComplete="ajaxFileUpload_UploadedComplete" ThrobberID="imgLoad" CompleteBackColor="White"
@@ -360,6 +549,7 @@ $(".btnClose").live('click', function () {
                                                 ErrorMessage="Upload atleast two image." Display="Dynamic" ForeColor="Red" SetFocusOnError="true" ValidationGroup="save">
                                             </asp:RequiredFieldValidator>--%>
                                         </td>
+                                        <td></td>
                                         <td style="width: 20%;">
                                             <%--<asp:Button ID="bntAdd" runat="server" Text="Attach" Width="50px" OnClick="bntAdd_Click"
                                                 OnClientClick="return ValidateAddImage()" />--%>
@@ -369,34 +559,25 @@ $(".btnClose").live('click', function () {
                                         <td colspan="3">
                                             <asp:UpdatePanel ID="pnlUpdate" runat="server">
                                                 <ContentTemplate>
-                                                    <asp:GridView runat="server" ID="gvCategory" AutoGenerateColumns="false" OnRowCommand="gvCategory_RowCommand"
-                                                        DataKeyNames="RowSerialNo" AllowPaging="true" OnRowDataBound="gvCategory_RowDataBound"
-                                                        PageSize="1" OnPageIndexChanging="gvCategory_PageIndexChanging">
-                                                        <EmptyDataTemplate>
-                                                            <asp:Label ID="lblNoDataFound" runat="server" Text="Image Not Found."></asp:Label>
-                                                        </EmptyDataTemplate>
-                                                        <Columns>
-                                                            <asp:TemplateField>
-                                                                <ItemStyle Width="90%" />
-                                                                <HeaderTemplate>
-                                                                    <asp:Label ID="Image" runat="server" Text="Image" Font-Bold="true"></asp:Label>
-                                                                </HeaderTemplate>
+                                                    <asp:Label ID="Image" runat="server" Text="Image" Font-Bold="true" Visible="false"></asp:Label><br />
+                                                     <asp:Image ID="imglocation" runat="server" 
+                                                                Height="100px" Width="100px" Visible="false" />
+                                                    <asp:DataList ID="gvCategory1" runat="server" OnItemCommand="gvCategory1_ItemCommand"
+                                                        DataKeyField="RowSerialNo" AllowPaging="true" OnItemDataBound="gvCategory1_ItemDataBound"
+                                                         RepeatColumns="0"  RepeatDirection="Horizontal" >
+                                                     
+                                                        
                                                                 <ItemTemplate>
-                                                                    <asp:Image ID="imglocation" runat="server" ImageUrl='<%#Eval("LocationPicture")%>'
-                                                                        Height="100px" Width="100px" />
-                                                                </ItemTemplate>
-                                                            </asp:TemplateField>
-                                                            <asp:TemplateField>
-                                                                <ItemStyle Width="10%" />
-                                                                <HeaderTemplate>
-                                                                </HeaderTemplate>
-                                                                <ItemTemplate>
+
+
+                                                            <asp:ImageButton ID="imglocation2" runat="server" ImageUrl='<%#Eval("LocationPicture")%>'
+                                                                Height="50px" Width="50px" CommandArgument='<%#Eval("RowSerialNo")%>'
+                                                                CommandName="ShowRec" /><br />
                                                                     <asp:LinkButton ID="lnkCategoryDelete" runat="server" Text="X" CommandArgument='<%#Eval("RowSerialNo")%>'
                                                                         CommandName="DeleteRec" CausesValidation="false" OnClientClick='javascript:return confirm("Are you sure want to delete this entry?");'></asp:LinkButton>
+
                                                                 </ItemTemplate>
-                                                            </asp:TemplateField>
-                                                        </Columns>
-                                                    </asp:GridView>
+                                                    </asp:DataList>
                                                     <asp:HiddenField ID="hidCount" runat="server" />
                                                 </ContentTemplate>
 
@@ -423,8 +604,7 @@ $(".btnClose").live('click', function () {
                             </td>
                         </tr>
                         <tr>
-                            <td>
-                            </td>
+                            <td></td>
                         </tr>
                     </table>
                 </li>
@@ -437,24 +617,14 @@ $(".btnClose").live('click', function () {
                 <asp:HiddenField ID="hidProdId" runat="server" />
                 <asp:HiddenField ID="hidProdType" runat="server" />
             </div>
-
-            <div>
-                <asp:PlaceHolder ID="placeHolderProductLines" runat="server"></asp:PlaceHolder>
-                <div class="btn_sec">
-                    <asp:Button ID="btnAddProductLine" type="submit" runat="server" Text="Add Product Category" OnClick="btnAddProductLine_Click" />
-                </div>
-            </div>
-
             <div id="mask">
             </div>
             <asp:Panel ID="pnlpopup" runat="server" BackColor="White" Height="175px" Width="300px"
-                Style="z-index: 111; background-color: White; position: absolute; left: 35%;
-                top: 12%; border: outset 2px gray; padding: 5px; display: none">
+                Style="z-index: 111; background-color: White; position: absolute; left: 35%; top: 12%; border: outset 2px gray; padding: 5px; display: none">
                 <table width="100%" style="width: 100%; height: 100%;" cellpadding="0" cellspacing="5">
                     <tr style="background-color: #b5494c">
                         <td colspan="2" style="color: White; font-weight: bold; font-size: 1.2em; padding: 3px"
-                            align="center">
-                            Admin Verification <a id="closebtn" style="color: white; float: right; text-decoration: none"
+                            align="center">Admin Verification <a id="closebtn" style="color: white; float: right; text-decoration: none"
                                 class="btnClose" href="#">X</a>
                         </td>
                     </tr>
@@ -464,8 +634,7 @@ $(".btnClose").live('click', function () {
                         </td>
                     </tr>
                     <tr>
-                        <td align="right" style="width: 45%">
-                            Amount:
+                        <td align="right" style="width: 45%">Amount:
                         </td>
                         <td>
                             <asp:TextBox ID="txtAmount" runat="server" onkeypress="return isNumericKey(event);"
@@ -473,8 +642,7 @@ $(".btnClose").live('click', function () {
                         </td>
                     </tr>
                     <tr>
-                        <td align="right">
-                            Admin Password:
+                        <td align="right">Admin Password:
                         </td>
                         <td>
                             <asp:TextBox ID="txtauthpass" runat="server" TextMode="Password" Text=""></asp:TextBox>
@@ -482,10 +650,9 @@ $(".btnClose").live('click', function () {
                         </td>
                     </tr>
                     <tr>
+                        <td></td>
                         <td>
-                        </td>
-                        <td>
-                            <input type="button" class="btnVerify" value="Verify" onclick="javascript:return focuslost();" />
+                            <input type="button" class="btnVerify" value="Verify" onclick="javascript: return focuslost();" />
                             &nbsp;&nbsp;
                             <input type="button" class="btnClose" value="Cancel" />
                         </td>

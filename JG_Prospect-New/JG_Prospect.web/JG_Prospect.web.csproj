@@ -517,6 +517,7 @@
     <Content Include="Sr_App\Custom.aspx" />
     <Content Include="Sr_App\CustomerEmailTemplate.aspx" />
     <Content Include="Sr_App\Custom_MaterialList.aspx" />
+    <Content Include="Sr_App\dropzoneimageupload.aspx" />
     <Content Include="Sr_App\EditEmailTemplate.aspx" />
     <Content Include="Sr_App\EditInstallUser.aspx" />
     <Content Include="Sr_App\EmailTemplateForVendorCategories.aspx" />
@@ -629,6 +630,7 @@
     <Content Include="Sr_App\UploadedFile\Penguins.jpg" />
     <Content Include="Sr_App\UploadedFile\System-Desktop-icon.png" />
     <Content Include="Sr_App\UploadedFile\Tulips.jpg" />
+    <Content Include="Sr_App\UserControls\TaskGenerator.ascx" />
     <Content Include="Sr_App\viewshutters1.aspx" />
     <Content Include="Sr_App\view_customer.aspx" />
     <Content Include="Sr_App\WebForm1.aspx" />
@@ -1040,6 +1042,13 @@
     <Compile Include="Sr_App\Custom_MaterialList.aspx.designer.cs">
       <DependentUpon>Custom_MaterialList.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Sr_App\dropzoneimageupload.aspx.cs">
+      <DependentUpon>dropzoneimageupload.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Sr_App\dropzoneimageupload.aspx.designer.cs">
+      <DependentUpon>dropzoneimageupload.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Sr_App\EditEmailTemplate.aspx.cs">
       <DependentUpon>EditEmailTemplate.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1235,6 +1244,13 @@
     </Compile>
     <Compile Include="Sr_App\Time_Material.aspx.designer.cs">
       <DependentUpon>Time_Material.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Sr_App\UserControls\TaskGenerator.ascx.cs">
+      <DependentUpon>TaskGenerator.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Sr_App\UserControls\TaskGenerator.ascx.designer.cs">
+      <DependentUpon>TaskGenerator.ascx</DependentUpon>
     </Compile>
     <Compile Include="Sr_App\viewshutters1.aspx.cs">
       <DependentUpon>viewshutters1.aspx</DependentUpon>
@@ -1629,11 +1645,11 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>False</AutoAssignPort>
           <DevelopmentServerPort>61396</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/JG_Prospect.web</IISUrl>
+          <IISUrl>http://localhost:61396/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
