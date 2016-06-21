@@ -64,6 +64,14 @@
 
         $(document).ready(function () {
             $('#ContentPlaceHolder1_txtworkarea').focus();
+            $('#custattachmentaccordion').accordion({
+                activate: function (event, ui) {
+                    //on display of accordion preview file section set file carousel.
+                    if (ui.newHeader[0].innerText == "Preview Customer Attachments") {
+                        setupCustomerAttachmentCarousel();
+                    }
+                }
+            });
             $('#locationimgaccordion').accordion({
                 activate: function (event, ui) {
                     //on display of accordion preview image section set image carousel.
@@ -343,15 +351,15 @@ function setUpConnectedCarousels() {
     };
 
     //remove if already carousel is setup
-    if ($('.carousel-stage').jcarousel()) {
-        $('.carousel-stage').jcarousel('destroy');
+    if ($('#locpicMainCarousel').jcarousel()) {
+        $('#locpicMainCarousel').jcarousel('destroy');
     }
-    if ($('.carousel-navigation').jcarousel()) {
-        $('.carousel-navigation').jcarousel('destroy');
+    if ($('#locpicthumbCarousel').jcarousel()) {
+        $('#locpicthumbCarousel').jcarousel('destroy');
     }
 
     // Setup the carousels. Adjust the options for both carousels here.
-    var carouselStage = $('.carousel-stage')
+    var carouselStage = $('#locpicMainCarousel')
         .on('jcarousel:reload jcarousel:create', function () {
             var carousel = $(this),
                 width = carousel.innerWidth();
@@ -374,7 +382,7 @@ function setUpConnectedCarousels() {
             }
         });
 
-    var carouselNavigation = $('.carousel-navigation').jcarousel({
+    var carouselNavigation = $('#locpicthumbCarousel').jcarousel({
         auto: 1,
         animation: {
             duration: 800,
@@ -430,7 +438,7 @@ function setUpConnectedCarousels() {
         });
 
     // Setup controls for the navigation carousel
-    $('.prev-navigation')
+    $('#locpicthumbprev')
         .on('jcarouselcontrol:inactive', function () {
             $(this).addClass('inactive');
         })
@@ -441,7 +449,7 @@ function setUpConnectedCarousels() {
             target: '-=1'
         });
 
-    $('.next-navigation')
+    $('#locpicthumbnext')
         .on('jcarouselcontrol:inactive', function () {
             $(this).addClass('inactive');
         })
@@ -459,6 +467,8 @@ function setUpConnectedCarousels() {
 
 /*customer attachment upload section start */
 
+
+
 //Technical Interview : Yogesh Keraliya
 //Code for drag and drop customer attachment upload.
 //File Upload response from the server
@@ -473,7 +483,7 @@ Dropzone.options.cusattchForm = {
             var filename = response.split("^");
             $(file.previewTemplate).append('<span class="server_file">' + filename[0] + '</span>');
 
-            //code to save uploaded server file to hidden field.       
+            AddCustomerAttachmenttoViewstate(filename[0]);
 
         });
 
@@ -507,6 +517,75 @@ Dropzone.options.cusattchForm = {
     }
 };
 
+function setupCustomerAttachmentCarousel() {
+
+    //remove if already carousel is setup
+
+    if ($('#customerattachmentCarousel').jcarousel()) {
+        $('#customerattachmentCarousel').jcarousel('destroy');
+    }
+
+    // Setup the carousels. Adjust the options for both carousels here.
+    var carouselNavigation = $('#customerattachmentCarousel').jcarousel({
+        auto: 1,
+        animation: {
+            duration: 800,
+            easing: 'linear'
+        }
+    });
+
+    // We loop through the items of the navigation carousel and set it up
+    // as a control for file preview.
+    carouselNavigation.jcarousel('items').each(function () {
+        var item = $(this);
+
+
+        item
+            .on('jcarouselcontrol:active', function () {
+                carouselNavigation.jcarousel('scrollIntoView', this);
+                item.addClass('active');
+            })
+            .on('jcarouselcontrol:inactive', function () {
+                item.removeClass('active');
+            });
+
+        //set preview code here.
+        item.on('click', function (e) {
+            e.preventDefault();
+            var atag = item.find('a:first');            
+            var url = atag.attr("data-src");
+            var viewer = atag.attr("data-viewer");
+            //console.log("fileurl: " + url);
+            //console.log("fileviewer: " + viewer);
+            setPreviewFile(url, viewer);
+        });
+
+    });
+       
+    // Setup controls for the navigation carousel
+    $('#custattachprev')
+        .on('jcarouselcontrol:inactive', function () {
+            $(this).addClass('inactive');
+        })
+        .on('jcarouselcontrol:active', function () {
+            $(this).removeClass('inactive');
+        })
+        .jcarouselControl({
+            target: '-=1'
+        });
+
+    $('#custattachnext')
+        .on('jcarouselcontrol:inactive', function () {
+            $(this).addClass('inactive');
+        })
+        .on('jcarouselcontrol:active', function () {
+            $(this).removeClass('inactive');
+        })
+        .jcarouselControl({
+            target: '+=1'
+        });
+
+}
 
 function RemoveCustomerAttchmentFromServer(filename) {
 
@@ -524,13 +603,181 @@ function RemoveCustomerAttchmentFromServer(filename) {
 
 }
 
-function OnAttachmentRemoveSuccess() {
+//Once file is removed from server, remove it from hidden field as well.
+function OnAttachmentRemoveSuccess(data) {
+    var result = data.d;
+    if (result) {
+
+        RemoveCustomerAttachmentFromViewState(result);
+    }
 
 }
 
 function OnAttachmentRemoveError() {
 
 }
+
+//Add uploaded attachment file to hidden field of page to save later.
+function AddCustomerAttachmenttoViewstate(serverfilename) {
+
+    var files;
+
+    if ($('#<%= hdnAttachments.ClientID %>').val()) {
+        files = $('#<%= hdnAttachments.ClientID %>').val() + serverfilename + "^";
+    }
+    else {
+        files = serverfilename + "^";
+    }
+
+    $('#<%= hdnAttachments.ClientID %>').val(files);
+    console.log($('#<%= hdnAttachments.ClientID %>').val());
+    LoadCustomerAttachmentPreview();
+}
+
+function RemoveCustomerAttachmentFromViewState(filename) {
+
+    console.log($('#<%= hdnAttachments.ClientID %>').val());
+    if ($('#<%= hdnAttachments.ClientID %>').val()) {
+
+        //split images added by ^ seperator
+        var files = $('#<%= hdnAttachments.ClientID %>').val().split("^");
+
+        console.log(files);
+
+        if (files.length > 0) {
+            //find index of filename and remove it.
+            var index = files.indexOf(filename);
+
+            if (index > -1) {
+                files.splice(index, 1);
+            }
+            console.log(files);
+
+            //join remaining files.
+            if (files.length > 0) {
+                $('#<%= hdnAttachments.ClientID %>').val(files.join("^"));
+                LoadCustomerAttachmentPreview();
+            }
+            else {
+                $('#<%= hdnAttachments.ClientID %>').val("");
+            }
+        }
+
+    }
+
+}
+
+function LoadCustomerAttachmentPreview() {
+
+
+    var fileli = "<li style=\"width:50px !important;\" data-jcarouselcontrol=\"true\"><a data-viewer=\"**viewer**\" data-src=\"**url**\"><img width=\"50\" height=\"50\" src=\"**imagename**\" alt=\"\"><span style=\"color: red; position: relative; display: block; text-align: center;\">**filename**</span></a></li>";
+
+    if ($('#<%= hdnAttachments.ClientID %>').val()) {
+
+        //split files added by ^ seperator
+        var files = $('#<%= hdnAttachments.ClientID %>').val().split("^");
+
+        if (files.length > 0) {
+
+            $('#ulattchmentThumb').empty();
+
+            //loop through each file and add it to preview
+            for (var i = 0; i < files.length; i++) {
+
+                if (files[i] != "") {
+
+                    var fileextension = (files[i].split("."))[1];
+
+                    //get appropriate icon image based on file type.
+                    var iconImageURL = getIconImageUrl(fileextension);
+                    //get appropriate viewer based on file type.
+                    var fileviewer = getfileViewer(fileextension);
+                    //build file url to be viewed.
+                    var fileurl = encodeURI(document.location.origin + '/UploadedFiles/' + files[i]);
+
+                    // replace iconimage url, file viewer - google/microsoft , fileurl to send viewer.
+                    $('#ulattchmentThumb').append(fileli.replace("**imagename**", iconImageURL).replace("**viewer**", fileviewer).replace("**url**", fileurl).replace("**filename**",files[i]));
+                }
+
+            }
+
+        }
+
+    }
+
+}
+
+// get icon of file type from extension of file.
+function getIconImageUrl(fileextension) {
+    var iconUrl = "../img/icons/";
+    switch (fileextension) {
+        case "jpg":
+        case "jpeg":
+            iconUrl = iconUrl + "jpg-image-file-format.png";
+            break;
+        case "png":
+            iconUrl = iconUrl + "png-file-extension-interface-symbol.png";
+            break;
+        case "gif":
+            iconUrl = iconUrl + "gif-file-format.png";
+            break;
+        case "pdf":
+            iconUrl = iconUrl + "pdf-file-format-symbol.png";
+            break;
+        case "doc":
+        case "docx":
+            iconUrl = iconUrl + "doc-file-format-symbol.png";
+            break;
+        case "xls":
+        case "xlsx":
+            iconUrl = iconUrl + "xls-file-format-symbol.png";
+            break;
+        default:
+            iconUrl = iconUrl + "blank-file.png";
+            break;
+
+    }
+    return iconUrl;
+}
+
+function getfileViewer(fileextension) {
+    var viewer;
+    switch (fileextension) {
+        case "doc":
+        case "docx":
+        case "xls":
+        case "xlsx":
+            viewer = "msoffice";
+            break;
+        default:
+            viewer = "google";
+            break;
+
+    }
+    return viewer;
+
+}
+
+// set dynamic url to iframe with google doc viewer.
+function setPreviewFile(url, viewer) {
+
+    var googledocsviewerurl = "http://docs.google.com/viewer?url=**url**&embedded=true";
+    var officeappsviewerurl = "http://view.officeapps.live.com/op/view.aspx?src=**url**";
+
+    var viewurl;
+
+    // if office document needs to view than use microsoft office app viwer.
+    if (viewer == "msoffice") {
+        viewurl = officeappsviewerurl.replace("**url**", url);
+    }
+    else {// use google docs viewer.
+        viewurl = googledocsviewerurl.replace("**url**", url);
+    }
+
+    $('#previewFrame').attr("src", viewurl);
+
+}
+
 
 
 /* customer attachment upload section end */
@@ -696,14 +943,38 @@ function OnAttachmentRemoveError() {
                         </tr>
                         <tr>
                             <td>
-                                <label>
-                                    Customer Attachment:</label>
-                                <div class="dropzone" style="overflow: auto; max-height: 300px;" id="cusattchForm">
-                                    <div class="fallback">
-                                        <input name="file" type="file" multiple />
-                                        <input type="submit" value="Upload" />
+                                <div id="custattachmentaccordion">
+
+                                    <h3><span>Upload Customer Attachments
+                                    <input id="hdnAttachments" runat="server" type="hidden" />
+                                    </span></h3>
+                                    <div>
+                                        <div class="dropzone" style="overflow: auto; max-height: 300px;" id="cusattchForm">
+                                            <div class="fallback">
+                                                <input name="file" type="file" multiple />
+                                                <input type="submit" value="Upload" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h3>Preview Customer Attachments</h3>
+                                    <div>
+                                        <iframe id="previewFrame" style="border-style: none; width: 470px; height: 400px;"></iframe>
+                                        <div style="width: 470px; max-height: 200px;">
+                                            <div class="connected-carousels">
+                                                <div class="navigation">
+                                                    <a id="custattachprev" class="prev prev-navigation" href="#" data-jcarouselcontrol="true">‹</a>
+                                                    <a id="custattachnext" class="next next-navigation" href="#" data-jcarouselcontrol="true">›</a>
+                                                    <div id="customerattachmentCarousel" class="carousel carousel-navigation" data-jcarousel="true">
+                                                        <ul id="ulattchmentThumb">
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+
+
                                 <ajaxToolkit:AsyncFileUpload ID="AsyncFileUploadCustomerAttachment" runat="server" ClientIDMode="AutoID" ThrobberID="abc"
                                     OnUploadedComplete="AsyncFileUploadCustomerAttachment_UploadedComplete" CompleteBackColor="White"
                                     Style="width: 22% !important; display: none;" OnClientUploadComplete="uploadComplete2" />
@@ -801,7 +1072,7 @@ function OnAttachmentRemoveError() {
                                     <div>
                                         <div style="width: 480px;">
                                             <div class="jcarousel-wrapper">
-                                                <div class="jcarousel carousel-stage" data-jcarousel="true">
+                                                <div id="locpicMainCarousel" class="jcarousel carousel-stage" data-jcarousel="true">
                                                     <ul id="ulLocPic">
                                                     </ul>
                                                 </div>
@@ -811,9 +1082,9 @@ function OnAttachmentRemoveError() {
                                             </div>
                                             <div class="connected-carousels">
                                                 <div class="navigation">
-                                                    <a class="prev prev-navigation" href="#" data-jcarouselcontrol="true">‹</a>
-                                                    <a class="next next-navigation" href="#" data-jcarouselcontrol="true">›</a>
-                                                    <div class="carousel carousel-navigation" data-jcarousel="true">
+                                                    <a id="locpicthumbprev" class="prev prev-navigation" href="#" data-jcarouselcontrol="true">‹</a>
+                                                    <a id="locpicthumbnext" class="next next-navigation" href="#" data-jcarouselcontrol="true">›</a>
+                                                    <div id="locpicthumbCarousel" class="carousel carousel-navigation" data-jcarousel="true">
                                                         <ul id="ulLocPicThumb">
                                                         </ul>
                                                     </div>
