@@ -572,9 +572,88 @@
 
             }
         }
+
+        function CheckDuplicatePhone(obj){
+            try {
+                //Get the Value an assign hidden field
+                var tbl = document.getElementById("tblBestTime");
+                var row = tbl.getElementsByTagName("tr");
+                var value = "";
+                var BestTime = new Array();
+                if (row.length > 1) {
+                    for (i = 1; i < row.length; i++) {
+                        if (BestTime == "") {
+                            value = row[i].cells[0].innerText.split('X');
+                            BestTime = value[0].trim();;
+                        }
+                        else {
+                            value = row[i].cells[0].innerText.split('X');
+                            BestTime += ',' + value[0].trim();
+                        }
+                    }
+                    $('#hdnBestTimeToContact').val(BestTime);
+                }
+                var formData = [];
+                var formPushData = [];
+                $("#form1").find("input[name]:text,select[name],input:hidden[name][id^='hdn'],input[name]:radio,textarea[name],input[name]:checkbox").each(function (index, node) {
+
+                    //formData[node.name] = node.value;
+                    if (node.type == "checkbox") {
+                        node.value = $('#' + node.id).is(':checked');
+                    }
+                    if (node.type == "radio") {
+                        debugger;
+                        if ($('#' + node.id).is(':checked') == true) {
+                            formPushData.push({
+                                key: node.name,
+                                value: node.value
+                            });
+                        }
+                    }
+
+                    else {
+                        formPushData.push({
+                            key: node.name,
+                            value: node.value
+                        });
+                    }
+
+                });
+                $.ajax({
+                    type: "POST",
+                    url: "new_customer.aspx/CheckForDuplication",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "JSON",
+                    //data: "{ 'formData' : '" + formData + "'}",
+                    data: JSON.stringify({ formVars: formPushData }),
+                    success: function (data) {
+                        debugger;
+                        var dataInput = (data.d);
+
+                        if (dataInput == "") {
+                            alert("Some error occured in checking customer duplication. Please Try again.")
+                            return;
+                        }
+                        else if (dataInput == "PhoneNumberEmpty") {
+                            alert("Please enter the Phone Number");
+                            return;
+                        }
+                        else if (dataInput == 'Contact is NOT Exists') { return;}
+                        else {
+                            alert(dataInput);
+                        }
+                   
+                    }
+                });
+            }catch (e3) {}
+        }
+
+        function CheckDuplicateEmail(obj) {
+            CheckDuplicatePhone(this);
+        }
         function AddTemplate(e) {
             debugger;
-
+            
             var liCount = $("#divPrimaryContact ul li").length + 1;
 
             $(e).closest('li').after("<li style='width: 100%;'><div class='tblPrimaryContact' style='margin-top: 10px; width: 100%'><div style='width: 40%; float: left;'>" +
@@ -584,12 +663,12 @@
             "<input type='text' tabindex='7' id='txtLName" + liCount + "' name='nametxtLName" + liCount + "'  placeholder='Last Name' data-type='" + liCount + "' /></td></tr><tr><td class='paddingtd'>" +
             "<input type='button' value='Add' data-type='" + liCount + "' class='clsFullWidth cls_btn_plus' tabindex='31' onclick='AddTemplate(this)' /></td>" +
             "</tr></table></div><div style='width: 40%; float: left;'><table><tr><td class='paddingtd'></td><td>" +
-            "<input type='text' clientidmode='Static' id='txtPhone" + liCount + "' name='nametxtPhone" + liCount + "' data-type='" + liCount + "' tabindex='7' class='clsMaskPhone'  placeholder='___-___-____' /></td>" +
+            "<input type='text' onblur='CheckDuplicatePhone(this);' clientidmode='Static' id='txtPhone" + liCount + "' name='nametxtPhone" + liCount + "' data-type='" + liCount + "' tabindex='7' class='clsMaskPhone'  placeholder='___-___-____' /></td>" +
             "<td><label class='clsFullWidth'>Phone Type</label></td><td><select class='clsFullWidth' id='selPhoneType" + liCount + "' name='nameselPhoneType" + liCount + "' data-type='" + liCount + "' clientidmode='Static' tabindex='4'>" +
             "<option value='0'>Select</option><option value='CellPhone'>Cell Phone #</option><option value='HousePhone'>House Phone #</option><option value='WorkPhone'>Work Phone #</option><option value='AltPhone'>Alt. Phone #</option>" +
             "</select></td></tr><tr><td class='paddingtd'><input type='button' value='Add' data-type='" + liCount + "' class='clsFullWidth cls_btn_plus' tabindex='31' onclick='Phone(this)' /></td>" +
             "</tr></table></div><div style='width: 20%; float: left;'><table><tr><td class='paddingtd'></td>" +
-            "<td><input type='text' clientidmode='Static' id='txtEMail" + liCount + "' name='nametxtEMail" + liCount + "' data-type='" + liCount + "' tabindex='7'  placeholder='EMail' /></td></tr><tr><td class='paddingtd'>" +
+            "<td><input type='text' clientidmode='Static' id='txtEMail" + liCount + "' onblur='CheckDuplicateEmail(this);' name='nametxtEMail" + liCount + "' data-type='" + liCount + "' tabindex='7'  placeholder='EMail' /></td></tr><tr><td class='paddingtd'>" +
             "<input type='button' value='Add' data-type='" + liCount + "' class='clsFullWidth cls_btn_plus' tabindex='31' onclick='Email(this)' /></td></tr></table></div></div></li>");
             $('.clsMaskPhone').mask("999-999-9999");
             $(e).css("visibility", "hidden");
@@ -598,9 +677,10 @@
 
         function Phone(e) {
             debugger;
+            
             var dataTypeValue = $(e).attr("data-type");
             var subCount = $(e).closest('table').find('tr').length - 1;
-            $(e).closest('tr').prev().after("<tr><td class='paddingtd'></td><td><input type='text' clientidmode='Static' id='txtPhone" + dataTypeValue + subCount + "' name='nametxtPhone" + dataTypeValue + subCount + "' tabindex='7' class='clsMaskPhone' placeholder='___-___-____' /></td>" +
+            $(e).closest('tr').prev().after("<tr><td class='paddingtd'></td><td><input type='text' onblur='CheckDuplicatePhone(this);' clientidmode='Static' id='txtPhone" + dataTypeValue + subCount + "' name='nametxtPhone" + dataTypeValue + subCount + "' tabindex='7' class='clsMaskPhone' placeholder='___-___-____' /></td>" +
             "<td><label class='clsFullWidth'>Phone Type</label></td><td><select id='selPhoneType" + dataTypeValue + subCount + "' name='nameselPhoneType" + dataTypeValue + subCount + "' class='clsFullWidth' clientidmode='Static' tabindex='4'>" +
             "<option value='0'>Select</option><option value='CellPhone'>Cell Phone #</option><option value='HousePhone'>House Phone #</option><option value='WorkPhone'>Work Phone #</option>" +
             "<option value='AltPhone'>Alt. Phone #</option></select></td></tr>");
@@ -609,11 +689,12 @@
 
         function Email(e) {
             debugger;
+            
             //<input type='text' ID='TextBox2' TabIndex='7' MaxLength='15' placeholder='EMail' value='bbb@gmail.com'>
             var dataTypeValue = $(e).attr("data-type");
             var subCount = $(e).closest('table').find('tr').length - 1;
             $(e).closest('tr').prev().after("<tr><td class='paddingtd'></td><td>" +
-                                            "<input type='text' id='txtEMail" + dataTypeValue + subCount + "' tabindex='7' name='nametxtEMail" + dataTypeValue + subCount + "'  placeholder='EMail' clientidmode='Static' /></td></tr>");
+                                            "<input type='text' id='txtEMail" + dataTypeValue + subCount + "' tabindex='7' onblur='CheckDuplicateEmail(this);' name='nametxtEMail" + dataTypeValue + subCount + "'  placeholder='EMail' clientidmode='Static' /></td></tr>");
         }
         function AddAddress(e) {
             debugger;
@@ -813,7 +894,7 @@
                                     <tr>
                                         <td class="paddingtd"></td>
                                         <td>
-                                            <input type="text" id="txtPhone1" runat="server" class='clsMaskPhone' clientidmode="Static" data-type="1" tabindex="7" placeholder="___-___-____" />
+                                            <input type="text" id="txtPhone1" runat="server" class='clsMaskPhone' clientidmode="Static" data-type="1" tabindex="7" placeholder="___-___-____" onblur="CheckDuplicatePhone(this)" />
                                         </td>
                                         <td>
                                             <label class="clsFullWidth">Phone Type</label>
@@ -830,7 +911,7 @@
                                     </tr>
                                     <tr>
                                         <td class="paddingtd">
-                                            <input type="button" id="Button4" runat="server" value="Add" data-type="1" class="clsFullWidth cls_btn_plus" tabindex="31"
+                                            <input type="button" id="Button4" runat="server" value="Add" data-type="1" class="clsFullWidth cls_btn_plus" tabindex="31" 
                                                 onclick="Phone(this)" />
                                         </td>
                                     </tr>
@@ -841,12 +922,12 @@
                                     <tr>
                                         <td class="paddingtd"></td>
                                         <td>
-                                            <input type="text" id="txtEMail1" runat="server" tabindex="7" placeholder="EMail" clientidmode="Static" />
+                                            <input type="text" id="txtEMail1" runat="server" tabindex="7" placeholder="EMail" clientidmode="Static" onblur="CheckDuplicatePhone(this)" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="paddingtd">
-                                            <input type="button" id="Button7" runat="server" value="Add" data-type="1" class="clsFullWidth cls_btn_plus" tabindex="31"
+                                            <input type="button" id="Button7" runat="server" value="Add" data-type="1" class="clsFullWidth cls_btn_plus" tabindex="31" 
                                                 onclick="Email(this)" />
                                         </td>
                                     </tr>
@@ -893,7 +974,7 @@
                                     <tr>
                                         <td class="paddingtd"></td>
                                         <td>
-                                            <input type="text" id="txtPhone2" runat="server" tabindex="7" data-type="2" class='clsMaskPhone' clientidmode="Static" placeholder="___-___-____" />
+                                            <input type="text" id="txtPhone2" runat="server" tabindex="7" data-type="2" onblur="CheckDuplicatePhone(this)" class='clsMaskPhone' clientidmode="Static" placeholder="___-___-____" />
                                         </td>
                                         <td>
                                             <label class="clsFullWidth">Phone Type</label>
@@ -921,7 +1002,7 @@
                                     <tr>
                                         <td class="paddingtd"></td>
                                         <td>
-                                            <input type="text" id="txtEMail2" runat="server" tabindex="7" placeholder="EMail" />
+                                            <input type="text" id="txtEMail2" runat="server" tabindex="7" placeholder="EMail" onblur="CheckDuplicatePhone(this)"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -1221,7 +1302,7 @@
 
                                     <ajaxToolkit:AutoCompleteExtender ID="ddlCompany1" runat="server" TargetControlID="txtEndAddress" Enabled="True"
                                         MinimumPrefixLength="1" EnableCaching="true" CompletionSetCount="1" CompletionInterval="1000" ServicePath=""
-                                        ServiceMethod="LoadAddress" DelimiterCharacters="" OnClientItemSelected="OnSelectAddress">
+                                        ServiceMethod="LoadAddress" DelimiterCharacters="" > <%--OnClientItemSelected="OnSelectAddress"--%>
                                     </ajaxToolkit:AutoCompleteExtender>
                                     <%--<td>
                                    <asp:Image ID="imgBefore" Width="40%" Height="40px" runat="server" />

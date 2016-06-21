@@ -59,7 +59,15 @@ namespace JG_Prospect.BLL
         {
             return InstallUserDAL.Instance.AddIntsallUser(objuser);
         }
+        public int AddSalesFollowUp(int customerid, int userId, DateTime meetingdate, string Status)
+        {
+            return InstallUserDAL.Instance.AddSalesFollowUp(customerid, meetingdate, Status, userId);
+        }
 
+        public DataSet GetSalesTouchPointLogData(int CustomerId, int userid)
+        {
+            return InstallUserDAL.Instance.GetSalesTouchPointLogData(CustomerId, userid);
+        }
         public void UpdateProspect(user objuser)
         {
             InstallUserDAL.Instance.UpdateProspect(objuser);

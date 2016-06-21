@@ -28,11 +28,10 @@ namespace JG_Prospect.Common.modal
         public bool IsCustSupMatApplicable { get; set; }
         public string MaterialStorage{ get; set; }
         public bool IsMatStorageApplicable{ get; set; }
-        public string DumpStorage { get; set; }
-        public bool IsDumpStorageApplicable { get; set; }
         public bool IsPermitRequired{ get; set; }
         public bool IsHabitat { get; set; }
         public int ProductId { get; set; }
-
+        public bool IsDumpStorageApplicable { get; set; }
+        public string DumpStorage { get; set; }
     }
 }

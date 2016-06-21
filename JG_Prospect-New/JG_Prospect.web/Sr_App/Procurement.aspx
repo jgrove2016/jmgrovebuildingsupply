@@ -349,6 +349,12 @@
             var PID = -1;
             var SID = -1;
             var AID = -1;
+            try {
+                if (data.length <= 0) { return;}
+            }
+            catch (e2) {
+                return;
+            }
             for (var i = 0; i < data.length; i++) {
                 var AddressID = data[i].AddressID;
                 var Email = JSON.parse(data[i].Email);
@@ -388,8 +394,8 @@
 
                 GenereateHTML(data[i], ID, NewRow);
             }
-            $('.clsmaskphone').mask("(999) 999-9999");
-            $('.clsmaskphoneexten').mask("999999");
+           // $('.clsmaskphone').mask("(999) 999-9999");
+          //  $('.clsmaskphoneexten').mask("999999");
         }
 
         function GenereateHTML(data, ID, NewRow) {
@@ -707,8 +713,7 @@
                             Style="display: none;">
                             <asp:UpdatePanel ID="UpdatePanel4" runat="server">
                                 <ContentTemplate>
-                                    <table style="border: Solid 3px #A33E3F; width: 100%; height: 100%; background: #fff;"
-                                        cellpadding="0" cellspacing="0">
+                                    <table style="border: Solid 3px #A33E3F; width: 100%; height: 100%; background: #fff;">
                                         <tr style="background-color: #A33E3F">
                                             <td colspan="4" style="height: 10%; color: White; font-weight: bold; font-size: larger"
                                                 align="center">Sold Details
@@ -945,6 +950,7 @@
                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator12" runat="server" ControlToValidate="ddlperbus" ErrorMessage="Select Account Type" ForeColor="Red" InitialValue="0" Display="Dynamic" ValidationGroup="sold"></asp:RequiredFieldValidator>
                                                 </td>
                                             </tr>
+                                            
 
                                         </asp:Panel>
                                         <tr>
@@ -2487,10 +2493,10 @@
 
         $(".cssbtnPageLoad").click();
         setTimeout(function () {
-            initialize();
+           // initialize();
         }, 500);
 
-        var mapProp;
+      /*  var mapProp;
         var map;
         function initialize() {
             SearchText();
@@ -2503,7 +2509,7 @@
             map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
             getAllAddressOnMap();
         }
-
+        */
         function getAllAddressOnMap() {
             var manufacturer = "Manufacturer";
             if ($("#<%=rdoRetailWholesale.ClientID%>").attr("checked") == "checked") {
@@ -2533,7 +2539,7 @@
 
         function initializeMapIcon(MapJSON) {
             // Setup the different icons and shadows
-            var iconURLPrefix = 'http://maps.google.com/mapfiles/ms/icons/';
+        /*    var iconURLPrefix = 'http://maps.google.com/mapfiles/ms/icons/';
 
             var icons = [
             iconURLPrefix + 'red-dot.png',
@@ -2607,7 +2613,7 @@
                         }
                     })(marker, i));
                 }
-            }
+            }*/
         }
 
         function SearchText() {
