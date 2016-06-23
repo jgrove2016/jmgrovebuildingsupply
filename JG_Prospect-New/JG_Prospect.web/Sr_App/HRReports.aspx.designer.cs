@@ -31,13 +31,13 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.TextBox txtCompanyLocation;
         
         /// <summary>
-        /// txtPayPeriod control.
+        /// drpPayPeriod control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPayPeriod;
+        protected global::System.Web.UI.WebControls.DropDownList drpPayPeriod;
         
         /// <summary>
         /// txtCheckDate control.

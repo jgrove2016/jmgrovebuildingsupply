@@ -441,5 +441,10 @@ namespace JG_Prospect.BLL
         {
             return InstallUserDAL.Instance.UpdateOfferMade(Id, Email, password);
         }
+
+        public DataSet GetHrData(DateTime fromdate, DateTime todate, int userid)
+        {
+            return InstallUserDAL.Instance.GetHrData(fromdate, todate, userid);
+        }
     }
 }

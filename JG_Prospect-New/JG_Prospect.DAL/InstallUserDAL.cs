@@ -1699,5 +1699,28 @@ namespace JG_Prospect.DAL
             }
         }
 
+
+        public DataSet GetHrData(DateTime fromdate, DateTime todate, int userid)
+        {
+            returndata = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("sp_GetHrData");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@UserId", DbType.Int16, userid);
+                    database.AddInParameter(command, "@FromDate", DbType.Date, fromdate);
+                    database.AddInParameter(command, "@ToDate", DbType.Date, todate);
+                    returndata = database.ExecuteDataSet(command);
+                    return returndata;
+                }
+            }
+            catch (Exception ex)
+            {
+                
+            }
+            return returndata;
+        }
     }
 }

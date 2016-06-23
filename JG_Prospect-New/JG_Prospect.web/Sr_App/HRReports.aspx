@@ -99,7 +99,10 @@
                             
                             </td>
                             <td style="font-size: large; font-weight: bold; font-style: normal">
-                                <asp:TextBox ID="txtPayPeriod" runat="server"></asp:TextBox>
+                               <%-- <asp:TextBox ID="txtPayPeriod" runat="server"></asp:TextBox>--%>
+                                <asp:DropDownList ID="drpPayPeriod" runat="server" Width="250px" AutoPostBack="true"
+                                        OnSelectedIndexChanged="drpPayPeriod_SelectedIndexChanged">
+                                    </asp:DropDownList>
                             </td>
                             <td colspan="4" style="font-size: large; font-weight: bold; font-style: normal">
                                 Select Period

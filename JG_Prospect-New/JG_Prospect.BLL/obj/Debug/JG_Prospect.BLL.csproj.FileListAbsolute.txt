@@ -196,3 +196,5 @@ D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bi
 D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging.xml
 D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.Database.pdb
 D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.Database.xml
+D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.Unity.dll
+D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.Unity.Interception.dll
