@@ -13,6 +13,15 @@ namespace JG_Prospect.Sr_App {
     public partial class Header {
         
         /// <summary>
+        /// ucTaskList control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::TestingTask.TaskList ucTaskList;
+        
+        /// <summary>
         /// lbluser control.
         /// </summary>
         /// <remarks>

@@ -5,6 +5,7 @@
 <%@ Register Src="~/Sr_App/LeftPanel.ascx" TagName="LeftPanel" TagPrefix="uc2" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit.HTMLEditor"
     TagPrefix="cc1" %>
+
 <!DOCTYPE html>
 <html>
 <head id="Head1" runat="server">
@@ -20,8 +21,9 @@
 
     <%--<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />--%>
     <link href="../css/jquery-ui.css" rel="stylesheet" />
-
-
+    <!-- Added by mukesh-->
+    <link href="../css/bootstrap.css" rel="stylesheet" />
+    <link href="../css/jquery-ui-1.10.4.css" rel="stylesheet" />
     <%--<script type="text/javascript" src="../js/jquery.js"></script>
     <script type="text/javascript" src="../js/jquery-latest.js" ></script>--%>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
@@ -36,6 +38,11 @@
     <!--accordion jquery-->
     <script type="text/javascript" src="../js/ddaccordion.js"></script>
 
+    <!--Add By Mukesh -->
+    <script src="../Scripts/jquery-1.9.1.js"></script>
+    <script src="../Scripts/jquery-ui-1.10.4.js"></script>
+    <script src="../Scripts/bootstrap.js"></script>
+
     <script type="text/javascript">
 
 
@@ -45,6 +52,13 @@
                     $('#tabs').tabs();
                 }
             } catch (e) { }
+
+            jQuery.noConflict();
+            $("input:input[id$='txtDatePicker']").datepicker({
+                showOptions: { direction: "down" },
+                dateFormat: "dd/mm/yy"
+
+            });
         });
 
         function isfax(e) {
@@ -169,7 +183,7 @@
         #ScriptEditor_ctl01_ctl26, #ScriptEditor_ctl01_ctl27, #ScriptEditor_ctl01_ctl28, #ScriptEditor_ctl01_ctl29, #ScriptEditor_ctl01_ctl30, #ScriptEditor_ctl01_ctl35,
         #ScriptEditor_ctl01_ctl45, #ScriptEditor_ctl01_ctl46, #ScriptEditor_ctl01_ctl47, #ScriptEditor_ctl01_ctl48, #ScriptEditor_ctl01_ctl10, #ScriptEditor_ctl01_ctl19,
         #ScriptEditor_ctl01_ctl25, #ScriptEditor_ctl01_ctl09 {
-            display: none!important;
+            display: none !important;
         }
 
         #btnNewScript {
@@ -190,8 +204,34 @@
             }
 
         #ScriptEditor_ctl02_ctl00 {
-            height: 100px!important;
+            height: 100px !important;
         }
+
+        #caption {
+            display: block;
+            width: 100% !important;
+            height: 34px !important;
+            padding: 6px 12px;
+            font-size: 14px;
+            line-height: 1.42857143;
+            color: #555;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+            -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+            transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+            margin-left: 0 !important;
+        }
+
+        .dd_chk_select {
+            border: none !important;
+            display: block !important;
+        }
+    </style>
     </style>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
@@ -210,7 +250,7 @@
 
         $(function () {
             $('#boxclose').click(function () {
-                debugger;
+                ;
                 $('#phoneDashboardDiv').hide();
                 $("#divScriptLinks").show();
                 $("#scriptDiv").hide();
@@ -232,7 +272,7 @@
                 dataType: "JSON",
                 data: "{'strScriptId':'" + strScriptId + "'}",
                 success: function (data) {
-                    debugger;
+                    ;
                     var dataInput = JSON.parse(data.d);
                     var strLinks = "";
                     $.each(dataInput, function (key, value) {
@@ -244,7 +284,7 @@
         }
 
         function DeleteScript() {
-            debugger;
+            ;
             $.ajax({
                 type: "POST",
                 url: "home.aspx/ManageScripts",
@@ -252,7 +292,7 @@
                 dataType: "JSON",
                 data: "{intMode:'" + 3 + "', intScriptId:'" + $("#hdnScriptId").val() + "', strScriptName:'" + $("#txtScriptName").val() + "', strScriptDescription:'" + $find("ScriptEditor").get_content() + "'}",
                 success: function (data) {
-                    debugger;
+                    ;
                     $("#scriptDiv").hide();
                     var dataInput = JSON.parse(data.d);
                     var strLinks = "";
@@ -273,7 +313,7 @@
             else if ($('#btnSubmitScript').attr("value") == "Update") {
                 intMode = 2;
             }
-            debugger;
+            ;
             $.ajax({
                 type: "POST",
                 url: "home.aspx/ManageScripts",
@@ -281,7 +321,7 @@
                 dataType: "JSON",
                 data: "{intMode:'" + intMode + "', intScriptId:'" + $("#hdnScriptId").val() + "', strScriptName:'" + $("#txtScriptName").val() + "', strScriptDescription:'" + $find("ScriptEditor").get_content() + "'}",
                 success: function (data) {
-                    debugger;
+                    ;
                     $("#scriptDiv").hide();
                     var dataInput = JSON.parse(data.d);
                     var strLinks = "";
@@ -295,7 +335,7 @@
         }
 
         function GetScriptById(e, flagInput) {
-            debugger;
+
             $("#divScriptLinks").hide();
             $("#scriptDiv").show();
 
@@ -307,7 +347,7 @@
                     dataType: "JSON",
                     data: "{'strScriptId':'" + $(e).attr("data-id") + "'}",
                     success: function (data) {
-                        debugger;
+
                         var result = JSON.parse(data.d)[0];
                         $("#hdnScriptId").val(result.intScriptId);
                         $("#txtScriptName").val(result.strScriptName)
@@ -327,14 +367,14 @@
         }
 
         function LoadAllScripts() {
-            debugger;
+
             $("#divPhoneScripts").hide();
             BindScripts(0);
             $("#divScriptLinks").show();
         }
 
         function BackToPhoneScripts() {
-            debugger;
+
             $("#divPhoneScripts").show();
             $("#divScriptLinks").hide();
         }
@@ -361,6 +401,7 @@
             <!--header section-->
             <div class="header">
                 <uc1:Header ID="Header1" runat="server" />
+              
                 <div class="search_google">
                     <input name="qfront" id="qfront" value="Google Web Search" runat="server" type="text" /><asp:Button ID="searchbutton"
                         runat="server" value="Search" Text="Search" />

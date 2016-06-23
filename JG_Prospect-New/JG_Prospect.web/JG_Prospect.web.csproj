@@ -241,6 +241,11 @@
     <Content Include="Controls\Header.ascx" />
     <Content Include="Controls\left.ascx" />
     <Content Include="Controls\LeftMenu_home.ascx" />
+    <Content Include="css\bootstrap.css" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\jquery-1.9.1.js" />
+    <Content Include="Scripts\jquery-ui-1.10.4.js" />
+    <Content Include="Sr_App\Controls\TaskList.ascx" />
     <Content Include="CreateUser.aspx" />
     <Content Include="css\jquery-ui.css" />
     <Content Include="css\jquery.multiselect.css" />
@@ -870,6 +875,13 @@
     </Compile>
     <Compile Include="Controls\LeftMenu_home.ascx.designer.cs">
       <DependentUpon>LeftMenu_home.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Sr_App\Controls\TaskList.ascx.cs">
+      <DependentUpon>TaskList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Sr_App\Controls\TaskList.ascx.designer.cs">
+      <DependentUpon>TaskList.ascx</DependentUpon>
     </Compile>
     <Compile Include="CreateUser.aspx.cs">
       <DependentUpon>CreateUser.aspx</DependentUpon>
