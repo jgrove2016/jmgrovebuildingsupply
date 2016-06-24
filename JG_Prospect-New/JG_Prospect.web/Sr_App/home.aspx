@@ -5,7 +5,7 @@
    
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">    
-<div class="right_panel">
+    <div class="right_panel">
 <!-- appointment tabs section start -->
     <ul class="appointment_tab">
         <li><a href="home.aspx" class="active">Sales Calendar</a></li>
@@ -19,9 +19,9 @@
     <h2>
             Personal Prospect Calendar</h2>
         <div class="calendar" style="margin: 0;">
-            <iframe src="../JGCalender/Calender.aspx" width="100%" height="800" style="border: 0;">
+             <iframe src="../JGCalender/Calender.aspx" width="100%" height="800" style="border: 0;">
             </iframe>
-        </div>
+           </div>
 <!--<div class="form_panel">
   <div class="calendar" style="margin: 0;">
 

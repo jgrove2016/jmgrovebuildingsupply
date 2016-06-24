@@ -1112,6 +1112,27 @@ namespace JG_Prospect.DAL
             }
         }
 
+        public DataSet GetAllSalesInstallUsers()
+        {
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    returndata = new DataSet();
+                    DbCommand command = database.GetStoredProcCommand("SP_GetAllSalesInstallUsers");
+                    command.CommandType = CommandType.StoredProcedure;
+                    returndata = database.ExecuteDataSet(command);
+
+                    return returndata;
+                }
+            }
+
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
         public DataSet GetAllEditSalesUser()
         {
             DataSet returndata = new DataSet();

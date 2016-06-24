@@ -213,6 +213,10 @@ namespace JG_Prospect.BLL
         {
             return InstallUserDAL.Instance.GetAllEditSalesUser();
         }
+        public DataSet GetAllSalesInstallUsers()
+        {
+            return InstallUserDAL.Instance.GetAllSalesInstallUsers();
+        }
 
         public DataSet GetAllSalesUserToExport()
         {
