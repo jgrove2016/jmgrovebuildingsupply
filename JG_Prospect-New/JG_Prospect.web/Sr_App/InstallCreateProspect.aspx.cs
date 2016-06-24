@@ -43,7 +43,11 @@ namespace JG_Prospect.Sr_App
                 ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alert", "alsert('Your session has expired,login to contineu');window.location='../login.aspx'", true);
             }
 
+<<<<<<< HEAD
             
+=======
+
+>>>>>>> refs/remotes/origin/master
             if (!IsPostBack)
             {
                 //if (Request.QueryString["ImageUpload"] == null)
@@ -55,6 +59,10 @@ namespace JG_Prospect.Sr_App
                 //Session["ProspectAttachment"] = "";
                 Session["IdGenerated"] = "";
                 BindDDLs();
+<<<<<<< HEAD
+=======
+                BindDesignation();
+>>>>>>> refs/remotes/origin/master
                 DateSourced.Text = DateTime.Today.ToString("MM/dd/yyyy");
                 //btnUpdate.Visible = false;
                 //btn_UploadFiles.Visible = false;
@@ -142,7 +150,12 @@ namespace JG_Prospect.Sr_App
             //ddlPrimaryTrade.SelectedValue = ddlSecondaryTrade.SelectedValue = "0";
             txtfirstname.Text = txtlastname.Text = txtemail.Text = txtPhone.Text = txtCompanyName.Text = txtemail2.Text = txtPhone2.Text = DateSourced.Text = txtnotes.Text = null;
             gvUploadedFiles.Visible = false;
+<<<<<<< HEAD
 
+=======
+            BindDesignation();
+            isInstallUser = false;
+>>>>>>> refs/remotes/origin/master
         }
 
         private void BindDDLs()
@@ -189,13 +202,18 @@ namespace JG_Prospect.Sr_App
         protected void btncreate_Click(object sender, EventArgs e)
         {
             StringBuilder err = new StringBuilder();
+<<<<<<< HEAD
           
+=======
+
+>>>>>>> refs/remotes/origin/master
             try
             {
                 lblException.Text = Convert.ToString(err.Append("Before GetId"));
                 string InstallId = string.Empty;
                 Session["IdGenerated"] = GetId();
                 // btn_UploadFiles_Click(sender, e);
+<<<<<<< HEAD
                 if (ddlPrimaryTrade.SelectedIndex == 0)
                 {
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please Select Primary Trade');", true);
@@ -224,6 +242,39 @@ namespace JG_Prospect.Sr_App
                 {
                     objuser.SecondoryTradeId = Convert.ToInt32(ddlSecondaryTrade.SelectedValue);
                     objuser.PTradeOthers = txtSecTradeOthers.Text;
+=======
+                if (isInstallUser)
+                {
+                    if (ddlPrimaryTrade.SelectedIndex == 0)
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please Select Primary Trade');", true);
+                        return;
+                    }
+                    else if (ddlPrimaryTrade.SelectedValue != "17")
+                    {
+                        objuser.PrimeryTradeId = Convert.ToInt32(ddlPrimaryTrade.SelectedValue);
+                    }
+                    else if (ddlPrimaryTrade.SelectedValue == "17")
+                    {
+                        objuser.PrimeryTradeId = Convert.ToInt32(ddlPrimaryTrade.SelectedValue);
+                        objuser.PTradeOthers = txtOtherTrade.Text;
+                    }
+
+                    if (ddlSecondaryTrade.SelectedIndex == 0)
+                    {
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Please Select Secondary Trade');", true);
+                        return;
+                    }
+                    else if (ddlPrimaryTrade.SelectedValue != "17")
+                    {
+                        objuser.SecondoryTradeId = Convert.ToInt32(ddlSecondaryTrade.SelectedValue);
+                    }
+                    else if (ddlPrimaryTrade.SelectedValue == "17")
+                    {
+                        objuser.SecondoryTradeId = Convert.ToInt32(ddlSecondaryTrade.SelectedValue);
+                        objuser.PTradeOthers = txtSecTradeOthers.Text;
+                    }
+>>>>>>> refs/remotes/origin/master
                 }
                 objuser.fristname = txtfirstname.Text;
                 objuser.lastname = txtlastname.Text;
@@ -241,7 +292,11 @@ namespace JG_Prospect.Sr_App
                 lblException.Text = Convert.ToString(err.Append("Before CheckSource"));
                 DataSet ds = InstallUserBLL.Instance.CheckSource(Convert.ToString(Session["Username"]));
                 lblException.Text = Convert.ToString(err.Append("After CheckSource"));
+<<<<<<< HEAD
                // if (ds.Tables[0].Rows.Count > 0)
+=======
+                // if (ds.Tables[0].Rows.Count > 0)
+>>>>>>> refs/remotes/origin/master
                 if (ds.Tables.Count > 0)
                 {
                     lblException.Text = Convert.ToString(err.Append("Checksource datasource"));
@@ -267,8 +322,20 @@ namespace JG_Prospect.Sr_App
                 lblException.Text = Convert.ToString(err.Append(" before Attachmant "));
                 objuser.attachements = Convert.ToString(Session["ProspectAttachment"]);
                 lblException.Text = Convert.ToString(err.Append(" After Attachmant "));
+<<<<<<< HEAD
                 objuser.UserType = "Prospect";
                 objuser.designation = "Installer";
+=======
+                if (isInstallUser)
+                {
+                    objuser.UserType = "Prospect";
+                }
+                else
+                {
+                    objuser.UserType = "sales";
+                }
+                objuser.designation = ddldesignation.SelectedValue;
+>>>>>>> refs/remotes/origin/master
                 string strFileName = string.Empty;
 
                 //if (ViewState["FileName"] != null)
@@ -286,7 +353,11 @@ namespace JG_Prospect.Sr_App
                 lblException.Text = Convert.ToString(err.Append(" Before  CheckInstallUser "));
                 DataSet dsCheckDuplicate = InstallUserBLL.Instance.CheckInstallUser(txtemail.Text, txtPhone.Text);
                 lblException.Text = Convert.ToString(err.Append(" After  CheckInstallUser "));
+<<<<<<< HEAD
                // if (dsCheckDuplicate.Tables[0].Rows.Count > 0)
+=======
+                // if (dsCheckDuplicate.Tables[0].Rows.Count > 0)
+>>>>>>> refs/remotes/origin/master
                 if (dsCheckDuplicate.Tables.Count > 0)
                 {
                     lblException.Text = Convert.ToString(err.Append("Before Session[EmailEdiId]"));
@@ -319,18 +390,38 @@ namespace JG_Prospect.Sr_App
                     //lblmsg.CssClass = "success";
                     //lblmsg.Text = "Prospect has been created successfully";
                     //ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('Prospect has been created successfully');", true);
+<<<<<<< HEAD
                     clearcontrols();
                     Session["UploadFileCountProspect"] = 0;
                     Session["ProspectAttachment"] = null;
                     ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Prospect has been created successfully');window.location ='EditInstallUser.aspx';", true);
                     //Response.Redirect("EditInstallUser.aspx");
+=======
+                    
+                    Session["UploadFileCountProspect"] = 0;
+                    Session["ProspectAttachment"] = null;
+                    CheckUserType();
+                  
+                    if(isInstallUser)
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Prospect has been created successfully');window.location ='EditInstallUser.aspx';", true);
+                    else
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Sales has been created successfully');window.location ='EditUser.aspx';", true);
+                    //Response.Redirect("EditInstallUser.aspx");
+                    clearcontrols();
+>>>>>>> refs/remotes/origin/master
                 }
             }
             catch (Exception ex)
             {
+<<<<<<< HEAD
                // lblException.Text = ex.Message + ex.StackTrace;
                 lblException.Text = Convert.ToString(err.Append(ex.Message));
                // throw;
+=======
+                // lblException.Text = ex.Message + ex.StackTrace;
+                lblException.Text = Convert.ToString(err.Append(ex.Message));
+                // throw;
+>>>>>>> refs/remotes/origin/master
             }
         }
 
@@ -745,5 +836,100 @@ namespace JG_Prospect.Sr_App
                 Session["UploadFileCountProspect"] = 0;
             }
         }
+<<<<<<< HEAD
     }
+=======
+
+        //List<Designation> lstSaleuser = new List<Designation>();
+        //List<Designation> lstInstalluser = new List<Designation>();
+        public static List<KeyValuePair<string, string>> salesUserDesignationList = new List<KeyValuePair<string, string>>();
+        public static List<KeyValuePair<string, string>> InstallUserDesignationList = new List<KeyValuePair<string, string>>();
+
+        public void BindDesignation()
+        {
+            ddldesignation.DataSource = null;
+            ddldesignation.DataBind();
+            salesUserDesignationList = new List<KeyValuePair<string, string>>();
+            InstallUserDesignationList = new List<KeyValuePair<string, string>>();
+
+            salesUserDesignationList.Add(new KeyValuePair<string, string>("Admin", "Admin"));
+            salesUserDesignationList.Add(new KeyValuePair<string, string>("Jr. Sales", "Jr. Sales"));
+            salesUserDesignationList.Add(new KeyValuePair<string, string>("Jr Project Manager", "Jr Project Manager"));
+            salesUserDesignationList.Add(new KeyValuePair<string, string>("Office Manager", "Office Manager"));
+            salesUserDesignationList.Add(new KeyValuePair<string, string>("Recruiter", "Recruiter"));
+            salesUserDesignationList.Add(new KeyValuePair<string, string>("Sales Manager", "Sales Manager"));
+            salesUserDesignationList.Add(new KeyValuePair<string, string>("Sr. Sales", "Sr. Sales"));
+            salesUserDesignationList.Add(new KeyValuePair<string, string>("IT - Network Admin", "ITNetworkAdmin"));
+            salesUserDesignationList.Add(new KeyValuePair<string, string>("IT - Jr .Net Developer", "ITJr.NetDeveloper"));
+            salesUserDesignationList.Add(new KeyValuePair<string, string>("IT - Sr .Net Developer", "ITSr.NetDeveloper"));
+            salesUserDesignationList.Add(new KeyValuePair<string, string>("IT - Android Developer", "ITAndroidDeveloper"));
+            salesUserDesignationList.Add(new KeyValuePair<string, string>("IT - PHP Developer", "ITPHPDeveloper"));
+            salesUserDesignationList.Add(new KeyValuePair<string, string>("IT - SEO / BackLinking", "ITSEOBackLinking"));
+
+
+            InstallUserDesignationList.Add(new KeyValuePair<string, string>("Installer - Helper", "InstallerHelper"));
+            InstallUserDesignationList.Add(new KeyValuePair<string, string>("Installer - Journeyman", "InstallerJourneyman"));
+            InstallUserDesignationList.Add(new KeyValuePair<string, string>("Installer - Mechanic", "InstallerMechanic"));
+            InstallUserDesignationList.Add(new KeyValuePair<string, string>("Installer - Lead mechanic", "InstallerLeadMechanic"));
+            InstallUserDesignationList.Add(new KeyValuePair<string, string>("Installer - Foreman", "InstallerForeman"));
+            InstallUserDesignationList.Add(new KeyValuePair<string, string>("Commercial Only", "CommercialOnly"));
+            InstallUserDesignationList.Add(new KeyValuePair<string, string>("SubContractor", "SubContractor"));
+
+            var DesignationList = new List<KeyValuePair<string, string>>();
+
+            foreach (var item in salesUserDesignationList)
+            {
+                DesignationList.Add(new KeyValuePair<string, string>(item.Key, item.Value));
+            }
+            foreach (var item in InstallUserDesignationList)
+            {
+                DesignationList.Add(new KeyValuePair<string, string>(item.Key, item.Value));
+            }
+
+            ddldesignation.DataSource = DesignationList;
+            ddldesignation.DataTextField = "Key";
+            ddldesignation.DataValueField = "Value";
+            ddldesignation.DataBind();
+            CheckUserType();
+        }
+        public static Boolean isInstallUser = false;
+
+        protected void ddldesignation_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            CheckUserType();
+        }
+
+        public void CheckUserType()
+        {
+            string designation = ddldesignation.SelectedValue;
+            foreach (KeyValuePair<string, string> salesItem in salesUserDesignationList)
+            {
+                if (salesItem.Value == designation)
+                {
+                    RfvPrimaryTrade.ValidationGroup = "";
+                    RfvSecondaryTrade.ValidationGroup = "";
+                    isInstallUser = false;
+                    return;
+                }
+            }
+            foreach (KeyValuePair<string, string> installItem in InstallUserDesignationList)
+            {
+                if (installItem.Value == designation)
+                {
+                    RfvPrimaryTrade.ValidationGroup = "submit";
+                    RfvSecondaryTrade.ValidationGroup = "submit";
+                    isInstallUser = true;
+                    return;
+                }
+            }
+        }
+
+    }
+
+    //public class Designation
+    //{
+    //    public string name { get; set; }
+    //    public string value { get; set; }
+    //}
+>>>>>>> refs/remotes/origin/master
 }

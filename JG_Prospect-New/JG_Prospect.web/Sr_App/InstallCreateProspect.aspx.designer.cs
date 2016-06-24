@@ -40,13 +40,30 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
         
         /// <summary>
+<<<<<<< HEAD
         /// txtCompanyName control.
+=======
+        /// ddldesignation control.
+>>>>>>> refs/remotes/origin/master
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
+<<<<<<< HEAD
         protected global::System.Web.UI.WebControls.TextBox txtCompanyName;
+=======
+        protected global::System.Web.UI.WebControls.DropDownList ddldesignation;
+        
+        /// <summary>
+        /// rqDesignition control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator rqDesignition;
+>>>>>>> refs/remotes/origin/master
         
         /// <summary>
         /// txtPhone control.
@@ -103,13 +120,21 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.TextBox txtOtherTrade;
         
         /// <summary>
+<<<<<<< HEAD
         /// RequiredFieldValidator4 control.
+=======
+        /// RfvPrimaryTrade control.
+>>>>>>> refs/remotes/origin/master
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
+<<<<<<< HEAD
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator4;
+=======
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RfvPrimaryTrade;
+>>>>>>> refs/remotes/origin/master
         
         /// <summary>
         /// DateSourced control.
@@ -175,6 +200,18 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator2;
         
         /// <summary>
+<<<<<<< HEAD
+=======
+        /// txtCompanyName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtCompanyName;
+        
+        /// <summary>
+>>>>>>> refs/remotes/origin/master
         /// txtPhone2 control.
         /// </summary>
         /// <remarks>
@@ -220,13 +257,21 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.TextBox txtSecTradeOthers;
         
         /// <summary>
+<<<<<<< HEAD
         /// RequiredFieldValidator5 control.
+=======
+        /// RfvSecondaryTrade control.
+>>>>>>> refs/remotes/origin/master
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
+<<<<<<< HEAD
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator5;
+=======
+        protected global::System.Web.UI.WebControls.RequiredFieldValidator RfvSecondaryTrade;
+>>>>>>> refs/remotes/origin/master
         
         /// <summary>
         /// txtSource control.
