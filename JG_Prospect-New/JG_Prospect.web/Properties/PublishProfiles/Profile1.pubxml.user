@@ -8,6 +8,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <LastUsedBuildConfiguration>Debug</LastUsedBuildConfiguration>
     <LastUsedPlatform>Any CPU</LastUsedPlatform>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <_PublishTargetUrl>D:\publish\jg</_PublishTargetUrl>
   </PropertyGroup>
   <ItemGroup>
     <File Include="Activation.aspx">
