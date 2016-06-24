@@ -45,6 +45,9 @@ namespace JG_Prospect
                 Session["LastNameNewSC"] = "";
                 Session["DesignitionSC"] = "";
                 binddata();
+                DataSet dsCurrentPeriod = UserBLL.Instance.Getcurrentperioddates();
+                bindPayPeriod(dsCurrentPeriod);
+                FillCustomer();
             }
         }
 
@@ -70,7 +73,23 @@ namespace JG_Prospect
             ddlDesignation.Items.Insert(0, "--Select--");
         }
 
+        private void FillCustomer()
+        {
+            DataSet dds = new DataSet();
+            dds = new_customerBLL.Instance.GeUsersForDropDown();
+            DataRow dr = dds.Tables[0].NewRow();
+            dr["Id"] = "0";
+            dr["Username"] = "--Select--";
+            dds.Tables[0].Rows.InsertAt(dr, 0);
+            if (dds.Tables[0].Rows.Count > 0)
+            {
+                drpUser.DataSource = dds.Tables[0];
+                drpUser.DataValueField = "Id";
+                drpUser.DataTextField = "Username";
+                drpUser.DataBind();
+            }
 
+        }
         protected void GridViewUser_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
             GridViewUser.EditIndex = -1;
@@ -193,8 +212,8 @@ namespace JG_Prospect
                 //}
                 //else if (type == "Sales")
                 //{
-                    string ID = e.CommandArgument.ToString();
-                    Response.Redirect("CreateSalesUser.aspx?id=" + ID);
+                string ID = e.CommandArgument.ToString();
+                Response.Redirect("CreateSalesUser.aspx?id=" + ID);
                 //}
 
             }
@@ -508,11 +527,11 @@ namespace JG_Prospect
                     objuser.Source = Convert.ToString(Session["Username"]);
                     objuser.designation = dtExcel.Rows[i][9].ToString().Trim();
                     objuser.status = dtExcel.Rows[i][10].ToString().Trim();
-                   
+
                     objuser.UserType = "SalesUser";
                     DataSet dsCheckDuplicate = InstallUserBLL.Instance.CheckInstallUser(dtExcel.Rows[i][5].ToString().Trim(), dtExcel.Rows[i][3].ToString().Trim());
                     if (dsCheckDuplicate.Tables[0].Rows.Count == 0) //Original Code .......
-                   // if (dsCheckDuplicate.Tables[0].Rows.Count != 0)
+                    // if (dsCheckDuplicate.Tables[0].Rows.Count != 0)
                     {
                         IdGenerated = GetId(dtExcel.Rows[i][9].ToString().Trim(), dtExcel.Rows[i][10].ToString().Trim());
                         objuser.InstallId = IdGenerated;
@@ -579,9 +598,19 @@ namespace JG_Prospect
             bool status = CheckRequiredFields(ddl.SelectedValue, Convert.ToInt32(Id.Text));
             if (!status)
             {
-                binddata();
-                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Status cannot be changed as required field for selected status are not field')", true);
-                return;
+                if (ddl.SelectedValue == "Offer Made" || ddl.SelectedValue == "OfferMade")
+                {
+                    hdnFirstName.Value = lblFirstName.Text;
+                    hdnLastName.Value = lblLastName.Text;
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "Overlay", "OverlayPopupOfferMade();", true);
+                    return;
+                }
+                else
+                {
+                    binddata();
+                    ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Status cannot be changed as required field for selected status are not field')", true);
+                    return;
+                }
             }
 
             if ((ddl.SelectedValue == "Active" || ddl.SelectedValue == "Deactive") && (!(Convert.ToString(Session["usertype"]).Contains("Admin")) && !(Convert.ToString(Session["usertype"]).Contains("SM"))))
@@ -617,7 +646,7 @@ namespace JG_Prospect
                 string HireDate = "";
                 string EmpType = "";
                 string PayRates = "";
-                ds = InstallUserBLL.Instance.ChangeStatus(Convert.ToString(Session["EditStatus"]), Convert.ToInt32(Session["EditId"]),DateTime.Today.ToString("yyyy-MM-dd"), DateTime.Now.ToShortTimeString(), Convert.ToInt32(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]), txtReason.Text);
+                ds = InstallUserBLL.Instance.ChangeStatus(Convert.ToString(Session["EditStatus"]), Convert.ToInt32(Session["EditId"]), DateTime.Today.ToString("yyyy-MM-dd"), DateTime.Now.ToShortTimeString(), Convert.ToInt32(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]), txtReason.Text);
                 if (ds.Tables.Count > 0)
                 {
                     if (ds.Tables[0].Rows.Count > 0)
@@ -701,8 +730,10 @@ namespace JG_Prospect
                     }
                     else if (SelectedStatus == "OfferMade" || SelectedStatus == "Offer Made")
                     {
-                        if (Convert.ToString(dsNew.Tables[0].Rows[0][1]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][2]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][4]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][5]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][11]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][12]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][13]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][3]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][8]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][38]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][44]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][46]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][48]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][50]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][100]) == "")
+                        //if (Convert.ToString(dsNew.Tables[0].Rows[0][1]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][2]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][4]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][5]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][11]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][12]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][13]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][3]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][8]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][38]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][44]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][46]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][48]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][50]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0][100]) == "")
+                        if (Convert.ToString(dsNew.Tables[0].Rows[0]["Email"]) == "" || Convert.ToString(dsNew.Tables[0].Rows[0]["Password"]) == "")
                         {
+                            txtEmail.Text = Convert.ToString(dsNew.Tables[0].Rows[0]["Email"]);
                             //ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('Status cannot be changed to Offer Made as required fields for it are not filled.')", true);
                             return false;
                         }
@@ -734,7 +765,7 @@ namespace JG_Prospect
                 {
                     ds = AdminBLL.Instance.GetEmailTemplate("Admin");
                 }
-                else if(ds.Tables[0].Rows.Count ==0)
+                else if (ds.Tables[0].Rows.Count == 0)
                 {
                     ds = AdminBLL.Instance.GetEmailTemplate("Admin");
                 }
@@ -764,7 +795,7 @@ namespace JG_Prospect
                 //Hi #lblFName#, <br/><br/>You are requested to appear for an interview on #lblDate# - #lblTime#.<br/><br/>Regards,<br/>
                 StringBuilder Body = new StringBuilder();
                 MailMessage Msg = new MailMessage();
-                 //Sender e-mail address.
+                //Sender e-mail address.
                 Msg.From = new MailAddress(userName, "JGrove Construction");
                 // Recipient e-mail address.
                 Msg.To.Add(emailId);
@@ -797,7 +828,7 @@ namespace JG_Prospect
                         Msg.Attachments.Add(attachment);
                     }
                 }
-                  
+
 
                 SmtpClient sc = new SmtpClient(ConfigurationManager.AppSettings["smtpHost"].ToString(), Convert.ToInt32(ConfigurationManager.AppSettings["smtpPort"].ToString()));
 
@@ -819,7 +850,7 @@ namespace JG_Prospect
                 Msg = null;
                 sc.Dispose();
                 sc = null;
-                Page.RegisterStartupScript("UserMsg", "<script>alert('An email notification has sent on "+ emailId +".');}</script>");
+                Page.RegisterStartupScript("UserMsg", "<script>alert('An email notification has sent on " + emailId + ".');}</script>");
             }
             catch (Exception ex)
             {
@@ -1160,11 +1191,11 @@ namespace JG_Prospect
             string EmpType = "";
             string PayRates = "";
 
-            
+
             //string InterviewDate = dtInterviewDate.Text;
             DateTime interviewDate;
             DateTime.TryParse(dtInterviewDate.Text, out interviewDate);
-            if(interviewDate==null)
+            if (interviewDate == null)
             {
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "Overlay", "alert('Invalid Interview Date, Please verify');", true);
                 return;
@@ -1221,9 +1252,9 @@ namespace JG_Prospect
             EnumerableRowCollection<DataRow> query = null;
             if (ddlUserStatus.SelectedIndex != 0 || ddlDesignation.SelectedIndex != 0)
             {
-                string Status = ddlUserStatus.SelectedItem.Value;                    
+                string Status = ddlUserStatus.SelectedItem.Value;
                 query = from userdata in dt.AsEnumerable()
-                        where (userdata.Field<string>("Status") == Status  || ddlUserStatus.SelectedIndex == 0)
+                        where (userdata.Field<string>("Status") == Status || ddlUserStatus.SelectedIndex == 0)
                         && (userdata.Field<string>("Designation") == ddlDesignation.SelectedItem.Text || ddlDesignation.SelectedIndex == 0)
                         select userdata;
                 if (query.Count() > 0)
@@ -1237,5 +1268,237 @@ namespace JG_Prospect
             GridViewUser.DataBind();
         }
 
+        protected void btnSaveOfferMade_Click(object sender, EventArgs e)
+        {
+            int EditId = 0;
+            int.TryParse(Convert.ToString(Session["EditId"]), out EditId);
+            InstallUserBLL.Instance.UpdateOfferMade(EditId, txtEmail.Text, txtPassword1.Text);
+
+            DataSet ds = new DataSet();
+            string email = "";
+            string HireDate = "";
+            string EmpType = "";
+            string PayRates = "";
+            ds = InstallUserBLL.Instance.ChangeStatus(Convert.ToString(Session["EditStatus"]), EditId, DateTime.Today.ToString("yyyy-MM-dd"), DateTime.Now.ToShortTimeString(), Convert.ToInt32(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]), txtReason.Text);
+            if (ds.Tables.Count > 0)
+            {
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    if (Convert.ToString(ds.Tables[0].Rows[0][0]) != "")
+                    {
+                        email = Convert.ToString(ds.Tables[0].Rows[0][0]);
+                    }
+                    if (Convert.ToString(ds.Tables[0].Rows[0][1]) != "")
+                    {
+                        HireDate = Convert.ToString(ds.Tables[0].Rows[0][1]);
+                    }
+                    if (Convert.ToString(ds.Tables[0].Rows[0][2]) != "")
+                    {
+                        EmpType = Convert.ToString(ds.Tables[0].Rows[0][2]);
+                    }
+                    if (Convert.ToString(ds.Tables[0].Rows[0][3]) != "")
+                    {
+                        PayRates = Convert.ToString(ds.Tables[0].Rows[0][3]);
+                    }
+                }
+            }
+            //SendEmail(email, hdnFirstName.Value, hdnLastName.Value, "Offer Made", txtReason.Text, lblDesignation.Text, HireDate, EmpType, PayRates);
+            binddata();
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "Overlay", "ClosePopupOfferMade()", true);
+            return;
+        }
+        private void bindPayPeriod(DataSet dsCurrentPeriod)
+        {
+            DataSet ds = UserBLL.Instance.getallperiod();
+
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                drpPayPeriod.Items.Insert(0, new ListItem("Select", "0"));
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    DataRow dr = ds.Tables[0].Rows[i];
+                    drpPayPeriod.Items.Add(new ListItem(dr["Periodname"].ToString(), dr["Id"].ToString()));
+                }
+                drpPayPeriod.SelectedValue = dsCurrentPeriod.Tables[0].Rows[0]["Id"].ToString();
+                txtfrmdate.Text = Convert.ToDateTime(dsCurrentPeriod.Tables[0].Rows[0]["FromDate"].ToString()).ToString("MM/dd/yyyy");
+                txtTodate.Text = Convert.ToDateTime(dsCurrentPeriod.Tables[0].Rows[0]["ToDate"].ToString()).ToString("MM/dd/yyyy");
+            }
+            else
+            {
+                drpPayPeriod.DataSource = null;
+                drpPayPeriod.DataBind();
+            }
+
+        }
+
+        protected void drpPayPeriod_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (drpPayPeriod.SelectedIndex != -1)
+            {
+                DataSet ds = UserBLL.Instance.getperioddetails(Convert.ToInt16(drpPayPeriod.SelectedValue));
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    txtfrmdate.Text = Convert.ToDateTime(ds.Tables[0].Rows[0]["FromDate"].ToString()).ToString("MM/dd/yyyy");
+                    txtTodate.Text = Convert.ToDateTime(ds.Tables[0].Rows[0]["ToDate"].ToString()).ToString("MM/dd/yyyy");
+                }
+            }
+        }
+        protected void txtfrmdate_TextChanged(object sender, EventArgs e)
+        {
+            drpPayPeriod.SelectedIndex = -1;
+        }
+
+        protected void txtTodate_TextChanged(object sender, EventArgs e)
+        {
+            drpPayPeriod.SelectedIndex = -1;
+        }
+
+        protected void btnshow_Click(object sender, EventArgs e)
+        {
+            DateTime fromDate = Convert.ToDateTime(txtfrmdate.Text, JG_Prospect.Common.JGConstant.CULTURE);
+            DateTime toDate = Convert.ToDateTime(txtTodate.Text, JG_Prospect.Common.JGConstant.CULTURE);
+            if (fromDate < toDate)
+            {
+                DataSet ds = InstallUserBLL.Instance.GetHrData(fromDate, toDate, Convert.ToInt16(drpUser.SelectedValue));
+                if (ds != null)
+                {
+                    DataTable dtHrData = ds.Tables[0];
+                    DataTable dtgridData = ds.Tables[1];
+                    List<HrData> lstHrData = new List<HrData>();
+                    foreach (DataRow row in dtHrData.Rows)
+                    {
+                        HrData hrdata = new HrData();
+                        hrdata.status = row["status"].ToString();
+                        hrdata.count = row["cnt"].ToString();
+                        lstHrData.Add(hrdata);
+                    }
+
+                    if (dtHrData.Rows.Count > 0)
+                    {
+
+                        var rowOfferMade = lstHrData.Where(r => r.status == "OfferMade").FirstOrDefault();
+                        if (rowOfferMade != null)
+                        {
+                            string count = rowOfferMade.count;
+                            lbljoboffercount.Text = count;
+                        }
+                        else
+                        {
+                            lbljoboffercount.Text = "0";
+                        }
+                        var rowActive = lstHrData.Where(r => r.status == "Active").FirstOrDefault();
+                        if (rowActive != null)
+                        {
+                            string count = rowActive.count;
+                            lblActiveCount.Text = count;
+                        }
+                        else
+                        {
+                            lblActiveCount.Text = "0";
+                        }
+                        var rowRejected = lstHrData.Where(r => r.status == "Rejected").FirstOrDefault();
+                        if (rowRejected != null)
+                        {
+                            string count = rowRejected.count;
+                            lblRejectedCount.Text = count;
+                        }
+                        else
+                        {
+                            lblRejectedCount.Text = "0";
+                        }
+                        var rowDeactive = lstHrData.Where(r => r.status == "Deactive").FirstOrDefault();
+                        if (rowDeactive != null)
+                        {
+                            string count = rowDeactive.count;
+                            lblDeactivatedCount.Text = count;
+                        }
+                        else
+                        {
+                            lblDeactivatedCount.Text = "0";
+                        }
+                        var rowInstallProspect = lstHrData.Where(r => r.status == "Install Prospect").FirstOrDefault();
+                        if (rowInstallProspect != null)
+                        {
+                            string count = rowInstallProspect.count;
+                            lblInstallProspectCount.Text = count;
+                        }
+                        else
+                        {
+                            lblInstallProspectCount.Text = "0";
+                        }
+                        var rowPhoneScreened = lstHrData.Where(r => r.status == "PhoneScreened").FirstOrDefault();
+                        if (rowPhoneScreened != null)
+                        {
+                            string count = rowPhoneScreened.count;
+                            lblPhoneVideoScreenedCount.Text = count;
+                        }
+                        else
+                        {
+                            lblPhoneVideoScreenedCount.Text = "0";
+                        }
+                        var rowInterviewDate = lstHrData.Where(r => r.status == "InterviewDate").FirstOrDefault();
+                        if (rowInterviewDate != null)
+                        {
+                            string count = rowInterviewDate.count;
+                            lblInterviewDateCount.Text = count;
+                        }
+                        else
+                        {
+                            lblInterviewDateCount.Text = "0";
+                        }
+                        var rowApplicant = lstHrData.Where(r => r.status == "Applicant").FirstOrDefault();
+                        string Applicantcount = "0";
+                        if (rowApplicant != null)
+                        {
+                            Applicantcount = rowApplicant.count;
+
+                        }
+                        else
+                        {
+                            Applicantcount = "0";
+
+                        }
+                        // Ratio Calculation
+                        lblAppInterviewRatio.Text = Convert.ToString(Convert.ToDouble(lblInterviewDateCount.Text) / Convert.ToDouble(Applicantcount));
+                        lblAppHireRatio.Text = Convert.ToString(Convert.ToDouble(lblActiveCount.Text) / Convert.ToDouble(Applicantcount));
+                        //lblJobOfferHireRatio.Text = Convert.ToString(Convert.ToDouble(lblActive.Text) / Convert.ToDouble(lblInterviewDateCount.Text));
+                    }
+                    else
+                    {
+                        lbljoboffercount.Text = "0";
+                        lblActiveCount.Text = "0";
+                        lblRejectedCount.Text = "0";
+                        lblDeactivatedCount.Text = "0";
+                        lblInstallProspectCount.Text = "0";
+                        lblPhoneVideoScreenedCount.Text = "0";
+                        lblInterviewDateCount.Text = "0";
+                        lblAppInterviewRatio.Text = "0";
+                        lblAppHireRatio.Text = "0";
+                    }
+                    if (dtgridData.Rows.Count > 0)
+                    {
+                        Session["UserGridData"] = dtgridData;
+                        GridViewUser.DataSource = dtgridData;
+                        GridViewUser.DataBind();
+                    }
+                    else
+                    {
+                        Session["UserGridData"] = null;
+                        GridViewUser.DataSource = null;
+                        GridViewUser.DataBind();
+                    }
+                }
+            }
+            else
+            {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('ToDate must be greater than FromDate');", true);
+            }
+        }
+
+    }
+    public class HrData
+    {
+        public string status { get; set; }
+        public string count { get; set; }
     }
 }
