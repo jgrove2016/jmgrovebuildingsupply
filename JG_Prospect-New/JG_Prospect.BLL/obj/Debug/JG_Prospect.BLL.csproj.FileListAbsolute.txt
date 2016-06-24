@@ -198,3 +198,20 @@ D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bi
 D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.Database.xml
 D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.Unity.dll
 D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.Unity.Interception.dll
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.csprojResolveAssemblyReference.cache
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.BLL.dll
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.BLL.pdb
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.AccessControl.dll
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.Calendar.dll
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.Client.dll
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.Extensions.dll
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\itextsharp.dll
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.Common.dll
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.DAL.dll
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.Unity.dll
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.Unity.Interception.dll
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.AnalysisServices.AdomdClient.dll
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.Common.pdb
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.DAL.pdb
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.dll
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.pdb
