@@ -18,6 +18,7 @@ using System.Web.Script.Serialization;
 using Newtonsoft.Json;
 using System.Web.UI.HtmlControls;
 using System.Net.Mail;
+using System.Web.Services;
 
 namespace JG_Prospect.Sr_App
 {
@@ -959,6 +960,11 @@ namespace JG_Prospect.Sr_App
             public string value { get; set; }
         }
 
+        [WebMethod]
+        public static string CheckDuplicateCustomerCredentials(String pValueForValidation, Int32 pValidationType)
+        {
+            return new_customerBLL.Instance.CheckDuplicateCustomerCredentials(pValueForValidation, pValidationType, Convert.ToInt32(HttpContext.Current.Session["CustomerId"].ToString()));
+        }
         [System.Web.Services.WebMethodAttribute(), System.Web.Script.Services.ScriptMethodAttribute()]
         public static string CheckForDuplication(List<NameValue> formVars)
         {

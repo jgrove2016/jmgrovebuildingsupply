@@ -436,5 +436,15 @@ namespace JG_Prospect.BLL
         {
             InstallUserDAL.Instance.ChangeStatusToInterviewDate(Status, StatusId, RejectionDate, RejectionTime, RejectedUserId, time, StatusReason);
         }
+
+        public bool UpdateOfferMade(int Id, string Email, string password)
+        {
+            return InstallUserDAL.Instance.UpdateOfferMade(Id, Email, password);
+        }
+
+        public DataSet GetHrData(DateTime fromdate, DateTime todate, int userid)
+        {
+            return InstallUserDAL.Instance.GetHrData(fromdate, todate, userid);
+        }
     }
 }

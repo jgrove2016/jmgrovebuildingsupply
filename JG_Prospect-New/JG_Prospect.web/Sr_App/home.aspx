@@ -1,4 +1,5 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Sr_App/SR_app.Master" AutoEventWireup="true" CodeBehind="home.aspx.cs" Inherits="JG_Prospect.Sr_App.home" %>
+﻿
+<%@ Page Title="" Language="C#" MasterPageFile="~/Sr_App/SR_app.Master" AutoEventWireup="true" CodeBehind="home.aspx.cs" Inherits="JG_Prospect.Sr_App.home" %>
 <%@ Register src="~/Sr_App/LeftPanel.ascx" tagname="LeftPanel" tagprefix="uc2" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
@@ -9,7 +10,7 @@
 <!-- appointment tabs section start -->
     <ul class="appointment_tab">
         <li><a href="home.aspx" class="active">Sales Calendar</a></li>
-        <li><a href="#">Master  Calendar</a></li>
+        <li><a href="GoogleCalendarView.aspx">Master  Calendar</a></li>
         <li><a href="#">Construction Calendar</a></li>
         <li><a href="CallSheet.aspx">Call Sheet</a></li>
         <li id="li_AnnualCalender" visible="false" runat="server"><a href="#" runat="server">Annual Event Calendar</a> </li>
