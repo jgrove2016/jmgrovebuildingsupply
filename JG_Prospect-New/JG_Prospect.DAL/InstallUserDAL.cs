@@ -1675,5 +1675,141 @@ namespace JG_Prospect.DAL
                 return 0;
             }
         }
+
+        public bool UpdateOfferMade(int Id,string Email,string password)
+        {
+            StringBuilder strerr = new StringBuilder();
+
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("UDP_UpdateInstallUserOfferMade");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@Id", DbType.Int32, Id);
+                    database.AddInParameter(command, "@Email", DbType.String, Email);
+                    database.AddInParameter(command, "@password", DbType.String, password);
+                    database.ExecuteNonQuery(command);
+                    return true;
+                }
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+        }
+
+
+        public DataSet GetHrData(DateTime fromdate, DateTime todate, int userid)
+        {
+            returndata = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("sp_GetHrData");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@UserId", DbType.Int16, userid);
+                    database.AddInParameter(command, "@FromDate", DbType.Date, fromdate);
+                    database.AddInParameter(command, "@ToDate", DbType.Date, todate);
+                    returndata = database.ExecuteDataSet(command);
+                    return returndata;
+                }
+            }
+            catch (Exception ex)
+            {
+                
+            }
+            return returndata;
+        }
+
+        public DataSet GetHrDataForHrReports(DateTime fromdate, DateTime todate, int userid)
+        {
+            returndata = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("sp_HrDataForHrReports");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@UserId", DbType.Int16, userid);
+                    database.AddInParameter(command, "@FromDate", DbType.Date, fromdate);
+                    database.AddInParameter(command, "@ToDate", DbType.Date, todate);
+                    returndata = database.ExecuteDataSet(command);
+                    return returndata;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return returndata;
+        }
+
+        public DataSet FilteHrData(DateTime fromDate, DateTime toDate, string designation, string status)
+        {
+            returndata = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("sp_FilterHrData");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@status", DbType.String, status);
+                    database.AddInParameter(command, "@designation", DbType.String, designation);
+                    database.AddInParameter(command, "@fromdate", DbType.Date, fromDate);
+                    database.AddInParameter(command, "@todate", DbType.Date, toDate);
+                    returndata = database.ExecuteDataSet(command);
+                    return returndata;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return returndata;
+        }
+
+        public DataSet GetActiveUsers()
+        {
+            returndata = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("sp_GetActiveUserContractor");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@action", DbType.String, "1");
+                    returndata = database.ExecuteDataSet(command);
+                    return returndata;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return returndata;
+        }
+
+        public DataSet GetActiveContractors()
+        {
+            returndata = new DataSet();
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("sp_GetActiveUserContractor");
+                    command.CommandType = CommandType.StoredProcedure;
+                    database.AddInParameter(command, "@action", DbType.String, "2");
+                    returndata = database.ExecuteDataSet(command);
+                    return returndata;
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return returndata;
+        }
     }
 }

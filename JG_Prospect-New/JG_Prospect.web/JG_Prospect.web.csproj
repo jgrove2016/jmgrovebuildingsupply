@@ -242,7 +242,10 @@
     <Content Include="Controls\left.ascx" />
     <Content Include="Controls\LeftMenu_home.ascx" />
     <Content Include="CreateUser.aspx" />
+    <Content Include="css\connected-carousel.css" />
+    <Content Include="css\JCarousel.css" />
     <Content Include="css\jquery-ui.css" />
+    <Content Include="css\jquery.bxslider.css" />
     <Content Include="css\jquery.multiselect.css" />
     <Content Include="css\pgwslideshow.min.css" />
     <Content Include="CustomerDocs\LocationPics\017aaf2f-442b-4408-bfb6-4f9eb50edd95-Hydrangeas.jpg" />
@@ -408,6 +411,193 @@
     <Content Include="img\File.png" />
     <Content Include="img\folder.png" />
     <Content Include="img\gplus.png" />
+    <Content Include="img\icons\3dm-file-format.png" />
+    <Content Include="img\icons\3ds-file-format-symbol.png" />
+    <Content Include="img\icons\3g2-file-format-symbol.png" />
+    <Content Include="img\icons\3gp-file-format-variant.png" />
+    <Content Include="img\icons\7z-file-format-variant.png" />
+    <Content Include="img\icons\aac-file-format.png" />
+    <Content Include="img\icons\ai-file-format-symbol.png" />
+    <Content Include="img\icons\aif-file-format.png" />
+    <Content Include="img\icons\angel.png" />
+    <Content Include="img\icons\apk-file-format.png" />
+    <Content Include="img\icons\app-file-format-variant.png" />
+    <Content Include="img\icons\asf-file-format-variant.png" />
+    <Content Include="img\icons\asp-file-format-symbol.png" />
+    <Content Include="img\icons\aspx-file-format.png" />
+    <Content Include="img\icons\asx-multimedia-file-format.png" />
+    <Content Include="img\icons\avi-file-format-variant.png" />
+    <Content Include="img\icons\bak-file-format-symbol.png" />
+    <Content Include="img\icons\bat-file-format-symbol.png" />
+    <Content Include="img\icons\bin-file-format.png" />
+    <Content Include="img\icons\blank-file.png" />
+    <Content Include="img\icons\bmp-file-format-symbol.png" />
+    <Content Include="img\icons\cab-file-format.png" />
+    <Content Include="img\icons\cad-file-format-symbol.png" />
+    <Content Include="img\icons\cdr-file-format-symbol.png" />
+    <Content Include="img\icons\cer-file-format.png" />
+    <Content Include="img\icons\cfg-file-format-symbol.png" />
+    <Content Include="img\icons\cfm-file-format-symbol.png" />
+    <Content Include="img\icons\cgi-file-format-symbol.png" />
+    <Content Include="img\icons\class-file-format-variant.png" />
+    <Content Include="img\icons\com-file-format-symbol.png" />
+    <Content Include="img\icons\cpl-file-format-variant.png" />
+    <Content Include="img\icons\cpp-file-format-symbol.png" />
+    <Content Include="img\icons\crx-file-format-symbol.png" />
+    <Content Include="img\icons\csr-file-format.png" />
+    <Content Include="img\icons\css-file-format-symbol.png" />
+    <Content Include="img\icons\csv-file-format-symbol.png" />
+    <Content Include="img\icons\cue-file-format-symbol.png" />
+    <Content Include="img\icons\cur-file-format.png" />
+    <Content Include="img\icons\dat-file-format-variant.png" />
+    <Content Include="img\icons\db-file-format-variant.png" />
+    <Content Include="img\icons\dbf-file-format-symbol.png" />
+    <Content Include="img\icons\dds-file-format-symbol.png" />
+    <Content Include="img\icons\debian-file.png" />
+    <Content Include="img\icons\dem-file-format-symbol.png" />
+    <Content Include="img\icons\demon.png" />
+    <Content Include="img\icons\dll-file-format-variant.png" />
+    <Content Include="img\icons\dmg-file-format-symbol.png" />
+    <Content Include="img\icons\dmp-file-format-symbol.png" />
+    <Content Include="img\icons\doc-file-format-symbol.png" />
+    <Content Include="img\icons\docx-file-format.png" />
+    <Content Include="img\icons\drv-file-format-variant.png" />
+    <Content Include="img\icons\dtd-file-format-extension.png" />
+    <Content Include="img\icons\dwg-file-format-variant.png" />
+    <Content Include="img\icons\dxf-file-format-symbol.png" />
+    <Content Include="img\icons\elf-file-format-variant.png" />
+    <Content Include="img\icons\elf-file.png" />
+    <Content Include="img\icons\eml-file.png" />
+    <Content Include="img\icons\eps-file-format-symbol.png" />
+    <Content Include="img\icons\eps-file-format-variant.png" />
+    <Content Include="img\icons\exe-file-format-symbol.png" />
+    <Content Include="img\icons\fla-file-format-variant.png" />
+    <Content Include="img\icons\flash-file-format.png" />
+    <Content Include="img\icons\flv-file-format-symbol.png" />
+    <Content Include="img\icons\fnt-file-format.png" />
+    <Content Include="img\icons\fon-file-format-symbol.png" />
+    <Content Include="img\icons\gam-file-format-variant.png" />
+    <Content Include="img\icons\gbr-file-format-extension.png" />
+    <Content Include="img\icons\ged-file-format-symbol.png" />
+    <Content Include="img\icons\gif-file-format.png" />
+    <Content Include="img\icons\gpx-file-format-variant.png" />
+    <Content Include="img\icons\gz-file-format-symbol.png" />
+    <Content Include="img\icons\gzip-file-format-variant.png" />
+    <Content Include="img\icons\hqz-file-format.png" />
+    <Content Include="img\icons\html-file-with-code-symbol.png" />
+    <Content Include="img\icons\ibooks-file-format-symbol.png" />
+    <Content Include="img\icons\icns-file-format.png" />
+    <Content Include="img\icons\ico-file-format-variant.png" />
+    <Content Include="img\icons\ics-file-format-symbol.png" />
+    <Content Include="img\icons\iff-file-format.png" />
+    <Content Include="img\icons\indd-file-format-variant.png" />
+    <Content Include="img\icons\ipa-file.png" />
+    <Content Include="img\icons\iso-file-format-symbol.png" />
+    <Content Include="img\icons\iso-file-format.png" />
+    <Content Include="img\icons\jar-file-format.png" />
+    <Content Include="img\icons\jpg-image-file-format.png" />
+    <Content Include="img\icons\js-file-format-symbol.png" />
+    <Content Include="img\icons\jsp-file-format-symbol.png" />
+    <Content Include="img\icons\key-file-format-variant.png" />
+    <Content Include="img\icons\kml-file-format-variant.png" />
+    <Content Include="img\icons\kmz-file-format-symbol.png" />
+    <Content Include="img\icons\lnk-file-format-symbol.png" />
+    <Content Include="img\icons\log-file-format.png" />
+    <Content Include="img\icons\lua-file-format-symbol.png" />
+    <Content Include="img\icons\m3u-file-format.png" />
+    <Content Include="img\icons\m4a-file-format-symbol.png" />
+    <Content Include="img\icons\m4v-file-format-variant.png" />
+    <Content Include="img\icons\mach-o-file-format.png" />
+    <Content Include="img\icons\mach-o-file.png" />
+    <Content Include="img\icons\max-file-format-variant.png" />
+    <Content Include="img\icons\mdb-file-format-symbol.png" />
+    <Content Include="img\icons\mdf-file-format-variant.png" />
+    <Content Include="img\icons\mid-file-format.png" />
+    <Content Include="img\icons\mim-file-format.png" />
+    <Content Include="img\icons\mov-file-format-symbol.png" />
+    <Content Include="img\icons\mp3-file-format-variant.png" />
+    <Content Include="img\icons\mp4-file-format-symbol.png" />
+    <Content Include="img\icons\mpa-file-format.png" />
+    <Content Include="img\icons\mpg-file-format-variant.png" />
+    <Content Include="img\icons\msg-file-format-variant.png" />
+    <Content Include="img\icons\msg-file.png" />
+    <Content Include="img\icons\msi-file-format-symbol.png" />
+    <Content Include="img\icons\nes-file-variant.png" />
+    <Content Include="img\icons\object-file-format.png" />
+    <Content Include="img\icons\odb-file-format-variant.png" />
+    <Content Include="img\icons\odc-file-format-symbol.png" />
+    <Content Include="img\icons\odf-file-format-variant.png" />
+    <Content Include="img\icons\odg-file-format.png" />
+    <Content Include="img\icons\odi-file-format-symbol.png" />
+    <Content Include="img\icons\odp-file-format-symbol.png" />
+    <Content Include="img\icons\ods-file-format-symbol.png" />
+    <Content Include="img\icons\odt-file-format-symbol.png" />
+    <Content Include="img\icons\odt-file-format.png" />
+    <Content Include="img\icons\odx-file-format-extension.png" />
+    <Content Include="img\icons\ogg-file-format-symbol.png" />
+    <Content Include="img\icons\otf-file-format-extension.png" />
+    <Content Include="img\icons\otf-file-format.png" />
+    <Content Include="img\icons\pages-file-format-symbol.png" />
+    <Content Include="img\icons\pct-file-format-symbol.png" />
+    <Content Include="img\icons\pdb-file-format-variant.png" />
+    <Content Include="img\icons\pdf-file-format-symbol.png" />
+    <Content Include="img\icons\pif-file-format-variant.png" />
+    <Content Include="img\icons\pkg-file-format-variant.png" />
+    <Content Include="img\icons\pl-file-format-variant.png" />
+    <Content Include="img\icons\png-file-extension-interface-symbol.png" />
+    <Content Include="img\icons\pps-file-format-symbol.png" />
+    <Content Include="img\icons\ppt-file-format.png" />
+    <Content Include="img\icons\pptx-file-format-variant.png" />
+    <Content Include="img\icons\ps-file-format.png" />
+    <Content Include="img\icons\psd-file-format-variant.png" />
+    <Content Include="img\icons\pub-file-format-symbol.png" />
+    <Content Include="img\icons\python-file-symbol.png" />
+    <Content Include="img\icons\ra-file-format.png" />
+    <Content Include="img\icons\rar-file-format.png" />
+    <Content Include="img\icons\raw-file-format-symbol.png" />
+    <Content Include="img\icons\rm-file-format.png" />
+    <Content Include="img\icons\rom-file-format-variant.png" />
+    <Content Include="img\icons\rom-file.png" />
+    <Content Include="img\icons\rpm-file-format-symbol.png" />
+    <Content Include="img\icons\rss-file-format-symbol.png" />
+    <Content Include="img\icons\rtf-icon-format.png" />
+    <Content Include="img\icons\sav-file-format.png" />
+    <Content Include="img\icons\sdf-file-format.png" />
+    <Content Include="img\icons\sitx-file-format-variant.png" />
+    <Content Include="img\icons\sql-file-format-symbol-1.png" />
+    <Content Include="img\icons\sql-file-format-symbol.png" />
+    <Content Include="img\icons\srt-file-format-symbol.png" />
+    <Content Include="img\icons\svg-file-format-symbol.png" />
+    <Content Include="img\icons\swf-file-format-symbol.png" />
+    <Content Include="img\icons\sys-file-format.png" />
+    <Content Include="img\icons\tar-file-variant.png" />
+    <Content Include="img\icons\tex-file-format.png" />
+    <Content Include="img\icons\tga-file-format-symbol.png" />
+    <Content Include="img\icons\thm-file-format-symbol.png" />
+    <Content Include="img\icons\tiff-images-file-extension-symbol-for-interface.png" />
+    <Content Include="img\icons\tmp-icon-file-format.png" />
+    <Content Include="img\icons\torrent-file-format.png" />
+    <Content Include="img\icons\ttf-file-format-symbol.png" />
+    <Content Include="img\icons\txt-text-file-extension-symbol.png" />
+    <Content Include="img\icons\uue-file-format-symbol.png" />
+    <Content Include="img\icons\vb-file-symbol.png" />
+    <Content Include="img\icons\vcd-file-format-symbol.png" />
+    <Content Include="img\icons\vcf-file-format-variant.png" />
+    <Content Include="img\icons\vob-file-format-symbol.png" />
+    <Content Include="img\icons\wav-file-format-variant.png" />
+    <Content Include="img\icons\wma-file-format-symbol.png" />
+    <Content Include="img\icons\wmv-file-format-extension.png" />
+    <Content Include="img\icons\wpd-file-format-symbol.png" />
+    <Content Include="img\icons\wps-file-format.png" />
+    <Content Include="img\icons\wsf-file-format-variant.png" />
+    <Content Include="img\icons\xhtml-icon-file-format.png" />
+    <Content Include="img\icons\xlr-file-format-variant.png" />
+    <Content Include="img\icons\xls-file-format-symbol.png" />
+    <Content Include="img\icons\xlsx-file-format.png" />
+    <Content Include="img\icons\xml-file-format-variant.png" />
+    <Content Include="img\icons\yuv-file-format-variant.png" />
+    <Content Include="img\icons\zip-compressed-files-extension.png" />
+    <Content Include="img\icons\zip-file.png" />
     <Content Include="img\JG-Logo-white.gif" />
     <Content Include="img\JG-Logo.gif" />
     <Content Include="img\loader.gif" />
@@ -484,6 +674,8 @@
     <Content Include="JGCalender\SalesCalender.aspx" />
     <Content Include="JGCalender\scripts\calendarscript.js" />
     <Content Include="JrAnnualCalendar.aspx" />
+    <Content Include="js\connected-jcarousel.js" />
+    <Content Include="js\JCarousel.js" />
     <Content Include="js\jquery-latest.js" />
     <Content Include="js\jquery-latest_old.js" />
     <Content Include="js\jquery-ui.js" />
@@ -517,6 +709,8 @@
     <Content Include="Sr_App\Custom.aspx" />
     <Content Include="Sr_App\CustomerEmailTemplate.aspx" />
     <Content Include="Sr_App\Custom_MaterialList.aspx" />
+    <Content Include="Sr_App\customerattachmentupload.aspx" />
+    <Content Include="Sr_App\dropzoneimageupload.aspx" />
     <Content Include="Sr_App\EditEmailTemplate.aspx" />
     <Content Include="Sr_App\EditInstallUser.aspx" />
     <Content Include="Sr_App\EmailTemplateForVendorCategories.aspx" />
@@ -629,6 +823,7 @@
     <Content Include="Sr_App\UploadedFile\Penguins.jpg" />
     <Content Include="Sr_App\UploadedFile\System-Desktop-icon.png" />
     <Content Include="Sr_App\UploadedFile\Tulips.jpg" />
+    <Content Include="Sr_App\UserControls\TaskGenerator.ascx" />
     <Content Include="Sr_App\viewshutters1.aspx" />
     <Content Include="Sr_App\view_customer.aspx" />
     <Content Include="Sr_App\WebForm1.aspx" />
@@ -1040,6 +1235,20 @@
     <Compile Include="Sr_App\Custom_MaterialList.aspx.designer.cs">
       <DependentUpon>Custom_MaterialList.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Sr_App\customerattachmentupload.aspx.cs">
+      <DependentUpon>customerattachmentupload.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Sr_App\customerattachmentupload.aspx.designer.cs">
+      <DependentUpon>customerattachmentupload.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Sr_App\dropzoneimageupload.aspx.cs">
+      <DependentUpon>dropzoneimageupload.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Sr_App\dropzoneimageupload.aspx.designer.cs">
+      <DependentUpon>dropzoneimageupload.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Sr_App\EditEmailTemplate.aspx.cs">
       <DependentUpon>EditEmailTemplate.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -1235,6 +1444,13 @@
     </Compile>
     <Compile Include="Sr_App\Time_Material.aspx.designer.cs">
       <DependentUpon>Time_Material.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Sr_App\UserControls\TaskGenerator.ascx.cs">
+      <DependentUpon>TaskGenerator.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Sr_App\UserControls\TaskGenerator.ascx.designer.cs">
+      <DependentUpon>TaskGenerator.ascx</DependentUpon>
     </Compile>
     <Compile Include="Sr_App\viewshutters1.aspx.cs">
       <DependentUpon>viewshutters1.aspx</DependentUpon>
@@ -1629,7 +1845,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>False</AutoAssignPort>
           <DevelopmentServerPort>61396</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

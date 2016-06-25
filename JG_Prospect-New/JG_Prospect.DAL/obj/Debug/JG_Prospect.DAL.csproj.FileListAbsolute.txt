@@ -43,13 +43,6 @@ D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\JG_Prospect-
 D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\JG_Prospect-New\JG_Prospect-New\JG_Prospect.DAL\obj\Debug\JG_Prospect.DAL.csprojResolveAssemblyReference.cache
 D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\JG_Prospect-New\JG_Prospect-New\JG_Prospect.DAL\obj\Debug\JG_Prospect.DAL.dll
 D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\JG_Prospect-New\JG_Prospect-New\JG_Prospect.DAL\obj\Debug\JG_Prospect.DAL.pdb
-D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\JG_Prospect.DAL.dll
-D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\JG_Prospect.DAL.pdb
-D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\JG_Prospect.Common.dll
-D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\JG_Prospect.Common.pdb
-D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\obj\Debug\JG_Prospect.DAL.csprojResolveAssemblyReference.cache
-D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\obj\Debug\JG_Prospect.DAL.dll
-D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\obj\Debug\JG_Prospect.DAL.pdb
 D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\Git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\JG_Prospect.DAL.dll
 D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\Git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\JG_Prospect.DAL.pdb
 D:\Mosaic-India\4Q2.0\4QFullRepo\Application\Freelance\Justin_Grove\Git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\JG_Prospect.Common.dll
@@ -112,3 +105,26 @@ D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bi
 D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\Microsoft.Practices.Unity.Interception.pdb
 D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\obj\Debug\JG_Prospect.DAL.dll
 D:\Data\Projects\Github\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\obj\Debug\JG_Prospect.DAL.pdb
+D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\JG_Prospect.DAL.dll
+D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\JG_Prospect.DAL.pdb
+D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\JG_Prospect.Common.dll
+D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll
+D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\Microsoft.Practices.Unity.dll
+D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\Microsoft.Practices.Unity.Interception.dll
+D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\JG_Prospect.Common.pdb
+D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.xml
+D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.xml
+D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\obj\Debug\JG_Prospect.DAL.csprojResolveAssemblyReference.cache
+D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\obj\Debug\JG_Prospect.DAL.dll
+D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\obj\Debug\JG_Prospect.DAL.pdb
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\JG_Prospect.DAL.dll
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\JG_Prospect.DAL.pdb
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\JG_Prospect.Common.dll
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\Microsoft.Practices.Unity.dll
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\Microsoft.Practices.Unity.Interception.dll
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\Microsoft.AnalysisServices.AdomdClient.dll
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\JG_Prospect.Common.pdb
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\obj\Debug\JG_Prospect.DAL.csprojResolveAssemblyReference.cache
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\obj\Debug\JG_Prospect.DAL.dll
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\obj\Debug\JG_Prospect.DAL.pdb
