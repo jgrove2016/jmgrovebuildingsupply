@@ -23,6 +23,9 @@ namespace JG_Prospect.Sr_App
                 FillCustomer();
                 DataSet dsCurrentPeriod = UserBLL.Instance.Getcurrentperioddates();
                 bindPayPeriod(dsCurrentPeriod);
+                filterHrData();
+                GetActiveUsers();
+                GetActiveContractors();
             }
         }
 
@@ -59,6 +62,18 @@ namespace JG_Prospect.Sr_App
                 drpPayPeriod.SelectedValue = dsCurrentPeriod.Tables[0].Rows[0]["Id"].ToString();
                 txtDtFrom.Text = Convert.ToDateTime(dsCurrentPeriod.Tables[0].Rows[0]["FromDate"].ToString()).ToString("MM/dd/yyyy");
                 txtDtTo.Text = Convert.ToDateTime(dsCurrentPeriod.Tables[0].Rows[0]["ToDate"].ToString()).ToString("MM/dd/yyyy");
+
+                // Filter Drop down for Pay Period
+
+                ddlPayPeriodFilter.Items.Insert(0, new ListItem("Select", "0"));
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+                    DataRow dr = ds.Tables[0].Rows[i];
+                    ddlPayPeriodFilter.Items.Add(new ListItem(dr["Periodname"].ToString(), dr["Id"].ToString()));
+                }
+                ddlPayPeriodFilter.SelectedValue = dsCurrentPeriod.Tables[0].Rows[0]["Id"].ToString();
+                txtDtFromfilter.Text = Convert.ToDateTime(dsCurrentPeriod.Tables[0].Rows[0]["FromDate"].ToString()).ToString("MM/dd/yyyy");
+                txtDtToFilter.Text = Convert.ToDateTime(dsCurrentPeriod.Tables[0].Rows[0]["ToDate"].ToString()).ToString("MM/dd/yyyy");
             }
             else
             {
@@ -80,7 +95,7 @@ namespace JG_Prospect.Sr_App
             DateTime toDate = Convert.ToDateTime(txtDtTo.Text, JG_Prospect.Common.JGConstant.CULTURE);
             try
             {
-                ds = InstallUserBLL.Instance.GetHrData(fromDate, toDate, Convert.ToInt16(ddlUsers.SelectedValue));
+                ds = InstallUserBLL.Instance.GetHrDataForHrReports(fromDate, toDate, Convert.ToInt16(ddlUsers.SelectedValue));
                 if (ddlUsers.SelectedValue == "0")
                 {
                     if (txtDtFrom.Text != "" && txtDtTo.Text != "")
@@ -202,54 +217,54 @@ namespace JG_Prospect.Sr_App
                     rptCustomers.DataSource = dsRejected.Tables[0];
                     rptCustomers.DataBind();
                 }
-                if (ds.Tables.Count > 0)
-                {
-                    //string expression = "";
-                    //if (ddlUsers.SelectedValue == "0")
-                    //{
-                    //expression = "Status = 'Applicant'";
-                    //DataRow[] resultApp = ds.Tables[0].Select(expression);
-                    //lblApplicant.Text = Convert.ToString(resultApp.Length);
-                    //expression = "Status = 'InterviewDate'";
-                    //DataRow[] resultInDt = ds.Tables[0].Select(expression);
-                    //lblInterviewDate.Text = Convert.ToString(resultInDt.Length);
-                    //expression = "Status = 'PhoneScreened'";
-                    //DataRow[] resultPS = ds.Tables[0].Select(expression);
-                    //lblPhoneVideo.Text = Convert.ToString(resultPS.Length);
-                    //expression = "Status = 'Rejected'";
-                    //DataRow[] resultR = ds.Tables[0].Select(expression);
-                    //lblRejected.Text = Convert.ToString(resultR.Length);
-                    //expression = "Status = 'Active'";
-                    //DataRow[] resultA = ds.Tables[0].Select(expression);
-                    //lblActive.Text = Convert.ToString(resultA.Length);
-                    //////Retio calculations
-                    //lblAppInterRatio.Text = Convert.ToString(Convert.ToDouble(lblInterviewDate.Text) / Convert.ToDouble(lblApplicant.Text));
-                    //lblAppHireRatio.Text = Convert.ToString(Convert.ToDouble(lblActive.Text) / Convert.ToDouble(lblApplicant.Text));
-                    //lblInterNewRatio.Text = Convert.ToString(Convert.ToDouble(lblActive.Text) / Convert.ToDouble(lblInterviewDate.Text));
-                    //}
-                    //else if (ddlUsers.SelectedValue != "0")
-                    //{
-                    //    expression = "Status = 'Applicant' AND SourceId = "+Convert.ToInt32(ddlUsers.SelectedValue);
-                    //    DataRow[] resultApp = ds.Tables[0].Select(expression);
-                    //    lblApplicant.Text = Convert.ToString(resultApp.Length);
-                    //    expression = "Status = 'InterviewDate' AND SourceId = " + Convert.ToInt32(ddlUsers.SelectedValue);
-                    //    DataRow[] resultInDt = ds.Tables[0].Select(expression);
-                    //    lblInterviewDate.Text = Convert.ToString(resultInDt.Length);
-                    //    expression = "Status = 'PhoneScreened' AND SourceId = " + Convert.ToInt32(ddlUsers.SelectedValue);
-                    //    DataRow[] resultPS = ds.Tables[0].Select(expression);
-                    //    lblPhoneVideo.Text = Convert.ToString(resultPS.Length);
-                    //    expression = "Status = 'Rejected' AND SourceId = " + Convert.ToInt32(ddlUsers.SelectedValue);
-                    //    DataRow[] resultR = ds.Tables[0].Select(expression);
-                    //    lblRejected.Text = Convert.ToString(resultR.Length);
-                    //    expression = "Status = 'Active' AND SourceId = " + Convert.ToInt32(ddlUsers.SelectedValue);
-                    //    DataRow[] resultA = ds.Tables[0].Select(expression);
-                    //    lblActive.Text = Convert.ToString(resultA.Length);
-                    //    ////Retio calculations
-                    //    lblAppInterRatio.Text = Convert.ToString(Convert.ToDouble(lblInterviewDate.Text) / Convert.ToDouble(lblApplicant.Text));
-                    //    lblAppHireRatio.Text = Convert.ToString(Convert.ToDouble(lblActive.Text) / Convert.ToDouble(lblApplicant.Text));
-                    //    lblInterNewRatio.Text = Convert.ToString(Convert.ToDouble(lblActive.Text) / Convert.ToDouble(lblInterviewDate.Text));
-                    //}
-                }
+                //if (ds.Tables.Count > 0)
+                //{
+                //string expression = "";
+                //if (ddlUsers.SelectedValue == "0")
+                //{
+                //expression = "Status = 'Applicant'";
+                //DataRow[] resultApp = ds.Tables[0].Select(expression);
+                //lblApplicant.Text = Convert.ToString(resultApp.Length);
+                //expression = "Status = 'InterviewDate'";
+                //DataRow[] resultInDt = ds.Tables[0].Select(expression);
+                //lblInterviewDate.Text = Convert.ToString(resultInDt.Length);
+                //expression = "Status = 'PhoneScreened'";
+                //DataRow[] resultPS = ds.Tables[0].Select(expression);
+                //lblPhoneVideo.Text = Convert.ToString(resultPS.Length);
+                //expression = "Status = 'Rejected'";
+                //DataRow[] resultR = ds.Tables[0].Select(expression);
+                //lblRejected.Text = Convert.ToString(resultR.Length);
+                //expression = "Status = 'Active'";
+                //DataRow[] resultA = ds.Tables[0].Select(expression);
+                //lblActive.Text = Convert.ToString(resultA.Length);
+                //////Retio calculations
+                //lblAppInterRatio.Text = Convert.ToString(Convert.ToDouble(lblInterviewDate.Text) / Convert.ToDouble(lblApplicant.Text));
+                //lblAppHireRatio.Text = Convert.ToString(Convert.ToDouble(lblActive.Text) / Convert.ToDouble(lblApplicant.Text));
+                //lblInterNewRatio.Text = Convert.ToString(Convert.ToDouble(lblActive.Text) / Convert.ToDouble(lblInterviewDate.Text));
+                //}
+                //else if (ddlUsers.SelectedValue != "0")
+                //{
+                //    expression = "Status = 'Applicant' AND SourceId = "+Convert.ToInt32(ddlUsers.SelectedValue);
+                //    DataRow[] resultApp = ds.Tables[0].Select(expression);
+                //    lblApplicant.Text = Convert.ToString(resultApp.Length);
+                //    expression = "Status = 'InterviewDate' AND SourceId = " + Convert.ToInt32(ddlUsers.SelectedValue);
+                //    DataRow[] resultInDt = ds.Tables[0].Select(expression);
+                //    lblInterviewDate.Text = Convert.ToString(resultInDt.Length);
+                //    expression = "Status = 'PhoneScreened' AND SourceId = " + Convert.ToInt32(ddlUsers.SelectedValue);
+                //    DataRow[] resultPS = ds.Tables[0].Select(expression);
+                //    lblPhoneVideo.Text = Convert.ToString(resultPS.Length);
+                //    expression = "Status = 'Rejected' AND SourceId = " + Convert.ToInt32(ddlUsers.SelectedValue);
+                //    DataRow[] resultR = ds.Tables[0].Select(expression);
+                //    lblRejected.Text = Convert.ToString(resultR.Length);
+                //    expression = "Status = 'Active' AND SourceId = " + Convert.ToInt32(ddlUsers.SelectedValue);
+                //    DataRow[] resultA = ds.Tables[0].Select(expression);
+                //    lblActive.Text = Convert.ToString(resultA.Length);
+                //    ////Retio calculations
+                //    lblAppInterRatio.Text = Convert.ToString(Convert.ToDouble(lblInterviewDate.Text) / Convert.ToDouble(lblApplicant.Text));
+                //    lblAppHireRatio.Text = Convert.ToString(Convert.ToDouble(lblActive.Text) / Convert.ToDouble(lblApplicant.Text));
+                //    lblInterNewRatio.Text = Convert.ToString(Convert.ToDouble(lblActive.Text) / Convert.ToDouble(lblInterviewDate.Text));
+                //}
+                // }
             }
             catch (Exception ex)
             {
@@ -268,5 +283,105 @@ namespace JG_Prospect.Sr_App
                 }
             }
         }
+        protected void ddlPayPeriodFilter_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ddlPayPeriodFilter.SelectedIndex != -1)
+            {
+                DataSet ds = UserBLL.Instance.getperioddetails(Convert.ToInt16(ddlPayPeriodFilter.SelectedValue));
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    txtDtFromfilter.Text = Convert.ToDateTime(ds.Tables[0].Rows[0]["FromDate"].ToString()).ToString("MM/dd/yyyy");
+                    txtDtToFilter.Text = Convert.ToDateTime(ds.Tables[0].Rows[0]["ToDate"].ToString()).ToString("MM/dd/yyyy");
+                }
+            }
+            filterHrData();
+        }
+        protected void ddlStatus_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            filterHrData();
+        }
+        protected void ddldesignation_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            filterHrData();
+        }
+
+        public void filterHrData()
+        {
+            DateTime fromDate = Convert.ToDateTime(txtDtFromfilter.Text, JG_Prospect.Common.JGConstant.CULTURE);
+            DateTime toDate = Convert.ToDateTime(txtDtToFilter.Text, JG_Prospect.Common.JGConstant.CULTURE);
+            if (fromDate < toDate)
+            {
+                DataSet ds = InstallUserBLL.Instance.FilteHrData(fromDate, toDate, ddldesignation.SelectedValue, ddlStatus.SelectedValue);
+                if (ds.Tables.Count > 0)
+                {
+                    DataTable dtHrFilterData = ds.Tables[0];
+                    if (dtHrFilterData.Rows.Count > 0)
+                    {
+                        grdFilterHrData.DataSource = dtHrFilterData;
+                        grdFilterHrData.DataBind();
+                    }
+                    else
+                    {
+                        grdFilterHrData.DataSource = new List<string>();
+                        grdFilterHrData.DataBind();
+                    }
+                }
+            }
+            else {
+                ScriptManager.RegisterStartupScript(this, this.GetType(), "alert", "alert('To date should be Greater than from Date');", true);
+            }
+        }
+
+        protected void txtDtFromfilter_TextChanged(object sender, EventArgs e)
+        {
+            filterHrData();
+        }
+
+        protected void txtDtToFilter_TextChanged(object sender, EventArgs e)
+        {
+            filterHrData();
+        }
+
+        public void GetActiveUsers()
+        { 
+            DataSet ds = InstallUserBLL.Instance.GetActiveUsers();
+                if (ds.Tables.Count > 0)
+                {
+                    DataTable dtActiveUser = ds.Tables[0];
+                    if (dtActiveUser.Rows.Count > 0)
+                    {
+                        grdActiveUser.DataSource = dtActiveUser;
+                        grdActiveUser.DataBind();
+                    }
+                    else
+                    {
+                        grdActiveUser.DataSource = new List<string>();
+                        grdActiveUser.DataBind();
+                    }
+                }
+        
+        }
+
+        public void GetActiveContractors()
+        {
+            DataSet ds = InstallUserBLL.Instance.GetActiveContractors();
+            if (ds.Tables.Count > 0)
+            {
+                DataTable dtActiveContractor = ds.Tables[0];
+                if (dtActiveContractor.Rows.Count > 0)
+                {
+                    grdActiveContractor.DataSource = dtActiveContractor;
+                    grdActiveContractor.DataBind();
+                }
+                else
+                {
+                    grdActiveContractor.DataSource = new List<string>();
+                    grdActiveContractor.DataBind();
+                }
+            }
+
+        }
+
+
     }
 }

@@ -35,14 +35,19 @@
         }
 
         .auto-style12 {
-            width: 154px;
+            width: 110px;
         }
-         table.tblshowhrdata {
+
+        table.tblshowhrdata {
             width: 100%;
             border: 1px solid #ddd;
             background: #fff;
             border-collapse: collapse;
         }
+
+        /*.form_panel_custom table.tbl-hr > tr > td {
+            padding: 10px 15px 12px 0px !important;
+        }*/
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
@@ -60,7 +65,7 @@
         <div class="form_panel_custom">
             <ul style="margin-bottom: 10px;">
                 <li style="width: 101%; height: 1265px;">
-                    <table class="auto-style1">
+                    <table class="auto-style1 tbl-hr">
                         <tr>
                             <td colspan="2" style="font-size: medium; font-weight: bold; font-style: normal">PayRoll 1099 Summery&nbsp;
                             </td>
@@ -80,9 +85,7 @@
                                 <asp:TextBox ID="txtCompanyLocation" runat="server"></asp:TextBox>
 
                             </td>
-                            <td style="font-size: large; font-weight: bold; font-style: normal" class="auto-style9" colspan="2">&nbsp;
-                            </td>
-                            <td colspan="2" style="font-size: large; font-weight: bold; font-style: normal">&nbsp;
+                            <td colspan="4" style="font-size: large; font-weight: bold; font-style: normal">Select Period
                             </td>
                         </tr>
                         <tr>
@@ -91,18 +94,9 @@
                             </td>
                             <td style="font-size: large; font-weight: bold; font-style: normal">
                                 <%-- <asp:TextBox ID="txtPayPeriod" runat="server"></asp:TextBox>--%>
-                                <asp:DropDownList ID="drpPayPeriod" runat="server" Width="250px" AutoPostBack="true"
+                                <asp:DropDownList ID="drpPayPeriod" runat="server" Width="180px" AutoPostBack="true"
                                     OnSelectedIndexChanged="drpPayPeriod_SelectedIndexChanged">
                                 </asp:DropDownList>
-                            </td>
-                            <td colspan="4" style="font-size: large; font-weight: bold; font-style: normal">Select Period
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="auto-style2">Check Date
-                            </td>
-                            <td class="auto-style3">
-                                <asp:TextBox ID="txtCheckDate" runat="server"></asp:TextBox>
                             </td>
                             <td class="auto-style12">From: 
                             </td>
@@ -112,10 +106,20 @@
                             </td>
                             <td class="auto-style11">To:
                             </td>
-                            <td>
+                            <td style="padding: 10px 15px 12px 10px;">
                                 <asp:TextBox ID="txtDtTo" runat="server"></asp:TextBox>
                                 <ajaxToolkit:CalendarExtender ID="CalendarExtender1" TargetControlID="txtDtTo" Format="dd/MM/yyyy" runat="server"></ajaxToolkit:CalendarExtender>
                             </td>
+                            <%--<td colspan="4" style="font-size: large; font-weight: bold; font-style: normal">Select Period
+                            </td>--%>
+                        </tr>
+                        <tr>
+                            <td class="auto-style2">Check Date
+                            </td>
+                            <td class="auto-style3">
+                                <asp:TextBox ID="txtCheckDate" runat="server"></asp:TextBox>
+                            </td>
+
 
                         </tr>
                         <tr>
@@ -241,7 +245,147 @@
                             </tr>
                         </table>
                     </div>
+                    <br />
+                    <br />
 
+                    <asp:UpdatePanel ID="updtpnlgrid" runat="server">
+                        <ContentTemplate>
+                            <table>
+                                <tr>
+                                    <td>Status:
+                                    </td>
+                                    <td>
+                                        <asp:DropDownList ID="ddlStatus" AutoPostBack="true" OnSelectedIndexChanged="ddlStatus_SelectedIndexChanged" runat="server">
+                                            <asp:ListItem Text="Applicant" Value="Applicant"></asp:ListItem>
+                                            <asp:ListItem Text="Phone/Video Screened" Value="PhoneScreened"></asp:ListItem>
+                                            <asp:ListItem Text="Rejected" Value="Rejected"></asp:ListItem>
+                                            <asp:ListItem Text="Interview Date" Value="InterviewDate"></asp:ListItem>
+                                            <asp:ListItem Text="Offer Made" Value="OfferMade" Selected="True"></asp:ListItem>
+                                            <asp:ListItem Text="Active" Value="Active"></asp:ListItem>
+                                            <asp:ListItem Text="Deactive" Value="Deactive"></asp:ListItem>
+                                            <asp:ListItem Text="Install Prospect" Value="Install Prospect"></asp:ListItem>
+                                        </asp:DropDownList>
+                                    </td>
+                                    <td>User:
+                                    </td>
+                                    <td>
+                                        <asp:DropDownList ID="ddldesignation" runat="server" Width="250px" TabIndex="180" AutoPostBack="True" OnSelectedIndexChanged="ddldesignation_SelectedIndexChanged">
+                                            <asp:ListItem Text="All" Value="All" Selected="True"></asp:ListItem>
+                                            <asp:ListItem Text="Admin" Value="Admin"></asp:ListItem>
+                                            <asp:ListItem Text="Jr. Sales" Value="Jr. Sales"></asp:ListItem>
+                                            <asp:ListItem Text="Jr Project Manager" Value="Jr Project Manager"></asp:ListItem>
+                                            <asp:ListItem Text="Office Manager" Value="Office Manager"></asp:ListItem>
+                                            <asp:ListItem Text="Recruiter" Value="Recruiter"></asp:ListItem>
+                                            <asp:ListItem Text="Sales Manager" Value="Sales Manager"></asp:ListItem>
+                                            <asp:ListItem Text="Sr. Sales" Value="Sr. Sales"></asp:ListItem>
+                                            <asp:ListItem Text="IT - Network Admin" Value="ITNetworkAdmin"></asp:ListItem>
+                                            <asp:ListItem Text="IT - Jr .Net Developer" Value="ITJr.NetDeveloper"></asp:ListItem>
+                                            <asp:ListItem Text="IT - Sr .Net Developer" Value="ITSr.NetDeveloper"></asp:ListItem>
+                                            <asp:ListItem Text="IT - Android Developer" Value="ITAndroidDeveloper"></asp:ListItem>
+                                            <asp:ListItem Text="IT - PHP Developer" Value="ITPHPDeveloper"></asp:ListItem>
+                                            <asp:ListItem Text="IT - SEO / BackLinking" Value="ITSEOBackLinking"></asp:ListItem>
+                                            <asp:ListItem Text="Installer - Helper" Value="InstallerHelper"></asp:ListItem>
+                                            <asp:ListItem Text="Installer - Journeyman" Value="InstallerJourneyman"></asp:ListItem>
+                                            <asp:ListItem Text="Installer - Mechanic" Value="InstallerMechanic"></asp:ListItem>
+                                            <asp:ListItem Text="Installer - Lead mechanic" Value="InstallerLeadMechanic"></asp:ListItem>
+                                            <asp:ListItem Text="Installer - Foreman" Value="InstallerForeman"></asp:ListItem>
+                                            <asp:ListItem Text="Commercial Only" Value="CommercialOnly"></asp:ListItem>
+                                            <asp:ListItem Text="SubContractor" Value="SubContractor"></asp:ListItem>
+                                        </asp:DropDownList>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Pay Period</td>
+                                    <td>
+                                        <asp:DropDownList ID="ddlPayPeriodFilter" runat="server" Width="180px" AutoPostBack="true"
+                                            OnSelectedIndexChanged="ddlPayPeriodFilter_SelectedIndexChanged">
+                                        </asp:DropDownList>
+                                    </td>
+                                    <td>From: 
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="txtDtFromfilter" runat="server" AutoPostBack="true" OnTextChanged="txtDtFromfilter_TextChanged"></asp:TextBox>
+                                        <ajaxToolkit:CalendarExtender ID="CalendarExtender3" TargetControlID="txtDtFromfilter" Format="MM/dd/yyyy" runat="server"></ajaxToolkit:CalendarExtender>
+                                    </td>
+                                    <td>To:
+                                    </td>
+                                    <td>
+                                        <asp:TextBox ID="txtDtToFilter" runat="server" AutoPostBack="true" OnTextChanged="txtDtToFilter_TextChanged"></asp:TextBox>
+                                        <ajaxToolkit:CalendarExtender ID="CalendarExtender4" TargetControlID="txtDtToFilter" Format="MM/dd/yyyy" runat="server"></ajaxToolkit:CalendarExtender>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div>
+                                <div class="form_panel" style="padding-bottom: 0px; min-height: 100px;">
+                                    <div class="grid">
+                                        <asp:GridView ID="grdFilterHrData" runat="server" ShowHeaderWhenEmpty="true" AutoGenerateColumns="False" DataKeyNames="Id" Width="1000px">
+                                            <EmptyDataTemplate>
+                                                No data to display
+                                            </EmptyDataTemplate>
+                                            <Columns>
+                                                <asp:TemplateField ShowHeader="True" HeaderText="Id" ControlStyle-ForeColor="Black"
+                                                    ItemStyle-HorizontalAlign="Center" Visible="true">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblid" runat="server" Text='<%#Eval("Id")%>'></asp:Label>
+                                                    </ItemTemplate>
+                                                    <ControlStyle ForeColor="Black" />
+                                                    <ControlStyle ForeColor="Black" />
+                                                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                                </asp:TemplateField>
+                                               
+                                                <asp:TemplateField HeaderText="Last name" SortExpression="Lastname" ItemStyle-HorizontalAlign="Center">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblLastName" runat="server" Text='<%# Bind("Lastname") %>'></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                 <asp:TemplateField ShowHeader="True" HeaderText="First Name" SortExpression="FristName" ControlStyle-ForeColor="Black"
+                                                    ItemStyle-HorizontalAlign="Center">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblFirstName" runat="server" Text='<%#Eval("FristName")%>'></asp:Label>
+                                                    </ItemTemplate>
+                                                    <ControlStyle ForeColor="Black" />
+                                                    <ControlStyle ForeColor="Black" />
+                                                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Designation" SortExpression="Designation" ItemStyle-HorizontalAlign="Center">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblDesignation" runat="server" Text='<%#Eval("Designation")%>'></asp:Label>
+                                                    </ItemTemplate>
+                                                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Status" ItemStyle-HorizontalAlign="Center">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblStatus" runat="server" Text='<%#Eval("Status")%>'></asp:Label>
+                                                    </ItemTemplate>
+                                                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Source" ItemStyle-HorizontalAlign="Center">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblSource" runat="server" Text='<%#Eval("Source")%>'></asp:Label>
+                                                    </ItemTemplate>
+                                                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Added By" ItemStyle-HorizontalAlign="Center">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblAddedBy" runat="server" Text='<%#Eval("AddedBy")%>'></asp:Label>
+                                                    </ItemTemplate>
+                                                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                                </asp:TemplateField>
+                                                <asp:TemplateField HeaderText="Added On" ItemStyle-HorizontalAlign="Center">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblHireDate" runat="server" Text='<%#Eval("CreatedDateTime")%>'></asp:Label>
+                                                    </ItemTemplate>
+                                                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                                </asp:TemplateField>
+                                            </Columns>
+                                        </asp:GridView>
+                                    </div>
+                                </div>
+                            </div>
+                        </ContentTemplate>
+                    </asp:UpdatePanel>
+                    <br />
+                    <br />
 
                     <asp:UpdatePanel ID="UpdatePanel7" runat="server">
                         <ContentTemplate>
@@ -251,7 +395,7 @@
                                         <%--<table id="table2" class="auto-style11">
                                     <tr>
                                         <td>--%>
-                                        <asp:GridView ID="gvYtd" Width="100%" ShowHeaderWhenEmpty="true" AutoGenerateColumns="False" AllowPaging="false" HeaderStyle-BackColor="#cccccc" AllowSorting="false" runat="server">
+                                        <asp:GridView ID="grdActiveUser" Width="100%" ShowHeaderWhenEmpty="true" AutoGenerateColumns="False" AllowPaging="false" HeaderStyle-BackColor="#cccccc" AllowSorting="false" runat="server">
                                             <EmptyDataTemplate>
                                                 No data to display
                                             </EmptyDataTemplate>
@@ -259,37 +403,30 @@
                                                 <asp:TemplateField ShowHeader="True" HeaderText="Employee ID" ControlStyle-ForeColor="Black"
                                                     ItemStyle-HorizontalAlign="Center">
                                                     <ItemTemplate>
-                                                        <asp:Label ID="lblEmployeeID" runat="server" Text=""></asp:Label>
+                                                        <asp:Label ID="lblEmployeeID" runat="server" Text='<%# Bind("Id") %>'></asp:Label>
                                                     </ItemTemplate>
                                                     <ControlStyle ForeColor="Black" />
                                                     <ControlStyle ForeColor="Black" />
                                                     <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                                 </asp:TemplateField>
-                                                <asp:TemplateField ShowHeader="True" HeaderText="Last Name" ControlStyle-ForeColor="Black"
+                                                <asp:TemplateField HeaderText="Last name" SortExpression="Lastname" ItemStyle-HorizontalAlign="Center">
+                                                    <ItemTemplate>
+                                                        <asp:Label ID="lblLastName" runat="server" Text='<%# Bind("Lastname") %>'></asp:Label>
+                                                    </ItemTemplate>
+                                                </asp:TemplateField>
+                                                 <asp:TemplateField ShowHeader="True" HeaderText="First Name" SortExpression="FristName" ControlStyle-ForeColor="Black"
                                                     ItemStyle-HorizontalAlign="Center">
                                                     <ItemTemplate>
-                                                        <asp:Label ID="lblLname" runat="server" Text=""></asp:Label>
+                                                        <asp:Label ID="lblFirstName" runat="server" Text='<%#Eval("FristName")%>'></asp:Label>
                                                     </ItemTemplate>
                                                     <ControlStyle ForeColor="Black" />
                                                     <ControlStyle ForeColor="Black" />
                                                     <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                                 </asp:TemplateField>
-                                                <asp:TemplateField ShowHeader="True" HeaderText="First Name" ControlStyle-ForeColor="Black"
-                                                    ItemStyle-HorizontalAlign="Center">
+                                                <asp:TemplateField HeaderText="Designation" SortExpression="Designation" ItemStyle-HorizontalAlign="Center">
                                                     <ItemTemplate>
-                                                        <asp:Label ID="lblFname" runat="server" Text=""></asp:Label>
+                                                        <asp:Label ID="lblDesignation" runat="server" Text='<%#Eval("Designation")%>'></asp:Label>
                                                     </ItemTemplate>
-                                                    <ControlStyle ForeColor="Black" />
-                                                    <ControlStyle ForeColor="Black" />
-                                                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
-                                                </asp:TemplateField>
-                                                <asp:TemplateField ShowHeader="True" HeaderText="Designition" ControlStyle-ForeColor="Black"
-                                                    ItemStyle-HorizontalAlign="Center">
-                                                    <ItemTemplate>
-                                                        <asp:Label ID="lblDesignation" runat="server" Text=""></asp:Label>
-                                                    </ItemTemplate>
-                                                    <ControlStyle ForeColor="Black" />
-                                                    <ControlStyle ForeColor="Black" />
                                                     <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                                 </asp:TemplateField>
                                                 <asp:TemplateField ShowHeader="True" HeaderText="Gross Pay" ControlStyle-ForeColor="Black"
@@ -330,12 +467,7 @@
                                                 </asp:TemplateField>
                                             </Columns>
                                         </asp:GridView>
-                                        <br />
-                                        <br />
-                                        <label>
-                                            YTD :
-                                        </label>
-                                        <br />
+                                       
                                     </div>
                                 </div>
                             </asp:Panel>
@@ -351,7 +483,7 @@
                                         <%--<table id="table2" class="auto-style11">
                                     <tr>
                                         <td>--%>
-                                        <asp:GridView ID="GridView1" Width="100%" ShowHeaderWhenEmpty="true" AutoGenerateColumns="False" AllowPaging="false" HeaderStyle-BackColor="#cccccc" AllowSorting="false" runat="server">
+                                        <asp:GridView ID="grdActiveContractor" Width="100%" ShowHeaderWhenEmpty="true" AutoGenerateColumns="False" AllowPaging="false" HeaderStyle-BackColor="#cccccc" AllowSorting="false" runat="server">
                                             <EmptyDataTemplate>
                                                 No data to display
                                             </EmptyDataTemplate>
@@ -359,25 +491,21 @@
                                                 <asp:TemplateField ShowHeader="True" HeaderText="Subcontractor ID" ControlStyle-ForeColor="Black"
                                                     ItemStyle-HorizontalAlign="Center">
                                                     <ItemTemplate>
-                                                        <asp:Label ID="lblSubcontractorID" runat="server" Text=""></asp:Label>
+                                                        <asp:Label ID="lblSubcontractorID" runat="server" Text='<%#Eval("Id")%>'></asp:Label>
                                                     </ItemTemplate>
                                                     <ControlStyle ForeColor="Black" />
                                                     <ControlStyle ForeColor="Black" />
                                                     <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                                 </asp:TemplateField>
-                                                <asp:TemplateField ShowHeader="True" HeaderText="Last Name" ControlStyle-ForeColor="Black"
-                                                    ItemStyle-HorizontalAlign="Center">
+                                                 <asp:TemplateField HeaderText="Last name" SortExpression="Lastname" ItemStyle-HorizontalAlign="Center">
                                                     <ItemTemplate>
-                                                        <asp:Label ID="lblSubLname" runat="server" Text=""></asp:Label>
+                                                        <asp:Label ID="lblLastName" runat="server" Text='<%# Bind("Lastname") %>'></asp:Label>
                                                     </ItemTemplate>
-                                                    <ControlStyle ForeColor="Black" />
-                                                    <ControlStyle ForeColor="Black" />
-                                                    <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                                 </asp:TemplateField>
-                                                <asp:TemplateField ShowHeader="True" HeaderText="First Name" ControlStyle-ForeColor="Black"
+                                                 <asp:TemplateField ShowHeader="True" HeaderText="First Name" SortExpression="FristName" ControlStyle-ForeColor="Black"
                                                     ItemStyle-HorizontalAlign="Center">
                                                     <ItemTemplate>
-                                                        <asp:Label ID="lblSubLname" runat="server" Text=""></asp:Label>
+                                                        <asp:Label ID="lblFirstName" runat="server" Text='<%#Eval("FristName")%>'></asp:Label>
                                                     </ItemTemplate>
                                                     <ControlStyle ForeColor="Black" />
                                                     <ControlStyle ForeColor="Black" />
@@ -422,7 +550,7 @@
                                                 <asp:TemplateField ShowHeader="True" HeaderText="(LOG) Notes" ControlStyle-ForeColor="Black"
                                                     ItemStyle-HorizontalAlign="Center">
                                                     <ItemTemplate>
-                                                        <asp:Label ID="lblLOGNotes" runat="server" Text=""></asp:Label>
+                                                        <asp:Label ID="lblLOGNotes" runat="server" Text='<%#Eval("Notes")%>'></asp:Label>
                                                     </ItemTemplate>
                                                     <ControlStyle ForeColor="Black" />
                                                     <ControlStyle ForeColor="Black" />
@@ -430,12 +558,7 @@
                                                 </asp:TemplateField>
                                             </Columns>
                                         </asp:GridView>
-                                        <br />
-                                        <br />
-                                        <label>
-                                            YTD :
-                                        </label>
-                                        <br />
+                                       
                                     </div>
                                 </div>
                             </asp:Panel>

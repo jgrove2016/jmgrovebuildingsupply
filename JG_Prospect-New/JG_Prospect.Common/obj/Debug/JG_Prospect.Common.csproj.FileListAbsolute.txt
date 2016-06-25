@@ -167,3 +167,11 @@ D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Micros
 D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.Unity.Interception.dll
 D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.dll
 D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.pdb
+D:\git\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.csprojResolveAssemblyReference.cache
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\JG_Prospect.Common.dll
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\JG_Prospect.Common.pdb
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.Unity.dll
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\bin\Debug\Microsoft.Practices.Unity.Interception.dll
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.dll
+E:\NEW WORKS\JM GROVE\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.pdb
