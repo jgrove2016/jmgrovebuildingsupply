@@ -187,42 +187,7 @@
         }
     </style>
     <script src="../Scripts/jquery.maskedinput.min.js" type="text/javascript"></script>
-    <%-- <script>
-        var myCenter = new google.maps.LatLng(40.748492, -73.985496);
-
-        function initialize() {
-            var mapProp = {
-                center: myCenter,
-                zoom: 5,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-
-            var map = new google.maps.Map(document.getElementById("map_canvas"), mapProp);
-
-            var marker = new google.maps.Marker({
-                position: myCenter,
-                title: 'Click to zoom'
-            });
-
-            marker.setMap(map);
-
-            // Zoom to 9 when clicking on marker
-            google.maps.event.addListener(marker, 'click', function () {
-                map.setZoom(9);
-                map.setCenter(marker.getPosition());
-            });
-
-            google.maps.event.addListener(map, 'center_changed', function () {
-                // 3 seconds after the center of the map has changed, pan back to the marker
-                window.setTimeout(function () {
-                    map.panTo(marker.getPosition());
-                }, 3000);
-            });
-        }
-        google.maps.event.addDomListener(window, 'load', initialize);
-</script>--%>
-
-    <script language="javascript" type="text/javascript">
+    <script type="text/javascript">
         try {
             var directionsDisplay;
             var directionsService = new google.maps.DirectionsService();
@@ -243,12 +208,7 @@
 
                 var control = document.getElementById('control');
                 // control.style.display = 'block';
-
-
             }
-
-
-
             function calcRoute() {
 
                 var start = document.getElementById('startvalue').value;
@@ -263,15 +223,10 @@
                         directionsDisplay.setDirections(response);
                     }
                 });
-
             }
-
-
-
             function Button1_onclick() {
                 calcRoute();
             }
-
             window.onload = InitializeMap;
         }
         catch(e2){}
@@ -477,43 +432,18 @@
             try {
                 
                 $(".date").datepicker();
-                
 
-                //$('.time').ptTimeSelect();
-            
                 try { $('.clsMaskPhone').mask("999-999-9999") }catch(e){}
                 //$('#txtBestTimetoContact').ptDaySelect({});
                 $('#txtBestDayToContact').ptDayOnlySelect({});
                 $('#txtBestStartTime').ptTimeOnlySelect({});
                 $('#txtBestEndTime').ptTimeOnlySelect({});
-
-                //$("#btnSubmit").click(function () {
-                //    var isduplicate = document.getElementById('hdnisduplicate').value;
-                //    var custid = document.getElementById('hdnCustId').value;
-                //    if (isduplicate.toString() == "1") {
-                //        if (confirm('Duplicate contact, Press Ok to add the another appointment for existing customer.')) {
-                //            window.open("../Prospectmaster.aspx?title=" + custid);
-                //        }
-                //        else {
-                //            // alert('false');
-                //        }
-                //    }
-                //});
             }
             catch(e){}
         });
 
 
         function fnCheckOne(me) {
-            //debugger;
-            //me.checked = true;
-            //var chkary = document.getElementsByTagName('input');
-            //for (i = 0; i < chkary.length; i++) {
-            //    if (chkary[i].type == 'checkbox') {
-            //        if (chkary[i].id != me.id)
-            //            chkary[i].checked = false;
-            //    }
-            //}
             $(me).closest('tr').find('input:checkbox').removeAttr('checked');
             me.checked = true;
         }
@@ -572,9 +502,36 @@
 
             }
         }
+
+        function CheckDuplicateCustomerCred(obj, type) {
+            $.ajax({
+                type: "POST",
+                url: "new_customer.aspx/CheckDuplicateCustomerCredentials",
+                contentType: "application/json; charset=utf-8",
+                dataType: "JSON",
+                data: "{'pValueForValidation':'" + obj.value + "', 'pValidationType':"+type+"}",
+                
+                success: function (data) {
+                    debugger;
+                    var dataInput = (data.d);
+                    if (dataInput != '') {
+                        alert(dataInput);
+                        obj.value = '';
+                    }
+                }
+            });
+        }
+
+        function CheckDuplicatePhone(obj){
+            CheckDuplicateCustomerCred(obj, 1);
+        }
+
+        function CheckDuplicateEmail(obj) {
+            CheckDuplicateCustomerCred(obj, 2);
+        }
         function AddTemplate(e) {
             debugger;
-
+            
             var liCount = $("#divPrimaryContact ul li").length + 1;
 
             $(e).closest('li').after("<li style='width: 100%;'><div class='tblPrimaryContact' style='margin-top: 10px; width: 100%'><div style='width: 40%; float: left;'>" +
@@ -584,12 +541,12 @@
             "<input type='text' tabindex='7' id='txtLName" + liCount + "' name='nametxtLName" + liCount + "'  placeholder='Last Name' data-type='" + liCount + "' /></td></tr><tr><td class='paddingtd'>" +
             "<input type='button' value='Add' data-type='" + liCount + "' class='clsFullWidth cls_btn_plus' tabindex='31' onclick='AddTemplate(this)' /></td>" +
             "</tr></table></div><div style='width: 40%; float: left;'><table><tr><td class='paddingtd'></td><td>" +
-            "<input type='text' clientidmode='Static' id='txtPhone" + liCount + "' name='nametxtPhone" + liCount + "' data-type='" + liCount + "' tabindex='7' class='clsMaskPhone'  placeholder='___-___-____' /></td>" +
+            "<input type='text' onblur='CheckDuplicatePhone(this);' clientidmode='Static' id='txtPhone" + liCount + "' name='nametxtPhone" + liCount + "' data-type='" + liCount + "' tabindex='7' class='clsMaskPhone'  placeholder='___-___-____' /></td>" +
             "<td><label class='clsFullWidth'>Phone Type</label></td><td><select class='clsFullWidth' id='selPhoneType" + liCount + "' name='nameselPhoneType" + liCount + "' data-type='" + liCount + "' clientidmode='Static' tabindex='4'>" +
             "<option value='0'>Select</option><option value='CellPhone'>Cell Phone #</option><option value='HousePhone'>House Phone #</option><option value='WorkPhone'>Work Phone #</option><option value='AltPhone'>Alt. Phone #</option>" +
             "</select></td></tr><tr><td class='paddingtd'><input type='button' value='Add' data-type='" + liCount + "' class='clsFullWidth cls_btn_plus' tabindex='31' onclick='Phone(this)' /></td>" +
             "</tr></table></div><div style='width: 20%; float: left;'><table><tr><td class='paddingtd'></td>" +
-            "<td><input type='text' clientidmode='Static' id='txtEMail" + liCount + "' name='nametxtEMail" + liCount + "' data-type='" + liCount + "' tabindex='7'  placeholder='EMail' /></td></tr><tr><td class='paddingtd'>" +
+            "<td><input type='text' clientidmode='Static' id='txtEMail" + liCount + "' onblur='CheckDuplicateEmail(this);' name='nametxtEMail" + liCount + "' data-type='" + liCount + "' tabindex='7'  placeholder='EMail' /></td></tr><tr><td class='paddingtd'>" +
             "<input type='button' value='Add' data-type='" + liCount + "' class='clsFullWidth cls_btn_plus' tabindex='31' onclick='Email(this)' /></td></tr></table></div></div></li>");
             $('.clsMaskPhone').mask("999-999-9999");
             $(e).css("visibility", "hidden");
@@ -598,9 +555,10 @@
 
         function Phone(e) {
             debugger;
+            
             var dataTypeValue = $(e).attr("data-type");
             var subCount = $(e).closest('table').find('tr').length - 1;
-            $(e).closest('tr').prev().after("<tr><td class='paddingtd'></td><td><input type='text' clientidmode='Static' id='txtPhone" + dataTypeValue + subCount + "' name='nametxtPhone" + dataTypeValue + subCount + "' tabindex='7' class='clsMaskPhone' placeholder='___-___-____' /></td>" +
+            $(e).closest('tr').prev().after("<tr><td class='paddingtd'></td><td><input type='text' onblur='CheckDuplicatePhone(this);' clientidmode='Static' id='txtPhone" + dataTypeValue + subCount + "' name='nametxtPhone" + dataTypeValue + subCount + "' tabindex='7' class='clsMaskPhone' placeholder='___-___-____' /></td>" +
             "<td><label class='clsFullWidth'>Phone Type</label></td><td><select id='selPhoneType" + dataTypeValue + subCount + "' name='nameselPhoneType" + dataTypeValue + subCount + "' class='clsFullWidth' clientidmode='Static' tabindex='4'>" +
             "<option value='0'>Select</option><option value='CellPhone'>Cell Phone #</option><option value='HousePhone'>House Phone #</option><option value='WorkPhone'>Work Phone #</option>" +
             "<option value='AltPhone'>Alt. Phone #</option></select></td></tr>");
@@ -609,11 +567,12 @@
 
         function Email(e) {
             debugger;
+            
             //<input type='text' ID='TextBox2' TabIndex='7' MaxLength='15' placeholder='EMail' value='bbb@gmail.com'>
             var dataTypeValue = $(e).attr("data-type");
             var subCount = $(e).closest('table').find('tr').length - 1;
             $(e).closest('tr').prev().after("<tr><td class='paddingtd'></td><td>" +
-                                            "<input type='text' id='txtEMail" + dataTypeValue + subCount + "' tabindex='7' name='nametxtEMail" + dataTypeValue + subCount + "'  placeholder='EMail' clientidmode='Static' /></td></tr>");
+                                            "<input type='text' id='txtEMail" + dataTypeValue + subCount + "' tabindex='7' onblur='CheckDuplicateEmail(this);' name='nametxtEMail" + dataTypeValue + subCount + "'  placeholder='EMail' clientidmode='Static' /></td></tr>");
         }
         function AddAddress(e) {
             debugger;
@@ -813,7 +772,7 @@
                                     <tr>
                                         <td class="paddingtd"></td>
                                         <td>
-                                            <input type="text" id="txtPhone1" runat="server" class='clsMaskPhone' clientidmode="Static" data-type="1" tabindex="7" placeholder="___-___-____" />
+                                            <input type="text" id="txtPhone1" runat="server" class='clsMaskPhone' clientidmode="Static" data-type="1" tabindex="7" placeholder="___-___-____" onblur="CheckDuplicatePhone(this)" />
                                         </td>
                                         <td>
                                             <label class="clsFullWidth">Phone Type</label>
@@ -830,7 +789,7 @@
                                     </tr>
                                     <tr>
                                         <td class="paddingtd">
-                                            <input type="button" id="Button4" runat="server" value="Add" data-type="1" class="clsFullWidth cls_btn_plus" tabindex="31"
+                                            <input type="button" id="Button4" runat="server" value="Add" data-type="1" class="clsFullWidth cls_btn_plus" tabindex="31" 
                                                 onclick="Phone(this)" />
                                         </td>
                                     </tr>
@@ -841,12 +800,12 @@
                                     <tr>
                                         <td class="paddingtd"></td>
                                         <td>
-                                            <input type="text" id="txtEMail1" runat="server" tabindex="7" placeholder="EMail" clientidmode="Static" />
+                                            <input type="text" id="txtEMail1" runat="server" tabindex="7" placeholder="EMail" clientidmode="Static" onblur="CheckDuplicateEmail(this)" />
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="paddingtd">
-                                            <input type="button" id="Button7" runat="server" value="Add" data-type="1" class="clsFullWidth cls_btn_plus" tabindex="31"
+                                            <input type="button" id="Button7" runat="server" value="Add" data-type="1" class="clsFullWidth cls_btn_plus" tabindex="31" 
                                                 onclick="Email(this)" />
                                         </td>
                                     </tr>
@@ -893,7 +852,7 @@
                                     <tr>
                                         <td class="paddingtd"></td>
                                         <td>
-                                            <input type="text" id="txtPhone2" runat="server" tabindex="7" data-type="2" class='clsMaskPhone' clientidmode="Static" placeholder="___-___-____" />
+                                            <input type="text" id="txtPhone2" runat="server" tabindex="7" data-type="2" onblur="CheckDuplicatePhone(this)" class='clsMaskPhone' clientidmode="Static" placeholder="___-___-____" />
                                         </td>
                                         <td>
                                             <label class="clsFullWidth">Phone Type</label>
@@ -921,7 +880,7 @@
                                     <tr>
                                         <td class="paddingtd"></td>
                                         <td>
-                                            <input type="text" id="txtEMail2" runat="server" tabindex="7" placeholder="EMail" />
+                                            <input type="text" id="txtEMail2" runat="server" tabindex="7" placeholder="EMail" onblur="CheckDuplicateEmail(this)"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -1221,7 +1180,7 @@
 
                                     <ajaxToolkit:AutoCompleteExtender ID="ddlCompany1" runat="server" TargetControlID="txtEndAddress" Enabled="True"
                                         MinimumPrefixLength="1" EnableCaching="true" CompletionSetCount="1" CompletionInterval="1000" ServicePath=""
-                                        ServiceMethod="LoadAddress" DelimiterCharacters="" OnClientItemSelected="OnSelectAddress">
+                                        ServiceMethod="LoadAddress" DelimiterCharacters="" > <%--OnClientItemSelected="OnSelectAddress"--%>
                                     </ajaxToolkit:AutoCompleteExtender>
                                     <%--<td>
                                    <asp:Image ID="imgBefore" Width="40%" Height="40px" runat="server" />

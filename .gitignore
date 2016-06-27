@@ -1,22 +1,43 @@
-JG_Prospect-New/JG_Prospect.web/Sr_App/Customer_Profile.aspx
-*.pdb
-JG_Prospect-New/JG_Prospect.web/obj/Debug/JG_Prospect.web.csprojResolveAssemblyReference.cache
-*.dll
-*.dll
-*.pdb
-*.cache
-*.cache
-JG_Prospect-New/JG_Prospect.DAL/obj/Debug/JG_Prospect.DAL.csproj.FileListAbsolute.txt
-*.suo
-*.config
-JG_Prospect-New/JG_Prospect.v12.suo
-*.dll
-JG_Prospect-New/JG_Prospect.BLL/bin/Debug/JG_Prospect.BLL.pdb
-*.pdb
-JG_Prospect-New/JG_Prospect.web/obj/Debug/JG_Prospect.dll
-*.pdb
-*.pdb
-JG_Prospect-New/JG_Prospect.web/obj/Debug/JG_Prospect.pdb
-JG_Prospect-New/JG_Prospect.web/obj/Debug/JG_Prospect.pdb
-*.dll
-JG_Prospect-New/JG_Prospect.BLL/bin/Debug/JG_Prospect.BLL.dll
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows shortcuts
+*.lnk
+
+# =========================
+# Operating System Files
+# =========================
+
+# OSX
+# =========================
+
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk

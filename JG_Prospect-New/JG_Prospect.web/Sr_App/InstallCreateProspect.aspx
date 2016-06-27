@@ -64,8 +64,7 @@
             display: none;
         }
 
-          .black_overlay
-        {
+        .black_overlay {
             display: none;
             position: fixed;
             top: 0%;
@@ -79,8 +78,8 @@
             filter: alpha(opacity=80);
             overflow-y: hidden;
         }
-        .white_content
-        {
+
+        .white_content {
             display: none;
             position: absolute;
             top: 10%;
@@ -152,7 +151,7 @@
                                     <asp:Label ID="lblException" runat="server" Visible="false"></asp:Label>
                                     First Name<span>*</span></label>
                                 <asp:TextBox ID="txtfirstname" runat="server" MaxLength="25" TabIndex="101" autocomplete="off"
-                                    EnableViewState="false" onkeypress="return lettersOnly(event);"  AutoCompleteType="None" OnTextChanged="txtfirstname_TextChanged" Width="218px"></asp:TextBox>
+                                    EnableViewState="false" onkeypress="return lettersOnly(event);" AutoCompleteType="None" OnTextChanged="txtfirstname_TextChanged" Width="218px"></asp:TextBox>
                                 &nbsp;&nbsp;
                                 <br />
                                 <label></label>
@@ -163,13 +162,14 @@
                         <tr>
                             <td>
                                 <label>
-                                    Company Name <span></span>
-                                </label>
-                                <asp:TextBox ID="txtCompanyName" runat="server" MaxLength="50" TabIndex="103" Width="218px" autocomplete="off"
-                                    EnableViewState="false" AutoCompleteType="None" onkeypress="return lettersOnly(event);" OnTextChanged="txtCompanyName_TextChanged"></asp:TextBox>
-                                <br />
-                                <label></label>
+                                    &nbsp;Designation<span>*</span></label>
+                                <asp:DropDownList ID="ddldesignation" runat="server" Width="249px" TabIndex="101" ClientIDMode="Static" AutoPostBack="True" OnSelectedIndexChanged="ddldesignation_SelectedIndexChanged">
+                                </asp:DropDownList>
+                                <asp:RequiredFieldValidator ID="rqDesignition" runat="server" ControlToValidate="ddldesignation"
+                                    ValidationGroup="submit" ForeColor="Red" Display="Dynamic" ErrorMessage="Please Select Designation"
+                                    InitialValue="0"></asp:RequiredFieldValidator>
                             </td>
+
                         </tr>
 
 
@@ -203,32 +203,30 @@
                         </tr>
 
 
-
+                        <%if(isInstallUser==true){ %>
                         <tr>
                             <td>
                                 <%--<asp:UpdatePanel ID="UpdatePanel13" runat="server">
                                     <ContentTemplate>--%>
-                                        <label>
-                                            Primary Trade<span>*</span></label>
-                                        <%--"ddlPrimaryTrade_SelectedIndexChanged"--%>
-                                        <asp:DropDownList ID="ddlPrimaryTrade" runat="server" TabIndex="108" CausesValidation="false"
-                                            OnSelectedIndexChanged="ddlPrimaryTrade_SelectedIndexChanged" Style=" border: 1px solid; border-radius: 5px; width: 227px;" AutoPostBack="True">
-                                        </asp:DropDownList>
-                                        <br />
-                                        <label>
-                                        </label>
-                                        <asp:TextBox ID="txtOtherTrade" TabIndex="109" runat="server" Width="217px"></asp:TextBox>
-                                    <%--</ContentTemplate>
+                                <label>
+                                    Primary Trade<span>*</span></label>
+                                <%--"ddlPrimaryTrade_SelectedIndexChanged"--%>
+                                <asp:DropDownList ID="ddlPrimaryTrade" runat="server" TabIndex="108" CausesValidation="false"
+                                    OnSelectedIndexChanged="ddlPrimaryTrade_SelectedIndexChanged" Style="border: 1px solid; border-radius: 5px; width: 227px;" AutoPostBack="True">
+                                </asp:DropDownList>
+                                <br />
+                                <label>
+                                </label>
+                                <asp:TextBox ID="txtOtherTrade" TabIndex="109" runat="server" Width="217px"></asp:TextBox>
+                                <%--</ContentTemplate>
                                 </asp:UpdatePanel>--%>
-                                
 
-                                <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ControlToValidate="ddlPrimaryTrade" Display="Dynamic"
+
+                                <asp:RequiredFieldValidator ID="RfvPrimaryTrade" runat="server" ControlToValidate="ddlPrimaryTrade" Display="Dynamic"
                                     ValidationGroup="submit" InitialValue="0" ForeColor="Red" ErrorMessage="Please Select Primary Trade"></asp:RequiredFieldValidator>
-
-
                             </td>
                         </tr>
-
+                        <%} %>
                         <tr>
                             <td class="style2">
                                 <label>
@@ -256,7 +254,7 @@
                                 <%--<asp:Button ID="btn_UploadFiles" style="display:none;" ClientIDMode="AutoID" runat="server" OnClick="btn_UploadFiles_Click" CssClass="cancel"
                                     with="10%" Text="Upload" TabIndex="113" Height="29px" />--%>
                                 <asp:Button ID="btn_UploadFiles" ClientIDMode="Static" runat="server" CausesValidation="false"
-                                                        Text="hidden" Style="display: none" OnClick="btn_UploadFiles_Click" />
+                                    Text="hidden" Style="display: none" OnClick="btn_UploadFiles_Click" />
                                 <%--<asp:FileUpload ID="flpUploadFiles" MaxLength="40" runat="server" class="multi" Width="74%"
                                     TabIndex="112" />--%>
                                 &nbsp;
@@ -283,7 +281,7 @@
                                         </asp:TemplateField>
                                     </Columns>
                                 </asp:GridView>
-                                        <%--</ContentTemplate>
+                                <%--</ContentTemplate>
                                     <Triggers>
                                         <asp:AsyncPostBackTrigger ControlID="AsyncFileUploadCustomerAttachment" EventName="UploadedComplete" />
                                     </Triggers>
@@ -300,7 +298,7 @@
                             <td class="style1">
                                 <label>
                                     Last Name<span>*</span></label>
-                                <asp:TextBox ID="txtlastname" runat="server"  MaxLength="25" onkeypress="return lettersOnly(event);" Width="218px" TabIndex="102" autocomplete="off"
+                                <asp:TextBox ID="txtlastname" runat="server" MaxLength="25" onkeypress="return lettersOnly(event);" Width="218px" TabIndex="102" autocomplete="off"
                                     OnTextChanged="txtlastname_TextChanged"></asp:TextBox>
                                 &nbsp;&nbsp;
                                 <br />
@@ -309,14 +307,21 @@
                                     ForeColor="Red" Display="Dynamic" ValidationGroup="submit">Enter LastName</asp:RequiredFieldValidator><br />
                             </td>
                         </tr>
+                        <%if(isInstallUser==true){ %>
                         <tr>
                             <td class="style2">
+
                                 <label>
-                                    &nbsp;</label>
+                                    Company Name <span></span>
+                                </label>
+                                <asp:TextBox ID="txtCompanyName" runat="server" MaxLength="50" TabIndex="103" Width="218px" autocomplete="off"
+                                    EnableViewState="false" AutoCompleteType="None" onkeypress="return lettersOnly(event);" OnTextChanged="txtCompanyName_TextChanged"></asp:TextBox>
                                 <br />
-                                <br />
+                                <label></label>
+
                             </td>
                         </tr>
+                        <%} %>
                         <tr>
                             <td class="style2">
                                 <label>
@@ -352,29 +357,29 @@
 
 
 
-
+                        <%if(isInstallUser==true){ %>
                         <tr>
                             <td>
 
                                 <%--<asp:UpdatePanel ID="UpdatePanel1" runat="server">
                                     <ContentTemplate>--%>
-                                        <label>
-                                            Secondary Trade <span>*</span></label>
+                                <label>
+                                    Secondary Trade <span>*</span></label>
 
-                                        <asp:DropDownList ID="ddlSecondaryTrade" runat="server" TabIndex="110"
-                                            OnSelectedIndexChanged="ddlSecondaryTrade_SelectedIndexChanged" Style=" border: 1px solid; border-radius: 5px; width: 227px;" AutoPostBack="True">
-                                        </asp:DropDownList>
-                                        <br />
-                                        <label>
-                                        </label>
-                                        <asp:TextBox ID="txtSecTradeOthers" TabIndex="111" runat="server" Width="215px"></asp:TextBox>
-                                    <%--</ContentTemplate>
+                                <asp:DropDownList ID="ddlSecondaryTrade" runat="server" TabIndex="110"
+                                    OnSelectedIndexChanged="ddlSecondaryTrade_SelectedIndexChanged" Style="border: 1px solid; border-radius: 5px; width: 227px;" AutoPostBack="True">
+                                </asp:DropDownList>
+                                <br />
+                                <label>
+                                </label>
+                                <asp:TextBox ID="txtSecTradeOthers" TabIndex="111" runat="server" Width="215px"></asp:TextBox>
+                                <%--</ContentTemplate>
                                 </asp:UpdatePanel>--%>
-                                <asp:RequiredFieldValidator ID="RequiredFieldValidator5" runat="server" ControlToValidate="ddlSecondaryTrade"
+                                <asp:RequiredFieldValidator ID="RfvSecondaryTrade" runat="server" ControlToValidate="ddlSecondaryTrade"
                                     ValidationGroup="submit" InitialValue="0" Display="Dynamic" ForeColor="Red" ErrorMessage="Please Select Secondary Trade"></asp:RequiredFieldValidator>
                             </td>
                         </tr>
-
+                        <%} %>
                         <tr>
                             <td>
                                 <label>
@@ -497,45 +502,43 @@
                     </center>
             </div>--%>
         </div>
-         <asp:Panel ID="panelPopup" runat="server">
-        <div id="light" class="white_content">
-            <h3>
-                </h3>
-            <%--<a href="javascript:void(0)" onclick="document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">
+        <asp:Panel ID="panelPopup" runat="server">
+            <div id="light" class="white_content">
+                <h3></h3>
+                <%--<a href="javascript:void(0)" onclick="document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">
                 Close</a>--%>
-            <table width="100%" style="border: Solid 3px #b04547; width: 100%; height: 100%"
-                cellpadding="0" cellspacing="0">
-                <tr style="background-color: #b04547">
-                    <td colspan="2" style="color: White; font-weight: bold; font-size: larger"
-                        align="center"></td>
-                </tr>
-                <tr>
-                    <td align="left" colspan="2">Email or Phone number already exists,do you want to update the existing record?
-                    </td>
-                </tr>
-                <tr>
-                    <td align="left" colspan="2" style="height:15px;">
-                    </td>
-                </tr>
-                <tr>
-                    <td align="center">
-                         <asp:Button ID="btnYesEdit" runat="server" BackColor="#327FB5" ForeColor="White" Height="32px"
-                            Style="height: 26px; font-weight: 700; line-height: 1em;" Text="Yes" Width="100px" 
-                            ValidationGroup="IndiCred" TabIndex="119" OnClick="Yes_Click" />
-                        <%--<asp:Button ID="Button2" runat="server" OnClick="" />--%>
-                    </td>
-                    <td align="center">
-                        <asp:Button ID="Button2" runat="server" BackColor="#327FB5" ForeColor="White" Height="32px"
-                            Style="height: 26px; font-weight: 700; line-height: 1em;" Text="No" Width="100px"
-                            ValidationGroup="IndiCred" TabIndex="119" OnClick="No_Click" />
-                        <%--<asp:Button ID="Button3" runat="server" OnClick="No_Click" />--%>
-                    </td>
-                </tr>
-            </table>
+                <table width="100%" style="border: Solid 3px #b04547; width: 100%; height: 100%"
+                    cellpadding="0" cellspacing="0">
+                    <tr style="background-color: #b04547">
+                        <td colspan="2" style="color: White; font-weight: bold; font-size: larger"
+                            align="center"></td>
+                    </tr>
+                    <tr>
+                        <td align="left" colspan="2">Email or Phone number already exists,do you want to update the existing record?
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left" colspan="2" style="height: 15px;"></td>
+                    </tr>
+                    <tr>
+                        <td align="center">
+                            <asp:Button ID="btnYesEdit" runat="server" BackColor="#327FB5" ForeColor="White" Height="32px"
+                                Style="height: 26px; font-weight: 700; line-height: 1em;" Text="Yes" Width="100px"
+                                ValidationGroup="IndiCred" TabIndex="119" OnClick="Yes_Click" />
+                            <%--<asp:Button ID="Button2" runat="server" OnClick="" />--%>
+                        </td>
+                        <td align="center">
+                            <asp:Button ID="Button2" runat="server" BackColor="#327FB5" ForeColor="White" Height="32px"
+                                Style="height: 26px; font-weight: 700; line-height: 1em;" Text="No" Width="100px"
+                                ValidationGroup="IndiCred" TabIndex="119" OnClick="No_Click" />
+                            <%--<asp:Button ID="Button3" runat="server" OnClick="No_Click" />--%>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </asp:Panel>
+        <div id="fade" class="black_overlay">
         </div>
-    </asp:Panel>
-    <div id="fade" class="black_overlay">
-    </div>
 
 
     </div>

@@ -164,7 +164,8 @@ namespace JG_Prospect.Sr_App
                         }
                         else
                         {
-                            ddlStatus.Items.FindByValue(Status).Selected = true;
+                            //ddlStatus.Items.FindByValue(Status).Selected = true;
+                            ddlStatus.SelectedIndex = ddlStatus.Items.IndexOf(ddlStatus.Items.FindByValue(Convert.ToString(Status)));
                         }
 
                     }

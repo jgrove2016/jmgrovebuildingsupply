@@ -146,13 +146,10 @@ namespace JG_Prospect.Sr_App.Product_Line
             txtProposalCost.Enabled = false;
             txtCustSupMaterial.Enabled = false;
             chkCustSupMaterial.Enabled = false;
-
-            ddlMaterialStorage.Enabled = false;
-            chkMaterialStorage.Enabled = false;
-
-            ddlDumpStorageLocation.Enabled = false;
-            chkDumpStorageLocation.Enabled = false;
-
+            txtStorage.Enabled = false;
+            drpMaterial.Enabled = false;
+            drpStorage.Enabled = false;
+            chkStorage.Enabled = false;
             txtspecialIns.Enabled = false;
             chkPermit.Enabled = false;
             chkHabitat.Enabled = false;
@@ -195,37 +192,23 @@ namespace JG_Prospect.Sr_App.Product_Line
                 txtspecialIns.Text = custom.SpecialInstruction;
                 txtworkarea.Text = custom.WorkArea;
                 txtCustSupMaterial.Text = custom.CustSuppliedMaterial;
+                if (custom.CustSuppliedMaterial == "")
+                    drpMaterial.SelectedItem.Text = "Select";
+                else
+                drpMaterial.SelectedItem.Text = custom.CustSuppliedMaterial;
                 chkCustSupMaterial.Checked = custom.IsCustSupMatApplicable;
-
-                chkMaterialStorage.Checked = !custom.IsMatStorageApplicable;
-
-                if (custom.IsMatStorageApplicable)
-                {
-                    ddlMaterialStorage.Enabled = true; 
-                    var customMaterialStorageItem = ddlMaterialStorage.Items.FindByText(custom.MaterialStorage);
-                    if (customMaterialStorageItem != null)
-                    {
-                        customMaterialStorageItem.Selected = true;
-                    }
-                }
-
-                chkDumpStorageLocation.Checked = !custom.IsDumpStorageApplicable;
-                if (custom.IsDumpStorageApplicable)
-                {
-                    ddlDumpStorageLocation.Enabled = true;
-                    var customDumpStorageItem = ddlDumpStorageLocation.Items.FindByText(custom.DumpStorage);
-                    if (customDumpStorageItem != null)
-                    {
-                        customDumpStorageItem.Selected = true;
-                    }
-                }
-
+                txtStorage.Text = custom.MaterialStorage;
+                if (custom.MaterialStorage == "")
+                    drpStorage.SelectedItem.Text = "Select";
+                else
+                    drpStorage.SelectedItem.Text = custom.MaterialStorage;
+                chkStorage.Checked = custom.IsMatStorageApplicable;
                 chkPermit.Checked = custom.IsPermitRequired;
                 chkHabitat.Checked = custom.IsHabitat;
                 lnkDownload.Text = custom.Attachment;
                 ViewState[SessionKey.Key.PagedataTable.ToString()] = custom.CustomerLocationPics;
-                gvCategory.DataSource = custom.CustomerLocationPics;
-                gvCategory.DataBind();
+                gvCategory1.DataSource = custom.CustomerLocationPics;
+                gvCategory1.DataBind();
             }
         }
 
@@ -241,20 +224,15 @@ namespace JG_Prospect.Sr_App.Product_Line
             txtworkarea.Text = string.Empty;
             txtCustSupMaterial.Text = string.Empty;
             chkCustSupMaterial.Checked = false;
-            
-            ddlMaterialStorage.SelectedIndex = 0;
-            chkMaterialStorage.Checked = false;
-
-            ddlDumpStorageLocation.SelectedIndex = 0;
-            chkDumpStorageLocation.Checked = false;
-
+            txtStorage.Text = string.Empty;
+            chkStorage.Checked = false;
             chkPermit.Checked = false;
             chkHabitat.Checked = false;
             lnkDownload.Visible = false;
             ViewState[SessionKey.Key.PagedataTable.ToString()] = null;
             ViewState[QueryStringKey.Key.ProductTypeId.ToString()] = null;
-            gvCategory.DataSource = null;
-            gvCategory.DataBind();
+            gvCategory1.DataSource = null;
+            gvCategory1.DataBind();
         }
 
         protected void btnexit_Click(object sender, EventArgs e)
@@ -293,7 +271,10 @@ namespace JG_Prospect.Sr_App.Product_Line
 
                     string xml = "<root>";
 
-                    List<CustomerLocationPic> pics = (List<CustomerLocationPic>)ViewState[SessionKey.Key.PagedataTable.ToString()];
+                    //Commented by Yogesh Keraliya : Technical intervie task#9
+                    //Implemented drag and drop location image uploader so images will be stored in hidden file and from that need to get pic list
+                    //List<CustomerLocationPic> pics = (List<CustomerLocationPic>)ViewState[SessionKey.Key.PagedataTable.ToString()];
+                    List<CustomerLocationPic> pics = GetUploadedLocationPictures();
 
                     var image = pics.AsEnumerable().Take(1);
                     string mainImage = image.FirstOrDefault().LocationPicture;
@@ -345,15 +326,25 @@ namespace JG_Prospect.Sr_App.Product_Line
                         custom.Attachment = lnkDownload.Text;
                     }
                     else { custom.Attachment = string.Empty; }
+                    // custom.CustSuppliedMaterial = txtCustSupMaterial.Text.Trim();
+
+                    if (drpMaterial.SelectedItem.Text == "other")
                     custom.CustSuppliedMaterial = txtCustSupMaterial.Text.Trim();
+                    else if (drpMaterial.SelectedItem.Text == "Select")
+                        custom.CustSuppliedMaterial = "";
+                    else
+
+                        custom.CustSuppliedMaterial = drpMaterial.SelectedItem.Text;
                     custom.IsCustSupMatApplicable = chkCustSupMaterial.Checked;
-                    
-                    custom.MaterialStorage = ddlMaterialStorage.SelectedItem.Text;
-                    custom.DumpStorage = ddlDumpStorageLocation.SelectedItem.Text;
+                    //custom.MaterialStorage = txtStorage.Text.Trim();
+                    if (drpStorage.SelectedItem.Text == "other")
 
-                    custom.IsMatStorageApplicable = !chkMaterialStorage.Checked;
-                    custom.IsDumpStorageApplicable = !chkDumpStorageLocation.Checked;
-
+                        custom.MaterialStorage = txtStorage.Text.Trim();
+                    else if (drpStorage.SelectedItem.Text == "Select")
+                        custom.MaterialStorage = "";
+                    else
+                        custom.MaterialStorage = drpStorage.SelectedItem.Text;
+                    custom.IsMatStorageApplicable = chkStorage.Checked;
                     custom.IsPermitRequired = chkPermit.Checked;
                     custom.IsHabitat = chkHabitat.Checked;
                     custom.Others = OtherText;
@@ -388,6 +379,32 @@ namespace JG_Prospect.Sr_App.Product_Line
             {
                 logManager.writeToLog(ex, "Custom", Request.ServerVariables["remote_addr"].ToString());
             }
+        }
+
+        /// <summary>
+        /// Get location pictures uploaded by user from hidden filed.
+        /// Created By: Yogesh K
+        /// Created Date: 06/17/2016
+        /// </summary>
+        /// <returns>List of CustomerLocationPic</returns>
+        private List<CustomerLocationPic> GetUploadedLocationPictures()
+        {
+            List<CustomerLocationPic> pics = new List<CustomerLocationPic>();
+
+            //check if any image is uplopaded by customer or not.
+            if (!String.IsNullOrEmpty(locimages.Value))
+            {
+                String[] locationPics = locimages.Value.Split(new char[] { '^' }, StringSplitOptions.RemoveEmptyEntries);
+
+                for (int i = 0; i < locationPics.Length; i++)
+                {
+                    pics.Add(new CustomerLocationPic { RowSerialNo = i + 1, LocationPicture = locationPics[i] });
+                }
+
+                locimages.Value = string.Empty;
+            }
+
+            return pics;
         }
 
         protected void btnImageUploadClick_Click(object sender, EventArgs e)
@@ -436,8 +453,10 @@ namespace JG_Prospect.Sr_App.Product_Line
 
                 CustomerLocationPicturesList = pics;
                 hidCount.Value = pics.Count == 0 ? string.Empty : pics.Count.ToString();
-                gvCategory.DataSource = pics;
-                gvCategory.DataBind();
+                imglocation.Visible = true;
+                Image.Visible = true;
+                gvCategory1.DataSource = pics;
+                gvCategory1.DataBind();
             }
         }
         private bool ValidateImageUpload(string fileName)
@@ -474,14 +493,16 @@ namespace JG_Prospect.Sr_App.Product_Line
         {
             if (e.CommandName == "DeleteRec")
             {
-                int Id = Convert.ToInt32(e.CommandArgument.ToString());
-                List<CustomerLocationPic> pics = (List<CustomerLocationPic>)ViewState[SessionKey.Key.PagedataTable.ToString()];
-                pics.Remove(pics.FirstOrDefault(id => id.RowSerialNo == Id));
-                ViewState[SessionKey.Key.PagedataTable.ToString()] = pics;
-                hidCount.Value = "";
-                hidCount.Value = pics.Count.ToString();
-                gvCategory.DataSource = pics;
-                gvCategory.DataBind();
+                //int Id = Convert.ToInt32(e.CommandArgument.ToString());
+                //List<CustomerLocationPic> pics = (List<CustomerLocationPic>)ViewState[SessionKey.Key.PagedataTable.ToString()];
+                //pics.Remove(pics.FirstOrDefault(id => id.RowSerialNo == Id));
+                //ViewState[SessionKey.Key.PagedataTable.ToString()] = pics;
+                //hidCount.Value = "";
+                //hidCount.Value = pics.Count.ToString();
+                //gvCategory.DataSource = pics;
+                //gvCategory.DataBind();
+                gvCategory1.DataSource = ViewState[SessionKey.Key.PagedataTable.ToString()];
+                gvCategory1.DataBind();
             }
         }
 
@@ -497,9 +518,9 @@ namespace JG_Prospect.Sr_App.Product_Line
 
         protected void gvCategory_PageIndexChanging(object sender, GridViewPageEventArgs e)
         {
-            gvCategory.PageIndex = e.NewPageIndex;
-            gvCategory.DataSource = ViewState[SessionKey.Key.PagedataTable.ToString()];
-            gvCategory.DataBind();
+            //gvCategory1.PageIndex = e.NewPageIndex;
+            //gvCategory1.DataSource = ViewState[SessionKey.Key.PagedataTable.ToString()];
+            //gvCategory1.DataBind();
         }
 
         protected void lnkDownload_Click(object sender, EventArgs e)
@@ -517,32 +538,99 @@ namespace JG_Prospect.Sr_App.Product_Line
             if (chkCustSupMaterial.Checked == true)
             {
                 txtCustSupMaterial.Enabled = false;
+                drpMaterial.Enabled = false;
                 txtCustSupMaterial.Text = "";
             }
             else
             {
                 txtCustSupMaterial.Enabled = true;
+                drpMaterial.Enabled = true;
                 txtCustSupMaterial.Text = "";
             }
         }
 
-        protected void chkDumpStorageLocation_CheckedChanged(object sender, EventArgs e)
+        protected void chkStorage_CheckedChanged(object sender, EventArgs e)
         {
-            ddlDumpStorageLocation.SelectedIndex = 0;
-            if (chkDumpStorageLocation.Checked == true)
-                ddlDumpStorageLocation.Enabled = false;
+            if (chkStorage.Checked == true)
+        {
+                txtStorage.Enabled = false;
+                drpStorage.Enabled = false;
+                txtStorage.Text = "";
+            }
             else
-                ddlDumpStorageLocation.Enabled = true;
+            {
+                txtStorage.Enabled = true;
+                drpStorage.Enabled = true;
+                txtStorage.Text = "";
+            }
         }
 
-        protected void chkMaterialStorage_CheckedChanged(object sender, EventArgs e)
+      
+
+        protected void gvCategory1_ItemCommand(object source, DataListCommandEventArgs e)
         {
-            ddlMaterialStorage.SelectedIndex = 0;
-            if (chkMaterialStorage.Checked == true)
-                ddlMaterialStorage.Enabled = false;
-            else
-                ddlMaterialStorage.Enabled = true;
+            if (e.CommandName == "DeleteRec")
+            {
+                int Id = Convert.ToInt32(e.CommandArgument.ToString());
+                List<CustomerLocationPic> pics = (List<CustomerLocationPic>)ViewState[SessionKey.Key.PagedataTable.ToString()];
+                pics.Remove(pics.FirstOrDefault(id => id.RowSerialNo == Id));
+                ViewState[SessionKey.Key.PagedataTable.ToString()] = pics;
+                hidCount.Value = "";
+                hidCount.Value = pics.Count.ToString();
+                if (hidCount.Value=="0")
+                { imglocation.Visible = false;
+                    imglocation.ImageUrl = "";
+                    Image.Visible = false;
+                }
+                    
+                gvCategory1.DataSource = pics;
+                gvCategory1.DataBind();
+               
+            }
+
+            if (e.CommandName == "ShowRec")
+            {
+                int Id = Convert.ToInt32(e.CommandArgument.ToString());
+                List<CustomerLocationPic> pics = (List<CustomerLocationPic>)ViewState[SessionKey.Key.PagedataTable.ToString()];
+                
+                CustomerLocationPic pics1 = pics.FirstOrDefault(id => id.RowSerialNo == Id);//.Single<CustomerLocationPic>();
+                string strImage = pics1.LocationPicture;
+                imglocation.ImageUrl = strImage;
+                
+            }
+            
         }
 
+        protected void gvCategory1_ItemDataBound(object sender, DataListItemEventArgs e)
+        {
+            if (e.Item.ItemType ==  ListItemType.Item)
+            {
+                CustomerLocationPic dr = (CustomerLocationPic)e.Item.DataItem;
+                string strImage = dr.LocationPicture;
+                imglocation.ImageUrl = strImage;
+                //((Image)(e.Row.FindControl("imglocation"))).ImageUrl = "~/CustomerDocs/LocationPics/" + strImage;
+            }
+        }
+
+        
+
+        protected void drpMaterial_TextChanged(object sender, EventArgs e)
+        {
+
+            DropDownList drp = sender as DropDownList;
+            if (drp.SelectedItem.Value == "other")
+                txtCustSupMaterial.Visible = true;
+            else
+                txtCustSupMaterial.Visible = false;
+        }
+        
+        protected void drpStorage_TextChanged(object sender, EventArgs e)
+        {
+            DropDownList drp = sender as DropDownList;
+            if (drp.SelectedItem.Value == "other")
+                txtStorage.Visible = true;
+            else
+                txtStorage.Visible = false;
+        }
     }
 }

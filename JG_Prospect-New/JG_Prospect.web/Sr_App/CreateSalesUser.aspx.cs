@@ -21,10 +21,18 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using Word = Microsoft.Office.Interop.Word;
+
+
+
+
+
 namespace JG_Prospect.Sr_App
 {
     public partial class CreateSalesUser : System.Web.UI.Page
     {
+
+        private static int UserId = 0;
+        private static int ColorFlag = 0;
         user objuser = new user();
         string fn;
         List<string> newAttachments = new List<string>();
@@ -42,6 +50,22 @@ namespace JG_Prospect.Sr_App
             CalendarExtender4.StartDate = DateTime.Now;
             CalendarExtender5.EndDate = DateTime.Now;
             //createForeMenForJobAcceptance();
+
+            //New code -HR changes and log
+            //hide touch ppoint log grid for new customer and make it visible on view profile of customer
+            if (Request.QueryString ["Id"] != null)
+            {
+                touchPointlogPanel.Visible = true;
+                if (Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()] != null)
+                {
+                    UserId = Convert.ToInt16(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]);
+                }
+                bindGrid();
+            }
+            else
+            {
+                touchPointlogPanel.Visible = false;
+            }
             if (!IsPostBack)
             {
                 BindProducts1();
@@ -283,6 +307,7 @@ namespace JG_Prospect.Sr_App
                 //}
                 if (Request.QueryString["ID"] != null)
                 {
+                    
                     btnUpdate.Visible = true;
                     btncreate.Visible = false;
                     btnreset.Visible = false;
@@ -1912,6 +1937,10 @@ namespace JG_Prospect.Sr_App
             }
         }
 
+ 
+       
+        // New code change -HR change for fields and touch point log
+
         //Save functionality......
         protected void btncreate_Click(object sender, EventArgs e)
         {
@@ -1943,6 +1972,14 @@ namespace JG_Prospect.Sr_App
                 ViewState["pass"] = txtpassword.Text;
                 objuser.designation = ddldesignation.SelectedItem.Text;
                 objuser.phone = txtPhone.Text;
+                if (phoneTypeDropDownList.SelectedItem.Text == "Select")
+                {
+                    objuser.phonetype = "";
+                }
+                else
+                {
+                    objuser.phonetype = phoneTypeDropDownList.SelectedItem.Text;
+                }
                 objuser.DateSourced = txtDateSourced.Text;
                 //if (flpUplaodPicture.FileName != string.Empty)
                 //{
@@ -5831,6 +5868,42 @@ namespace JG_Prospect.Sr_App
                 //System.Web.UI.WebControls.ListItem item = ddlCountry.Items[i];
                 //item.Attributes["data-image"] = imageURL;
             }
+        }
+
+
+        protected void grdTouchPointLog_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                if (ColorFlag == JGConstant.ZERO)
+                {
+                    e.Row.ForeColor = System.Drawing.Color.Red;
+                    ColorFlag = JGConstant.ONE;
+                }
+                else
+                {
+                    e.Row.ForeColor = System.Drawing.Color.Black;
+                    ColorFlag = JGConstant.ZERO;
+                }
+            }
+        }
+
+        protected void bindGrid()
+        {
+            int CustomerId = Convert.ToInt32(Session["ID"]);
+            DataSet ds = InstallUserBLL.Instance.GetSalesTouchPointLogData(CustomerId, UserId);
+            grdTouchPointLog.DataSource = ds;
+            grdTouchPointLog.DataBind();
+           // txtAddNotes.Text = "";
+        }
+
+        protected void btnAddNotes_Click(object sender, EventArgs e)
+        {
+            string note = txtAddNotes.Text.Trim();
+            int CustomerId = Convert.ToInt32(Session["ID"]);
+            InstallUserBLL.Instance.AddSalesFollowUp(CustomerId, UserId, DateTime.Now, note);
+            txtAddNotes.Text = string.Empty;
+            bindGrid();
         }
     }
 }

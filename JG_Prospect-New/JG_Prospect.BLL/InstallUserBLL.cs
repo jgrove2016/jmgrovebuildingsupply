@@ -59,7 +59,15 @@ namespace JG_Prospect.BLL
         {
             return InstallUserDAL.Instance.AddIntsallUser(objuser);
         }
+        public int AddSalesFollowUp(int customerid, int userId, DateTime meetingdate, string Status)
+        {
+            return InstallUserDAL.Instance.AddSalesFollowUp(customerid, meetingdate, Status, userId);
+        }
 
+        public DataSet GetSalesTouchPointLogData(int CustomerId, int userid)
+        {
+            return InstallUserDAL.Instance.GetSalesTouchPointLogData(CustomerId, userid);
+        }
         public void UpdateProspect(user objuser)
         {
             InstallUserDAL.Instance.UpdateProspect(objuser);
@@ -428,5 +436,37 @@ namespace JG_Prospect.BLL
         {
             InstallUserDAL.Instance.ChangeStatusToInterviewDate(Status, StatusId, RejectionDate, RejectionTime, RejectedUserId, time, StatusReason);
         }
+
+        public bool UpdateOfferMade(int Id, string Email, string password)
+        {
+            return InstallUserDAL.Instance.UpdateOfferMade(Id, Email, password);
+        }
+
+        public DataSet GetHrData(DateTime fromdate, DateTime todate, int userid)
+        {
+            return InstallUserDAL.Instance.GetHrData(fromdate, todate, userid);
+        }
+
+        public DataSet GetHrDataForHrReports(DateTime fromDate, DateTime toDate, int userid)
+        {
+            return InstallUserDAL.Instance.GetHrDataForHrReports(fromDate, toDate, userid);
+        }
+
+        public DataSet FilteHrData(DateTime fromDate, DateTime toDate, string designation, string status)
+        {
+            return InstallUserDAL.Instance.FilteHrData(fromDate, toDate, designation, status);
+        }
+
+        public DataSet GetActiveUsers()
+        {
+            return InstallUserDAL.Instance.GetActiveUsers();
+        }
+        public DataSet GetActiveContractors()
+        {
+            return InstallUserDAL.Instance.GetActiveContractors();
+
+        }
+
+
     }
 }

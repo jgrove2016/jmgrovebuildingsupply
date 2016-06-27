@@ -1,0 +1,77 @@
+
+
+ALTER Procedure [dbo].[Sp_Address_Validation]                    
+(                    
+@CustomerAddress CustomerAddress readonly,                    
+@CustomersPrimaryContact CustomersPrimaryContact Readonly,        
+@customerid int =0        
+)                    
+As                     
+BEGIN                    
+       
+ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[CustomerAddressTemp]') AND type in (N'U'))      
+  DROP TABLE CustomerAddressTemp;      
+               
+ IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[CustomersPrimaryContactTemp]') AND type in (N'U'))      
+  DROP TABLE CustomersPrimaryContactTemp;      
+                           
+declare @Msg Varchar(Max) = 'Contact is NOT Exists'             
+        
+IF (@customerid =0)        
+BEGIN        
+        
+	IF Exists ((SELECT 'X' From  dbo.new_Customer  a,@CustomersPrimaryContact b                     
+	WHERE a.Email =b.strEMail)
+	UNION ALL                    
+	(SELECT 'X' From  dbo.tblCustomersPrimaryContact  a,@CustomersPrimaryContact b                     
+	WHERE a.strEMail = b.strEMail)) 
+	BEGIN                    
+		SELECT @msg='Email ID already exists'                    
+	END         
+	ELSE IF Exists ((SELECT 'X' From  dbo.new_Customer  a,@CustomersPrimaryContact b                     
+	WHERE (a.CellPh =b.[strPhoneNumber]))        
+	UNION ALL        
+	(SELECT 'X' From  dbo.tblCustomersPrimaryContact  a,@CustomersPrimaryContact b        
+	WHERE a.strPhoneNumber =b.strPhoneNumber))
+	BEGIN        
+		SELECT @msg ='Contact already exists'        
+	END         
+	ELSE         
+	BEGIN        
+		SELECT @msg ='Contact is NOT Exists'        
+	END        
+        
+END        
+        
+ELSE        
+BEGIN        
+
+	IF Exists ((SELECT 'X' From  dbo.new_Customer  a,@CustomersPrimaryContact b                     
+	WHERE a.Email =b.strEMail AND a.id != @customerid)
+	UNION ALL                    
+	(SELECT 'X' From  dbo.tblCustomersPrimaryContact  a,@CustomersPrimaryContact b                     
+	WHERE a.strEMail = b.strEMail AND a.intcustomerid != @customerid)) 
+	BEGIN                    
+		SELECT @msg='Email ID already exists'                    
+	END         
+	ELSE IF Exists ((SELECT 'X' From  dbo.new_Customer  a,@CustomersPrimaryContact b                     
+	WHERE (a.CellPh =b.[strPhoneNumber] AND a.id != @customerid))        
+	UNION ALL        
+	(SELECT 'X' From  dbo.tblCustomersPrimaryContact  a,@CustomersPrimaryContact b        
+	WHERE a.strPhoneNumber =b.strPhoneNumber AND a.intcustomerid != @customerid))
+	BEGIN        
+		SELECT @msg ='Contact already exists'        
+	END         
+	ELSE         
+	BEGIN        
+		SELECT @msg ='Contact is NOT Exists'        
+	END  
+
+END        
+        
+SELECT @msg        
+                    
+END
+GO
+
+

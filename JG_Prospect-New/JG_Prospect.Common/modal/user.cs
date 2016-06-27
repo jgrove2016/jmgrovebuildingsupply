@@ -15,6 +15,7 @@ namespace JG_Prospect.Common.modal
         public string usertype;
         public string status;
         public string phone;
+        public string phonetype;
         public string address;
         public string state;
         public string city;

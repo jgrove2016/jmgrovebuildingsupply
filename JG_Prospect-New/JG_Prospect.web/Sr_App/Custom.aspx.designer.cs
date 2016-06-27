@@ -94,6 +94,15 @@ namespace JG_Prospect.Sr_App.Product_Line {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvProposalCost;
         
         /// <summary>
+        /// hdnAttachments control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden hdnAttachments;
+        
+        /// <summary>
         /// AsyncFileUploadCustomerAttachment control.
         /// </summary>
         /// <remarks>
@@ -112,13 +121,13 @@ namespace JG_Prospect.Sr_App.Product_Line {
         protected global::System.Web.UI.WebControls.LinkButton lnkDownload;
         
         /// <summary>
-        /// txtCustSupMaterial control.
+        /// drpMaterial control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCustSupMaterial;
+        protected global::System.Web.UI.WebControls.DropDownList drpMaterial;
         
         /// <summary>
         /// chkCustSupMaterial control.
@@ -130,40 +139,40 @@ namespace JG_Prospect.Sr_App.Product_Line {
         protected global::System.Web.UI.WebControls.CheckBox chkCustSupMaterial;
         
         /// <summary>
-        /// ddlMaterialStorage control.
+        /// txtCustSupMaterial control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlMaterialStorage;
+        protected global::System.Web.UI.WebControls.TextBox txtCustSupMaterial;
         
         /// <summary>
-        /// chkMaterialStorage control.
+        /// drpStorage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkMaterialStorage;
+        protected global::System.Web.UI.WebControls.DropDownList drpStorage;
         
         /// <summary>
-        /// ddlDumpStorageLocation control.
+        /// chkStorage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlDumpStorageLocation;
+        protected global::System.Web.UI.WebControls.CheckBox chkStorage;
         
         /// <summary>
-        /// chkDumpStorageLocation control.
+        /// txtStorage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkDumpStorageLocation;
+        protected global::System.Web.UI.WebControls.TextBox txtStorage;
         
         /// <summary>
         /// txtworkarea control.
@@ -182,6 +191,15 @@ namespace JG_Prospect.Sr_App.Product_Line {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvworkarea;
+        
+        /// <summary>
+        /// locimages control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden locimages;
         
         /// <summary>
         /// ajaxFileUpload control.
@@ -211,13 +229,31 @@ namespace JG_Prospect.Sr_App.Product_Line {
         protected global::System.Web.UI.UpdatePanel pnlUpdate;
         
         /// <summary>
-        /// gvCategory control.
+        /// Image control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvCategory;
+        protected global::System.Web.UI.WebControls.Label Image;
+        
+        /// <summary>
+        /// imglocation control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Image imglocation;
+        
+        /// <summary>
+        /// gvCategory1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DataList gvCategory1;
         
         /// <summary>
         /// hidCount control.
