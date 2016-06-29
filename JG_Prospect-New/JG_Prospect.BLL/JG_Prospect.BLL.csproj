@@ -128,7 +128,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShutterPriceControlBLL.cs" />
     <Compile Include="shuttersBLL.cs" />
-    <Compile Include="TaskBLL.cs" />
     <Compile Include="TimeAndMaterialBLL.cs" />
     <Compile Include="UserBLL.cs" />
     <Compile Include="VendorBLL.cs" />
