@@ -88,7 +88,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShutterPriceControlDAL.cs" />
     <Compile Include="shuttersDAL.cs" />
-    <Compile Include="TaskDAL.cs" />
     <Compile Include="TimeAndMaterialDAL.cs" />
     <Compile Include="UserDAL.cs" />
     <Compile Include="VendorDAL.cs" />

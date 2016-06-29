@@ -507,6 +507,7 @@
     <Content Include="Sr_App\CallSheet.aspx" />
     <Content Include="Sr_App\ConstructionCalendar.aspx" />
     <Content Include="Sr_App\ContractFooter.aspx" />
+    <Content Include="Sr_App\Controls\AddProductLinesControl.ascx" />
     <Content Include="Sr_App\CreateSalesUser.aspx" />
     <Content Include="Sr_App\Custom.aspx" />
     <Content Include="Sr_App\CustomerEmailTemplate.aspx" />
@@ -997,6 +998,12 @@
     </Compile>
     <Compile Include="Sr_App\ContractFooter.aspx.designer.cs">
       <DependentUpon>ContractFooter.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Sr_App\Controls\AddProductLinesControl.ascx.cs">
+      <DependentUpon>AddProductLinesControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Sr_App\Controls\AddProductLinesControl.ascx.designer.cs">
+      <DependentUpon>AddProductLinesControl.ascx</DependentUpon>
     </Compile>
     <Compile Include="Sr_App\CreateSalesUser.aspx.cs">
       <DependentUpon>CreateSalesUser.aspx</DependentUpon>
