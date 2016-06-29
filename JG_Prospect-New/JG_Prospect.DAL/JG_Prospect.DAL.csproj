@@ -78,6 +78,7 @@
     <Compile Include="Database\MSSQLDataBase.cs" />
     <Compile Include="DLLAttendence.cs" />
     <Compile Include="existing_customerDAL.cs" />
+    <Compile Include="TaskGeneratorDAL.cs" />
     <Compile Include="InstallUserDAL.cs" />
     <Compile Include="Interface\IDataBase.cs" />
     <Compile Include="ndfdXML.cs">

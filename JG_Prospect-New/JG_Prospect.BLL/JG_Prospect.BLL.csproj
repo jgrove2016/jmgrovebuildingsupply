@@ -129,6 +129,7 @@
     <Compile Include="ShutterPriceControlBLL.cs" />
     <Compile Include="shuttersBLL.cs" />
     <Compile Include="TimeAndMaterialBLL.cs" />
+    <Compile Include="TaskGeneratorBLL.cs" />
     <Compile Include="UserBLL.cs" />
     <Compile Include="VendorBLL.cs" />
   </ItemGroup>
