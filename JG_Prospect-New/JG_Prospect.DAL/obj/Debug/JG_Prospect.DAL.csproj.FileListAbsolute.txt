@@ -101,3 +101,13 @@ C:\Users\Admin\Desktop\GIT\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL
 C:\Users\Admin\Desktop\GIT\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\obj\Debug\JG_Prospect.DAL.csprojResolveAssemblyReference.cache
 C:\Users\Admin\Desktop\GIT\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\obj\Debug\JG_Prospect.DAL.dll
 C:\Users\Admin\Desktop\GIT\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\obj\Debug\JG_Prospect.DAL.pdb
+F:\Ali Shahbas\JGrove_Working\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\JG_Prospect.DAL.dll
+F:\Ali Shahbas\JGrove_Working\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\JG_Prospect.DAL.pdb
+F:\Ali Shahbas\JGrove_Working\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\JG_Prospect.Common.dll
+F:\Ali Shahbas\JGrove_Working\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.dll
+F:\Ali Shahbas\JGrove_Working\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\Microsoft.Practices.Unity.dll
+F:\Ali Shahbas\JGrove_Working\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\Microsoft.Practices.Unity.Interception.dll
+F:\Ali Shahbas\JGrove_Working\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\bin\Debug\JG_Prospect.Common.pdb
+F:\Ali Shahbas\JGrove_Working\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\obj\Debug\JG_Prospect.DAL.csprojResolveAssemblyReference.cache
+F:\Ali Shahbas\JGrove_Working\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\obj\Debug\JG_Prospect.DAL.dll
+F:\Ali Shahbas\JGrove_Working\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.DAL\obj\Debug\JG_Prospect.DAL.pdb

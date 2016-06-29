@@ -183,3 +183,19 @@ C:\Users\Admin\Desktop\GIT\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL
 C:\Users\Admin\Desktop\GIT\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.csprojResolveAssemblyReference.cache
 C:\Users\Admin\Desktop\GIT\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.dll
 C:\Users\Admin\Desktop\GIT\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.pdb
+F:\Ali Shahbas\JGrove_Working\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.BLL.dll
+F:\Ali Shahbas\JGrove_Working\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.BLL.pdb
+F:\Ali Shahbas\JGrove_Working\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.AccessControl.dll
+F:\Ali Shahbas\JGrove_Working\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.Calendar.dll
+F:\Ali Shahbas\JGrove_Working\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.Client.dll
+F:\Ali Shahbas\JGrove_Working\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Google.GData.Extensions.dll
+F:\Ali Shahbas\JGrove_Working\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\itextsharp.dll
+F:\Ali Shahbas\JGrove_Working\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.Common.dll
+F:\Ali Shahbas\JGrove_Working\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.DAL.dll
+F:\Ali Shahbas\JGrove_Working\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.Unity.dll
+F:\Ali Shahbas\JGrove_Working\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\Microsoft.Practices.Unity.Interception.dll
+F:\Ali Shahbas\JGrove_Working\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.Common.pdb
+F:\Ali Shahbas\JGrove_Working\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\bin\Debug\JG_Prospect.DAL.pdb
+F:\Ali Shahbas\JGrove_Working\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.csprojResolveAssemblyReference.cache
+F:\Ali Shahbas\JGrove_Working\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.dll
+F:\Ali Shahbas\JGrove_Working\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.BLL\obj\Debug\JG_Prospect.BLL.pdb
