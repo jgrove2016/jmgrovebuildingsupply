@@ -1,6 +1,6 @@
 USE [jgrove_JGP]
 GO
--- ================================================
+/****** Object:  StoredProcedure [dbo].[usp_SearchUserTasks]    Script Date: 6/30/2016 8:05:04 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -10,20 +10,27 @@ GO
 -- Create date: 06/29/2016
 -- Description:	This will search task based on search parameters.
 -- =============================================
-CREATE PROCEDURE usp_SearchUserTasks
+CREATE PROCEDURE [dbo].[usp_SearchUserTasks]
 (
 @UserID INT = NULL,
 @Title  VARCHAR(250) = NULL,
 @Designation VARCHAR(50) = NULL,
 @Status TINYINT = NULL,
 @CreatedOn DATETIME =  NULL,
-@Start INT, -- pagenumber
-@PageLimit INT -- pagesize
+@Start INT = 0, -- pagenumber
+@PageLimit  INT = 5 -- pagesize
 )	
 AS
 BEGIN
-	
-SELECT        Tasks.TaskId, Tasks.Title, UsersMaster.Designation, UsersMaster.InstallId, UsersMaster.FristName, Tasks.[Status], Tasks.DueDate
+
+SET @Start = @Start + 1
+
+;WITH Tasklist
+AS
+(	
+SELECT        Tasks.TaskId, Tasks.Title, UsersMaster.Designation, UsersMaster.InstallId, UsersMaster.FristName, Tasks.[Status], Tasks.DueDate,
+			  Row_number() OVER(ORDER BY CONVERT(varchar,Tasks.[DueDate],101)) AS rownum
+
 FROM          tblTask AS Tasks INNER JOIN
               tblTaskUser AS TaskUsers ON Tasks.TaskId = TaskUsers.TaskId INNER JOIN
               tblInstallUsers AS UsersMaster ON TaskUsers.UserId = UsersMaster.Id
@@ -35,9 +42,13 @@ Tasks.[Title] LIKE '%' + ISNULL(@Title,Tasks.[Title]) + '%' AND
 UsersMaster.[Designation] = ISNULL(@Designation , UsersMaster.[Designation]) AND
 Tasks.[Status] = ISNULL(@Status,Tasks.[Status]) AND
 CONVERT(varchar,Tasks.[CreatedOn],101) =  ISNULL(CONVERT(varchar,@CreatedOn,101), CONVERT(varchar,Tasks.[CreatedOn],101)) 
-ORDER BY CONVERT(varchar,Tasks.[DueDate],101)
-OFFSET @Start ROW
-FETCH NEXT @PageLimit ROWS ONLY
+
+)
+
+SELECT * 
+FROM   Tasklist 
+WHERE  rownum BETWEEN ( @Start - 1 ) * @PageLimit + 1 AND @Start * @PageLimit
+
 
 -- get total number of records for virtual count
 
@@ -56,7 +67,6 @@ CONVERT(varchar,Tasks.[CreatedOn],101) =  ISNULL(CONVERT(varchar,@CreatedOn,101)
 
 
 END
-GO
 
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
