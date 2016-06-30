@@ -134,3 +134,8 @@ C:\Users\MUNEER MK\Documents\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Pro
 C:\Users\MUNEER MK\Documents\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.WebAPI\obj\Debug\JG_Prospect.WebAPI.csprojResolveAssemblyReference.cache
 C:\Users\MUNEER MK\Documents\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.WebAPI\obj\Debug\JG_Prospect.WebAPI.dll
 C:\Users\MUNEER MK\Documents\GitHub\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.WebAPI\obj\Debug\JG_Prospect.WebAPI.pdb
+F:\Ali Shahbas\JGrove_Build\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.WebAPI\bin\JG_Prospect.WebAPI.dll
+F:\Ali Shahbas\JGrove_Build\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.WebAPI\bin\JG_Prospect.WebAPI.pdb
+F:\Ali Shahbas\JGrove_Build\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.WebAPI\obj\Debug\JG_Prospect.WebAPI.csprojResolveAssemblyReference.cache
+F:\Ali Shahbas\JGrove_Build\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.WebAPI\obj\Debug\JG_Prospect.WebAPI.dll
+F:\Ali Shahbas\JGrove_Build\jmgrovebuildingsupply\JG_Prospect-New\JG_Prospect.WebAPI\obj\Debug\JG_Prospect.WebAPI.pdb
