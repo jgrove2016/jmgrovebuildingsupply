@@ -23,7 +23,7 @@
         $('#divModal').dialog("open");
     }
     function setDatePicker() {
-        $('#<%= txtCreatedDate.ClientID %>').datepicker();
+        $('.datepicker').datepicker();
     }
 </script>
 <style>
@@ -107,7 +107,7 @@
                             <asp:ListItem Text="Closed"></asp:ListItem>
                         </asp:DropDownList></td>
                     <td>
-                        <asp:TextBox ID="txtCreatedDate" runat="server"></asp:TextBox></td>
+                        <asp:TextBox ID="txtCreatedDate" CssClass="datepicker" runat="server"></asp:TextBox></td>
                     <td>
                         <asp:ImageButton ID="btnSearch" runat="server" ImageUrl="/img/search_btn.png" CssClass="searchbtn" OnClick="btnSearch_Click" />
                     </td>
@@ -119,7 +119,7 @@
                     </td>
                 </tr>
             </table>
-            <asp:GridView ID="gvTasks" runat="server" CssClass="table" Width="100%" CellSpacing="0" CellPadding="0" BorderStyle="Solid" BorderWidth="1" AutoGenerateColumns="False" OnRowDataBound="gvTasks_RowDataBound">
+            <asp:GridView ID="gvTasks" runat="server" EmptyDataText="No task available!" CssClass="table" Width="100%" CellSpacing="0" CellPadding="0" BorderStyle="Solid" BorderWidth="1" AutoGenerateColumns="False" OnRowDataBound="gvTasks_RowDataBound">
                 <HeaderStyle CssClass="trHeader " />
                 <RowStyle CssClass="FirstRow" />
                 <AlternatingRowStyle CssClass="AlternateRow " />

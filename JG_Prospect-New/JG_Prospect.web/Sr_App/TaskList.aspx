@@ -4,7 +4,7 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="../Styles/dd.css" rel="stylesheet" />
-
+         
     <style type="text/css">
         .modalBackground {
             background-color: Gray;
@@ -294,7 +294,7 @@
                                     <asp:ListItem Text="Closed"></asp:ListItem>
                                 </asp:DropDownList></td>
                             <td>
-                                <asp:TextBox ID="txtCreatedDate" runat="server"></asp:TextBox></td>
+                                <asp:TextBox ID="txtCreatedon" CssClass="datepicker" runat="server"></asp:TextBox></td>
                             <td class="btn_sec">
                                 <asp:Button ID="btnSearch" runat="server" CssClass="ui-button" OnClick="btnSearch_Click" Text="Search" /></td>
                             <td><span>
@@ -302,7 +302,7 @@
                             </td>
                         </tr>
                     </table>
-                    <asp:GridView ID="gvTasks" runat="server" AllowCustomPaging="true" AllowPaging="true" PageSize="20" CssClass="table" Width="100%" CellSpacing="0" CellPadding="0" BorderStyle="Solid" BorderWidth="1" AutoGenerateColumns="False" OnRowDataBound="gvTasks_RowDataBound" OnPageIndexChanging="gvTasks_PageIndexChanging">
+                    <asp:GridView ID="gvTasks" runat="server" EmptyDataText="No task available!" AllowCustomPaging="true" AllowPaging="true" PageSize="20" CssClass="table" Width="100%" CellSpacing="0" CellPadding="0" BorderStyle="Solid" BorderWidth="1" AutoGenerateColumns="False" OnRowDataBound="gvTasks_RowDataBound" OnPageIndexChanging="gvTasks_PageIndexChanging">
                         <HeaderStyle CssClass="trHeader " />
                         <RowStyle CssClass="FirstRow" />
                         <AlternatingRowStyle CssClass="AlternateRow " />

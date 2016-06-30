@@ -45,7 +45,7 @@
   <ItemGroup>
     <Reference Include="JG_Prospect.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\JG_Prospect.Common\bin\Debug\JG_Prospect.Common.dll</HintPath>
+      <HintPath>..\JG_Prospect.Common\obj\Debug\JG_Prospect.Common.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=4.1.0.0, Culture=neutral, PublicKeyToken=e44a2bc38ed2c13c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -378,6 +379,20 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\JG_Prospect.BLL\JG_Prospect.BLL.csproj">
+      <Project>{b99f65ce-3a46-4081-9404-902b25f3d653}</Project>
+      <Name>JG_Prospect.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\JG_Prospect.Common\JG_Prospect.Common.csproj">
+      <Project>{a445bb8a-2c2e-4144-93e8-6e6d79eda646}</Project>
+      <Name>JG_Prospect.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\JG_Prospect.DAL\JG_Prospect.DAL.csproj">
+      <Project>{2c56d357-387f-4070-9dc0-70ab17d35668}</Project>
+      <Name>JG_Prospect.DAL</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

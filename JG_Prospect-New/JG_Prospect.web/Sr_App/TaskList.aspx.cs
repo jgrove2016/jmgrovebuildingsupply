@@ -101,7 +101,7 @@ namespace JG_Prospect.Sr_App
             DateTime? CreatedOn = null;
 
             // this is for paging based data fetch, in header view case it will be always page numnber 0 and page size 5
-            int Start = gvTasks.PageIndex + 1, PageLimit = gvTasks.PageSize;
+            int Start = gvTasks.PageIndex, PageLimit = gvTasks.PageSize;
 
             PrepareSearchFilerts(ref UserID, ref Title, ref Designation, ref Status, ref CreatedOn);
 
@@ -143,9 +143,9 @@ namespace JG_Prospect.Sr_App
                 Status = Convert.ToInt16(ddlTaskStatus.SelectedItem.Value);
             }
 
-            if (!String.IsNullOrEmpty(txtCreatedDate.Text))
+            if (!String.IsNullOrEmpty(txtCreatedon.Text))
             {
-                CreatedOn = Convert.ToDateTime(txtCreatedDate.Text);
+                CreatedOn = Convert.ToDateTime(txtCreatedon.Text);
             }
         }
 

@@ -58,13 +58,13 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.DropDownList ddlTaskStatus;
         
         /// <summary>
-        /// txtCreatedDate control.
+        /// txtCreatedon control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtCreatedDate;
+        protected global::System.Web.UI.WebControls.TextBox txtCreatedon;
         
         /// <summary>
         /// btnSearch control.
