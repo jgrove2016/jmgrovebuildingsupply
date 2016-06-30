@@ -45,15 +45,15 @@
     }
 </style>
 
-<div class="tasklist" >
+<div class="tasklist">
     <asp:UpdatePanel ID="upnlTasks" runat="server">
         <ContentTemplate>
             <table>
                 <tr>
-                    
-                    <td><span style="color:#fefefe;" >Filter Tasks:</span>
-                        
-                    <asp:TextBox ID="txtSearch" placeholder="Task title" runat="server"></asp:TextBox></td>
+
+                    <td><span style="color: #fefefe;">Filter Tasks:</span>
+
+                        <asp:TextBox ID="txtSearch" placeholder="Task title" runat="server"></asp:TextBox></td>
                     <td>
                         <asp:DropDownList ID="ddlDesignation" runat="server">
                         </asp:DropDownList></td>
@@ -73,7 +73,7 @@
                         <asp:TextBox ID="txtCreatedDate" runat="server"></asp:TextBox></td>
                     <td>
                         <asp:ImageButton ID="btnSearch" runat="server" ImageUrl="/img/search_btn.png" CssClass="searchbtn" OnClick="btnSearch_Click" />
-                        </td>
+                    </td>
                     <td><span>
                         <a id="btnAdd" class="btn btn-primary" onclick="EditTask(0);">Add New</a></span> |
                     </td>
@@ -114,6 +114,15 @@
                     <asp:TemplateField HeaderText="Status">
                         <ItemTemplate>
                             <asp:Label ID="lblTaskStatus" runat="server"></asp:Label>
+                            <%--<asp:DropDownList ID="ddlRole" runat="server">
+                                            <asp:ListItem Text="Sr.Developer"></asp:ListItem>
+                                            <asp:ListItem Text="Jr.Developer"></asp:ListItem>
+                                        </asp:DropDownList>--%>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="Due Date">
+                        <ItemTemplate>
+                            <asp:Label ID="lblTaskDueDate" runat="server" Text='<%#Eval("DueDate")%>'></asp:Label>
                             <%--<asp:DropDownList ID="ddlRole" runat="server">
                                             <asp:ListItem Text="Sr.Developer"></asp:ListItem>
                                             <asp:ListItem Text="Jr.Developer"></asp:ListItem>
