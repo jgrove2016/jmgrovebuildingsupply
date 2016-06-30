@@ -13,22 +13,13 @@ namespace JG_Prospect.Sr_App.Controls {
     public partial class AddProductLinesControl {
         
         /// <summary>
-        /// panel1 control.
+        /// pnlUpdate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel panel1;
-        
-        /// <summary>
-        /// ddlProductLines control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlProductLines;
+        protected global::System.Web.UI.UpdatePanel pnlUpdate;
         
         /// <summary>
         /// spanExpand control.
@@ -38,6 +29,15 @@ namespace JG_Prospect.Sr_App.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl spanExpand;
+        
+        /// <summary>
+        /// ddlProductLines control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlProductLines;
         
         /// <summary>
         /// panel2 control.
@@ -103,24 +103,6 @@ namespace JG_Prospect.Sr_App.Controls {
         protected global::System.Web.UI.WebControls.Image imgLoader;
         
         /// <summary>
-        /// btnImageUploadClick control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnImageUploadClick;
-        
-        /// <summary>
-        /// pnlUpdate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel pnlUpdate;
-        
-        /// <summary>
         /// gvCategory control.
         /// </summary>
         /// <remarks>
@@ -146,5 +128,14 @@ namespace JG_Prospect.Sr_App.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::AjaxControlToolkit.CollapsiblePanelExtender cpe;
+        
+        /// <summary>
+        /// btnImageUploadClick control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnImageUploadClick;
     }
 }

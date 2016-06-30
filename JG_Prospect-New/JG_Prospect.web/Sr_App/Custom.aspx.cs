@@ -14,6 +14,8 @@ using System.Web.Services;
 using System.Web.Script.Services;
 using AjaxControlToolkit;
 using System.Text.RegularExpressions;
+using JG_Prospect.Sr_App.Controls;
+
 
 namespace JG_Prospect.Sr_App.Product_Line
 {
@@ -139,6 +141,57 @@ namespace JG_Prospect.Sr_App.Product_Line
 
             }
         }
+        #region Shital Added
+
+        private const string SESSIONKEY = "ProductLineControlsCount";
+        private const string USER_CONTROL_NAME_PREFIX = "AddProductLineUserControl";
+        public int AddedControlCount
+        {
+            get
+            {
+                return Session[SESSIONKEY] == null ? 0 : int.Parse(Session[SESSIONKEY].ToString());
+            }
+            set
+            {
+                Session[SESSIONKEY] = value;
+            }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+            if (!Page.IsPostBack)
+            {
+                Session[SESSIONKEY] = null;
+            }
+            LoadContactControls();
+        }
+
+        protected void btnAddProductLine_Click(object sender, EventArgs e)
+        {
+            AddedControlCount++;
+            AddProductLineControl(USER_CONTROL_NAME_PREFIX + AddedControlCount);
+        }
+
+        /// <summary>
+        /// Load the user controls based on session key
+        /// </summary>
+        private void LoadContactControls()
+        {
+            for (int i = 1; i <= AddedControlCount; i++)
+            {
+                AddProductLineControl(USER_CONTROL_NAME_PREFIX + i);
+            }
+        }
+
+        private void AddProductLineControl(string Id)
+        {
+            System.Web.UI.UserControl x = (System.Web.UI.UserControl)LoadControl("~/Sr_App/Controls/AddProductLinesControl.ascx");
+            x.ID = Id;
+            placeHolderProductLines.Controls.Add(x);
+        }
+
+        #endregion
 
         private void DisableControls()
         {
