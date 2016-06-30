@@ -5,7 +5,7 @@ using System.Text;
 
 namespace JG_Prospect.Common.modal
 {
-    public class user
+    public class user1
     {
         public string username;
         public string loginid;
