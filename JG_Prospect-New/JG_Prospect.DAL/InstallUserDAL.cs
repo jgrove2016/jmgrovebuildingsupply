@@ -40,7 +40,7 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@LastName", DbType.String, objuser.lastname);
                     database.AddInParameter(command, "@Email", DbType.String, objuser.email);
                     database.AddInParameter(command, "@phone", DbType.String, objuser.phone);
-                    database.AddInParameter(command, "@phonetype", DbType.String, objuser.phonetype );
+                    //database.AddInParameter(command, "@phonetype", DbType.String, objuser.phonetype );Shital commented this line as its not required in 'UDP_AddInstallUser' SP. Also tblInstallUsers doesn't have any column name 'phonetype'
                     database.AddInParameter(command, "@Address", DbType.String, objuser.address);
                     database.AddInParameter(command, "@Zip", DbType.String, objuser.zip);
                     database.AddInParameter(command, "@State", DbType.String, objuser.state);
