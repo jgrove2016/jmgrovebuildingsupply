@@ -129,6 +129,7 @@
     <Compile Include="ShutterPriceControlBLL.cs" />
     <Compile Include="shuttersBLL.cs" />
     <Compile Include="TimeAndMaterialBLL.cs" />
+    <Compile Include="TaskGeneratorBLL.cs" />
     <Compile Include="UserBLL.cs" />
     <Compile Include="VendorBLL.cs" />
   </ItemGroup>
@@ -143,11 +144,33 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bin\Debug\JG_Prospect.BLL.dll" />
-    <Content Include="bin\Debug\JG_Prospect.BLL.pdb" />
+    <Folder Include="bin\Release\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="bin\Release\" />
+    <Content Include="bin\Debug\Google.GData.AccessControl.dll" />
+    <Content Include="bin\Debug\Google.GData.Calendar.dll" />
+    <Content Include="bin\Debug\Google.GData.Client.dll" />
+    <Content Include="bin\Debug\Google.GData.Extensions.dll" />
+    <Content Include="bin\Debug\itextsharp.dll" />
+    <Content Include="bin\Debug\JG_Prospect.BLL.dll" />
+    <Content Include="bin\Debug\JG_Prospect.BLL.pdb" />
+    <Content Include="bin\Debug\JG_Prospect.Common.dll" />
+    <Content Include="bin\Debug\JG_Prospect.Common.pdb" />
+    <Content Include="bin\Debug\JG_Prospect.DAL.dll" />
+    <Content Include="bin\Debug\JG_Prospect.DAL.pdb" />
+    <Content Include="bin\Debug\Microsoft.Practices.EnterpriseLibrary.Caching.Database.dll" />
+    <Content Include="bin\Debug\Microsoft.Practices.EnterpriseLibrary.Caching.dll" />
+    <Content Include="bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll" />
+    <Content Include="bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.dll" />
+    <Content Include="bin\Debug\Microsoft.Practices.EnterpriseLibrary.Data.SqlCe.xml" />
+    <Content Include="bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.Logging.xml" />
+    <Content Include="bin\Debug\Microsoft.Practices.EnterpriseLibrary.ExceptionHandling.xml" />
+    <Content Include="bin\Debug\Microsoft.Practices.EnterpriseLibrary.Logging.Database.xml" />
+    <Content Include="bin\Debug\Microsoft.Practices.ServiceLocation.dll" />
+    <Content Include="bin\Debug\Telerik.Web.UI.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\vssver.scc" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
