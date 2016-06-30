@@ -154,7 +154,7 @@ namespace JG_Prospect.Sr_App.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownCheckBoxes ddcbAssigned;
+        protected global::Saplin.Controls.DropDownCheckBoxes ddcbAssigned;
         
         /// <summary>
         /// cmbStatus control.
@@ -190,7 +190,7 @@ namespace JG_Prospect.Sr_App.Controls {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CalendarExtender CEDueDate;
+        protected global::AjaxControlToolkit.CalendarExtender CEDueDate;
         
         /// <summary>
         /// RequiredFieldValidator3 control.
