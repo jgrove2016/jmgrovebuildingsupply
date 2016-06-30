@@ -4,7 +4,7 @@
 <script>
     $(function () {
         setDatePicker();
-        $("#divModal").dialog({
+        var dlg = $("#divModal").dialog({
             modal: true,
             autoOpen: false,
             height: 600,
@@ -15,6 +15,7 @@
                 }
             }
         });
+        dlg.parent().appendTo(jQuery("form:first"));
     });
     function EditTask(id) {
         $('#divModal').dialog("open");
@@ -46,6 +47,37 @@
      .AlternateRow  a , .FirstRow a {
         color:#111;
     }
+      .textbox
+    {
+        padding: 5px;
+        border-radius: 5px;
+        border: #b5b4b4 1px solid;
+        margin-left: 0;
+        margin-right: 0;
+        margin-bottom: 5px;
+    }
+
+    .tablealign
+    {
+        margin-top: 5px;
+    }
+
+    div.dd_chk_select
+    {
+        height: 30px;
+    }
+
+        div.dd_chk_select div#caption
+        {
+            top: 7px;
+            margin-left: 10px;
+        }
+
+    div.dd_chk_drop
+    {
+        top: 30px;
+    }
+
 </style>
 
 <div class="tasklist">
@@ -139,72 +171,59 @@
 
 </div>
 
-<div id="divModal" title="Task : Title">
+<div id="divModal" title="Task : Title" style="background: #efeeee url(../img/form-bg.png) repeat-x top">
+
     <hr />
-    <table class="table" style="">
+    <table class="tablealign" style="float: left">
         <tr>
             <td>Task Title:</td>
             <td>
-                <asp:TextBox ID="txtTaskTitle" runat="server"></asp:TextBox></td>
+                <asp:TextBox ID="txtTaskTitle" runat="server" CssClass="textbox"></asp:TextBox></td>
+            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" ValidationGroup="Submit"
+                runat="server" ControlToValidate="txtTaskTitle" ForeColor="Red" ErrorMessage="Please Enter Task Title" Display="None">                                 
+            </asp:RequiredFieldValidator>
         </tr>
         <tr>
             <td>Task Description:</td>
             <td>
-                <asp:TextBox ID="txtDescription" TextMode="MultiLine" runat="server"></asp:TextBox></td>
+                <asp:TextBox ID="txtDescription" TextMode="MultiLine" runat="server" CssClass="textbox"></asp:TextBox></td>
+            <asp:RequiredFieldValidator ID="RequiredFieldValidator2" ValidationGroup="Submit"
+                runat="server" ControlToValidate="txtDescription" ForeColor="Red" ErrorMessage="Please Enter Task Description" Display="None">                                 
+            </asp:RequiredFieldValidator>
         </tr>
         <tr>
             <td>Designation:</td>
             <td>
-                <asp:DropDownList ID="DropDownList2" runat="server">
-                    <asp:ListItem Text="Sr.Developer"></asp:ListItem>
-                    <asp:ListItem Text="Jr.Developer"></asp:ListItem>
-                </asp:DropDownList>
+                <asp:UpdatePanel ID="upnlDesignation" runat="server">
+                    <ContentTemplate>
+                        <asp:DropDownList ID="txtDesignation" runat="server" CssClass="textbox" AutoPostBack="True" OnSelectedIndexChanged="txtDesignation_SelectedIndexChanged">
+                           
+                        </asp:DropDownList>
+                    </ContentTemplate>
+                </asp:UpdatePanel>
+
             </td>
         </tr>
         <tr>
             <td>Assigned:</td>
             <td>
-                <asp:DropDownList ID="DropDownList1" runat="server">
-                    <asp:ListItem Text="Dharmendra"></asp:ListItem>
-                    <asp:ListItem Text="Shabir"></asp:ListItem>
-                </asp:DropDownList>
+                <asp:UpdatePanel ID="upnlUsers" runat="server" UpdateMode="Conditional">
+                    <ContentTemplate>
+                        <asp:DropDownCheckBoxes ID="ddcbAssigned" runat="server" UseSelectAllNode="false" AutoPostBack="True" OnSelectedIndexChanged="ddcbAssigned_SelectedIndexChanged">
+                            <Style SelectBoxWidth="195" DropDownBoxBoxWidth="100" DropDownBoxBoxHeight="90" />
+
+                        </asp:DropDownCheckBoxes>
+                    </ContentTemplate>
+                </asp:UpdatePanel>
+
+                <%--                       <asp:DropDownList ID="ddlAssigned" runat="server" CssClass="textbox" onchange="addRow(this)">
+                        <asp:ListItem Text="Darmendra"></asp:ListItem>
+                        <asp:ListItem Text="Shabir"></asp:ListItem>
+                       </asp:DropDownList>--%>
+                  
             </td>
         </tr>
-        <tr>
-            <td>Staus:</td>
-            <td>
-                <asp:DropDownList ID="DropDownList3" runat="server">
-                    <asp:ListItem Text="Pending"></asp:ListItem>
-                    <asp:ListItem Text="Started"></asp:ListItem>
-                    <asp:ListItem Text="Submitted"></asp:ListItem>
-                    <asp:ListItem Text="Approve"></asp:ListItem>
-                    <asp:ListItem Text="Reject"></asp:ListItem>
-                </asp:DropDownList>
-            </td>
-        </tr>
-        <tr>
-            <td>User Acceptance:</td>
-            <td>
-                <asp:DropDownList ID="ddlUserAcceptance" runat="server">
-                    <asp:ListItem Text="Accept"></asp:ListItem>
-                    <asp:ListItem Text="Reject"></asp:ListItem>
-                </asp:DropDownList>
-            </td>
-        </tr>
-        <tr>
-            <td>Due Date:</td>
-            <td>
-                <asp:TextBox ID="txtDueDate" runat="server">
-                </asp:TextBox>
-            </td>
-        </tr>
-        <tr>
-            <td>Hrs of Task:</td>
-            <td>
-                <asp:TextBox ID="txtHours" runat="server">
-                </asp:TextBox>
-            </td>
-        </tr>
+
         <%--            <tr>
                 <td></td>
                 <td>
@@ -212,35 +231,164 @@
                 </td>
             </tr>--%>
     </table>
+    <table class="tablealign" style="float: left; margin-left: 100px">
+        <tr>
+            <td>Staus:</td>
+            <td>
+                <asp:DropDownList ID="cmbStatus" runat="server" CssClass="textbox">
+                    <asp:ListItem Text="Pending" Value="1"></asp:ListItem>
+                    <asp:ListItem Text="Started" Value="2"></asp:ListItem>
+                    <asp:ListItem Text="Submitted" Value="3"></asp:ListItem>
+                    <asp:ListItem Text="Approve" Value="4"></asp:ListItem>
+                    <asp:ListItem Text="Reject" Value="5"></asp:ListItem>
+                </asp:DropDownList>
+
+            </td>
+        </tr>
+        <tr>
+            <td>User Acceptance:</td>
+            <td>
+                <asp:DropDownList ID="ddlUserAcceptance" runat="server" CssClass="textbox">
+                    <asp:ListItem Text="Accept" Value="1"></asp:ListItem>
+                    <asp:ListItem Text="Reject" Value="0"></asp:ListItem>
+                </asp:DropDownList>
+            </td>
+        </tr>
+        <tr>
+            <td>Due Date:</td>
+            <td>
+                <asp:TextBox ID="txtDueDate" runat="server" CssClass="textbox">
+                </asp:TextBox>
+                <asp:CalendarExtender ID="CEDueDate" runat="server" TargetControlID="txtDueDate"></asp:CalendarExtender>
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator3" ValidationGroup="Submit"
+                    runat="server" ControlToValidate="txtDueDate" ForeColor="Red" ErrorMessage="Please Enter Due Date" Display="None">                                 
+                </asp:RequiredFieldValidator>
+            </td>
+        </tr>
+        <tr>
+            <td>Hrs of Task:</td>
+            <td>
+                <asp:TextBox ID="txtHours" runat="server" CssClass="textbox">
+                </asp:TextBox>
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator4" ValidationGroup="Submit"
+                    runat="server" ControlToValidate="txtHours" ForeColor="Red" ErrorMessage="Please Enter Hours Of Task" Display="None">                                 
+                </asp:RequiredFieldValidator>
+            </td>
+        </tr>
+    </table>
     <div class="grid">
 
-        <table class="table" cellspacing="0" cellpadding="0" style="border: 1px solid; width: 100%">
-            <thead class="trHeader">
+        <%--<table class="table" border="1" style="border-collapse: collapse; width: 100%" id="tbltaskuser">
+            <thead class="trheader">
                 <tr>
-                    <th>User</th>
-                    <th>Status</th>
-                    <th>Note</th>
-                    <th>Files</th>
-                    <th>DateTime</th>
+                    <th>user</th>
+                    <th>status</th>
+                    <th>note</th>
+                    <th>files</th>
+                    <th>datetime</th>
                 </tr>
             </thead>
             <tbody style="border: 1px solid; padding: 10px;">
                 <tr class="">
-                    <td>Justine</td>
-                    <td>Started</td>
-                    <td>Almost worked</td>
+                    <td>justine</td>
+                    <td>started</td>
+                    <td>almost worked</td>
                     <td>0</td>
                     <td>6/12/2016</td>
                 </tr>
                 <tr class="">
-                    <td>Dharmendra</td>
-                    <td>Submitted</td>
-                    <td>Done all work</td>
+                    <td>dharmendra</td>
+                    <td>submitted</td>
+                    <td>done all work</td>
                     <td>1</td>
                     <td>6/14/2016</td>
                 </tr>
             </tbody>
-        </table>
+        </table>--%>
+        <asp:UpdatePanel ID="upnlGridview1" runat="server">
+            <ContentTemplate>
+                <asp:GridView ID="gdTaskUsers" runat="server" EmptyDataText="No data found!" ShowHeaderWhenEmpty="true" AutoGenerateColumns="false" Width="100%" HeaderStyle-BackColor="Black" HeaderStyle-ForeColor="White" AllowSorting="false"  BackColor="White" PageSize="3">
+                    <%--<EmptyDataTemplate>
+                    </EmptyDataTemplate>--%>
+                    <Columns>
+                        <asp:TemplateField ShowHeader="True" HeaderText="User" ControlStyle-ForeColor="White" HeaderStyle-Font-Size="Small"
+                            ItemStyle-HorizontalAlign="Left">
+                            <ItemTemplate>
+                                <asp:Label ID="lbluser" runat="server" Text='<%#Eval("FristName")%>'></asp:Label>
+
+                            </ItemTemplate>
+                            <ControlStyle ForeColor="Black" />
+                            <ControlStyle ForeColor="Black" />
+                            <HeaderStyle Font-Size="Small"></HeaderStyle>
+                            <ItemStyle HorizontalAlign="Left"></ItemStyle>
+                        </asp:TemplateField>
+                        <asp:TemplateField ShowHeader="false"  Visible="false" ControlStyle-ForeColor="White" HeaderStyle-Font-Size="Small"
+                            ItemStyle-HorizontalAlign="Left">
+                            <ItemTemplate>
+                                <asp:Label ID="lbluserId" runat="server" Text='<%#Eval("Id")%>' Visible="false"></asp:Label>
+
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField ShowHeader="false" Visible="false" ControlStyle-ForeColor="White" HeaderStyle-Font-Size="Small"
+                            ItemStyle-HorizontalAlign="Left">
+                            <ItemTemplate>
+                                <asp:Label ID="lbluserType" runat="server" Text='<%#Eval("UserType")%>' Visible="false"></asp:Label>
+
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField ShowHeader="True" HeaderText="Status" ControlStyle-ForeColor="White" HeaderStyle-Font-Size="Small"
+                            ItemStyle-HorizontalAlign="Left">
+                            <ItemTemplate>
+                                <asp:Label ID="lblStatus" runat="server" Text='<%#Eval("Status")%>'></asp:Label>
+
+                            </ItemTemplate>
+                            <ControlStyle ForeColor="Black" />
+                            <ControlStyle ForeColor="Black" />
+                            <HeaderStyle Font-Size="Small"></HeaderStyle>
+                            <ItemStyle HorizontalAlign="Left"></ItemStyle>
+                        </asp:TemplateField>
+
+                        <asp:TemplateField ShowHeader="True" HeaderText="Notes" ControlStyle-ForeColor="White" HeaderStyle-Font-Size="Small"
+                            ItemStyle-HorizontalAlign="Left">
+                            <ItemTemplate>
+                                <asp:Label ID="lblNotes" runat="server" Text='<%#Eval("Notes")%>'></asp:Label>
+                            </ItemTemplate>
+                            <ControlStyle ForeColor="Black" />
+                            <ControlStyle ForeColor="Black" />
+                            <HeaderStyle Font-Size="Small"></HeaderStyle>
+                            <ItemStyle HorizontalAlign="Left"></ItemStyle>
+                        </asp:TemplateField>
+
+                        <asp:TemplateField ShowHeader="True" HeaderText="Files" ControlStyle-ForeColor="White" HeaderStyle-Font-Size="Small"
+                            ItemStyle-HorizontalAlign="Left">
+                            <ItemTemplate>
+                                <asp:Label ID="lblFiles" runat="server" Text=""></asp:Label>
+                            </ItemTemplate>
+                            <ControlStyle ForeColor="Black" />
+                            <ControlStyle ForeColor="Black" />
+                            <HeaderStyle Font-Size="Small"></HeaderStyle>
+                            <ItemStyle HorizontalAlign="Left"></ItemStyle>
+                        </asp:TemplateField>
+
+                        <asp:TemplateField ShowHeader="True" HeaderText="updateDate" ControlStyle-ForeColor="White" HeaderStyle-Font-Size="Small"
+                            ItemStyle-HorizontalAlign="Left">
+                            <ItemTemplate>
+                                <asp:Label ID="lblupdateDate" runat="server" Text='<%#Eval("StartDate")%>'></asp:Label>
+                            </ItemTemplate>
+                            <ControlStyle ForeColor="Black" />
+                            <ControlStyle ForeColor="Black" />
+                            <HeaderStyle Font-Size="Small"></HeaderStyle>
+                            <ItemStyle HorizontalAlign="Left"></ItemStyle>
+                        </asp:TemplateField>
+
+                    </Columns>
+
+                    <HeaderStyle BackColor="Black" ForeColor="White"></HeaderStyle>
+
+                </asp:GridView>
+            </ContentTemplate>
+        </asp:UpdatePanel>
+        <%-- OnRowDataBound="GridView1_RowDataBound"    OnPageIndexChanging="GridView1_PageIndexChanging" OnRowCommand="GridView1_RowCommand"--%>
     </div>
 
     <br />
@@ -249,22 +397,24 @@
             <td>Notes:
             </td>
             <td>
-                <asp:TextBox ID="txtLog" runat="server" TextMode="MultiLine" Width="400px"></asp:TextBox>
+                <asp:TextBox ID="txtLog" runat="server" TextMode="MultiLine" Width="400px" CssClass="textbox"></asp:TextBox>
             </td>
         </tr>
         <tr>
             <td>Attachment:
             </td>
             <td>
-                <asp:FileUpload ID="fuUpload" runat="server" />
+                <asp:FileUpload ID="fuUpload" runat="server" CssClass="textbox" />
             </td>
         </tr>
         <tr>
             <td>
                 <div style="padding-left: 40px; padding-top: 20px;" class="btn_sec">
                     <asp:Button ID="btnNotes" runat="server" Text="Add Notes" CssClass="ui-button" />
+                    <asp:Button ID="btnSaveTask" runat="server" Text="save" CssClass="ui-button" ValidationGroup="Submit" OnClick="btnSaveTask_Click" />
                 </div>
             </td>
         </tr>
     </table>
+    <asp:ValidationSummary ID="ValidationSummary1" runat="server" ValidationGroup="Submit" ShowSummary="False" ShowMessageBox="True" />
 </div>
