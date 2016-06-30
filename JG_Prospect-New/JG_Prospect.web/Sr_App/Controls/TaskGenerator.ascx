@@ -44,84 +44,89 @@
         padding: 2px;
     }
 </style>
-<div class="right_panel" style="color: #000000;">
-    <div class="">
-        <asp:UpdatePanel ID="upnlTasks" runat="server">
-            <ContentTemplate>
-                <table>
-                    <tr>
-                        <td><span>
-                            <a id="btnAdd" class="btn btn-primary" onclick="EditTask(0);">Add New</a></span>
-                        </td>
-                        <td><span class="glyphicon glyphicon-search form-control-feedback"></span>
-                            Filter by :
-                    <asp:TextBox ID="txtSearch" placeholder="Task title" runat="server"></asp:TextBox></td>
-                        <td>
-                            <asp:DropDownList ID="ddlDesignation" runat="server">
-                            </asp:DropDownList></td>
-                        <td>
-                            <asp:DropDownList ID="ddlUsers" runat="server">
-                            </asp:DropDownList></td>
-                        <td>
-                            <asp:DropDownList ID="ddlTaskStatus" runat="server">
-                                <asp:ListItem Text="--Status--" Value="0"></asp:ListItem>
-                                <asp:ListItem Text="Assigned" Value="1"></asp:ListItem>
-                                <asp:ListItem Text="In Progress" Value="2"></asp:ListItem>
-                                <asp:ListItem Text="Pending" Value="3"></asp:ListItem>
-                                <asp:ListItem Text="Re-Opened"></asp:ListItem>
-                                <asp:ListItem Text="Closed"></asp:ListItem>
-                            </asp:DropDownList></td>
-                        <td>
-                            <asp:TextBox ID="txtCreatedDate" runat="server"></asp:TextBox></td>
-                        <td>
-                            <asp:Button ID="btnSearch" runat="server" CssClass="ui-button" OnClick="btnSearch_Click" Text="Search" /></td>
-                    </tr>
-                </table>
-                <asp:GridView ID="gvTasks" runat="server" CssClass="table" Width="100%" CellSpacing="0" CellPadding="0" BorderStyle="Solid" BorderWidth="1" AutoGenerateColumns="False" OnRowDataBound="gvTasks_RowDataBound">
-                    <HeaderStyle CssClass="trHeader " />
-                    <RowStyle CssClass="FirstRow" />
-                    <AlternatingRowStyle CssClass="AlternateRow " />
-                    <Columns>
-                        <asp:BoundField DataField="InstallId" HeaderText="Install ID" />
-                        <asp:TemplateField HeaderText="Task Title">
-                            <ItemTemplate>
-                                <asp:HyperLink ID="hypTask" runat="server"><%# Eval("Title") %></asp:HyperLink>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Designation">
-                            <ItemTemplate>
-                                <asp:Label ID="lblUserDesignation" runat="server" Text='<%# Eval("Designation") %>'></asp:Label>
-                                <%-- <asp:DropDownList ID="ddlRole" runat="server">
-                                            <asp:ListItem Text="Sr.Developer"></asp:ListItem>
-                                            <asp:ListItem Text="Jr.Developer"></asp:ListItem>
-                                        </asp:DropDownList>--%>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Assigned To">
-                            <ItemTemplate>
-                                <asp:Label ID="lblAssignedUser" runat="server" Text='<%# Eval("FristName") %>'></asp:Label>
-                                <%--<asp:DropDownList ID="ddlRole" runat="server">
-                                            <asp:ListItem Text="Sr.Developer"></asp:ListItem>
-                                            <asp:ListItem Text="Jr.Developer"></asp:ListItem>
-                                        </asp:DropDownList>--%>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Status">
-                            <ItemTemplate>
-                                <asp:Label ID="lblTaskStatus" runat="server"></asp:Label>
-                                <%--<asp:DropDownList ID="ddlRole" runat="server">
-                                            <asp:ListItem Text="Sr.Developer"></asp:ListItem>
-                                            <asp:ListItem Text="Jr.Developer"></asp:ListItem>
-                                        </asp:DropDownList>--%>
-                            </ItemTemplate>
-                        </asp:TemplateField>
-                    </Columns>
-                </asp:GridView>
-            </ContentTemplate>
-        </asp:UpdatePanel>
 
-    </div>
+<div class="tasklist" >
+    <asp:UpdatePanel ID="upnlTasks" runat="server">
+        <ContentTemplate>
+            <table>
+                <tr>
+                    
+                    <td><span style="color:#fefefe;" >Filter Tasks:</span>
+                        
+                    <asp:TextBox ID="txtSearch" placeholder="Task title" runat="server"></asp:TextBox></td>
+                    <td>
+                        <asp:DropDownList ID="ddlDesignation" runat="server">
+                        </asp:DropDownList></td>
+                    <td>
+                        <asp:DropDownList ID="ddlUsers" runat="server">
+                        </asp:DropDownList></td>
+                    <td>
+                        <asp:DropDownList ID="ddlTaskStatus" runat="server">
+                            <asp:ListItem Text="--Status--" Value="0"></asp:ListItem>
+                            <asp:ListItem Text="Assigned" Value="1"></asp:ListItem>
+                            <asp:ListItem Text="In Progress" Value="2"></asp:ListItem>
+                            <asp:ListItem Text="Pending" Value="3"></asp:ListItem>
+                            <asp:ListItem Text="Re-Opened"></asp:ListItem>
+                            <asp:ListItem Text="Closed"></asp:ListItem>
+                        </asp:DropDownList></td>
+                    <td>
+                        <asp:TextBox ID="txtCreatedDate" runat="server"></asp:TextBox></td>
+                    <td>
+                        <asp:ImageButton ID="btnSearch" runat="server" ImageUrl="/img/search_btn.png" CssClass="searchbtn" OnClick="btnSearch_Click" />
+                        </td>
+                    <td><span>
+                        <a id="btnAdd" class="btn btn-primary" onclick="EditTask(0);">Add New</a></span> |
+                    </td>
+                    <td>
+                        <a id="hypTaskListMore" href="../Sr_App/TaskList.aspx">View All</a>
+                    </td>
+                </tr>
+            </table>
+            <asp:GridView ID="gvTasks" runat="server" CssClass="table" Width="100%" CellSpacing="0" CellPadding="0" BorderStyle="Solid" BorderWidth="1" AutoGenerateColumns="False" OnRowDataBound="gvTasks_RowDataBound">
+                <HeaderStyle CssClass="trHeader " />
+                <RowStyle CssClass="FirstRow" />
+                <AlternatingRowStyle CssClass="AlternateRow " />
+                <Columns>
+                    <asp:BoundField DataField="InstallId" HeaderText="Install ID" />
+                    <asp:TemplateField HeaderText="Task Title">
+                        <ItemTemplate>
+                            <asp:HyperLink ID="hypTask" runat="server"><%# Eval("Title") %></asp:HyperLink>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="Designation">
+                        <ItemTemplate>
+                            <asp:Label ID="lblUserDesignation" runat="server" Text='<%# Eval("Designation") %>'></asp:Label>
+                            <%-- <asp:DropDownList ID="ddlRole" runat="server">
+                                            <asp:ListItem Text="Sr.Developer"></asp:ListItem>
+                                            <asp:ListItem Text="Jr.Developer"></asp:ListItem>
+                                        </asp:DropDownList>--%>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="Assigned To">
+                        <ItemTemplate>
+                            <asp:Label ID="lblAssignedUser" runat="server" Text='<%# Eval("FristName") %>'></asp:Label>
+                            <%--<asp:DropDownList ID="ddlRole" runat="server">
+                                            <asp:ListItem Text="Sr.Developer"></asp:ListItem>
+                                            <asp:ListItem Text="Jr.Developer"></asp:ListItem>
+                                        </asp:DropDownList>--%>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="Status">
+                        <ItemTemplate>
+                            <asp:Label ID="lblTaskStatus" runat="server"></asp:Label>
+                            <%--<asp:DropDownList ID="ddlRole" runat="server">
+                                            <asp:ListItem Text="Sr.Developer"></asp:ListItem>
+                                            <asp:ListItem Text="Jr.Developer"></asp:ListItem>
+                                        </asp:DropDownList>--%>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                </Columns>
+            </asp:GridView>
+        </ContentTemplate>
+    </asp:UpdatePanel>
+
 </div>
+
 <div id="divModal" title="Task : Title">
     <hr />
     <table class="table" style="">

@@ -1370,3 +1370,18 @@ ul.left_nav {
     border-radius: 5px !important;
     border: #b5b4b4 1px solid !important;
 }
+
+
+.tasklist {
+   
+    overflow: auto; max-height: 108px; margin-left: 220px ! important;
+    width:65%;
+}
+.tasklist a {
+color:#fefefe; 
+}
+.tasklist .searchbtn {
+vertical-align: middle;
+    width: 39px;
+}
+

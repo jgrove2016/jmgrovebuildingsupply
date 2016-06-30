@@ -30,12 +30,13 @@ namespace JG_Prospect.Sr_App.Controls
         
 
         #endregion
+       
         #region "-Control Events-"
-        protected void btnSearch_Click(object sender, EventArgs e)
+      
+        protected void btnSearch_Click(object sender, ImageClickEventArgs e)
         {
             SearchTasks();
         }
-
 
         protected void gvTasks_RowDataBound(object sender, GridViewRowEventArgs e)
         {
@@ -141,8 +142,9 @@ namespace JG_Prospect.Sr_App.Controls
         }
 
 
+
         #endregion
 
-        
+       
     }
 }
