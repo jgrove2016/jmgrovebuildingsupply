@@ -430,6 +430,7 @@ namespace JG_Prospect.Sr_App.Controls
             txtDesignation.DataTextField = "Designation";
             txtDesignation.DataValueField = "Designation";
             txtDesignation.DataBind();
+
         }
 
         /// <summary>
