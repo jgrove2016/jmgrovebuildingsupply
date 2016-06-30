@@ -193,6 +193,11 @@
         #ScriptEditor_ctl02_ctl00 {
             height: 100px!important;
         }
+        .clsulScriptLinks {
+        max-height:230px;
+        overflow-y:scroll;
+        
+        }
     </style>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
@@ -417,9 +422,11 @@
                     <li><a class="clsPhoneLink" onclick="LoadAllScripts()">Phone Script</a></li>
                 </ul>
             </div>
-            <div id="divScriptLinks" style="display: none;">
+          <div id="divScriptLinks" style="display: none;">
                 <a class="clsPhoneLink" onclick="BackToPhoneScripts()">&lt;&lt;Back</a>
-                <ul id="ulScriptLinks">
+                <br />
+                <br />
+                <ul id="ulScriptLinks" class="clsulScriptLinks">
                     <%--<li><a class="clsPhoneLink"></a>Phone Script</li>
                 <li>Welcome Script</li>
                 <li>Thanks Script</li>--%>

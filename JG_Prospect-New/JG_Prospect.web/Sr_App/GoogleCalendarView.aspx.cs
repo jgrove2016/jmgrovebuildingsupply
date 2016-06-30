@@ -508,7 +508,7 @@ namespace JG_Prospect.Sr_App
             string status = e.Appointment.Attributes["Status"];
 
             DropDownList ddlStatus = (DropDownList)e.Container.FindControl("ddlStatus");
-            if (ddlStatus != null)
+            if (ddlStatus != null && status != null)
             {
                 ddlStatus.SelectedIndex = ddlStatus.Items.IndexOf(ddlStatus.Items.FindByValue(status.ToString()));
             }
