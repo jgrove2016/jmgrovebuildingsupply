@@ -510,6 +510,7 @@
     <Content Include="Sr_App\ContractFooter.aspx" />
     <Content Include="Sr_App\Controls\AddProductLinesControl.ascx" />
     <Content Include="Sr_App\Controls\TaskGenerator.ascx" />
+    <Content Include="Sr_App\TaskList.aspx" />
     <Content Include="Sr_App\CreateSalesUser.aspx" />
     <Content Include="Sr_App\Custom.aspx" />
     <Content Include="Sr_App\CustomerEmailTemplate.aspx" />
@@ -1014,6 +1015,13 @@
     </Compile>
     <Compile Include="Sr_App\Controls\TaskGenerator.ascx.designer.cs">
       <DependentUpon>TaskGenerator.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Sr_App\TaskList.aspx.cs">
+      <DependentUpon>TaskList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Sr_App\TaskList.aspx.designer.cs">
+      <DependentUpon>TaskList.aspx</DependentUpon>
     </Compile>
     <Compile Include="Sr_App\CreateSalesUser.aspx.cs">
       <DependentUpon>CreateSalesUser.aspx</DependentUpon>

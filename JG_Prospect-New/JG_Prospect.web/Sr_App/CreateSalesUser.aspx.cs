@@ -2317,6 +2317,15 @@ namespace JG_Prospect.Sr_App
                 objuser.bThree=txtbThree.Text;
                 objuser.cThree=txtcThree.Text;
                 objuser.UserType = "SalesUser";
+                objuser.AddedBy = Convert.ToInt32(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]);
+                if (chkboxcondition.Checked)
+                {
+                    objuser.TC = true;
+                }
+                else
+                {
+                    objuser.TC = false;
+                }
                 DataSet dsCheckDuplicate = InstallUserBLL.Instance.CheckInstallUser(txtemail.Text, txtPhone.Text);
               //  if (dsCheckDuplicate.Tables[0].Rows.Count > 0)
                 if (dsCheckDuplicate.Tables.Count > 0 && dsCheckDuplicate.Tables[0].Rows.Count > 0)

@@ -31,15 +31,6 @@ namespace JG_Prospect.Sr_App.Product_Line {
         protected global::System.Web.UI.WebControls.Label lblmsg;
         
         /// <summary>
-        /// tblcustom control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTable tblcustom;
-        
-        /// <summary>
         /// txtCustomer control.
         /// </summary>
         /// <remarks>
@@ -56,6 +47,33 @@ namespace JG_Prospect.Sr_App.Product_Line {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvcustomer;
+        
+        /// <summary>
+        /// btnAddProductLine control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button btnAddProductLine;
+        
+        /// <summary>
+        /// placeHolderProductLines control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder placeHolderProductLines;
+        
+        /// <summary>
+        /// tblcustom control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTable tblcustom;
         
         /// <summary>
         /// txtProposalTerm control.

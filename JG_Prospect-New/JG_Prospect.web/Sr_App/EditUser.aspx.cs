@@ -529,6 +529,7 @@ namespace JG_Prospect
                     objuser.status = dtExcel.Rows[i][10].ToString().Trim();
 
                     objuser.UserType = "SalesUser";
+                    objuser.AddedBy = Convert.ToInt32(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]);
                     DataSet dsCheckDuplicate = InstallUserBLL.Instance.CheckInstallUser(dtExcel.Rows[i][5].ToString().Trim(), dtExcel.Rows[i][3].ToString().Trim());
                     if (dsCheckDuplicate.Tables[0].Rows.Count == 0) //Original Code .......
                     // if (dsCheckDuplicate.Tables[0].Rows.Count != 0)
@@ -545,7 +546,7 @@ namespace JG_Prospect
                             DataSet dsadd = InstallUserBLL.Instance.AddSource(Convert.ToString(Session["Username"]));
                         }
                         //objuser.DateSourced = Convert.ToString(dtExcel.Rows[i][9].ToString());
-                        objuser.Notes = dtExcel.Rows[i][8].ToString().Trim();
+                        objuser.Notes = dtExcel.Rows[i][8].ToString().Trim();                        
                         bool result = InstallUserBLL.Instance.AddUser(objuser);
                         count += Convert.ToInt32(result);
                     }

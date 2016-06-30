@@ -807,71 +807,22 @@ function setPreviewFile(url, viewer) {
         }
     </style>
 
-    <%--Style for adding multiple product categories - controls are in AddProductLinesControl.ascx--%>
+   <%--Style for adding multiple product categories - controls are in AddProductLinesControl.ascx--%>
     <style>
-        .product-categories {
-            margin: 10px 20px;
-            border: 1px solid #ccc;
-            padding: 10px;
-        }
+        .product-categories { margin: 0 3%; background: url('../img/line.png') repeat-x 50% bottom; padding: 10px 0; }
+            .product-categories .expand { padding: 10px 10px 10px 0; cursor: pointer; font-size: 20px; font-weight: bold; line-height: 0px; width: 12px; display: inline-block; }
+            .product-categories > table { width: 100%; }
+                .product-categories > table tr td { width: 5%; }
+                    .product-categories > table tr td:nth-child(even) { width: 95%; }
 
-            .product-categories .head .expand {
-                float: right;
-                padding: 10px;
-                cursor: pointer;
-            }
+            .product-categories .body table tr td { vertical-align: top; padding: 10px 5px 0 0; background: url('../img/line.png') repeat-x 50% top;}
+                .product-categories .body table tr td strong { float: right; margin-top: 8px; }
 
-            .product-categories .body {
-                width: 100% !important;
-            }
-
-            .product-categories table {
-                width: 100%;
-            }
-
-                .product-categories table tr td {
-                    vertical-align: top;
-                    padding: 5px;
-                    background: url('../img/line.png') repeat-x 50% bottom;
-                }
-
-            .product-categories .head table tr td {
-                width: 15%;
-            }
-
-                .product-categories .head table tr td:nth-child(even) {
-                    width: 85%;
-                }
-
-            .product-categories .body table tr td {
-                width: 15%;
-            }
-
-                .product-categories .body table tr td:nth-child(even) {
-                    width: 35%;
-                }
-
-                .product-categories .body table tr td strong {
-                    float: right;
-                    margin-top: 8px;
-                }
-
-            .product-categories label {
-                margin: 10px 0;
-                display: inline-block;
-                font-weight: normal;
-            }
+            .product-categories label { margin: 10px 0; display: inline-block; font-weight: normal; width:140px; }
 
             .product-categories input,
             .product-categories textarea,
-            .product-categories select {
-                padding: 5px;
-                margin: 0;
-                border-radius: 5px;
-                border: #b5b4b4 1px solid;
-                line-height: 14px;
-                width: 300px;
-            }
+            .product-categories select { padding: 5px; margin: 0; border-radius: 5px; border: #b5b4b4 1px solid; line-height: 14px; width: 225px;margin-right:75px; }
     </style>
     <script>
         function uploadError_multiple() {
@@ -900,11 +851,11 @@ function setPreviewFile(url, viewer) {
                 </label>
                 <b>
                     <asp:Label ID="lblmsg" runat="server" Visible="true"></asp:Label></b> </span>
-            <ul>
-                <li style="width: 49%;">
-                    <table id="tblcustom" runat="server" border="0" cellspacing="0" cellpadding="0">
+            <ul style="margin-bottom:0;">
+                <li style="width: 95%;" class="last">
+                    <table>
                         <tr>
-                            <td>
+                            <td style="width:25%; padding:10px 0 0 0;">
                                 <label>
                                     Customer: <span>*</span></label>
                                 <asp:TextBox ID="txtCustomer" runat="server" MaxLength="35" onkeypress="return isAlphaKey(event);"
@@ -914,7 +865,23 @@ function setPreviewFile(url, viewer) {
                                 <asp:RequiredFieldValidator ID="rfvcustomer" runat="server" ForeColor="Red" ValidationGroup="save"
                                     ControlToValidate="txtCustomer" ErrorMessage="Enter Customer Name"></asp:RequiredFieldValidator>
                             </td>
+                            <td style="width:75%">
+                                <div class="btn_sec" style="text-align:left">
+                                    <asp:Button ID="btnAddProductLine" type="submit" runat="server" Text="Add Product Category" OnClick="btnAddProductLine_Click" />
+                                </div>
+                            </td>
                         </tr>
+                    </table>
+                </li>
+            </ul>
+             <asp:PlaceHolder ID="placeHolderProductLines" runat="server"></asp:PlaceHolder>
+            <br />
+            <br />
+            <br/>
+            <ul>
+                <li style="width: 49%;">
+                    <table id="tblcustom" runat="server" border="0" cellspacing="0" cellpadding="0">
+                        
                         <tr>
                             <td>
                                 <label>
