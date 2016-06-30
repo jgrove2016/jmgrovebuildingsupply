@@ -294,7 +294,8 @@ namespace JG_Prospect.Sr_App
                 //    objprospect.attachements = strFileName;
                 //}
                 objuser.status = "Install Prospect";
-
+                objuser.AddedBy = Convert.ToInt32(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]);
+                
                 lblException.Text = Convert.ToString(err.Append(" Before  CheckInstallUser "));
                 DataSet dsCheckDuplicate = InstallUserBLL.Instance.CheckInstallUser(txtemail.Text, txtPhone.Text);
                 lblException.Text = Convert.ToString(err.Append(" After  CheckInstallUser "));
