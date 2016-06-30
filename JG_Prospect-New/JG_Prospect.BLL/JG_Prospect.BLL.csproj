@@ -135,7 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\JG_Prospect.Common\JG_Prospect.Common.csproj">
-      <Project>{A445BB8A-2C2E-4144-93E8-6E6D79EDA646}</Project>
+      <Project>{a445bb8a-2c2e-4144-93e8-6e6d79eda646}</Project>
       <Name>JG_Prospect.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\JG_Prospect.DAL\JG_Prospect.DAL.csproj">

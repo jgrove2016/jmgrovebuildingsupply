@@ -1621,6 +1621,14 @@
       <Project>{A445BB8A-2C2E-4144-93E8-6E6D79EDA646}</Project>
       <Name>JG_Prospect.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\JG_Prospect.DAL\JG_Prospect.DAL.csproj">
+      <Project>{2c56d357-387f-4070-9dc0-70ab17d35668}</Project>
+      <Name>JG_Prospect.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\JG_Prospect.WebAPI\JG_Prospect.WebAPI.csproj">
+      <Project>{a2e0432f-2ed7-45eb-81d8-d889f2f85c6b}</Project>
+      <Name>JG_Prospect.WebAPI</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -12,7 +12,7 @@ namespace JG_Prospect.Common
         public static CultureInfo CULTURE = System.Globalization.CultureInfo.GetCultureInfo("en-US");
 
         public const string JUSTIN_LOGIN_ID = "jgrove@jmgroveconstruction.com";//"jgtest2@gmail.com"; //" jgrove@jmgroveconstruction.com"
-       //public const string JUSTIN_LOGIN_ID ="jgtest2@gmail.com";
+                                                                               //public const string JUSTIN_LOGIN_ID ="jgtest2@gmail.com";
         public const string PAGE_STATIC_REPORT = "StaticReport";
         public const string COLOR_RED = "red";
         public const int RETURN_ZERO = 0;
@@ -27,14 +27,14 @@ namespace JG_Prospect.Common
         public const string UPDATE = "Update";
         public const string SAVE = "Save";
         public const string SELECT = "Select";
-        public static string CustomerCalendar =  ConfigurationManager.AppSettings["CustomerCalendar"].ToString();
+        public static string CustomerCalendar = ConfigurationManager.AppSettings["CustomerCalendar"].ToString();
         public const string EMAIL_STATUS_VENDORCATEGORIES = "C";
         public const string EMAIL_STATUS_VENDOR = "V";
         public const string EMAIL_STATUS_NONE = "N";
-       // public const string EMAILID_VENDORCATEGORIES = "accountspayable@jmgroveconstruction.com";
-       // public const string EMAILID_VENDOR = "purchasing@jmgroveconstruction.com";
-       // public const string PASSWORD_VENDORCATEGORIES = "Sunrise1";
-       // public const string PASSWORD_VENDOR = "Bquality1";
+        // public const string EMAILID_VENDORCATEGORIES = "accountspayable@jmgroveconstruction.com";
+        // public const string EMAILID_VENDOR = "purchasing@jmgroveconstruction.com";
+        // public const string PASSWORD_VENDORCATEGORIES = "Sunrise1";
+        // public const string PASSWORD_VENDOR = "Bquality1";
         public const string PROCURRING_QUOTES = "Procurring Quotes";
         public const string PRODUCT_CUSTOM = "Custom";
         public const string PRODUCT_SHUTTER = "Shutter";
@@ -44,7 +44,7 @@ namespace JG_Prospect.Common
         //public const string Sorting_SortDirection_ASC = "ASC";
 
         public const char PERMISSION_STATUS_GRANTED = 'G';
-        public const char  PERMISSION_STATUS_NOTGRANTED = 'N';
+        public const char PERMISSION_STATUS_NOTGRANTED = 'N';
 
         public const string USER_TYPE_ADMIN = "Admin";
         public const string USER_TYPE_JSE = "JSE";
@@ -71,8 +71,8 @@ namespace JG_Prospect.Common
 
         public enum ProductType
         {
-            shutter=1,
-            custom=4
+            shutter = 1,
+            custom = 4
         }
 
         public enum CustomMaterialListStatus
@@ -81,6 +81,15 @@ namespace JG_Prospect.Common
             Added = 1,
             Deleted = 2,
             Modified = 3,
+        }
+
+        public enum TaskStatus
+        {
+            Assigned = 1,
+            InProgress = 2,
+            Pending = 3,
+            ReOpened = 4,
+            Closed = 5
         }
     }
 }

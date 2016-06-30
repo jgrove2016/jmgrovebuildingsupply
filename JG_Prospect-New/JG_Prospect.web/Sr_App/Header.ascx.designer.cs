@@ -13,6 +13,15 @@ namespace JG_Prospect.Sr_App {
     public partial class Header {
         
         /// <summary>
+        /// TaskGenerator control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::JG_Prospect.Sr_App.Controls.TaskGenerator TaskGenerator;
+        
+        /// <summary>
         /// lbluser control.
         /// </summary>
         /// <remarks>

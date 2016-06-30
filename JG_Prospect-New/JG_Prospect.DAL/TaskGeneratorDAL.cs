@@ -25,6 +25,17 @@ namespace JG_Prospect.DAL
         }
         public DataSet returndata;
 
+        /// <summary>
+        /// Will fetch task lists based on various filter parameters provided.
+        /// </summary>
+        /// <param name="UserID"></param>
+        /// <param name="Title"></param>
+        /// <param name="Designation"></param>
+        /// <param name="Status"></param>
+        /// <param name="CreatedOn"></param>
+        /// <param name="Start"></param>
+        /// <param name="PageLimit"></param>
+        /// <returns></returns>
         public DataSet GetTasksList(int? UserID, string Title, string Designation, Int16? Status, DateTime? CreatedOn, int Start, int PageLimit)
         {
             returndata = new DataSet();
@@ -82,6 +93,32 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@Start", DbType.Int32, Start);
                     database.AddInParameter(command, "@PageLimit", DbType.Int32, PageLimit);
                     
+                    command.CommandType = CommandType.StoredProcedure;
+                    returndata = database.ExecuteDataSet(command);
+                    return returndata;
+                }
+            }
+
+            catch (Exception ex)
+            {
+                //LogManager.Instance.WriteToFlatFile(ex);
+            }
+            return returndata;
+        }
+
+        /// <summary>
+        /// Get all Users and their designtions in system for whom tasks are available in system.
+        /// <returns></returns>
+        public DataSet GetAllUsersNDesignationsForFilter()
+        {
+            returndata = new DataSet();
+
+            try
+            {
+                SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
+                {
+                    DbCommand command = database.GetStoredProcCommand("usp_GetUsersNDesignationForTaskFilter");
+                                        
                     command.CommandType = CommandType.StoredProcedure;
                     returndata = database.ExecuteDataSet(command);
                     return returndata;
