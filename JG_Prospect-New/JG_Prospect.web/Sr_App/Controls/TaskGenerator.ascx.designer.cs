@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace JG_Prospect.Sr_App.UserControls {
+namespace JG_Prospect.Sr_App.Controls {
     
     
     public partial class TaskGenerator {
@@ -40,13 +40,13 @@ namespace JG_Prospect.Sr_App.UserControls {
         protected global::System.Web.UI.WebControls.DropDownList ddlDesignation;
         
         /// <summary>
-        /// ddlAssignTo control.
+        /// ddlUsers control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlAssignTo;
+        protected global::System.Web.UI.WebControls.DropDownList ddlUsers;
         
         /// <summary>
         /// ddlTaskStatus control.

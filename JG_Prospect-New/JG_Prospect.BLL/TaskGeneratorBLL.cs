@@ -29,6 +29,12 @@ namespace JG_Prospect.BLL
         {
             return TaskGeneratorDAL.Instance.GetTasksList( UserID,  Title,  Designation,  Status,  CreatedOn, Start,PageLimit);
         }
-       
+
+        public DataSet GetAllUsersNDesignationsForFilter()
+        {
+            return TaskGeneratorDAL.Instance.GetAllUsersNDesignationsForFilter();
+        }
+
+        
     }
 }

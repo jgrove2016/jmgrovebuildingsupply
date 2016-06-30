@@ -1,5 +1,5 @@
 ﻿a<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Header.ascx.cs" Inherits="JG_Prospect.Sr_App.Header" %>
-<%--<%@ Register Src="~/Sr_App/UserControls/TaskGenerator.ascx" TagPrefix="uc1" TagName="TaskGenerator" %>--%>
+<%@ Register Src="~/Sr_App/Controls/TaskGenerator.ascx" TagPrefix="uc1" TagName="TaskGenerator" %>
 
 <!--tabs jquery-->
 <%--<script type="text/javascript" src="../js/jquery.ui.core.js"></script>
@@ -37,9 +37,9 @@
 </script>
 <div class="header">
     <img src="../img/logo.png" alt="logo" width="88" height="89" class="logo" />
-    <%--<div id="divTask" style="float: right; margin-right: 250px; color: #ffffff; overflow:scroll;display:none;">
+    <div id="divTask" style="float: right; margin-right: 250px; color: #ffffff; overflow:scroll;">
         <uc1:TaskGenerator runat="server" id="TaskGenerator" />
-    </div>--%>
+    </div>
      <div class="user_panel">
         Welcome! <span>
             <asp:Label ID="lbluser" runat="server" Text="User"></asp:Label>
