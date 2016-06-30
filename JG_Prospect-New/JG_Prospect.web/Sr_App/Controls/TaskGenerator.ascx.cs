@@ -95,7 +95,7 @@ namespace JG_Prospect.Sr_App.Controls
             DateTime? CreatedOn = null;
 
             // this is for paging based data fetch, in header view case it will be always page numnber 0 and page size 5
-            int Start = 0, PageLimit = 5;
+            int Start = 1, PageLimit = 5;
 
             PrepareSearchFilerts(ref UserID, ref Title, ref Designation, ref Status, ref CreatedOn);
 

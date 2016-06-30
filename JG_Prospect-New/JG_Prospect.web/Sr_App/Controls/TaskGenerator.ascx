@@ -43,6 +43,9 @@
         background: #f6f1f3;
         padding: 2px;
     }
+     .AlternateRow  a , .FirstRow a {
+        color:#111;
+    }
 </style>
 
 <div class="tasklist">
