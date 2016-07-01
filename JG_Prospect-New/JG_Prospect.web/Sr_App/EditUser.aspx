@@ -171,16 +171,17 @@
             </div>
 
             <div class="form_panel_custom divHrReport">
-                <ul style="margin-bottom:10px;">
+                <ul style="margin-bottom: 10px;">
                     <li style="width: 49%; padding: 10px; box-sizing: border-box;">
                         <table id="Table1" class="select_period_table" cellpadding="0" cellspacing="0" border="0" runat="server">
                             <tr>
                                 <td>
-                                     <label>
+                                    <label>
                                         <strong>Select Period: </strong>
                                     </label>
-                                     <label>
-                                    <span>*</span> from : </label>
+                                    <label>
+                                        <span>*</span> from :
+                                    </label>
                                     <asp:TextBox ID="txtfrmdate" runat="server" TabIndex="2" CssClass="date"
                                         onkeypress="return false" MaxLength="10" AutoPostBack="true"
                                         Style="width: 150px;" OnTextChanged="txtfrmdate_TextChanged"></asp:TextBox>
@@ -193,7 +194,7 @@
                                 </td>
 
                                 <td>
-                                     <label>
+                                    <label>
                                         <strong>&nbsp;</strong>
                                     </label>
                                     <label>
@@ -244,7 +245,7 @@
                         </table>
                     </li>
                 </ul>
-               
+
                 <div class="btn_sec">
                     <asp:Button runat="server" ID="btnshow" Text="Show" CssClass="cancel" OnClick="btnshow_Click" ValidationGroup="show" TabIndex="4" />
                 </div>
@@ -354,6 +355,14 @@
                 </asp:DropDownList>&nbsp;
                 <asp:Label ID="lblDesignation" Text="Designation" runat="server" />
                 <asp:DropDownList ID="ddlDesignation" runat="server" Width="140px" OnSelectedIndexChanged="ddlUserStatus_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+                <%--20160701--%>
+                <asp:Label ID="lblUser" Text="User" runat="server" />
+                <asp:DropDownList ID="ddlUser" runat="server" Width="140px" OnSelectedIndexChanged="ddlUser_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+
+                <asp:Label ID="lblDateAdd" Text="Date Add" runat="server" />
+                <asp:TextBox ID="txtDateAdd" placeholder="Select Date" runat="server" AutoPostBack="true" OnTextChanged="txtDateAdd_TextChanged" ClientIDMode="Static" onkeypress="return false" TabIndex="104" Width="127px"></asp:TextBox>
+                <cc1:CalendarExtender ID="ceDateADD" Format="MM/dd/yyyy" TargetControlID="txtDateAdd" runat="server"></cc1:CalendarExtender>
+                <%--20160701 Ends--%>
             </div>
             <asp:LinkButton ID="lnkDownload" Text="Download Sample Format For Bulk Upload" CommandArgument='../UserFile/SalesSample.xlsx' runat="server" OnClick="DownloadFile"></asp:LinkButton>
             <div class="grid">

@@ -5,8 +5,7 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <style type="text/css">
-         .black_overlay
-        {
+        .black_overlay {
             display: none;
             position: fixed;
             top: 0%;
@@ -21,8 +20,7 @@
             overflow-y: hidden;
         }
 
-        .white_content
-        {
+        .white_content {
             display: none;
             position: absolute;
             top: 10%;
@@ -44,7 +42,7 @@
             else
                 return false;
         }
-    
+
         function ClosePassword() {
             document.getElementById('litePassword').style.display = 'none';
             document.getElementById('fadePassword').style.display = 'none';
@@ -80,29 +78,29 @@
         }
 
 
-     var validFilesTypes=["xls","xlsx"];
-     function ValidateFile() {
-         var file = document.getElementById("<%=BulkProspectUploader.ClientID%>");
-         var label = document.getElementById("<%=Label1.ClientID%>");
-         var path = file.value;
-         var ext = path.substring(path.lastIndexOf(".") + 1, path.length).toLowerCase();
-         var isValidFile = false;
-         for (var i = 0; i < validFilesTypes.length; i++) {
-             if (ext == validFilesTypes[i]) {
-                 isValidFile = true;
-                 break;
-             }
-         }
-         if (!isValidFile) {
-             alert('Select file of type xls or xlsx');
-             //label.style.color = "red";
-             //label.innerHTML = "Invalid File. Please upload a File with" +
+        var validFilesTypes = ["xls", "xlsx"];
+        function ValidateFile() {
+            var file = document.getElementById("<%=BulkProspectUploader.ClientID%>");
+            var label = document.getElementById("<%=Label1.ClientID%>");
+            var path = file.value;
+            var ext = path.substring(path.lastIndexOf(".") + 1, path.length).toLowerCase();
+            var isValidFile = false;
+            for (var i = 0; i < validFilesTypes.length; i++) {
+                if (ext == validFilesTypes[i]) {
+                    isValidFile = true;
+                    break;
+                }
+            }
+            if (!isValidFile) {
+                alert('Select file of type xls or xlsx');
+                //label.style.color = "red";
+                //label.innerHTML = "Invalid File. Please upload a File with" +
 
-             // " extension:\n\n" + validFilesTypes.join(", ");
+                // " extension:\n\n" + validFilesTypes.join(", ");
 
-         }
-         return isValidFile;
-     }
+            }
+            return isValidFile;
+        }
 
     </script>
     <style type="text/css">
@@ -143,11 +141,11 @@
             </span>
             <label>
                 Upload Prospects using xlsx file:
-             <asp:FileUpload ID="BulkProspectUploader"  runat="server" /></label>
+             <asp:FileUpload ID="BulkProspectUploader" runat="server" /></label>
             <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator1" ControlToValidate="BulkProspectUploader" runat="server" ErrorMessage="Select file to import data." ValidationGroup="BulkImport"></asp:RequiredFieldValidator>--%>
             <div class="btn_sec">
                 <asp:Button ID="btnUpload" runat="server" Text="Upload"
-                    OnClientClick="return ValidateFile()"  OnClick="btnUpload_Click" />
+                    OnClientClick="return ValidateFile()" OnClick="btnUpload_Click" />
                 <br />
                 <asp:Label ID="Label1" runat="server" />
             </div>
@@ -168,6 +166,15 @@
                 </asp:DropDownList>&nbsp;
                 <asp:Label ID="lblDesignation" Text="Designation" runat="server" />
                 <asp:DropDownList ID="ddlDesignation" runat="server" Width="140px" OnSelectedIndexChanged="ddlUserStatus_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+                <%--20160701--%>
+                <asp:Label ID="lblUser" Text="User" runat="server" />
+                <asp:DropDownList ID="ddlUser" runat="server" Width="140px" OnSelectedIndexChanged="ddlUser_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+
+                <asp:Label ID="lblDateAdd" Text="Date Add" runat="server" />
+                <asp:TextBox ID="txtDateAdd" placeholder="Select Date" runat="server" AutoPostBack="true" OnTextChanged="txtDateAdd_TextChanged" ClientIDMode="Static" onkeypress="return false" TabIndex="104" Width="127px"></asp:TextBox>
+                <cc1:CalendarExtender ID="ceDateADD" Format="MM/dd/yyyy" TargetControlID="txtDateAdd" runat="server"></cc1:CalendarExtender>
+
+                <%--20160701 Ends--%>
             </div>
             <br />
             <asp:LinkButton ID="lnkDownload" Text="Download Sample Format For Bulk Upload" CommandArgument='../UserFile/sample.xlsx' runat="server" OnClick="DownloadFile"></asp:LinkButton>
@@ -185,7 +192,7 @@
                                 <asp:LinkButton ID="lbltest" Text="Edit" CommandName="Edit" runat="server"
                                     CommandArgument='<%#Eval("ID")%>'></asp:LinkButton>
                                 <asp:LinkButton ID="lnkDelete" Text="Delete" CommandName="Delete" runat="server" OnClientClick="return confirm('Are you sure you want to delete this record?')"
-                                    CommandArgument='<%#Eval("Id")%>' ></asp:LinkButton>
+                                    CommandArgument='<%#Eval("Id")%>'></asp:LinkButton>
                             </ItemTemplate>
                         </asp:TemplateField>
                         <asp:TemplateField ShowHeader="True" HeaderText="Id" ControlStyle-ForeColor="Black"
@@ -212,7 +219,7 @@
                             <ControlStyle ForeColor="Black" />
                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                         </asp:TemplateField>
-                       <%-- <asp:TemplateField HeaderText="Picture" SortExpression="picture">
+                        <%-- <asp:TemplateField HeaderText="Picture" SortExpression="picture">
                             <ItemTemplate>
                                 <asp:LinkButton ID="lbtnPicture" Text="Picture" CommandName="ShowPicture" runat="server" CommandArgument='<%#Eval("picture")%>'></asp:LinkButton>
                             </ItemTemplate>
@@ -276,13 +283,14 @@
                                     <asp:ListItem Text="Active" Value="Active"></asp:ListItem>
                                     <asp:ListItem Text="Deactive" Value="Deactive"></asp:ListItem>
                                     <asp:ListItem Text="Install Prospect" Value="Install Prospect"></asp:ListItem>
-                                </asp:DropDownList> <br />
+                                </asp:DropDownList>
+                                <br />
                                 <asp:Label ID="lblRejectDetail" runat="server" Text='<%#Eval("RejectDetail") %>'></asp:Label>
                                 <asp:Label ID="lblInterviewDetail" runat="server" Text='<%#Eval("InterviewDetail") %>'></asp:Label>
                             </ItemTemplate>
                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                         </asp:TemplateField>
-                         <asp:TemplateField HeaderText="Added By" SortExpression="AddedBy" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="60px" ItemStyle-Wrap="true" HeaderStyle-Width="60px" >
+                        <asp:TemplateField HeaderText="Added By" SortExpression="AddedBy" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="60px" ItemStyle-Wrap="true" HeaderStyle-Width="60px">
                             <ItemTemplate>
                                 <asp:Label ID="lblAddedBy" runat="server" Text='<%#Eval("AddedBy")%>'></asp:Label>
                             </ItemTemplate>
@@ -349,7 +357,7 @@
             <br />
             <br />
             <div class="btn_sec">
-                <asp:Button ID="btnExport" runat="server" Text="Export" OnClick="btnExport_Click"  />
+                <asp:Button ID="btnExport" runat="server" Text="Export" OnClick="btnExport_Click" />
             </div>
         </div>
     </div>
@@ -367,23 +375,22 @@
 
 
 
-       <asp:Panel ID="panelPopup" runat="server">
+    <asp:Panel ID="panelPopup" runat="server">
         <div id="light" class="white_content">
             <h3>Reason
-                </h3>
-            <a href="javascript:void(0)" onclick="document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">
-                Close</a>
+            </h3>
+            <a href="javascript:void(0)" onclick="document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'">Close</a>
             <table width="100%" style="border: Solid 3px #b04547; width: 100%; height: 70%"
                 cellpadding="p0" cellspacing="0">
                 <tr>
-                    <td align="center" colspan="2" style="height:15px;">
-                    <asp:TextBox ID="txtReason" runat="server" placeholder="Enter Reason" TextMode="MultiLine"></asp:TextBox>
+                    <td align="center" colspan="2" style="height: 15px;">
+                        <asp:TextBox ID="txtReason" runat="server" placeholder="Enter Reason" TextMode="MultiLine"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="reqReason" runat="server" ErrorMessage="Enter reason" ControlToValidate="txtReason" ValidationGroup="Reason"></asp:RequiredFieldValidator>
                     </td>
                 </tr>
                 <tr>
                     <td align="center">
-                         <asp:Button ID="btnSave" runat="server" BackColor="#327FB5" ForeColor="White" Height="32px"
+                        <asp:Button ID="btnSave" runat="server" BackColor="#327FB5" ForeColor="White" Height="32px"
                             Style="height: 26px; font-weight: 700; line-height: 1em;" Text="Save" Width="100px" ValidationGroup="Reason"
                             TabIndex="119" OnClick="btnSave_Click" />
                         <%--<asp:Button ID="Button2" runat="server" OnClick="" />--%>
@@ -395,28 +402,25 @@
     <div id="fade" class="black_overlay">
     </div>
     <asp:Panel ID="panel2" runat="server">
-        <div id="interviewDatelite" class="white_content" style="height:auto;">
+        <div id="interviewDatelite" class="white_content" style="height: auto;">
             <h3>Interview Details
-                </h3>
-            <a href="javascript:void(0)" onclick="document.getElementById('interviewDatelite').style.display='none';document.getElementById('interviewDatefade').style.display='none'">
-                Close</a>
+            </h3>
+            <a href="javascript:void(0)" onclick="document.getElementById('interviewDatelite').style.display='none';document.getElementById('interviewDatefade').style.display='none'">Close</a>
             <table width="100%" style="border: Solid 3px #b04547; width: 100%; height: 200px;"
                 cellpadding="0" cellspacing="0">
                 <tr>
-                    <td align="center" style="height:15px;">
-                        Date :
+                    <td align="center" style="height: 15px;">Date :
                     <asp:TextBox ID="dtInterviewDate" placeholder="Select Date" runat="server" ClientIDMode="Static" onkeypress="return false" TabIndex="104" Width="127px"></asp:TextBox>
-                        <cc1:CalendarExtender ID="CalendarExtender1" Format="MM/dd/yyyy"  TargetControlID="dtInterviewDate" runat="server"></cc1:CalendarExtender>
+                        <cc1:CalendarExtender ID="CalendarExtender1" Format="MM/dd/yyyy" TargetControlID="dtInterviewDate" runat="server"></cc1:CalendarExtender>
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Select Date" ControlToValidate="dtInterviewDate" ValidationGroup="InterviewDate"></asp:RequiredFieldValidator>
                     </td>
-                    <td>
-                        Time :
+                    <td>Time :
                         <asp:DropDownList ID="ddlInsteviewtime" runat="server" TabIndex="105" Width="112px"></asp:DropDownList>
                     </td>
                 </tr>
                 <tr>
                     <td align="center" colspan="2">
-                         <asp:Button ID="btnSaveInterview" runat="server" BackColor="#327FB5" ForeColor="White" Height="32px"
+                        <asp:Button ID="btnSaveInterview" runat="server" BackColor="#327FB5" ForeColor="White" Height="32px"
                             Style="height: 26px; font-weight: 700; line-height: 1em;" Text="Save" Width="100px" ValidationGroup="InterviewDate"
                             TabIndex="119" OnClick="btnSaveInterview_Click" />
                         <%--<asp:Button ID="Button2" runat="server" OnClick="" />--%>
@@ -430,28 +434,26 @@
 
 
 
-     <asp:Panel ID="panel3" runat="server">
+    <asp:Panel ID="panel3" runat="server">
         <div id="litePassword" class="white_content">
             <h3>Password
-                </h3>
-            <a href="javascript:void(0)" onclick="document.getElementById('litePassword').style.display='none';document.getElementById('fadePassword').style.display='none'">
-                Close</a>
+            </h3>
+            <a href="javascript:void(0)" onclick="document.getElementById('litePassword').style.display='none';document.getElementById('fadePassword').style.display='none'">Close</a>
             <table width="100%" style="border: Solid 3px #b04547; width: 100%; height: 70%"
                 cellpadding="0" cellspacing="0">
                 <tr>
-                    <td align="center" style="height:54px;width:200px;">
-                    Enter Password To Change Status
+                    <td align="center" style="height: 54px; width: 200px;">Enter Password To Change Status
                     </td>
-                    <td align="center" style="height:54px;">
-                    <asp:TextBox ID="txtPassword" runat="server" placeholder="Enter Password" TextMode="Password"></asp:TextBox>
+                    <td align="center" style="height: 54px;">
+                        <asp:TextBox ID="txtPassword" runat="server" placeholder="Enter Password" TextMode="Password"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="Enter Password" ControlToValidate="txtPassword" ValidationGroup="Password"></asp:RequiredFieldValidator>
                     </td>
                 </tr>
                 <tr>
-                    <td align="center" colspan="2" style="height:54px;">
-                         <asp:Button ID="btnPassword" runat="server" BackColor="#327FB5" ForeColor="White" Height="32px"
+                    <td align="center" colspan="2" style="height: 54px;">
+                        <asp:Button ID="btnPassword" runat="server" BackColor="#327FB5" ForeColor="White" Height="32px"
                             Style="height: 26px; font-weight: 700; line-height: 1em;" Text="Save" Width="100px" ValidationGroup="Password"
-                            TabIndex="119" OnClick="btnPassword_Click"  />
+                            TabIndex="119" OnClick="btnPassword_Click" />
                         <%--<asp:Button ID="Button2" runat="server" OnClick="" />--%>
                     </td>
                 </tr>

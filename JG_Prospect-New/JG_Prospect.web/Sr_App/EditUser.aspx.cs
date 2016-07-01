@@ -71,6 +71,17 @@ namespace JG_Prospect
                                          select Convert.ToString(ptrade["Designation"])).Distinct().ToList();
             ddlDesignation.DataBind();
             ddlDesignation.Items.Insert(0, "--Select--");
+
+
+            #region 20160701
+            DataSet dsUsers = new DataSet();
+            dsUsers = InstallUserBLL.Instance.getUserList();
+            ddlUser.DataSource = dsUsers.Tables[0];
+            ddlUser.DataTextField = "Username";
+            ddlUser.DataValueField = "Id";
+            ddlUser.DataBind();
+            ddlUser.Items.Insert(0, new System.Web.UI.WebControls.ListItem("All", "0"));
+            #endregion
         }
 
         private void FillCustomer()
@@ -161,11 +172,21 @@ namespace JG_Prospect
                             ddlStatus.Items.FindByValue(Status).Selected = true;
                         }
 
+
+
+
                     }
                     else
                     {
                         ddlStatus.Items.FindByValue("Applicant").Selected = true;
                     }
+
+                    #region 20160701
+                    if (String.IsNullOrEmpty(Status) || Status == "Applicant")
+                    {
+                        e.Row.BackColor = System.Drawing.Color.Yellow;
+                    }
+                    #endregion
                 }
             }
             catch (Exception ex)
@@ -546,7 +567,7 @@ namespace JG_Prospect
                             DataSet dsadd = InstallUserBLL.Instance.AddSource(Convert.ToString(Session["Username"]));
                         }
                         //objuser.DateSourced = Convert.ToString(dtExcel.Rows[i][9].ToString());
-                        objuser.Notes = dtExcel.Rows[i][8].ToString().Trim();                        
+                        objuser.Notes = dtExcel.Rows[i][8].ToString().Trim();
                         bool result = InstallUserBLL.Instance.AddUser(objuser);
                         count += Convert.ToInt32(result);
                     }
@@ -1265,6 +1286,37 @@ namespace JG_Prospect
                 else
                     dt = null;
             }
+
+            #region 20160701
+            if (ddlUser.SelectedIndex != 0)
+            {
+                string username = ddlUser.SelectedItem.Text;
+                query = from userdata in dt.AsEnumerable()
+                        where (userdata.Field<string>("AddedBy") == username)
+                        select userdata;
+                if (query.Count() > 0)
+                {
+                    dt = query.CopyToDataTable();
+                }
+                else
+                    dt = null;
+            }
+
+            if (!string.IsNullOrEmpty(txtDateAdd.Text))
+            {
+                string addedOn = txtDateAdd.Text;
+                query = from userdata in dt.AsEnumerable()
+                        where (userdata.Field<DateTime>("CreatedDateTime").Date == Convert.ToDateTime(addedOn).Date)
+                        select userdata;
+                if (query.Count() > 0)
+                {
+                    dt = query.CopyToDataTable();
+                }
+                else
+                    dt = null;
+            }
+            #endregion
+
             GridViewUser.DataSource = dt;
             GridViewUser.DataBind();
         }
@@ -1495,7 +1547,13 @@ namespace JG_Prospect
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('ToDate must be greater than FromDate');", true);
             }
         }
+        #region 20160701
 
+        protected void ddlUser_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BindGrid();
+        }
+        #endregion
     }
     public class HrData
     {
