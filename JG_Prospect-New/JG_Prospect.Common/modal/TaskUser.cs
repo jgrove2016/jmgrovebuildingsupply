@@ -11,6 +11,7 @@ namespace JG_Prospect.Common.modal
         public Int64 Id;
         public Int64 TaskId;
         public Int32 UserId;
+        public Int32 TaskUpdateId;
         public bool UserType;
         public Int16 Status;
         public string Notes;

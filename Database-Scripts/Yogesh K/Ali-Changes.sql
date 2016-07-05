@@ -3,7 +3,7 @@
 -- Create date: 25-JUNE-2016  
 -- Description: SP_GetTaskUserDetailsByTaskId  
 -- =============================================  
-ALTER PROCEDURE [dbo].[SP_GetTaskUserDetailsByTaskId]
+CREATE PROCEDURE [dbo].[SP_GetTaskUserDetailsByTaskId]
 	@TaskId int
 AS
 BEGIN
@@ -29,7 +29,7 @@ END
 -- Updated date: 29-JUNE-2016  
 -- Description: SP_GetInstallUsers    
 -- =============================================    
-ALTER PROCEDURE SP_GetInstallUsers    
+CREATE PROCEDURE SP_GetInstallUsers    
 @Key int,  
 @Designation varchar(100)  
 AS    
@@ -125,13 +125,6 @@ END
 
 GO
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-ALTER PROCEDURE SP_GetInstallUserDetails      
-@Id int   
-AS      
-BEGIN    
-  
- select * from tblinstallUsers where  Id =  @Id  
-END
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -203,4 +196,6 @@ WHERE TaskId=@TaskId
 END  
   
 END  
-  
+
+go  
+

@@ -30,21 +30,29 @@ namespace JG_Prospect.Sr_App.Controls
         {
             if (!Page.IsPostBack)
             {
+                // Add mode.
+                controlMode.Value = "0";
                 LoadFilters();
-                SearchTasks();
+                SearchTasks(null);
                 LoadPopupDropdown();
             }
         }
 
-        
+
 
         #endregion
+
         #region "-Control Events-"
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            SearchTasks();
+            SearchTasks(null);
         }
 
+        protected void btnLoadMore_Click(object sender, EventArgs e)
+        {
+            SearchTasks(50);
+            ScriptManager.RegisterStartupScript((sender as Control), this.GetType(), "expand", "SetHeaderSectionHeight();", true);
+        }
 
         protected void gvTasks_RowDataBound(object sender, GridViewRowEventArgs e)
         {
@@ -54,7 +62,7 @@ namespace JG_Prospect.Sr_App.Controls
 
                 if (lblTaskStatus != null)
                 {
-                    lblTaskStatus.Text =( (JGConstant.TaskStatus)Convert.ToInt32(DataBinder.Eval(e.Row.DataItem, "Status"))).ToString();
+                    lblTaskStatus.Text = ((JGConstant.TaskStatus)Convert.ToInt32(DataBinder.Eval(e.Row.DataItem, "Status"))).ToString();
 
                 }
 
@@ -63,8 +71,218 @@ namespace JG_Prospect.Sr_App.Controls
 
         protected void btnSaveTask_Click(object sender, EventArgs e)
         {
+            SaveTask();
+        }
+
+        /// <summary>
+        /// Will bind users based on designation changed in dropdown
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void txtDesignation_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            LoadUsersByDesgination();
+        }
+
+        private void LoadUsersByDesgination()
+         {
+            DataSet dsUsers;
+
+            // DropDownCheckBoxes ddlAssign = (FindControl("ddcbAssigned") as DropDownCheckBoxes);
+            // DropDownList ddlDesignation = (DropDownList)sender;
+            string designation = ddlUserDesignation.SelectedValue;
+
+            dsUsers = TaskGeneratorBLL.Instance.GetInstallUsers(2, designation);
+
+            ddcbAssigned.DataSource = dsUsers;
+            ddcbAssigned.DataTextField = "FristName";
+            ddcbAssigned.DataValueField = "Id";
+            ddcbAssigned.DataBind();
+        }
+
+        /// <summary>
+        /// To bind users on change designation
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void ddcbAssigned_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (controlMode.Value == "0")
+            {
+                DataSet dsUsers = new DataSet();
+                DataSet tempDs;
+                List<string> SelectedUsersID = new List<string>();
+                List<string> SelectedUsers = new List<string>();
+                foreach (System.Web.UI.WebControls.ListItem item in ddcbAssigned.Items)
+                {
+                    if (item.Selected)
+                    {
+                        SelectedUsersID.Add(item.Value);
+                        SelectedUsers.Add(item.Text);
+                        tempDs = TaskGeneratorBLL.Instance.GetInstallUserDetails(Convert.ToInt32(item.Value));
+                        dsUsers.Merge(tempDs);
+                    }
+                }
+                if (dsUsers.Tables.Count != 0)
+                {
+                    gdTaskUsers.DataSource = dsUsers;
+                    gdTaskUsers.DataBind();
+                }
+                else
+                {
+                    gdTaskUsers.DataSource = null;
+                    gdTaskUsers.DataBind();
+                } 
+            }
+
+        }
+
+        protected void gvTasks_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "EditTask")
+            {
+                controlMode.Value = "1";
+                hdnTaskId.Value = e.CommandArgument.ToString();
+                LoadTaskData(e.CommandArgument.ToString());
+            }
+        }
+        #endregion
+
+        #region "--Private Methods--"
+
+        /// <summary>
+        /// Load filter dropdowns for task
+        /// </summary>
+        private void LoadFilters()
+        {
+
+            DataSet dsFilters = TaskGeneratorBLL.Instance.GetAllUsersNDesignationsForFilter();
+
+            DataTable dtUsers = dsFilters.Tables[0];
+            DataTable dtDesignations = dsFilters.Tables[1];
+
+            ddlUsers.DataSource = dtUsers;
+            ddlDesignation.DataSource = dtDesignations;
+
+            ddlUsers.DataTextField = "FirstName";
+            ddlUsers.DataValueField = "Id";
+            ddlUsers.DataBind();
+
+            ddlDesignation.DataTextField = "Designation";
+            ddlDesignation.DataValueField = "Designation";
+            ddlDesignation.DataBind();
+
+            ddlUsers.Items.Insert(0, new ListItem("--Users--", "0"));
+            ddlDesignation.Items.Insert(0, new ListItem("--Designation--", "0"));
+        }
+
+        /// <summary>
+        /// Search tasks with parameters choosen by user.
+        /// </summary>
+        private void SearchTasks(int? RecordstoPull)
+        {
+
+            int? UserID = null;
+            string Title = String.Empty, Designation = String.Empty;
+            Int16? Status = null;
+            DateTime? CreatedOn = null;
+
+            // this is for paging based data fetch, in header view case it will be always page numnber 0 and page size 5
+            int Start = 0, PageLimit = 5;
+
+            if (RecordstoPull != null)
+            {
+                PageLimit = Convert.ToInt32(RecordstoPull);
+            }
+
+            PrepareSearchFilerts(ref UserID, ref Title, ref Designation, ref Status, ref CreatedOn);
+
+            DataSet dsFilters = TaskGeneratorBLL.Instance.GetTasksList(UserID, Title, Designation, Status, CreatedOn, Start, PageLimit);
+
+            gvTasks.DataSource = dsFilters;
+            gvTasks.DataBind();
+
+        }
+
+        /// <summary>
+        /// Prepare search filters choosen by users before performing search
+        /// </summary>
+        /// <param name="UserID"></param>
+        /// <param name="Title"></param>
+        /// <param name="Designation"></param>
+        /// <param name="Status"></param>
+        /// <param name="CreatedOn"></param>
+        private void PrepareSearchFilerts(ref int? UserID, ref string Title, ref string Designation, ref short? Status, ref DateTime? CreatedOn)
+        {
+            if (ddlUsers.SelectedIndex > 0)
+            {
+                UserID = Convert.ToInt32(ddlUsers.SelectedItem.Value);
+            }
+
+            if (!String.IsNullOrEmpty(txtSearch.Text))
+            {
+                Title = txtSearch.Text;
+            }
+            if (ddlDesignation.SelectedIndex > 0)
+            {
+                Designation = ddlDesignation.SelectedItem.Value;
+            }
+
+            if (ddlTaskStatus.SelectedIndex > 0)
+            {
+                Status = Convert.ToInt16(ddlTaskStatus.SelectedItem.Value);
+            }
+
+            if (!String.IsNullOrEmpty(txtCreatedDate.Text))
+            {
+                CreatedOn = Convert.ToDateTime(txtCreatedDate.Text);
+            }
+        }
+
+        /// <summary>
+        /// To load Designation to popup dropdown
+        /// </summary>
+        private void LoadPopupDropdown()
+        {
+            DataSet dsdesign = TaskGeneratorBLL.Instance.GetInstallUsers(1, "");
+            DataSet ds = TaskGeneratorBLL.Instance.GetTaskUserDetails(1);
+            ddlUserDesignation.DataSource = dsdesign;
+            ddlUserDesignation.DataTextField = "Designation";
+            ddlUserDesignation.DataValueField = "Designation";
+            ddlUserDesignation.DataBind();
+
+        }
+
+        /// <summary>
+        /// To clear the popup details after save
+        /// </summary>
+        private void clearAllFormData()
+        {
+            txtTaskTitle.Text = string.Empty;
+            txtDescription.Text = string.Empty;
+            ddlUserDesignation.ClearSelection();
+            ddcbAssigned.Items.Clear();
+            cmbStatus.ClearSelection();
+            ddlUserAcceptance.ClearSelection();
+            txtDueDate.Text = string.Empty;
+            txtHours.Text = string.Empty;
+            gdTaskUsers.DataSource = null;
+            gdTaskUsers.DataBind();
+            txtLog.Text = string.Empty;
+            fuUpload.Dispose();
+            hdnTaskId.Value = "0";
+            controlMode.Value = "0";
+        }
+
+        /// <summary>
+        /// Save task master details, user information and user attachments.
+        /// Created By: Yogesh Keraliya
+        /// </summary>
+        private void SaveTask()
+        {
             int userId = Convert.ToInt16(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]);
             Task task = new Task();
+            task.TaskId = Convert.ToInt32( hdnTaskId.Value);
             task.Title = txtTaskTitle.Text;
             task.Description = txtDescription.Text;
             task.Status = Convert.ToUInt16(cmbStatus.SelectedItem.Value);
@@ -73,35 +291,29 @@ namespace JG_Prospect.Sr_App.Controls
             task.Notes = txtLog.Text;
             task.CreatedBy = userId;
             task.Attachment = null;
-            task.Mode = 0;
+            task.Mode = Convert.ToInt32( controlMode.Value);
 
-            string Designame = txtDesignation.SelectedItem.Value;
+            string Designame = ddlUserDesignation.SelectedItem.Value;
             Int64 ItaskId = TaskGeneratorBLL.Instance.SaveOrDeleteTask(task);    // save task master details
 
-            for (int i = 0; i < gdTaskUsers.Rows.Count; i++)
-            {
+            // Save task notes and user information, returns TaskUpdateId for reference to add in user attachments.
+            Int32 TaskUpdateId = SaveTaskNotes(Designame, ItaskId);
 
-                TaskUser taskUser = new TaskUser();
-                Label userID = (Label)gdTaskUsers.Rows[i].Cells[1].FindControl("lbluserId");
-                Label userType = (Label)gdTaskUsers.Rows[i].Cells[1].FindControl("lbluserType");
-                Label notes = (Label)gdTaskUsers.Rows[i].Cells[1].FindControl("lblNotes");
-                taskUser.UserId = Convert.ToInt32(userID.Text);
-                //taskUser.UserType = userType.Text;
-                taskUser.Notes = notes.Text;
-                taskUser.TaskId = ItaskId;
+            // Save task related user's attachment.
+            UploadUserAttachements(userId, ItaskId, TaskUpdateId);
 
-                taskUser.Status = Convert.ToInt16(cmbStatus.SelectedItem.Value);
-                int userAcceptance = Convert.ToInt32(ddlUserAcceptance.SelectedItem.Value);
-                taskUser.UserAcceptance = Convert.ToBoolean(userAcceptance);
-                TaskGeneratorBLL.Instance.SaveOrDeleteTaskUser(taskUser);
+            clearAllFormData();
 
+            // Refresh task list on top header.
+            SearchTasks(null);
 
-               // SendEmail(Designame, taskUser.UserId); // send auto email to selected users
+            ScriptManager.RegisterStartupScript(this.Page, GetType(), "al", "alert('Task created successfully');", true);
 
+           
+        }
 
-            }
-
-
+        private void UploadUserAttachements(int userId, long ItaskId, int taskUpdateId)
+        {
             TaskUser taskUserFiles = new TaskUser();
             HttpFileCollection uploads = Request.Files;
 
@@ -127,13 +339,49 @@ namespace JG_Prospect.Sr_App.Controls
                         taskUserFiles.Mode = 0;
                         taskUserFiles.TaskId = ItaskId;
                         taskUserFiles.UserId = userId;
+                        taskUserFiles.TaskUpdateId = taskUpdateId;
                         TaskGeneratorBLL.Instance.SaveOrDeleteTaskUserFiles(taskUserFiles);  // save task files
                     }
                 }
             }
-            ScriptManager.RegisterStartupScript(this.Page, GetType(), "al", "alert('Task Added Successfully');", true);
-            clearAllFormData();
         }
+
+        /// <summary>
+        /// Save task user information.
+        /// </summary>
+        /// <param name="Designame"></param>
+        /// <param name="ItaskId"></param>
+        private Int32 SaveTaskNotes(string Designame, long ItaskId)
+        {
+            Int32 TaskUpdateId = 0;
+
+            for (int i = 0; i < gdTaskUsers.Rows.Count; i++)
+            {
+
+                TaskUser taskUser = new TaskUser();
+                Label userID = (Label)gdTaskUsers.Rows[i].Cells[1].FindControl("lbluserId");
+                Label userType = (Label)gdTaskUsers.Rows[i].Cells[1].FindControl("lbluserType");
+                Label notes = (Label)gdTaskUsers.Rows[i].Cells[1].FindControl("lblNotes");
+                taskUser.UserId = Convert.ToInt32(userID.Text);
+                //taskUser.UserType = userType.Text;
+                taskUser.Notes = notes.Text;
+                taskUser.TaskId = ItaskId;
+
+                taskUser.Status = Convert.ToInt16(cmbStatus.SelectedItem.Value);
+                int userAcceptance = Convert.ToInt32(ddlUserAcceptance.SelectedItem.Value);
+                taskUser.UserAcceptance = Convert.ToBoolean(userAcceptance);
+                TaskGeneratorBLL.Instance.SaveOrDeleteTaskUser(ref taskUser);
+
+                TaskUpdateId = taskUser.TaskUpdateId;
+
+                //Inform user by email about task assgignment.
+//SendEmail(Designame, taskUser.UserId); // send auto email to selected users
+
+            }
+
+            return TaskUpdateId;
+        }
+
         /// <summary>
         /// send Email
         /// </summary>
@@ -142,8 +390,8 @@ namespace JG_Prospect.Sr_App.Controls
         {
             try
             {
-                DataSet dsUser=TaskGeneratorBLL.Instance.GetInstallUserDetails(Convert.ToInt32(userID));
-             
+                DataSet dsUser = TaskGeneratorBLL.Instance.GetInstallUserDetails(Convert.ToInt32(userID));
+
                 string HTML_TAG_PATTERN = "<.*?>";
                 DataSet ds = new DataSet(); //AdminBLL.Instance.GetEmailTemplate("Sales Auto Email");// AdminBLL.Instance.FetchContractTemplate(104);
 
@@ -186,13 +434,13 @@ namespace JG_Prospect.Sr_App.Controls
                 string password = ConfigurationManager.AppSettings["VendorCategoryPassword"].ToString();
 
 
-              
+
 
                 strBody = strBody.Replace("#Name#", FName).Replace("#name#", FName);
-               /*
-                strBody = strBody.Replace("#Date#", dtInterviewDate.Text).Replace("#date#", dtInterviewDate.Text);
-                strBody = strBody.Replace("#Time#", ddlInsteviewtime.SelectedValue).Replace("#time#", ddlInsteviewtime.SelectedValue);
-                 */
+                /*
+                 strBody = strBody.Replace("#Date#", dtInterviewDate.Text).Replace("#date#", dtInterviewDate.Text);
+                 strBody = strBody.Replace("#Time#", ddlInsteviewtime.SelectedValue).Replace("#time#", ddlInsteviewtime.SelectedValue);
+                  */
                 strBody = strBody.Replace("#Designation#", Designation).Replace("#designation#", Designation);
 
 
@@ -267,7 +515,8 @@ namespace JG_Prospect.Sr_App.Controls
                 Msg = null;
                 sc.Dispose();
                 sc = null;
-                Page.RegisterStartupScript("UserMsg", "<script>alert('An email notification has sent on " + emailId + ".');}</script>");
+
+                //  Page.RegisterStartupScript("UserMsg", "<script>alert('An email notification has sent on " + emailId + ".');}</script>");
 
             }
             catch (Exception ex)
@@ -276,187 +525,56 @@ namespace JG_Prospect.Sr_App.Controls
             }
         }
 
-        /// <summary>
-        /// Will bind users based on designation changed in dropdown
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void txtDesignation_SelectedIndexChanged(object sender, EventArgs e)
+        private void LoadTaskData(string TaskId)
         {
-            DataSet dsUsers;
+            DataSet dsTaskDetails = TaskGeneratorBLL.Instance.GetTaskDetails(Convert.ToInt32(TaskId));
+            DataTable dtTaskMasterDetails = dsTaskDetails.Tables[0];
+            DataTable dtTaskUserDetails = dsTaskDetails.Tables[1];
 
-            DropDownCheckBoxes ddlAssign = (FindControl("ddcbAssigned") as DropDownCheckBoxes);
-            DropDownList ddlDesignation = (DropDownList)sender;
-            string designation = ddlDesignation.SelectedValue;
+            SetMasterTaskDetails(dtTaskMasterDetails);
+            SetTaskUserNNotesDetails(dtTaskUserDetails);
 
-            dsUsers = TaskGeneratorBLL.Instance.GetInstallUsers(2, designation);
-
-            ddlAssign.DataSource = dsUsers;
-            ddlAssign.DataTextField = "FristName";
-            ddlAssign.DataValueField = "Id";
-            ddlAssign.DataBind();
-            upnlUsers.Update();
-        }
-        /// <summary>
-        /// To bind users on change designation
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void ddcbAssigned_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            DataSet dsUsers = new DataSet();
-            DataSet tempDs;
-            List<string> SelectedUsersID = new List<string>();
-            List<string> SelectedUsers = new List<string>();
-            foreach (System.Web.UI.WebControls.ListItem item in ddcbAssigned.Items)
-            {
-                if (item.Selected)
-                {
-                    SelectedUsersID.Add(item.Value);
-                    SelectedUsers.Add(item.Text);
-                    tempDs = TaskGeneratorBLL.Instance.GetInstallUserDetails(Convert.ToInt32(item.Value));
-                    dsUsers.Merge(tempDs);
-                }
-            }
-            if (dsUsers.Tables.Count != 0)
-            {
-                gdTaskUsers.DataSource = dsUsers;
-                gdTaskUsers.DataBind();
-            }
-            else
-            {
-                gdTaskUsers.DataSource = null;
-                gdTaskUsers.DataBind();
-            }
+            ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "open popup", "EditTask(0);", true);
 
         }
 
-        #endregion
-
-        #region "--Private Methods--"
-
-        /// <summary>
-        /// Load filter dropdowns for task
-        /// </summary>
-        private void LoadFilters()
+        private void SetTaskUserNNotesDetails(DataTable dtTaskUserDetails)
         {
-
-            DataSet dsFilters = TaskGeneratorBLL.Instance.GetAllUsersNDesignationsForFilter();
-
-            DataTable dtUsers = dsFilters.Tables[0];
-            DataTable dtDesignations = dsFilters.Tables[1];
-
-            ddlUsers.DataSource = dtUsers;
-            ddlDesignation.DataSource = dtDesignations;
-
-            ddlUsers.DataTextField = "FirstName";
-            ddlUsers.DataValueField = "Id";
-            ddlUsers.DataBind();
-
-            ddlDesignation.DataTextField = "Designation";
-            ddlDesignation.DataValueField = "Designation";
-            ddlDesignation.DataBind();
-
-            ddlUsers.Items.Insert(0,new ListItem("--Users--","0"));
-            ddlDesignation.Items.Insert(0, new ListItem("--Designation--", "0"));
-        }
-
-        /// <summary>
-        /// Search tasks with parameters choosen by user.
-        /// </summary>
-        private void SearchTasks()
-        {
-
-            int? UserID = null;
-            string Title = String.Empty, Designation = String.Empty;
-            Int16? Status = null;
-            DateTime? CreatedOn = null;
-
-            // this is for paging based data fetch, in header view case it will be always page numnber 0 and page size 5
-            int Start = 0, PageLimit = 5;
-
-            PrepareSearchFilerts(ref UserID, ref Title, ref Designation, ref Status, ref CreatedOn);
-
-            DataSet dsFilters = TaskGeneratorBLL.Instance.GetTasksList(UserID,Title,Designation,Status,CreatedOn,Start,PageLimit );
-
-            gvTasks.DataSource = dsFilters;
-            gvTasks.DataBind();
-
-        }
-
-        /// <summary>
-        /// Prepare search filters choosen by users before performing search
-        /// </summary>
-        /// <param name="UserID"></param>
-        /// <param name="Title"></param>
-        /// <param name="Designation"></param>
-        /// <param name="Status"></param>
-        /// <param name="CreatedOn"></param>
-        private void PrepareSearchFilerts(ref int? UserID, ref string Title, ref string Designation, ref short? Status, ref DateTime? CreatedOn)
-        {
-            if (ddlUsers.SelectedIndex > 0)
-            {
-                UserID = Convert.ToInt32(ddlUsers.SelectedItem.Value);
-            }
-
-            if (!String.IsNullOrEmpty(txtSearch.Text))
-            {
-                Title = txtSearch.Text;
-            }
-            if (ddlDesignation.SelectedIndex > 0)
-            {
-                Designation = ddlDesignation.SelectedItem.Value;
-            }
-
-            if (ddlTaskStatus.SelectedIndex > 0)
-            {
-                Status = Convert.ToInt16(ddlTaskStatus.SelectedItem.Value);
-            }
-
-            if (!String.IsNullOrEmpty(txtCreatedDate.Text))
-            {
-                CreatedOn = Convert.ToDateTime(txtCreatedDate.Text);
-            }
-        }
-
-        /// <summary>
-        /// To load Designation to popup dropdown
-        /// </summary>
-        private void LoadPopupDropdown()
-        {
-            DataSet dsdesign = TaskGeneratorBLL.Instance.GetInstallUsers(1, "");
-            DataSet ds = TaskGeneratorBLL.Instance.GetTaskUserDetails(1);
-            txtDesignation.DataSource = dsdesign;
-            txtDesignation.DataTextField = "Designation";
-            txtDesignation.DataValueField = "Designation";
-            txtDesignation.DataBind();
-
-        }
-
-        /// <summary>
-        /// To clear the popup details after save
-        /// </summary>
-        private void clearAllFormData()
-        {
-            txtTaskTitle.Text = string.Empty;
-            txtDescription.Text = string.Empty;
-            txtDesignation.ClearSelection();
-            ddcbAssigned.Items.Clear();
-            cmbStatus.ClearSelection();
-            ddlUserAcceptance.ClearSelection();
-            txtDueDate.Text = string.Empty;
-            txtHours.Text = string.Empty;
-            gdTaskUsers.DataSource = null;
+            gdTaskUsers.DataSource = dtTaskUserDetails;
             gdTaskUsers.DataBind();
-            txtLog.Text = string.Empty;
-            fuUpload.Dispose();
+
+            foreach (ListItem item in ddcbAssigned.Items)
+            {
+
+
+            }
+            
         }
+
+        private void SetMasterTaskDetails(DataTable dtTaskMasterDetails)
+        {
+
+            txtTaskTitle.Text = dtTaskMasterDetails.Rows[0]["Title"].ToString();
+            txtDescription.Text = dtTaskMasterDetails.Rows[0]["Description"].ToString();
+
+            //Get selected index of task status
+            ListItem item = ddlTaskStatus.Items.FindByValue(dtTaskMasterDetails.Rows[0]["Status"].ToString());
+
+            if (item != null)
+            {
+                ddlTaskStatus.SelectedIndex = ddlTaskStatus.Items.IndexOf(item);
+            }
+
+            txtDueDate.Text = dtTaskMasterDetails.Rows[0]["DueDate"].ToString();
+            txtHours.Text = dtTaskMasterDetails.Rows[0]["Hours"].ToString();
+             ddlUserDesignation.SelectedValue = dtTaskMasterDetails.Rows[0]["Designation"].ToString();
+            LoadUsersByDesgination();
+        }
+
+
+
 
         #endregion
 
-
-       
-
-        
     }
 }
