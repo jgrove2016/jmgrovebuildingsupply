@@ -76,6 +76,16 @@ namespace JG_Prospect.Sr_App
                                                  select Convert.ToString(ptrade["Designation"])).Distinct().ToList();
                     ddlDesignation.DataBind();
                     ddlDesignation.Items.Insert(0, "--Select--");
+
+                    #region 20160701
+                    DataSet dsUsers = new DataSet();
+                    dsUsers = InstallUserBLL.Instance.getUserList();
+                    ddlUser.DataSource = dsUsers.Tables[0];
+                    ddlUser.DataTextField = "Username";
+                    ddlUser.DataValueField = "Id";
+                    ddlUser.DataBind();
+                    ddlUser.Items.Insert(0, new System.Web.UI.WebControls.ListItem("All", "0"));
+                    #endregion
                 }
                 else
                 {
@@ -174,6 +184,13 @@ namespace JG_Prospect.Sr_App
                         strb.Append("Start else ");
                         ddlStatus.Items.FindByValue("Applicant").Selected = true;
                     }
+
+                    #region 20160701
+                    if (String.IsNullOrEmpty(Status) || Status == "Applicant")
+                    {
+                        e.Row.BackColor = System.Drawing.Color.Yellow;
+                    }
+                    #endregion
                 }
             }
             catch (Exception ex)
@@ -817,7 +834,7 @@ namespace JG_Prospect.Sr_App
                             DataSet dsadd = InstallUserBLL.Instance.AddSource(Convert.ToString(Session["Username"]));
                         }
                         objuser.DateSourced = Convert.ToString(dtExcel.Rows[i][9].ToString());
-                        objuser.Notes = dtExcel.Rows[i][10].ToString().Trim();                        
+                        objuser.Notes = dtExcel.Rows[i][10].ToString().Trim();
                         bool result = InstallUserBLL.Instance.AddUser(objuser);
                         count += Convert.ToInt32(result);
 
@@ -1604,7 +1621,7 @@ namespace JG_Prospect.Sr_App
                 string HireDate = "";
                 string EmpType = "";
                 string PayRates = "";
-                
+
                 ds = InstallUserBLL.Instance.ChangeStatus(Convert.ToString(Session["EditStatus"]), Convert.ToInt32(Session["EditId"]), Convert.ToString(DateTime.Today.ToShortDateString()), DateTime.Now.ToShortTimeString(), Convert.ToInt32(Session[JG_Prospect.Common.SessionKey.Key.UserId.ToString()]), txtReason.Text);
                 if (ds.Tables.Count > 0)
                 {
@@ -1780,8 +1797,51 @@ namespace JG_Prospect.Sr_App
                 else
                     dt = null;
             }
+
+            #region 20160701
+            if (ddlUser.SelectedIndex != 0)
+            {
+                string username = ddlUser.SelectedItem.Text;
+                query = from userdata in dt.AsEnumerable()
+                        where (userdata.Field<string>("AddedBy") == username)
+                        select userdata;
+                if (query.Count() > 0)
+                {
+                    dt = query.CopyToDataTable();
+                }
+                else
+                    dt = null;
+            }
+
+
+            if (!string.IsNullOrEmpty(txtDateAdd.Text))
+            {
+                string addedOn = txtDateAdd.Text;
+                query = from userdata in dt.AsEnumerable()
+                        where (userdata.Field<DateTime>("CreatedDateTime").Date == Convert.ToDateTime(addedOn).Date)
+                        select userdata;
+                if (query.Count() > 0)
+                {
+                    dt = query.CopyToDataTable();
+                }
+                else
+                    dt = null;
+            }
+            #endregion
             GridViewUser.DataSource = dt;
             GridViewUser.DataBind();
         }
+
+        #region 20160701
+        protected void ddlUser_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BindGrid(ddlPrimaryTrade.SelectedItem.Text, ddlUserStatus.SelectedItem.Text, ddlDesignation.SelectedItem.Text);
+        }
+        protected void txtDateAdd_TextChanged(object sender, EventArgs e)
+        {
+            BindGrid(ddlPrimaryTrade.SelectedItem.Text, ddlUserStatus.SelectedItem.Text, ddlDesignation.SelectedItem.Text);
+        }
+        #endregion
+
     }
 }
