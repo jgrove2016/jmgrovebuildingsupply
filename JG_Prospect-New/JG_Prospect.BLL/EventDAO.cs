@@ -78,14 +78,17 @@ namespace JG_Prospect.JGCalender
 
 
             sb.Append("  SELECT f.Id as event_id,   ");
-            sb.Append("  isnull((Cast( c.id as varchar(10)) +' ## Last Name: '+ c.LastName+' ## Contact: '+ ISNULL(c.PrimaryContact,'')+' ## Address: '   ");
+            sb.Append("  isnull((Cast( c.id as varchar(10)) +' ## Last Name: '+ c.LastName+' ## First Name: '+ c.CustomerName+'  ## Contact: '+ ISNULL(c.PrimaryContact,'')+' ## Address: '   ");
             sb.Append("  + c.CustomerAddress+' ## Zip: '+ c.ZipCode+' ## Status: '+ f.MeetingStatus+ ' ## Product ' +cast( isnull(p.ProductName,'')  as varchar(10))),'') as  description,  ");
-            sb.Append("  isnull((Cast( c.id as varchar(10)) +' ## Last Name: '+ c.LastName+' ## Contact: '+ISNULL(c.PrimaryContact,'')+' ## Address: '   ");
-            sb.Append("  + c.CustomerAddress+' ## Zip: '+ c.ZipCode+' ## Status: '+ f.MeetingStatus+ ' ## Product ' +cast( isnull(p.ProductName,'')  as varchar(10))),'') as  title,  ");
+            sb.Append("  isnull(( c.CustomerName+'  ## '+ISNULL(c.PrimaryContact,'')+' ##  '   ");
+            sb.Append("  + c.CustomerAddress+' ## Product ' +cast( isnull(p.ProductName,'')  as varchar(10))),'') as  title,  ");
+            //ali
+            //sb.Append("  isnull((Cast( c.id as varchar(10)) +' ## Last Name: '+ c.LastName+' ## Contact: '+ISNULL(c.PrimaryContact,'')+' ## Address: '   ");
+            //sb.Append("  + c.CustomerAddress+' ## Zip: '+ c.ZipCode+' ## Status: '+ f.MeetingStatus+ ' ## Product ' +cast( isnull(p.ProductName,'')  as varchar(10))),'') as  title,  ");
             sb.Append("  MeetingDate as  event_start,  ");
             sb.Append("  DATEADD(hour,1,MeetingDate) as event_end,   ");
             sb.Append("  0 as all_day,   ");
-            sb.Append("  f.MeetingStatus  as status,c.id, c.lastname, ISNULL(c.PrimaryContact,'') AS PrimaryContact, c.CustomerAddress,c.ZipCode  , isnull(p.ProductName,'') as ProductName  ");
+            sb.Append("  f.MeetingStatus  as status,c.id, c.lastname,c.CustomerName AS firstname, ISNULL(c.PrimaryContact,'') AS PrimaryContact, c.CustomerAddress,c.ZipCode  , isnull(p.ProductName,'') as ProductName  ");
             sb.Append("  FROM tblcustomer_followup f   ");
             sb.Append("  left join new_customer c on c.id=f.CustomerId   ");
             sb.Append("  left join tblProductMaster p on p.ProductId=f.ProductId   ");
@@ -128,7 +131,20 @@ namespace JG_Prospect.JGCalender
             }
             foreach (DataRow reader in dt.Rows)
             {
+                
                 CalendarEvent cevent = new CalendarEvent();
+                if (reader["status"].ToString() == "est<$1000" || reader["status"].ToString() == "est>$1000")
+                {
+                    cevent.backgroundColor = "black";
+                }
+                else if (reader["status"].ToString() == "sold>$1000" || reader["status"].ToString() == "sold<$1000" || reader["status"].ToString() == "Closed (sold)")
+                {
+                    cevent.backgroundColor = "red";
+                }
+                else 
+                {
+                    cevent.backgroundColor = "gray";
+                }
                 cevent.id = (int)reader["event_id"];
                 cevent.title = ((string)reader["title"]).Replace("##", ", "); ;
                 cevent.description = ((string)reader["description"]).Replace("##", "<br>");
@@ -142,6 +158,8 @@ namespace JG_Prospect.JGCalender
                 cevent.address = reader["customeraddress"].ToString();
                 cevent.zipcode = reader["zipcode"].ToString();
                 cevent.productline = reader["productname"].ToString();
+                cevent.firstname = reader["firstname"].ToString();
+
                 if (string.IsNullOrEmpty(searchFilter) || searchFilter.Trim().Length == 0 || cevent.description.ToLower().Contains(searchFilter.ToLower().Trim()))
                 {
                     events.Add(cevent);

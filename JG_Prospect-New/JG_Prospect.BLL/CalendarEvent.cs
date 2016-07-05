@@ -25,6 +25,8 @@ namespace JG_Prospect.JGCalender
         public string zipcode { get; set; }
         public string productline { get; set; }
         public string addedby { get; set; }
+        public string firstname { get; set; }
+        public string backgroundColor { get; set; }
 
     }
     public class DropdownObject
