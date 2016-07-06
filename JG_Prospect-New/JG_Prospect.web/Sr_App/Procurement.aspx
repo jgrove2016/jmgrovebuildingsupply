@@ -350,7 +350,7 @@
             var SID = -1;
             var AID = -1;
             try {
-                if (data.length <= 0) { return;}
+                if (data.length <= 0) { return; }
             }
             catch (e2) {
                 return;
@@ -394,8 +394,8 @@
 
                 GenereateHTML(data[i], ID, NewRow);
             }
-           // $('.clsmaskphone').mask("(999) 999-9999");
-          //  $('.clsmaskphoneexten').mask("999999");
+            // $('.clsmaskphone').mask("(999) 999-9999");
+            //  $('.clsmaskphoneexten').mask("999999");
         }
 
         function GenereateHTML(data, ID, NewRow) {
@@ -615,6 +615,7 @@
     <ul class="appointment_tab">
         <li><a href="Procurement.aspx">Sold Jobs</a></li>
         <li><a href="OverheadExp.aspx">Overhead Expenses</a></li>
+        <li><a href="#">All</a></li>
     </ul>
 
     <h1>
@@ -627,7 +628,34 @@
             <!-- appointment tabs section end -->
             <div class="tabcontents">
                 <div class="grid_h">
-                    <asp:Button ID="btnDisable" runat="server" Text="Disable" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff;" Height="40px" Width="75px" OnClick="btnDisable_Click" />
+                    <div style="vertical-align: bottom;">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <asp:Button ID="btnDisable" runat="server" Text="Disable" Style="background: url(img/main-header-bg.png) repeat-x; color: #fff;" Height="40px" Width="75px" OnClick="btnDisable_Click" />
+                                    </td>
+                                    <td>Pay priod</td>
+                                    <td>
+                                        <asp:DropDownList ID="ddlPayPeriod" runat="server">
+                                            <asp:ListItem Text="Pay Period 14"></asp:ListItem>
+                                            <asp:ListItem Text="Pay Period 15"></asp:ListItem>
+                                        </asp:DropDownList>
+                                    </td>
+
+                                    <td>From  </td>
+                                    <td>
+                                        <asp:TextBox ID="txtPayPeriodFrom" CssClass="datepicker" runat="server"></asp:TextBox></td>
+
+                                    <td>To </td>
+                                    <td>
+                                        <asp:TextBox ID="txtPayPeriodTo" CssClass="datepicker" runat="server"></asp:TextBox></td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
                     <%--<strong>Sold Jobs</strong></div>--%>
                     <div class="grid">
                         <div>
@@ -635,37 +663,45 @@
                                 Width="100%" OnRowDataBound="grdsoldjobs_RowDataBound" OnSelectedIndexChanged="grdsoldjobs_SelectedIndexChanged">
 
                                 <Columns>
-
-                                    <asp:BoundField HeaderText="Date Sold" DataField="SoldDate" DataFormatString="{0:d}"
-                                        HeaderStyle-Width="11%" />
-                                    <asp:TemplateField HeaderText="Customer ID" HeaderStyle-Width="10%">
+                                    <asp:BoundField HeaderText="Date Sold/Date Shipped/Date Closed" DataField="SoldDate" DataFormatString="{0:g}" HeaderStyle-Width="15%" />
+                                    <asp:TemplateField HeaderText="Customer ID - Sold Jobs #" HeaderStyle-Width="15%">
                                         <ItemTemplate>
                                             <asp:LinkButton ID="lnkcustomerid" runat="server" Text='<%#Eval("CustomerId") %>'
                                                 OnClick="lnkcustomerid_Click"></asp:LinkButton>
+                                            - 
+                                            <asp:LinkButton ID="lnksoldjobid" runat="server" Text='<%#Eval("SoldJob#") %>' OnClick="lnksoldjobid_Click"></asp:LinkButton>
                                             <asp:HiddenField ID="hdnproductid" runat="server" Value='<%#Eval("ProductId") %>' />
                                             <asp:HiddenField ID="hdnProductTypeId" runat="server" Value='<%#Eval("ProductTypeId") %>' />
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:BoundField HeaderText="Customer Name" DataField="LastName" HeaderStyle-Width="10%" />
-                                    <asp:TemplateField HeaderText="Sold Jobs #" HeaderStyle-Width="11%">
+                                    <asp:BoundField Visible="false" HeaderText="Customer Name" DataField="LastName" HeaderStyle-Width="10%" />
+                                    <%--<asp:TemplateField HeaderText="Sold Jobs #" HeaderStyle-Width="11%">
                                         <ItemTemplate>
-                                            <%-- <asp:Label ID="lblsoldjobid" runat="server" Text='<%#Eval("SoldJob#") %>'></asp:Label>--%>
+                                           
                                             <asp:LinkButton ID="lnksoldjobid" runat="server" Text='<%#Eval("SoldJob#") %>' OnClick="lnksoldjobid_Click"></asp:LinkButton>
                                         </ItemTemplate>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Install Category" HeaderStyle-Width="16%">
+                                    </asp:TemplateField>--%>
+                                    <asp:TemplateField HeaderText="Install Category - Active Installlers" HeaderStyle-Width="20%">
                                         <ItemTemplate>
                                             <asp:Label ID="lblCategory" runat="server" Text='<%#Eval("Category") %>' HeaderStyle-Width="200px"></asp:Label>
+                                            <br />
+                                            <asp:DropDownList ID="ddlInstaller" width="120" runat="server">
+                                                <asp:ListItem Text="Shital"></asp:ListItem>
+                                                <asp:ListItem Text="Justin"></asp:ListItem>
+                                            </asp:DropDownList>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-
                                     <asp:TemplateField HeaderText="Final Material List" HeaderStyle-Width="16%">
                                         <ItemTemplate>
                                             <asp:LinkButton ID="lnkmateriallist" runat="server" Text='<%#Eval("MaterialList") %>'
                                                 OnClick="lnkmateriallist_Click"></asp:LinkButton>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-
+                                    <asp:TemplateField HeaderText="Paid / Total" HeaderStyle-Width="15%">
+                                        <ItemTemplate>
+                                            <asp:Label ID="lblTotalPaid" runat="server" Text='<%#Eval("TotalPaid").ToString() +" / " + Eval("TotalPrice").ToString() %>'></asp:Label>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
                                     <asp:TemplateField HeaderText="Status/Approval" HeaderStyle-Width="16%">
                                         <ItemTemplate>
                                             <asp:HiddenField ID="hdnStatusId" runat="server" Value='<%#Eval("StatusId") %>' />
@@ -676,17 +712,13 @@
                                         </ItemTemplate>
                                     </asp:TemplateField>
 
-                                    <asp:TemplateField HeaderText="Status/Approval">
+                                    <asp:TemplateField Visible="false" HeaderText="Status/Approval">
                                         <ItemTemplate>
                                             <asp:Label ID="lblReason" runat="server" Text='<%#Eval("Reason") %>'></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Paid / Total">
-                                        <ItemTemplate>
-                                            <asp:Label ID="lblTotalPaid" runat="server" Text='<%#Eval("TotalPaid").ToString() +" / " + Eval("TotalPrice").ToString() %>'></asp:Label>
-                                        </ItemTemplate>
-                                    </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="PasswordStatus" HeaderStyle-Width="16%">
+
+                                    <asp:TemplateField HeaderText="PasswordStatus" HeaderStyle-Width="15%">
                                         <ItemTemplate>
                                             <asp:Label ID="lblfrmPassword" Text="FRM" runat="server"></asp:Label><br />
                                             <br />
@@ -695,7 +727,7 @@
                                             <asp:Label ID="lblADMPassword" Text="ADM" runat="server"></asp:Label>
                                         </ItemTemplate>
                                     </asp:TemplateField>
-                                    <asp:TemplateField HeaderText="Charge Order" HeaderStyle-Width="16%">
+                                    <asp:TemplateField Visible="false" HeaderText="Charge Order" HeaderStyle-Width="16%">
                                         <ItemTemplate>
                                             <asp:LinkButton ID="lnkCharge" runat="server" CommandName='<%#Eval("TotalPrice") %>' CommandArgument='<%#Eval("CustomerID")+":"+Eval("LastName") %>' OnClick="lnkCharge_Click">Charge Order</asp:LinkButton>
                                         </ItemTemplate>
@@ -760,7 +792,7 @@
                                             <td>
                                                 <asp:TextBox ID="txtAmount" runat="server" EnableViewState="true" onkeypress="return isNumericKey(event);"
                                                     MaxLength="20" ReadOnly="true"></asp:TextBox>
-                                                <asp:CheckBox ID="chkedit" runat="server" Text="Edit" onclick="if(this.checked) {ShowPopup();}"/>
+                                                <asp:CheckBox ID="chkedit" runat="server" Text="Edit" onclick="if(this.checked) {ShowPopup();}" />
                                                 <label>
                                                     <asp:Label ID="lblAmount" runat="server" Text="Please Enter Amount" ForeColor="Red" CssClass="hide"></asp:Label>
                                                 </label>
@@ -802,7 +834,7 @@
                                             <td id="amountvalue" visible="false" runat="server">
                                                 <asp:TextBox ID="txtccamount" runat="server" EnableViewState="true" onkeypress="return isNumericKey(event);"
                                                     MaxLength="20" ReadOnly="true"></asp:TextBox>
-                                                <asp:CheckBox ID="CheckBox1" runat="server" Text="Edit" onclick="if(this.checked) {ShowPopup();}"/>
+                                                <asp:CheckBox ID="CheckBox1" runat="server" Text="Edit" onclick="if(this.checked) {ShowPopup();}" />
                                                 <label>
                                                     <asp:Label ID="Label14" runat="server" Text="Please Enter Amount" ForeColor="Red" CssClass="hide"></asp:Label>
                                                 </label>
@@ -950,7 +982,7 @@
                                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator12" runat="server" ControlToValidate="ddlperbus" ErrorMessage="Select Account Type" ForeColor="Red" InitialValue="0" Display="Dynamic" ValidationGroup="sold"></asp:RequiredFieldValidator>
                                                 </td>
                                             </tr>
-                                            
+
 
                                         </asp:Panel>
                                         <tr>
@@ -2109,12 +2141,12 @@
                                                     <asp:CheckBoxList ID="chkProductCategoryList" runat="server" AutoPostBack="true" OnSelectedIndexChanged="chkProductCategoryList_SelectedIndexChanged">
                                                     </asp:CheckBoxList>
                                                 </div>
-                                                <div id="vendorcategory" class="categorylist_Heading"  style="width: 250px; float: left">
+                                                <div id="vendorcategory" class="categorylist_Heading" style="width: 250px; float: left">
                                                     <h4>Vendor Category</h4>
                                                     <asp:CheckBoxList ID="chkVendorCategoryList" runat="server" AutoPostBack="true" OnSelectedIndexChanged="chkVendorCategoryList_SelectedIndexChanged">
                                                     </asp:CheckBoxList>
                                                 </div>
-                                                <div id="vendorsubcategory" class="categorylist_Heading"  style="width: 250px; float: left">
+                                                <div id="vendorsubcategory" class="categorylist_Heading" style="width: 250px; float: left">
                                                     <h4>Vendor Sub Category</h4>
                                                     <asp:CheckBoxList ID="chkVendorSubcategoryList" runat="server" OnSelectedIndexChanged="chkVendorSubcategoryList_SelectedIndexChanged">
                                                     </asp:CheckBoxList>
@@ -2493,23 +2525,23 @@
 
         $(".cssbtnPageLoad").click();
         setTimeout(function () {
-           // initialize();
+            // initialize();
         }, 500);
 
-      /*  var mapProp;
-        var map;
-        function initialize() {
-            SearchText();
-            SearchZipCode();
-            mapProp = {
-                center: new google.maps.LatLng(40.042838, -75.528559),
-                zoom: 9,
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-            };
-            map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
-            getAllAddressOnMap();
-        }
-        */
+        /*  var mapProp;
+          var map;
+          function initialize() {
+              SearchText();
+              SearchZipCode();
+              mapProp = {
+                  center: new google.maps.LatLng(40.042838, -75.528559),
+                  zoom: 9,
+                  mapTypeId: google.maps.MapTypeId.ROADMAP
+              };
+              map = new google.maps.Map(document.getElementById("googleMap"), mapProp);
+              getAllAddressOnMap();
+          }
+          */
         function getAllAddressOnMap() {
             var manufacturer = "Manufacturer";
             if ($("#<%=rdoRetailWholesale.ClientID%>").attr("checked") == "checked") {
@@ -2539,81 +2571,81 @@
 
         function initializeMapIcon(MapJSON) {
             // Setup the different icons and shadows
-        /*    var iconURLPrefix = 'http://maps.google.com/mapfiles/ms/icons/';
-
-            var icons = [
-            iconURLPrefix + 'red-dot.png',
-            iconURLPrefix + 'green-dot.png',
-            iconURLPrefix + 'blue-dot.png',
-            iconURLPrefix + 'orange-dot.png',
-            iconURLPrefix + 'purple-dot.png',
-            iconURLPrefix + 'pink-dot.png',
-            iconURLPrefix + 'yellow-dot.png'];
-
-            var icons_length = icons.length;
-
-            for (var i = 0; i < MapJSON.length; i++) {
-                var address = MapJSON[i];
-                var VendorName = address["VendorName"];
-                var Latitude = address["Latitude"];
-                var Longitude = address["Longitude"];
-                var AddressType = address["AddressType"];
-                var VendorStatus = address["VendorStatus"]
-                if (Latitude != null && Latitude != "" && Longitude != null && Longitude != "") {
-                    var iconCounter = 0;
-                    //if (AddressType == "Primary") {
-                    //    iconCounter = 0;
-                    //}
-                    //if (AddressType == "Secondary") {
-                    //    iconCounter = 2;
-                    //}
-                    //if (AddressType == "Billing") {
-                    //    iconCounter = 3;
-                    //}
-                    if (VendorStatus == "Prospect") {
-                        iconCounter = 0;
-                    }
-                    if (VendorStatus == "Active-Past") {
-                        iconCounter = 2;
-                    }
-                    if (VendorStatus == "Deactivate") {
-                        iconCounter = 3;
-                    }
-                    var infowindow = new google.maps.InfoWindow({
-                        maxWidth: 160
-                    });
-
-                    var marker = new google.maps.Marker({
-                        position: new google.maps.LatLng(Latitude, Longitude),
-                        map: map,
-                        icon: icons[iconCounter],
-                        title: VendorName
-                    });
-
-                    google.maps.event.addListener(marker, 'click', (function (marker, i) {
-                        return function () {
-                            var FullAddress = "";
-                            if (MapJSON[i]['VendorName'] != null)
-                                FullAddress += "<b>" + MapJSON[i]['VendorName'] + "</b>";
-                            FullAddress += "<p>";
-                            if (MapJSON[i]['Address'] != null)
-                                FullAddress += MapJSON[i]['Address'];
-                            if (MapJSON[i]['City'] != null)
-                                FullAddress += ", " + MapJSON[i]['City'];
-                            if (MapJSON[i]['State'] != null)
-                                FullAddress += ", " + MapJSON[i]['State'];
-                            if (MapJSON[i]['Country'] != null)
-                                FullAddress += ", " + MapJSON[i]['Country'];
-                            if (MapJSON[i]['Zip'] != null)
-                                FullAddress += ", " + MapJSON[i]['Zip'];
-                            FullAddress += "</p>";
-
-                            infowindow.setContent(FullAddress);
-                            infowindow.open(map, marker);
+            /*    var iconURLPrefix = 'http://maps.google.com/mapfiles/ms/icons/';
+    
+                var icons = [
+                iconURLPrefix + 'red-dot.png',
+                iconURLPrefix + 'green-dot.png',
+                iconURLPrefix + 'blue-dot.png',
+                iconURLPrefix + 'orange-dot.png',
+                iconURLPrefix + 'purple-dot.png',
+                iconURLPrefix + 'pink-dot.png',
+                iconURLPrefix + 'yellow-dot.png'];
+    
+                var icons_length = icons.length;
+    
+                for (var i = 0; i < MapJSON.length; i++) {
+                    var address = MapJSON[i];
+                    var VendorName = address["VendorName"];
+                    var Latitude = address["Latitude"];
+                    var Longitude = address["Longitude"];
+                    var AddressType = address["AddressType"];
+                    var VendorStatus = address["VendorStatus"]
+                    if (Latitude != null && Latitude != "" && Longitude != null && Longitude != "") {
+                        var iconCounter = 0;
+                        //if (AddressType == "Primary") {
+                        //    iconCounter = 0;
+                        //}
+                        //if (AddressType == "Secondary") {
+                        //    iconCounter = 2;
+                        //}
+                        //if (AddressType == "Billing") {
+                        //    iconCounter = 3;
+                        //}
+                        if (VendorStatus == "Prospect") {
+                            iconCounter = 0;
                         }
-                    })(marker, i));
-                }
-            }*/
+                        if (VendorStatus == "Active-Past") {
+                            iconCounter = 2;
+                        }
+                        if (VendorStatus == "Deactivate") {
+                            iconCounter = 3;
+                        }
+                        var infowindow = new google.maps.InfoWindow({
+                            maxWidth: 160
+                        });
+    
+                        var marker = new google.maps.Marker({
+                            position: new google.maps.LatLng(Latitude, Longitude),
+                            map: map,
+                            icon: icons[iconCounter],
+                            title: VendorName
+                        });
+    
+                        google.maps.event.addListener(marker, 'click', (function (marker, i) {
+                            return function () {
+                                var FullAddress = "";
+                                if (MapJSON[i]['VendorName'] != null)
+                                    FullAddress += "<b>" + MapJSON[i]['VendorName'] + "</b>";
+                                FullAddress += "<p>";
+                                if (MapJSON[i]['Address'] != null)
+                                    FullAddress += MapJSON[i]['Address'];
+                                if (MapJSON[i]['City'] != null)
+                                    FullAddress += ", " + MapJSON[i]['City'];
+                                if (MapJSON[i]['State'] != null)
+                                    FullAddress += ", " + MapJSON[i]['State'];
+                                if (MapJSON[i]['Country'] != null)
+                                    FullAddress += ", " + MapJSON[i]['Country'];
+                                if (MapJSON[i]['Zip'] != null)
+                                    FullAddress += ", " + MapJSON[i]['Zip'];
+                                FullAddress += "</p>";
+    
+                                infowindow.setContent(FullAddress);
+                                infowindow.open(map, marker);
+                            }
+                        })(marker, i));
+                    }
+                }*/
         }
 
         function SearchText() {
@@ -2712,13 +2744,12 @@
 
     </script>
     <input type="hidden" id="hdnAmount" runat="server" />
-        <style type="text/css">
-        .style2
-        {
+    <style type="text/css">
+        .style2 {
             width: 100%;
         }
-        #mask
-        {
+
+        #mask {
             position: fixed;
             left: 0px;
             top: 0px;
@@ -2811,24 +2842,22 @@
       else {
           var pagePath = "Custom.aspx/Exists";
           var dataString = "{ 'value':'" + document.getElementById('<%= txtadminCode.ClientID%>').value + "' }";
-                var textboxid = "#<%= txtadminCode.ClientID%>";
-                var errorlableid = "#<%= lblError.ClientID%>";
+          var textboxid = "#<%= txtadminCode.ClientID%>";
+          var errorlableid = "#<%= lblError.ClientID%>";
 
-                IsExists(pagePath, dataString, textboxid, errorlableid);
-                return true;
-            }
-    }
+          IsExists(pagePath, dataString, textboxid, errorlableid);
+          return true;
+      }
+}
     </script>
     <div id="mask">
     </div>
     <asp:Panel ID="pnlPopupChangeAmt" runat="server" BackColor="White" Height="175px" Width="300px"
-        Style="z-index: 999999; background-color: White; position: fixed; left: 35%;
-        top: 6%; border: outset 2px gray; padding: 5px; display: none">
+        Style="z-index: 999999; background-color: White; position: fixed; left: 35%; top: 6%; border: outset 2px gray; padding: 5px; display: none">
         <table width="100%" style="width: 100%; height: 100%;" cellpadding="0" cellspacing="5">
             <tr style="background-color: #b5494c">
                 <td colspan="2" style="color: White; font-weight: bold; font-size: 1.2em; padding: 3px"
-                    align="center">
-                    Admin Verification <a id="closebtn" style="color: white; float: right; text-decoration: none"
+                    align="center">Admin Verification <a id="closebtn" style="color: white; float: right; text-decoration: none"
                         class="btnClose" href="#">X</a>
                 </td>
             </tr>
@@ -2838,8 +2867,7 @@
                 </td>
             </tr>
             <tr>
-                <td align="right" style="width: 45%">
-                    Amount:
+                <td align="right" style="width: 45%">Amount:
                 </td>
                 <td>
                     <asp:TextBox ID="txtChangeAmount" runat="server" onkeypress="return isNumericKey(event);"
@@ -2847,8 +2875,7 @@
                 </td>
             </tr>
             <tr>
-                <td align="right">
-                    Admin Password:
+                <td align="right">Admin Password:
                 </td>
                 <td>
                     <asp:TextBox ID="txtadminCode" runat="server" TextMode="Password" Text=""></asp:TextBox>
@@ -2856,8 +2883,7 @@
                 </td>
             </tr>
             <tr>
-                <td>
-                </td>
+                <td></td>
                 <td>
                     <input type="button" class="btnVerify" value="Verify" onclick="javascript: return focuslost();" />
                     &nbsp;&nbsp;

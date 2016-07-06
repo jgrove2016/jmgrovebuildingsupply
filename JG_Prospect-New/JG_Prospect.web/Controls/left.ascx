@@ -28,8 +28,8 @@
 </script>
 <!--accordion jquery ends-->
 <!--tabs jquery-->
-<script type="text/javascript" src="../js/jquery.ui.core.js"></script>
-<script type="text/javascript" src="../js/jquery.ui.widget.js"></script>
+<%--<script type="text/javascript" src="../js/jquery.ui.core.js"></script>
+<script type="text/javascript" src="../js/jquery.ui.widget.js"></script>--%>
 <!--tabs jquery ends-->
 <script type="text/javascript">
     $(function () {

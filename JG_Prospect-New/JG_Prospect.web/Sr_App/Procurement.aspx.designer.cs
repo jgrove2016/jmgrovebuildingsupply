@@ -31,6 +31,33 @@ namespace JG_Prospect.Sr_App {
         protected global::System.Web.UI.WebControls.Button btnDisable;
         
         /// <summary>
+        /// ddlPayPeriod control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlPayPeriod;
+        
+        /// <summary>
+        /// txtPayPeriodFrom control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPayPeriodFrom;
+        
+        /// <summary>
+        /// txtPayPeriodTo control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtPayPeriodTo;
+        
+        /// <summary>
         /// grdsoldjobs control.
         /// </summary>
         /// <remarks>

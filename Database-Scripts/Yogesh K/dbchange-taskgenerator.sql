@@ -390,3 +390,33 @@ BEGIN
 
 END
 GO
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+/****** Object:  StoredProcedure [dbo].[SP_GetInstallUsers]    Script Date: 7/6/2016 6:59:52 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  -- =============================================    
+-- Author: ALI SHAHABAS  
+-- Create date: 26-JUNE-2016  
+-- Updated By: Yogesh Keraliya
+-- Updated date: 06-July-2016  
+-- Description: SP_GetInstallUsers    
+-- =============================================    
+ALTER PROCEDURE [dbo].[SP_GetInstallUsers]    
+@Key int,  
+@Designation varchar(50)  
+AS    
+BEGIN    
+
+IF @Key=1  
+ SELECT  DISTINCT(Designation)AS Designation FROM tblinstallUsers WHERE Designation IS NOT NULL     
+ELSE IF @Key = 2  
+ SELECT DISTINCT (FristName), Id FROM tblinstallUsers WHERE  FristName IS NOT NULL AND Designation = @Designation  
+
+END
+
+
+
