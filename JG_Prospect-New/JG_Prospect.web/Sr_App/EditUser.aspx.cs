@@ -45,9 +45,13 @@ namespace JG_Prospect
                 Session["LastNameNewSC"] = "";
                 Session["DesignitionSC"] = "";
                 binddata();
+               
                 DataSet dsCurrentPeriod = UserBLL.Instance.Getcurrentperioddates();
-                bindPayPeriod(dsCurrentPeriod);
+             //   bindPayPeriod(dsCurrentPeriod);
                 FillCustomer();
+                txtfrmdate.Text = DateTime.Now.AddDays(-14).ToString("MM/dd/yyyy");
+                txtTodate.Text = DateTime.Now.ToString("MM/dd/yyyy");
+                ShowHRData();
             }
         }
 
@@ -70,7 +74,13 @@ namespace JG_Prospect
                                          where !string.IsNullOrEmpty(ptrade.Field<string>("Designation"))
                                          select Convert.ToString(ptrade["Designation"])).Distinct().ToList();
             ddlDesignation.DataBind();
-            ddlDesignation.Items.Insert(0, "--Select--");
+            ddlDesignation.Items.Insert(0, "--All--");
+
+            //ddlSource.DataSource = (from ptrade in DS.Tables[0].AsEnumerable()
+            //                        where !string.IsNullOrEmpty(ptrade.Field<string>("Source"))
+            //                        select Convert.ToString(ptrade["Source"])).Distinct().ToList();
+            //ddlSource.DataBind();
+            //ddlSource.Items.Insert(0, "--All--");
         }
 
         private void FillCustomer()
@@ -79,7 +89,7 @@ namespace JG_Prospect
             dds = new_customerBLL.Instance.GeUsersForDropDown();
             DataRow dr = dds.Tables[0].NewRow();
             dr["Id"] = "0";
-            dr["Username"] = "--Select--";
+            dr["Username"] = "--All--";
             dds.Tables[0].Rows.InsertAt(dr, 0);
             if (dds.Tables[0].Rows.Count > 0)
             {
@@ -88,7 +98,19 @@ namespace JG_Prospect
                 drpUser.DataTextField = "Username";
                 drpUser.DataBind();
             }
-
+            DataSet dsSource = new DataSet();
+            dsSource = InstallUserBLL.Instance.GetSource();
+            DataRow drSource = dsSource.Tables[0].NewRow();
+            drSource["Id"] = "0";
+            drSource["Source"] = "--All--";
+            dsSource.Tables[0].Rows.InsertAt(drSource, 0);
+            if (dsSource.Tables[0].Rows.Count > 0)
+            {
+                ddlSource.DataSource = dsSource.Tables[0];
+                ddlSource.DataValueField = "Id";
+                ddlSource.DataTextField = "Source";
+                ddlSource.DataBind();
+            }
         }
         protected void GridViewUser_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
@@ -156,6 +178,10 @@ namespace JG_Prospect
                             Status = "PhoneScreened";
                             ddlStatus.Items.FindByValue(Status).Selected = true;
                         }
+                        else if (Status == "Applicant")
+                        {
+                            e.Row.Attributes["style"] = "background-color: #FFFF00";
+                        }
                         else
                         {
                             ddlStatus.Items.FindByValue(Status).Selected = true;
@@ -165,6 +191,7 @@ namespace JG_Prospect
                     else
                     {
                         ddlStatus.Items.FindByValue("Applicant").Selected = true;
+                        e.Row.Attributes["style"] = "background-color: #FFFF00";
                     }
                 }
             }
@@ -213,7 +240,7 @@ namespace JG_Prospect
                 //else if (type == "Sales")
                 //{
                 string ID = e.CommandArgument.ToString();
-                Response.Redirect("CreateSalesUser.aspx?id=" + ID);
+                Response.Redirect("CreateSalesUser.aspx?id=" + ID,false);
                 //}
 
             }
@@ -1242,20 +1269,24 @@ namespace JG_Prospect
         }
 
 
-        protected void ddlUserStatus_SelectedIndexChanged(object sender, EventArgs e)
+        protected void ddlFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
             BindGrid();
         }
         private void BindGrid()
         {
+            ShowHRData();
+
             DataTable dt = (DataTable)(Session["UserGridData"]);
             EnumerableRowCollection<DataRow> query = null;
-            if (ddlUserStatus.SelectedIndex != 0 || ddlDesignation.SelectedIndex != 0)
+            if (ddlUserStatus.SelectedIndex != 0 || ddlDesignation.SelectedIndex != 0 || drpUser.SelectedIndex != 0 || ddlSource.SelectedIndex != 0)
             {
                 string Status = ddlUserStatus.SelectedItem.Value;
                 query = from userdata in dt.AsEnumerable()
                         where (userdata.Field<string>("Status") == Status || ddlUserStatus.SelectedIndex == 0)
                         && (userdata.Field<string>("Designation") == ddlDesignation.SelectedItem.Text || ddlDesignation.SelectedIndex == 0)
+                         && (userdata.Field<string>("AddedBy") == drpUser.SelectedItem.Text || drpUser.SelectedIndex == 0)
+                          && (userdata.Field<string>("Source") == ddlSource.SelectedItem.Text || ddlSource.SelectedIndex == 0)
                         select userdata;
                 if (query.Count() > 0)
                 {
@@ -1266,6 +1297,7 @@ namespace JG_Prospect
             }
             GridViewUser.DataSource = dt;
             GridViewUser.DataBind();
+
         }
 
         protected void btnSaveOfferMade_Click(object sender, EventArgs e)
@@ -1307,55 +1339,56 @@ namespace JG_Prospect
             ScriptManager.RegisterStartupScript(this, this.GetType(), "Overlay", "ClosePopupOfferMade()", true);
             return;
         }
-        private void bindPayPeriod(DataSet dsCurrentPeriod)
-        {
-            DataSet ds = UserBLL.Instance.getallperiod();
+        //private void bindPayPeriod(DataSet dsCurrentPeriod)
+        //{
+        //    DataSet ds = UserBLL.Instance.getallperiod();
 
-            if (ds.Tables[0].Rows.Count > 0)
-            {
-                drpPayPeriod.Items.Insert(0, new ListItem("Select", "0"));
-                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-                {
-                    DataRow dr = ds.Tables[0].Rows[i];
-                    drpPayPeriod.Items.Add(new ListItem(dr["Periodname"].ToString(), dr["Id"].ToString()));
-                }
-                drpPayPeriod.SelectedValue = dsCurrentPeriod.Tables[0].Rows[0]["Id"].ToString();
-                txtfrmdate.Text = Convert.ToDateTime(dsCurrentPeriod.Tables[0].Rows[0]["FromDate"].ToString()).ToString("MM/dd/yyyy");
-                txtTodate.Text = Convert.ToDateTime(dsCurrentPeriod.Tables[0].Rows[0]["ToDate"].ToString()).ToString("MM/dd/yyyy");
-            }
-            else
-            {
-                drpPayPeriod.DataSource = null;
-                drpPayPeriod.DataBind();
-            }
+        //    if (ds.Tables[0].Rows.Count > 0)
+        //    {
+        //        drpPayPeriod.Items.Insert(0, new ListItem("Select", "0"));
+        //        for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+        //        {
+        //            DataRow dr = ds.Tables[0].Rows[i];
+        //            drpPayPeriod.Items.Add(new ListItem(dr["Periodname"].ToString(), dr["Id"].ToString()));
+        //        }
+        //        drpPayPeriod.SelectedValue = dsCurrentPeriod.Tables[0].Rows[0]["Id"].ToString();
+        //        txtfrmdate.Text = Convert.ToDateTime(dsCurrentPeriod.Tables[0].Rows[0]["FromDate"].ToString()).ToString("MM/dd/yyyy");
+        //        txtTodate.Text = Convert.ToDateTime(dsCurrentPeriod.Tables[0].Rows[0]["ToDate"].ToString()).ToString("MM/dd/yyyy");
+        //    }
+        //    else
+        //    {
+        //        drpPayPeriod.DataSource = null;
+        //        drpPayPeriod.DataBind();
+        //    }
 
-        }
+        //}
 
-        protected void drpPayPeriod_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (drpPayPeriod.SelectedIndex != -1)
-            {
-                DataSet ds = UserBLL.Instance.getperioddetails(Convert.ToInt16(drpPayPeriod.SelectedValue));
-                if (ds.Tables[0].Rows.Count > 0)
-                {
-                    txtfrmdate.Text = Convert.ToDateTime(ds.Tables[0].Rows[0]["FromDate"].ToString()).ToString("MM/dd/yyyy");
-                    txtTodate.Text = Convert.ToDateTime(ds.Tables[0].Rows[0]["ToDate"].ToString()).ToString("MM/dd/yyyy");
-                }
-            }
-        }
+        //protected void drpPayPeriod_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    if (drpPayPeriod.SelectedIndex != -1)
+        //    {
+        //        DataSet ds = UserBLL.Instance.getperioddetails(Convert.ToInt16(drpPayPeriod.SelectedValue));
+        //        if (ds.Tables[0].Rows.Count > 0)
+        //        {
+        //            txtfrmdate.Text = Convert.ToDateTime(ds.Tables[0].Rows[0]["FromDate"].ToString()).ToString("MM/dd/yyyy");
+        //            txtTodate.Text = Convert.ToDateTime(ds.Tables[0].Rows[0]["ToDate"].ToString()).ToString("MM/dd/yyyy");
+        //        }
+        //    }
+        //}
         protected void txtfrmdate_TextChanged(object sender, EventArgs e)
         {
-            drpPayPeriod.SelectedIndex = -1;
+            ShowHRData();
+            
         }
 
         protected void txtTodate_TextChanged(object sender, EventArgs e)
         {
-            drpPayPeriod.SelectedIndex = -1;
+            ShowHRData();
         }
 
-        protected void btnshow_Click(object sender, EventArgs e)
+        private void ShowHRData()
         {
-            DateTime fromDate = Convert.ToDateTime(txtfrmdate.Text, JG_Prospect.Common.JGConstant.CULTURE);
+             DateTime fromDate = Convert.ToDateTime(txtfrmdate.Text, JG_Prospect.Common.JGConstant.CULTURE);
             DateTime toDate = Convert.ToDateTime(txtTodate.Text, JG_Prospect.Common.JGConstant.CULTURE);
             if (fromDate < toDate)
             {
@@ -1494,8 +1527,150 @@ namespace JG_Prospect
                 ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('ToDate must be greater than FromDate');", true);
             }
         }
+       
+        //protected void btnshow_Click(object sender, EventArgs e)
+        //{
+        //    DateTime fromDate = Convert.ToDateTime(txtfrmdate.Text, JG_Prospect.Common.JGConstant.CULTURE);
+        //    DateTime toDate = Convert.ToDateTime(txtTodate.Text, JG_Prospect.Common.JGConstant.CULTURE);
+        //    if (fromDate < toDate)
+        //    {
+        //        DataSet ds = InstallUserBLL.Instance.GetHrData(fromDate, toDate, Convert.ToInt16(drpUser.SelectedValue));
+        //        if (ds != null)
+        //        {
+        //            DataTable dtHrData = ds.Tables[0];
+        //            DataTable dtgridData = ds.Tables[1];
+        //            List<HrData> lstHrData = new List<HrData>();
+        //            foreach (DataRow row in dtHrData.Rows)
+        //            {
+        //                HrData hrdata = new HrData();
+        //                hrdata.status = row["status"].ToString();
+        //                hrdata.count = row["cnt"].ToString();
+        //                lstHrData.Add(hrdata);
+        //            }
 
+        //            if (dtHrData.Rows.Count > 0)
+        //            {
+
+        //                var rowOfferMade = lstHrData.Where(r => r.status == "OfferMade").FirstOrDefault();
+        //                if (rowOfferMade != null)
+        //                {
+        //                    string count = rowOfferMade.count;
+        //                    lbljoboffercount.Text = count;
+        //                }
+        //                else
+        //                {
+        //                    lbljoboffercount.Text = "0";
+        //                }
+        //                var rowActive = lstHrData.Where(r => r.status == "Active").FirstOrDefault();
+        //                if (rowActive != null)
+        //                {
+        //                    string count = rowActive.count;
+        //                    lblActiveCount.Text = count;
+        //                }
+        //                else
+        //                {
+        //                    lblActiveCount.Text = "0";
+        //                }
+        //                var rowRejected = lstHrData.Where(r => r.status == "Rejected").FirstOrDefault();
+        //                if (rowRejected != null)
+        //                {
+        //                    string count = rowRejected.count;
+        //                    lblRejectedCount.Text = count;
+        //                }
+        //                else
+        //                {
+        //                    lblRejectedCount.Text = "0";
+        //                }
+        //                var rowDeactive = lstHrData.Where(r => r.status == "Deactive").FirstOrDefault();
+        //                if (rowDeactive != null)
+        //                {
+        //                    string count = rowDeactive.count;
+        //                    lblDeactivatedCount.Text = count;
+        //                }
+        //                else
+        //                {
+        //                    lblDeactivatedCount.Text = "0";
+        //                }
+        //                var rowInstallProspect = lstHrData.Where(r => r.status == "Install Prospect").FirstOrDefault();
+        //                if (rowInstallProspect != null)
+        //                {
+        //                    string count = rowInstallProspect.count;
+        //                    lblInstallProspectCount.Text = count;
+        //                }
+        //                else
+        //                {
+        //                    lblInstallProspectCount.Text = "0";
+        //                }
+        //                var rowPhoneScreened = lstHrData.Where(r => r.status == "PhoneScreened").FirstOrDefault();
+        //                if (rowPhoneScreened != null)
+        //                {
+        //                    string count = rowPhoneScreened.count;
+        //                    lblPhoneVideoScreenedCount.Text = count;
+        //                }
+        //                else
+        //                {
+        //                    lblPhoneVideoScreenedCount.Text = "0";
+        //                }
+        //                var rowInterviewDate = lstHrData.Where(r => r.status == "InterviewDate").FirstOrDefault();
+        //                if (rowInterviewDate != null)
+        //                {
+        //                    string count = rowInterviewDate.count;
+        //                    lblInterviewDateCount.Text = count;
+        //                }
+        //                else
+        //                {
+        //                    lblInterviewDateCount.Text = "0";
+        //                }
+        //                var rowApplicant = lstHrData.Where(r => r.status == "Applicant").FirstOrDefault();
+        //                string Applicantcount = "0";
+        //                if (rowApplicant != null)
+        //                {
+        //                    Applicantcount = rowApplicant.count;
+
+        //                }
+        //                else
+        //                {
+        //                    Applicantcount = "0";
+
+        //                }
+        //                // Ratio Calculation
+        //                lblAppInterviewRatio.Text = Convert.ToString(Convert.ToDouble(lblInterviewDateCount.Text) / Convert.ToDouble(Applicantcount));
+        //                lblAppHireRatio.Text = Convert.ToString(Convert.ToDouble(lblActiveCount.Text) / Convert.ToDouble(Applicantcount));
+        //                //lblJobOfferHireRatio.Text = Convert.ToString(Convert.ToDouble(lblActive.Text) / Convert.ToDouble(lblInterviewDateCount.Text));
+        //            }
+        //            else
+        //            {
+        //                lbljoboffercount.Text = "0";
+        //                lblActiveCount.Text = "0";
+        //                lblRejectedCount.Text = "0";
+        //                lblDeactivatedCount.Text = "0";
+        //                lblInstallProspectCount.Text = "0";
+        //                lblPhoneVideoScreenedCount.Text = "0";
+        //                lblInterviewDateCount.Text = "0";
+        //                lblAppInterviewRatio.Text = "0";
+        //                lblAppHireRatio.Text = "0";
+        //            }
+        //            if (dtgridData.Rows.Count > 0)
+        //            {
+        //                Session["UserGridData"] = dtgridData;
+        //                GridViewUser.DataSource = dtgridData;
+        //                GridViewUser.DataBind();
+        //            }
+        //            else
+        //            {
+        //                Session["UserGridData"] = null;
+        //                GridViewUser.DataSource = null;
+        //                GridViewUser.DataBind();
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
+        //        ScriptManager.RegisterStartupScript(this, this.GetType(), "AlertBox", "alert('ToDate must be greater than FromDate');", true);
+        //    }
+        //}
     }
+
     public class HrData
     {
         public string status { get; set; }

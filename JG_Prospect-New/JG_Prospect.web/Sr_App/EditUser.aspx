@@ -159,95 +159,14 @@
             <span>
                 <asp:Label ID="lblmsg" runat="server" Visible="false"></asp:Label>
             </span>
-            <label>
-                Upload Prospects using xlsx file:
-             <asp:FileUpload ID="BulkProspectUploader" runat="server" /></label>
-            <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator1" ControlToValidate="BulkProspectUploader" runat="server" ErrorMessage="Select file to import data." ValidationGroup="BulkImport"></asp:RequiredFieldValidator>--%>
-            <div class="btn_sec">
-                <asp:Button ID="btnUpload" runat="server" Text="Upload"
-                    OnClientClick="return ValidateFile()" OnClick="btnUpload_Click" />
-                <br />
-                <asp:Label ID="Label1" runat="server" />
-            </div>
+           
 
-            <div class="form_panel_custom divHrReport">
-                <ul style="margin-bottom:10px;">
-                    <li style="width: 49%; padding: 10px; box-sizing: border-box;">
-                        <table id="Table1" class="select_period_table" cellpadding="0" cellspacing="0" border="0" runat="server">
-                            <tr>
-                                <td>
-                                     <label>
-                                        <strong>Select Period: </strong>
-                                    </label>
-                                     <label>
-                                    <span>*</span> from : </label>
-                                    <asp:TextBox ID="txtfrmdate" runat="server" TabIndex="2" CssClass="date"
-                                        onkeypress="return false" MaxLength="10" AutoPostBack="true"
-                                        Style="width: 150px;" OnTextChanged="txtfrmdate_TextChanged"></asp:TextBox>
-                                    <cc1:CalendarExtender ID="calExtendFromDate" runat="server" TargetControlID="txtfrmdate">
-                                    </cc1:CalendarExtender>
-                                    <label></label>
-                                    <asp:RequiredFieldValidator ID="requirefrmdate" ControlToValidate="txtfrmdate"
-                                        runat="server" ErrorMessage=" Select From date" ForeColor="Red" ValidationGroup="show">
-                                    </asp:RequiredFieldValidator>
-                                </td>
-
-                                <td>
-                                     <label>
-                                        <strong>&nbsp;</strong>
-                                    </label>
-                                    <label>
-                                        <span>*</span> To :
-                                    </label>
-                                    <asp:TextBox ID="txtTodate" CssClass="date" onkeypress="return false"
-                                        MaxLength="10" runat="server" TabIndex="3" AutoPostBack="true"
-                                        Style="width: 150px;" OnTextChanged="txtTodate_TextChanged"></asp:TextBox>
-                                    <cc1:CalendarExtender ID="CalendarExtender2" runat="server" TargetControlID="txtTodate">
-                                    </cc1:CalendarExtender>
-                                    <asp:RequiredFieldValidator ID="Requiretodate" ControlToValidate="txtTodate"
-                                        runat="server" ErrorMessage=" Select To date" ForeColor="Red" ValidationGroup="show">
-                                    </asp:RequiredFieldValidator>
-                                </td>
-
-                            </tr>
-
-                            <tr>
-                                <td>
-                                    <label>
-                                        <strong>Select User : </strong>
-                                    </label>
-                                    <asp:DropDownList ID="drpUser" runat="server" Width="250px"></asp:DropDownList>
-                                    <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator3" InitialValue="0" ControlToValidate="drpUser"
-                                        runat="server" ErrorMessage=" Select User" ForeColor="Red" ValidationGroup="show">
-                                    </asp:RequiredFieldValidator>--%>
-                                </td>
-                                <td></td>
-                            </tr>
-                        </table>
-                    </li>
-
-                    <li style="width: 49%;" class="last">
-                        <table id="Table2" cellpadding="0" cellspacing="0" border="0" runat="server">
-                            <tr>
-                                <td>
-                                    <br />
-                                    <br />
-                                    <label>
-                                        <strong>Select Pay Period : </strong>
-                                    </label>
-                                    <asp:DropDownList ID="drpPayPeriod" runat="server" Width="250px" AutoPostBack="true"
-                                        OnSelectedIndexChanged="drpPayPeriod_SelectedIndexChanged">
-                                    </asp:DropDownList>
-                                </td>
-
-                            </tr>
-                        </table>
-                    </li>
-                </ul>
+            <div>
+                
                
-                <div class="btn_sec">
+               <%-- <div class="btn_sec">
                     <asp:Button runat="server" ID="btnshow" Text="Show" CssClass="cancel" OnClick="btnshow_Click" ValidationGroup="show" TabIndex="4" />
-                </div>
+                </div>--%>
 
                 <div class="showhrdata">
                     <table class="tblshowhrdata">
@@ -339,9 +258,17 @@
             <br />
 
 
-            <div id="divTest">
-                <asp:Label ID="lblUserStatus" Text="User Status" runat="server" /><span style="color: red">*</span>
-                <asp:DropDownList ID="ddlUserStatus" runat="server" Width="140px" AutoPostBack="true" OnSelectedIndexChanged="ddlUserStatus_SelectedIndexChanged">
+        
+                <table style="width:100%;">
+                    <tr style="background-color:#A33E3F;color:white;font-weight:bold;text-align:center;width:100%;">
+                        <td>  <asp:Label ID="lblUserStatus" Text="User Status" runat="server" /><span style="color: red">*</span></td>
+                        <td>   <asp:Label ID="lblDesignation" Text="Designation" runat="server" /></td>
+                        <td> <asp:Label ID="lblAddedBy" Text="Added By" runat="server" /></td>
+                        <td><asp:Label ID="lblSource" Text="Source" runat="server" /></td>
+                        <td><asp:Label ID="Label2" Text="Select Period" runat="server" /></td>
+                    </tr>
+                    <tr style="text-align:center;width:100%">
+                        <td style="text-align:center;">    <asp:DropDownList ID="ddlUserStatus" runat="server" Width="140px" AutoPostBack="true" OnSelectedIndexChanged="ddlFilter_SelectedIndexChanged">
                     <asp:ListItem Text="--Select--" Value="--Select--"></asp:ListItem>
                     <asp:ListItem Text="Applicant" Value="Applicant"></asp:ListItem>
                     <asp:ListItem Text="Phone/Video Screened" Value="PhoneScreened"></asp:ListItem>
@@ -351,10 +278,55 @@
                     <asp:ListItem Text="Active" Value="Active"></asp:ListItem>
                     <asp:ListItem Text="Deactive" Value="Deactive"></asp:ListItem>
                     <asp:ListItem Text="Install Prospect" Value="Install Prospect"></asp:ListItem>
-                </asp:DropDownList>&nbsp;
-                <asp:Label ID="lblDesignation" Text="Designation" runat="server" />
-                <asp:DropDownList ID="ddlDesignation" runat="server" Width="140px" OnSelectedIndexChanged="ddlUserStatus_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
-            </div>
+                </asp:DropDownList></td>
+                        <td><asp:DropDownList ID="ddlDesignation" runat="server" Width="140px" OnSelectedIndexChanged="ddlFilter_SelectedIndexChanged" AutoPostBack="true" ></asp:DropDownList></td>
+                        <td>  <asp:DropDownList ID="drpUser" runat="server" Width="140px" OnSelectedIndexChanged="ddlFilter_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList></td>
+                        <td>  <asp:DropDownList ID="ddlSource" runat="server" Width="140px" OnSelectedIndexChanged="ddlFilter_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList></td>
+                        <td> 
+                            <%--<table>
+                                <tr>
+                                    <td>--%>
+                                         <asp:Label ID="Label3" Text="From :*" runat="server" />
+                                    <asp:TextBox ID="txtfrmdate" runat="server" TabIndex="2" CssClass="date"
+                                        onkeypress="return false" MaxLength="10" AutoPostBack="true"
+                                        Style="width: 80px;" OnTextChanged="txtfrmdate_TextChanged"></asp:TextBox>
+                                    <cc1:CalendarExtender ID="calExtendFromDate" runat="server" TargetControlID="txtfrmdate">
+                                    </cc1:CalendarExtender>
+                                  
+                                    
+                                    <%--</td>
+                                    <td>--%>
+                                         <asp:Label ID="Label4" Text="To :*" runat="server" />
+                                    <asp:TextBox ID="txtTodate" CssClass="date" onkeypress="return false"
+                                        MaxLength="10" runat="server" TabIndex="3" AutoPostBack="true"
+                                        Style="width: 80px;" OnTextChanged="txtTodate_TextChanged"></asp:TextBox>
+                                    <cc1:CalendarExtender ID="CalendarExtender2" runat="server" TargetControlID="txtTodate">
+                                    </cc1:CalendarExtender>
+                            <br />
+                                    <asp:RequiredFieldValidator ID="requirefrmdate" ControlToValidate="txtfrmdate"
+                                        runat="server" ErrorMessage=" Select From date" ForeColor="Red" ValidationGroup="show">
+                                    </asp:RequiredFieldValidator>
+                                    <asp:RequiredFieldValidator ID="Requiretodate" ControlToValidate="txtTodate"
+                                        runat="server" ErrorMessage=" Select To date" ForeColor="Red" ValidationGroup="show">
+                                    </asp:RequiredFieldValidator>
+                                  <%--  </td>
+                                </tr>
+                            </table>--%>
+                                 
+                             
+
+                        </td>
+                    </tr>
+                </table>
+              
+            &nbsp;
+             
+                
+               
+                
+                
+              
+           
             <asp:LinkButton ID="lnkDownload" Text="Download Sample Format For Bulk Upload" CommandArgument='../UserFile/SalesSample.xlsx' runat="server" OnClick="DownloadFile"></asp:LinkButton>
             <div class="grid">
                 <%-- <asp:UpdatePanel ID="updatepanel" runat="server">
@@ -538,8 +510,24 @@
             <div class="btn_sec">
                 <asp:Button ID="btnExport" runat="server" Text="Export" OnClick="btnExport_Click" />
             </div>
+            <br />
+            <div style="border-top: #000 10px solid;text-align:center;">
+                <br />
+     <label>
+                Upload Prospects using xlsx file:
+             <asp:FileUpload ID="BulkProspectUploader" runat="server" /></label>
+                <br /><br />
+            <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator1" ControlToValidate="BulkProspectUploader" runat="server" ErrorMessage="Select file to import data." ValidationGroup="BulkImport"></asp:RequiredFieldValidator>--%>
+            <div class="btn_sec">
+                <asp:Button ID="btnUpload" runat="server" Text="Upload"
+                    OnClientClick="return ValidateFile()" OnClick="btnUpload_Click" />
+                <br />
+                <asp:Label ID="Label1" runat="server" />
+            </div>
+        </div>
         </div>
     </div>
+    
     <%--<asp:UpdatePanel ID="updatepanel1" runat="server">
                     <ContentTemplate>--%>
     <asp:Button ID="Button1" Style="display: none;" runat="server" Text="Button" />
