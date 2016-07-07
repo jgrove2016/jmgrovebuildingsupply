@@ -5,13 +5,75 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
-    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
 
     <link rel="stylesheet" href="css/jquery-ui.css" />
     <script src="jquery/jquery-2.1.1.js" type="text/javascript"></script>
     <script src="jquery/jquery-ui-1.11.1.js" type="text/javascript"></script>
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false&libraries=places&key=AIzaSyCKkBhvDXVd3K53AdMRXjbKpE0utScfWZM"></script>
+    <script type="text/javascript">
+        var source, destination;
+        var directionsDisplay;
+        var directionsService = new google.maps.DirectionsService();
 
+        google.maps.event.addDomListener(window, 'load', function () {
+            new google.maps.places.SearchBox(document.getElementById('txtFromLocation'));
+            new google.maps.places.SearchBox(document.getElementById('txtToLocation'));
+            directionsDisplay = new google.maps.DirectionsRenderer({ 'draggable': true });
+        });
 
+        function GetRoute() {
+            // var mumbai = new google.maps.LatLng(18.9750, 72.8258);
+            var philadelphia = new google.maps.LatLng(39.9526, 75.1652);
+            var mapOptions = {
+                zoom: 7,
+                center: philadelphia
+            };
+
+            map = new google.maps.Map(document.getElementById('dvMap'), mapOptions);
+            directionsDisplay.setMap(map);
+
+            //directionsDisplay.setPanel(document.getElementById('dvPanel'));
+
+            //*********DIRECTIONS AND ROUTE**********************//
+            source = document.getElementById("txtFromLocation").value;
+            destination = document.getElementById("txtToLocation").value;
+
+            var request = {
+                origin: source,
+                destination: destination,
+                travelMode: google.maps.TravelMode.DRIVING
+            };
+            directionsService.route(request, function (response, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(response);
+                }
+            });
+
+            //*********DISTANCE AND DURATION**********************//
+            var service = new google.maps.DistanceMatrixService();
+            service.getDistanceMatrix({
+                origins: [source],
+                destinations: [destination],
+                travelMode: google.maps.TravelMode.DRIVING,
+                unitSystem: google.maps.UnitSystem.METRIC,
+                avoidHighways: false,
+                avoidTolls: false
+            }, function (response, status) {
+                if (status == google.maps.DistanceMatrixStatus.OK && response.rows[0].elements[0].status != "ZERO_RESULTS") {
+                    var distance = response.rows[0].elements[0].distance.text;
+                    var duration = response.rows[0].elements[0].duration.text;
+                    var dvDistance = document.getElementById("dvDistance");
+                    dvDistance.innerHTML = "";
+                    dvDistance.innerHTML += "Distance: " + distance + "<br />";
+                    dvDistance.innerHTML += "Duration:" + duration;
+
+                } else {
+                    alert("Unable to find the distance via road.");
+                }
+            });
+        }
+    </script>
     <link href="datetime/css/jquery-ui-1.7.1.custom.css" rel="stylesheet" type="text/css" />
 
     <link href="datetime/css/stylesheet.css" rel="stylesheet" type="text/css" />
@@ -51,8 +113,6 @@
             margin-top: 1px\9;
             line-height: normal;
         }
- /*.ui-datepicker { margin-left:300px;margin-right:200px; width: 400px;  padding: .2em .2em 0; display: none; }
-.ui-datepicker table {width: 100%; font-size: 1em; border-collapse: collapse; margin:0 0 .4em; }*/
     </style>
 </head>
 <body>
@@ -64,30 +124,20 @@
                 <tr>
                     <td>
                         <table>
-                           <%-- <tr>
-                                <td>
-                                    <div style="margin-left: auto; width: 55%; padding-top: 10px;">
-                                        <div class="form-group has-feedback" style="align-self: center">
-                                            <input type="text" class="form-control" name="txtSearch" id="txtSearch" placeholder="Search Calendar" />
-                                            <span class="glyphicon glyphicon-search form-control-feedback"></span>
-                                        </div>
-                                    </div>
-                                </td>
 
-                            </tr>--%>
                             <tr>
                                 <td style="width: 1200px;">
-                                    <div style="float:left">
-                                        <div class="date dateCalender" id="datepicker"></div>
-                                    </div>
-                                    
-                                     <div style="margin-left: auto; width: 55%; padding-top: 10px;">
+
+                                    <%-- <div class="date dateCalender" id="datepicker"></div>--%>
+
+
+                                    <div style="margin-left: 10px; width: 65%; padding-top: 10px;">
                                         <div class="form-group has-feedback" style="align-self: center">
                                             <input type="text" class="form-control" name="txtSearch" id="txtSearch" placeholder="Search Calendar" />
                                             <span class="glyphicon glyphicon-search form-control-feedback"></span>
                                         </div>
                                     </div>
-                                    <div class="calender-header" style="padding: 5px; margin-left:43%" >
+                                    <div class="calender-header" style="padding: 5px;">
                                         <ul class="nav navbar-nav" style="display: -webkit-inline-box">
 
                                             <li>
@@ -119,14 +169,57 @@
 
                             <tr>
                                 <td>
-                                    <iframe src="SalesCalender.aspx" id="iframeSalesCalender" width="100%" height="1200" style="border: 0;"></iframe>
+                                    <iframe src="SalesCalender.aspx" id="iframeSalesCalender" width="100%" height="600" style="border: 0;"></iframe>
                                 </td>
 
                             </tr>
+                            <tr>
+
+                                <td style="width: 1200px;">
+                                    <div style="float: left; width:18%">
+                                        <table style="font-family: Verdana; font-size: small;" width="100%">
+                                            <tbody>
+                                                <tr>
+                                                    <td style="font-family: Verdana; font-size: 11pt; color: red;">
+                                                        <b>A:</b><textarea name="txtFromLocation" rows="2" cols="10" id="txtFromLocation" style="color: Black; width: 180px;">3502 Scotts Ln Philadelphia, PA 19129</textarea>
+                                                        <br>
+                                                        <br>
+                                                        <b>B:</b><textarea name="txtToLocation" rows="2" cols="10" id="txtToLocation" style="color: Black; width: 180px;"></textarea>
+                                                        <br>
+                                                        <div class="btn_sec">
+                                                            <input type="submit" name="btnGetDirection" value="Get Direction" id="btnGetDirection" onclick="GetRoute();" tabindex="3" style="height: 40px; width: 190px;margin: 6px;">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div id="direction_steps_holder" style="width: 100%">
+                                                            <div id="dvDistance" style="padding:5px;">
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div style="float: left;width: 47%;padding: 0 0 0 80px;">
+                                        <div id="dvMap" style="width:95%; height: 300px;">
+                                            <%--<tr>
+                                                    <td colspan="2">
+                                                        <div id="map_canvasMarkers" style="width: 500px; height: 400px"></div>
+                                                    </td>
+                                                </tr>--%>
+                                        </div>
+                                    </div>
+
+                                    <div style="float: right; width:35%;">
+                                        <div class="date dateCalender" id="datepicker"></div>
+                                    </div>
+                                </td>
+                            </tr>
                         </table>
                     </td>
-                    <td style="vertical-align: top;">
-                    </td>
+                    <td style="vertical-align: top;"></td>
                 </tr>
             </table>
 
@@ -151,7 +244,7 @@
                     var d = new Date(dateText);
                     date = d.yyyymmdd();
                     LoadCalender();
-                    
+
                 }
 
             });
