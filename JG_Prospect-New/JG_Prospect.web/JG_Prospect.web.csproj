@@ -1457,7 +1457,6 @@
     <Folder Include="CustomerDocs\MaterialListAttachment\" />
     <Folder Include="CustomerDocs\VendorQuotes\" />
     <Folder Include="InvoicePdf\" />
-    <Folder Include="Properties\PublishProfiles\" />
     <Folder Include="Sr_App\MailDocument\" />
     <Folder Include="UserImages\" />
   </ItemGroup>
@@ -1505,6 +1504,7 @@
     <Content Include="Sr_App\MailDocSample\LIBC.pdf" />
     <Content Include="Sr_App\MailDocSample\LIBC.docx" />
     <Content Include="UserFile\SalesSample.xlsx" />
+    <None Include="Properties\PublishProfiles\Profile1.pubxml" />
     <None Include="UserFile\Thumbs.db" />
   </ItemGroup>
   <ItemGroup>
