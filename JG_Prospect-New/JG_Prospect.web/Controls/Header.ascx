@@ -1,8 +1,8 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Header.ascx.cs" Inherits="JG_Prospect.Controls.Header" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <!--tabs jquery-->
-<script type="text/javascript" src="/js/jquery.ui.core.js"></script>
-<script type="text/javascript" src="/js/jquery.ui.widget.js"></script>
+<%--<script type="text/javascript" src="/js/jquery.ui.core.js"></script>
+<script type="text/javascript" src="/js/jquery.ui.widget.js"></script>--%>
 
 <!--tabs jquery ends-->
 <script type="text/javascript">

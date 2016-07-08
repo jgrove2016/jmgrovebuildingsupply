@@ -45,6 +45,7 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@Notes", DbType.String, objTask.Notes);
                     database.AddInParameter(command, "@Attachment", DbType.String, objTask.Attachment);
                     database.AddInParameter(command, "@CreatedBy", DbType.Int32, objTask.CreatedBy);
+                    database.AddInParameter(command, "@InstallId", DbType.String, objTask.InstallId);
                     database.AddOutParameter(command, "@Result", DbType.Int32, 0);
 
                     int result = database.ExecuteNonQuery(command);
@@ -70,7 +71,7 @@ namespace JG_Prospect.DAL
 
         }
 
-        public bool SaveOrDeleteTaskUser(TaskUser objTaskUser)
+        public bool SaveOrDeleteTaskUser(ref TaskUser objTaskUser)
         {
             try
             {
@@ -87,8 +88,12 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@Status", DbType.Int16, objTaskUser.Status);
                     database.AddInParameter(command, "@Notes", DbType.String, objTaskUser.Notes);
                     database.AddInParameter(command, "@UserAcceptance", DbType.Boolean, objTaskUser.UserAcceptance);
+                    database.AddOutParameter(command, "@TaskUpdateId", SqlDbType.BigInt, Int32.MaxValue);
+                    
 
                     int result = database.ExecuteNonQuery(command);
+
+                    objTaskUser.TaskUpdateId = Convert.ToInt32(database.GetParameterValue(command, "@TaskUpdateId"));
 
                     if (result > 0)
                     {
@@ -125,8 +130,12 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@TaskId", DbType.UInt64, objTaskUser.TaskId);
                     database.AddInParameter(command, "@UserId", DbType.String, objTaskUser.UserId);
                     database.AddInParameter(command, "@Attachment", DbType.Boolean, objTaskUser.Attachment);
+                    database.AddInParameter(command, "@TaskUpdateId", DbType.Int32, objTaskUser.TaskUpdateId);
+
 
                     int result = database.ExecuteNonQuery(command);
+
+                   
 
                     if (result > 0)
                     {
@@ -146,17 +155,18 @@ namespace JG_Prospect.DAL
 
         }
 
-        public DataSet GetTaskDetails(UInt16 Mode)
+        //Get details for task with user and attachments
+        public DataSet GetTaskDetails(Int32 TaskId)
         {
             try
             {
                 SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
                 {
                     returndata = new DataSet();
-                    DbCommand command = database.GetStoredProcCommand("SP_GetTaskDetails");
+                    DbCommand command = database.GetStoredProcCommand("usp_GetTaskDetails");
                     command.CommandType = CommandType.StoredProcedure;
 
-                    database.AddInParameter(command, "@Mode", DbType.Int16, Mode);
+                    database.AddInParameter(command, "@TaskId", DbType.Int32, TaskId);
 
                     returndata = database.ExecuteDataSet(command);
 
@@ -256,7 +266,7 @@ namespace JG_Prospect.DAL
         public DataSet GetTasksList(int? UserID, string Title, string Designation, Int16? Status, DateTime? CreatedOn, int Start, int PageLimit)
         {
             returndata = new DataSet();
-            
+
             try
             {
                 SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
@@ -309,7 +319,7 @@ namespace JG_Prospect.DAL
 
                     database.AddInParameter(command, "@Start", DbType.Int32, Start);
                     database.AddInParameter(command, "@PageLimit", DbType.Int32, PageLimit);
-                    
+
                     command.CommandType = CommandType.StoredProcedure;
                     returndata = database.ExecuteDataSet(command);
                     return returndata;
@@ -335,7 +345,7 @@ namespace JG_Prospect.DAL
                 SqlDatabase database = MSSQLDataBase.Instance.GetDefaultDatabase();
                 {
                     DbCommand command = database.GetStoredProcCommand("usp_GetUsersNDesignationForTaskFilter");
-                                        
+
                     command.CommandType = CommandType.StoredProcedure;
                     returndata = database.ExecuteDataSet(command);
                     return returndata;

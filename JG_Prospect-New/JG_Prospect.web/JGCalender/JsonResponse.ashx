@@ -48,7 +48,9 @@ namespace JG_Prospect.JGCalender
                     address = cevent.address,
                     zipcode = cevent.zipcode,
                     productline = cevent.productline,
-                    addedby = cevent.addedby
+                    addedby = cevent.addedby,
+                    firstname = cevent.firstname,
+                    backgroundColor = cevent.backgroundColor
                 });
                 idList.Add(cevent.id);
             }

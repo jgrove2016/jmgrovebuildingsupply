@@ -76,6 +76,15 @@ namespace JG_Prospect.Sr_App.Controls {
         protected global::System.Web.UI.WebControls.ImageButton btnSearch;
         
         /// <summary>
+        /// btnLoadMore control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton btnLoadMore;
+        
+        /// <summary>
         /// gvTasks control.
         /// </summary>
         /// <remarks>
@@ -83,6 +92,15 @@ namespace JG_Prospect.Sr_App.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvTasks;
+        
+        /// <summary>
+        /// upnlTaskPopup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.UpdatePanel upnlTaskPopup;
         
         /// <summary>
         /// txtTaskTitle control.
@@ -101,6 +119,24 @@ namespace JG_Prospect.Sr_App.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator1;
+        
+        /// <summary>
+        /// controlMode control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField controlMode;
+        
+        /// <summary>
+        /// hdnTaskId control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hdnTaskId;
         
         /// <summary>
         /// txtDescription control.
@@ -130,22 +166,22 @@ namespace JG_Prospect.Sr_App.Controls {
         protected global::System.Web.UI.UpdatePanel upnlDesignation;
         
         /// <summary>
-        /// txtDesignation control.
+        /// ddlUserDesignation control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList txtDesignation;
+        protected global::System.Web.UI.WebControls.DropDownList ddlUserDesignation;
         
         /// <summary>
-        /// upnlUsers control.
+        /// upnlAssigned control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel upnlUsers;
+        protected global::System.Web.UI.UpdatePanel upnlAssigned;
         
         /// <summary>
         /// ddcbAssigned control.
@@ -218,15 +254,6 @@ namespace JG_Prospect.Sr_App.Controls {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator4;
-        
-        /// <summary>
-        /// upnlGridview1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.UpdatePanel upnlGridview1;
         
         /// <summary>
         /// gdTaskUsers control.

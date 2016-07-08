@@ -4,13 +4,13 @@ var addEndDate;
 var globalAllDay;
 
 function updateEvent(event, element) {
-    //alert(event.description);
 
+    //alert(event.description);
     if ($(this).data("qtip")) $(this).qtip("destroy");
 
     currentUpdateEvent = event;
 
-
+  
 
 
     $('#updatedialog').dialog('open');
@@ -240,8 +240,13 @@ $(document).ready(function () {
             defaultDate: dateDefault,
             eventDrop: eventDropped,
             eventResize: eventResized,
-            eventRender: function (event, element) {
-                //alert(event.title);
+            eventRender: function (event, element, view) {
+                $(element).find('.fc-title').prepend('<a href="javascript:void(0);" class="delete-event-link" style="color:#fff">' + event.customerid + ',</a>');
+                $(element).find('.delete-event-link').click(function (e) {
+                    e.stopImmediatePropagation(); //stop click event, add deleted click for anchor link
+                    window.top.location.href = "/Sr_App/Customer_Profile.aspx?CustomerId=" + event.customerid;
+                });
+                //$(element).find('.fc-title').prepend('<a href="javascript:void(0);" class="delete-event-link" style="color:#fff">' + event.customerid + ',</a>');
                 element.qtip({
                     content: {
                         text: qTipText(event.start, event.end, event.description),

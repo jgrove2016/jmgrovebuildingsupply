@@ -351,12 +351,12 @@ function setUpConnectedCarousels() {
     };
 
     //remove if already carousel is setup
-    if ($('#locpicMainCarousel').jcarousel()) {
-        $('#locpicMainCarousel').jcarousel('destroy');
-    }
-    if ($('#locpicthumbCarousel').jcarousel()) {
-        $('#locpicthumbCarousel').jcarousel('destroy');
-    }
+    //if ($('#locpicMainCarousel').jcarousel()) {
+    //    $('#locpicMainCarousel').jcarousel('destroy');
+    //}
+    //if ($('#locpicthumbCarousel').jcarousel()) {
+    //    $('#locpicthumbCarousel').jcarousel('destroy');
+    //}
 
     // Setup the carousels. Adjust the options for both carousels here.
     var carouselStage = $('#locpicMainCarousel')
@@ -519,11 +519,11 @@ Dropzone.options.cusattchForm = {
 
 function setupCustomerAttachmentCarousel() {
 
-    //remove if already carousel is setup
+    ////remove if already carousel is setup
 
-    if ($('#customerattachmentCarousel').jcarousel()) {
-        $('#customerattachmentCarousel').jcarousel('destroy');
-    }
+    //if ($('#customerattachmentCarousel').jcarousel()) {
+    //    $('#customerattachmentCarousel').jcarousel('destroy');
+    //}
 
     // Setup the carousels. Adjust the options for both carousels here.
     var carouselNavigation = $('#customerattachmentCarousel').jcarousel({

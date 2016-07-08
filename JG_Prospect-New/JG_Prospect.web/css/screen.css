@@ -457,7 +457,8 @@ form.inline {
 }
 
 .header {
-    height: 178px;
+    min-height: 178px;
+    z-index:3;
     position: relative;
     min-width: 600px;
 }

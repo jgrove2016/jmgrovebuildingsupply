@@ -25,23 +25,23 @@ namespace JG_Prospect.BLL
         public static TaskGeneratorBLL Instance
         {
             get { return m_TaskGeneratorBLL; }
-            set { ;}
+            set {; }
         }
         public Int64 SaveOrDeleteTask(Task objTask)
         {
             return TaskGeneratorDAL.Instance.SaveOrDeleteTask(objTask);
         }
-        public bool SaveOrDeleteTaskUser(TaskUser objTaskUser)
+        public bool SaveOrDeleteTaskUser(ref TaskUser objTaskUser)
         {
-            return TaskGeneratorDAL.Instance.SaveOrDeleteTaskUser(objTaskUser);
+            return TaskGeneratorDAL.Instance.SaveOrDeleteTaskUser( ref objTaskUser);
         }
-        public bool SaveOrDeleteTaskUserFiles(TaskUser objTaskUser)
+        public bool SaveOrDeleteTaskUserFiles( TaskUser objTaskUser)
         {
-            return TaskGeneratorDAL.Instance.SaveOrDeleteTaskUserFiles(objTaskUser);
+            return TaskGeneratorDAL.Instance.SaveOrDeleteTaskUserFiles( objTaskUser);
         }
-        public DataSet GetTaskDetails(UInt16 Mode)
+        public DataSet GetTaskDetails(Int32 TaskId)
         {
-            return TaskGeneratorDAL.Instance.GetTaskDetails(Mode);
+            return TaskGeneratorDAL.Instance.GetTaskDetails(TaskId);
         }
         public DataSet GetTaskUserDetails(Int16 Mode)
         {
@@ -62,7 +62,7 @@ namespace JG_Prospect.BLL
 
         public DataSet GetTasksList(int? UserID, string Title, string Designation, Int16? Status, DateTime? CreatedOn, int Start, int PageLimit)
         {
-            return TaskGeneratorDAL.Instance.GetTasksList( UserID,  Title,  Designation,  Status,  CreatedOn, Start,PageLimit);
+            return TaskGeneratorDAL.Instance.GetTasksList(UserID, Title, Designation, Status, CreatedOn, Start, PageLimit);
         }
 
         public DataSet GetAllUsersNDesignationsForFilter()
@@ -70,7 +70,7 @@ namespace JG_Prospect.BLL
             return TaskGeneratorDAL.Instance.GetAllUsersNDesignationsForFilter();
         }
 
-       
-        
+
+
     }
 }
