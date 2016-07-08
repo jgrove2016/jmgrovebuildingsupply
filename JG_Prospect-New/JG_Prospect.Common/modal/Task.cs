@@ -10,6 +10,7 @@ namespace JG_Prospect.Common.modal
     {
         public int Mode;
         public int TaskId;
+        public string InstallId;
         public string Title;
         public string Description;
         public int Status;

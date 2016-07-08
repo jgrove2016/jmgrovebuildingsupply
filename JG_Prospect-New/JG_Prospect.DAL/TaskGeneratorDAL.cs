@@ -45,6 +45,7 @@ namespace JG_Prospect.DAL
                     database.AddInParameter(command, "@Notes", DbType.String, objTask.Notes);
                     database.AddInParameter(command, "@Attachment", DbType.String, objTask.Attachment);
                     database.AddInParameter(command, "@CreatedBy", DbType.Int32, objTask.CreatedBy);
+                    database.AddInParameter(command, "@InstallId", DbType.String, objTask.InstallId);
                     database.AddOutParameter(command, "@Result", DbType.Int32, 0);
 
                     int result = database.ExecuteNonQuery(command);

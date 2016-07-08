@@ -294,6 +294,8 @@ namespace JG_Prospect.Sr_App.Controls
             task.Mode = Convert.ToInt32( controlMode.Value);
 
             string Designame = ddlUserDesignation.SelectedItem.Value;
+            task.InstallId = GetInstallIdFromDesignation(Designame);
+
             Int64 ItaskId = TaskGeneratorBLL.Instance.SaveOrDeleteTask(task);    // save task master details
 
             // Save task notes and user information, returns TaskUpdateId for reference to add in user attachments.
@@ -310,6 +312,60 @@ namespace JG_Prospect.Sr_App.Controls
             ScriptManager.RegisterStartupScript(this.Page, GetType(), "al", "alert('Task created successfully');", true);
 
            
+        }
+
+        private string GetInstallIdFromDesignation(string designame)
+        {
+            string prefix = "";
+            switch (designame)
+            {
+                case "Admin":
+                    prefix = "ADM";
+                    break;
+                case "Jr. Sales":
+                    prefix = "SLJR";
+                    break;
+                case "Jr Project Manager":
+                    prefix = "PMJR";
+                    break;
+                case "Office Manager":
+                    prefix = "OM";
+                    break;
+                case "Recruiter":
+                    prefix = "RCR";
+                    break;
+                case "Sales Manager":
+                    prefix = "SLMGR";
+                    break;
+                case "Sr. Sales":
+                    prefix = "SLSR";
+                    break;
+                case "IT Developer":
+                    prefix = "ITDEV";
+                    break;
+                case "IT - Network Admin":
+                    prefix = "ITNT";
+                    break;
+                case "IT - Jr .Net Developer":
+                    prefix = "ITNETJR";
+                    break;
+                case "IT - Sr .Net Developer":
+                    prefix = "ITNETSR";
+                    break;
+                case "IT - Android Developer":
+                    prefix = "ITAND";
+                    break;
+                case "IT - PHP Developer":
+                    prefix = "ITPHP";
+                    break;
+                case "IT - SEO / BackLinking":
+                    prefix = "ITSEO";
+                    break;
+                default:
+                    prefix = "TSK";
+                    break;
+            }
+            return prefix;
         }
 
         private void UploadUserAttachements(int userId, long ItaskId, int taskUpdateId)
